@@ -1,0 +1,556 @@
+{
+ "counts": {
+  "B-Free extended Synthbuster | flux": 150,
+  "B-Free extended Synthbuster | latent-diffusion": 300,
+  "B-Free extended Synthbuster | sd3_large": 150,
+  "RAISE-1k resized (B-Free extended) | real": 400,
+  "Synthbuster | dalle2": 120,
+  "Synthbuster | dalle3": 120,
+  "Synthbuster | firefly": 120,
+  "Synthbuster | midjourney-v5": 120,
+  "Synthbuster | stable-diffusion-2": 120,
+  "Synthbuster | stable-diffusion-xl": 120,
+  "VISION | native": 500,
+  "VISION | facebook_hq": 500,
+  "VISION | whatsapp": 500
+ },
+ "total_files": 3220,
+ "format_summary": {
+  "B-Free extended Synthbuster | flux": {
+   "n": 150,
+   "formats": {
+    "PNG": 150
+   },
+   "width_min_max": [
+    1024,
+    1024
+   ],
+   "height_min_max": [
+    1024,
+    1024
+   ],
+   "n_unique_wh": 1,
+   "top_wh": [
+    [
+     1024,
+     1024,
+     150
+    ]
+   ],
+   "megapixels_median": 1.049,
+   "bytes_total": 269677715,
+   "bytes_median": 1797027
+  },
+  "B-Free extended Synthbuster | latent-diffusion": {
+   "n": 300,
+   "formats": {
+    "PNG": 300
+   },
+   "width_min_max": [
+    256,
+    256
+   ],
+   "height_min_max": [
+    256,
+    256
+   ],
+   "n_unique_wh": 1,
+   "top_wh": [
+    [
+     256,
+     256,
+     300
+    ]
+   ],
+   "megapixels_median": 0.066,
+   "bytes_total": 38386839,
+   "bytes_median": 129860
+  },
+  "B-Free extended Synthbuster | sd3_large": {
+   "n": 150,
+   "formats": {
+    "PNG": 150
+   },
+   "width_min_max": [
+    1024,
+    1024
+   ],
+   "height_min_max": [
+    1024,
+    1024
+   ],
+   "n_unique_wh": 1,
+   "top_wh": [
+    [
+     1024,
+     1024,
+     150
+    ]
+   ],
+   "megapixels_median": 1.049,
+   "bytes_total": 250808602,
+   "bytes_median": 1648818
+  },
+  "RAISE-1k resized (B-Free extended) | real": {
+   "n": 400,
+   "formats": {
+    "PNG": 400
+   },
+   "width_min_max": [
+    833,
+    1258
+   ],
+   "height_min_max": [
+    833,
+    1258
+   ],
+   "n_unique_wh": 5,
+   "top_wh": [
+    [
+     1258,
+     833,
+     237
+    ],
+    [
+     1256,
+     835,
+     70
+    ],
+    [
+     833,
+     1258,
+     60
+    ]
+   ],
+   "megapixels_median": 1.048,
+   "bytes_total": 660016106,
+   "bytes_median": 1604708
+  },
+  "Synthbuster | dalle2": {
+   "n": 120,
+   "formats": {
+    "PNG": 120
+   },
+   "width_min_max": [
+    1024,
+    1024
+   ],
+   "height_min_max": [
+    1024,
+    1024
+   ],
+   "n_unique_wh": 1,
+   "top_wh": [
+    [
+     1024,
+     1024,
+     120
+    ]
+   ],
+   "megapixels_median": 1.049,
+   "bytes_total": 377757240,
+   "bytes_median": 3147977
+  },
+  "Synthbuster | dalle3": {
+   "n": 120,
+   "formats": {
+    "PNG": 120
+   },
+   "width_min_max": [
+    1024,
+    1792
+   ],
+   "height_min_max": [
+    1024,
+    1792
+   ],
+   "n_unique_wh": 3,
+   "top_wh": [
+    [
+     1024,
+     1024,
+     100
+    ],
+    [
+     1792,
+     1024,
+     13
+    ],
+    [
+     1024,
+     1792,
+     7
+    ]
+   ],
+   "megapixels_median": 1.049,
+   "bytes_total": 265618337,
+   "bytes_median": 2042245
+  },
+  "Synthbuster | firefly": {
+   "n": 120,
+   "formats": {
+    "JPEG": 120
+   },
+   "width_min_max": [
+    1792,
+    2688
+   ],
+   "height_min_max": [
+    1536,
+    2304
+   ],
+   "n_unique_wh": 4,
+   "top_wh": [
+    [
+     2304,
+     1792,
+     36
+    ],
+    [
+     2688,
+     1536,
+     28
+    ],
+    [
+     2048,
+     2048,
+     28
+    ]
+   ],
+   "megapixels_median": 4.129,
+   "bytes_total": 189843228,
+   "bytes_median": 1568230,
+   "jpeg_qtable00_counts_top": [
+    [
+     2,
+     120
+    ]
+   ]
+  },
+  "Synthbuster | midjourney-v5": {
+   "n": 120,
+   "formats": {
+    "PNG": 120
+   },
+   "width_min_max": [
+    896,
+    1360
+   ],
+   "height_min_max": [
+    896,
+    1360
+   ],
+   "n_unique_wh": 4,
+   "top_wh": [
+    [
+     1360,
+     896,
+     72
+    ],
+    [
+     1344,
+     896,
+     20
+    ],
+    [
+     896,
+     1360,
+     14
+    ]
+   ],
+   "megapixels_median": 1.219,
+   "bytes_total": 236641485,
+   "bytes_median": 2016235
+  },
+  "Synthbuster | stable-diffusion-2": {
+   "n": 120,
+   "formats": {
+    "PNG": 120
+   },
+   "width_min_max": [
+    704,
+    1728
+   ],
+   "height_min_max": [
+    576,
+    1408
+   ],
+   "n_unique_wh": 26,
+   "top_wh": [
+    [
+     1472,
+     704,
+     9
+    ],
+    [
+     832,
+     1152,
+     8
+    ],
+    [
+     896,
+     1152,
+     8
+    ]
+   ],
+   "megapixels_median": 0.991,
+   "bytes_total": 232968192,
+   "bytes_median": 1972788
+  },
+  "Synthbuster | stable-diffusion-xl": {
+   "n": 120,
+   "formats": {
+    "PNG": 120
+   },
+   "width_min_max": [
+    704,
+    1728
+   ],
+   "height_min_max": [
+    576,
+    1408
+   ],
+   "n_unique_wh": 26,
+   "top_wh": [
+    [
+     1344,
+     768,
+     8
+    ],
+    [
+     960,
+     1024,
+     8
+    ],
+    [
+     1088,
+     960,
+     7
+    ]
+   ],
+   "megapixels_median": 0.991,
+   "bytes_total": 200289964,
+   "bytes_median": 1677103
+  },
+  "VISION | native": {
+   "n": 500,
+   "formats": {
+    "JPEG": 500
+   },
+   "width_min_max": [
+    960,
+    5312
+   ],
+   "height_min_max": [
+    720,
+    4608
+   ],
+   "n_unique_wh": 18,
+   "top_wh": [
+    [
+     3264,
+     2448,
+     188
+    ],
+    [
+     2560,
+     1920,
+     43
+    ],
+    [
+     4640,
+     3480,
+     30
+    ]
+   ],
+   "megapixels_median": 7.99,
+   "bytes_total": 1522672476,
+   "bytes_median": 2698662,
+   "jpeg_qtable00_counts_top": [
+    [
+     1,
+     325
+    ],
+    [
+     2,
+     143
+    ],
+    [
+     3,
+     28
+    ],
+    [
+     4,
+     4
+    ]
+   ]
+  },
+  "VISION | facebook_hq": {
+   "n": 500,
+   "formats": {
+    "JPEG": 500
+   },
+   "width_min_max": [
+    720,
+    2048
+   ],
+   "height_min_max": [
+    720,
+    2048
+   ],
+   "n_unique_wh": 13,
+   "top_wh": [
+    [
+     2048,
+     1536,
+     302
+    ],
+    [
+     2048,
+     1152,
+     57
+    ],
+    [
+     1536,
+     2048,
+     54
+    ]
+   ],
+   "megapixels_median": 3.146,
+   "bytes_total": 184334657,
+   "bytes_median": 336198,
+   "jpeg_qtable00_counts_top": [
+    [
+     9,
+     244
+    ],
+    [
+     7,
+     91
+    ],
+    [
+     6,
+     61
+    ],
+    [
+     8,
+     52
+    ],
+    [
+     5,
+     29
+    ]
+   ]
+  },
+  "VISION | whatsapp": {
+   "n": 500,
+   "formats": {
+    "JPEG": 500
+   },
+   "width_min_max": [
+    720,
+    1280
+   ],
+   "height_min_max": [
+    718,
+    1280
+   ],
+   "n_unique_wh": 11,
+   "top_wh": [
+    [
+     1280,
+     960,
+     307
+    ],
+    [
+     1280,
+     720,
+     57
+    ],
+    [
+     960,
+     1280,
+     49
+    ]
+   ],
+   "megapixels_median": 1.229,
+   "bytes_total": 179255909,
+   "bytes_median": 314468,
+   "jpeg_qtable00_counts_top": [
+    [
+     3,
+     494
+    ],
+    [
+     1,
+     6
+    ]
+   ]
+  }
+ },
+ "dataset_bytes_on_disk": 4608270750,
+ "bytes_downloaded_total": 4566674983,
+ "bytes_downloaded_by_source": {
+  "vision": 1897609286,
+  "raise_bfree": 660029782,
+  "synthbuster": 1360823662,
+  "bfree_gen": 648206253
+ },
+ "latent_diffusion": {
+  "md5": "c8139f0e5a61ff97beaa16ccdab11579",
+  "published_md5": "c8139f0e5a61ff97beaa16ccdab11579",
+  "md5_ok": true,
+  "sha256": "57c25625843d897ba4305cbe785db317fac1a39feda022e6e08cde085e230317",
+  "n_entries": 1000,
+  "n_crc_bad": 0
+ },
+ "n_crc_failures": 0,
+ "failed_files": [],
+ "config": {
+  "seed": 0,
+  "date": "2026-10-21",
+  "budget_hard_stop_bytes": 4600000000,
+  "max_retries": 3,
+  "workers": 4,
+  "vision": {
+   "base": "https://lesc.dinfo.unifi.it/VISION/",
+   "file_list": "https://lesc.dinfo.unifi.it/VISION/VISION_files.txt",
+   "n_native": 500,
+   "kinds": {
+    "nat": "native",
+    "natWA": "whatsapp",
+    "natFBH": "facebook_hq"
+   },
+   "license": "CC BY-SA 4.0"
+  },
+  "raise_bfree": {
+   "url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/real_RAISE_1k.zip",
+   "n": 400,
+   "license": "GRIP non-commercial"
+  },
+  "synthbuster": {
+   "url": "https://zenodo.org/api/records/10066460/files/synthbuster.zip/content",
+   "record": "https://zenodo.org/records/10066460",
+   "n_per_generator": 120,
+   "generators": [
+    "dalle2",
+    "dalle3",
+    "firefly",
+    "midjourney-v5",
+    "stable-diffusion-xl",
+    "stable-diffusion-2"
+   ],
+   "license": "CC BY-NC-SA 4.0"
+  },
+  "bfree_gen": {
+   "checksum_url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/checksum.txt",
+   "sd3_flux_url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/sd3_flux.zip",
+   "latent_diffusion_url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/latent-diffusion.zip",
+   "n_sd3": 150,
+   "n_flux": 150,
+   "n_latent_diffusion": 300,
+   "flux_split": "test_heldout",
+   "license": "GRIP non-commercial"
+  }
+ }
+}

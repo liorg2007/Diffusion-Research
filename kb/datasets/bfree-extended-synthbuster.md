@@ -6,4 +6,4 @@
 - **Formats:** all PNG for both real and fake -> no JPEG/PNG shortcut; but reals were resized by the authors (interpolation traces) whereas fakes are native. Fake resolution not checked **[unverified]**.
 - **Download procedure:** direct HTTPS zip files, server supports range requests (accept-ranges: bytes), so partial extraction works.
 - **Known issues:** the real set is resized RAISE (DSLR, 2011-2014, not phones); possible resize-vs-native-resolution shortcut; not peer-reviewed as separate dataset.
-- **Used in our experiments?** no (candidate; best modern-generator addition to Synthbuster)
+- **Used in our experiments?** yes — experiments/001-eval-set (D-005)

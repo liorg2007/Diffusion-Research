@@ -1,0 +1,36 @@
+{
+  "seed": 0,
+  "date": "2026-10-21",
+  "budget_hard_stop_bytes": 4600000000,
+  "max_retries": 3,
+  "workers": 4,
+  "vision": {
+    "base": "https://lesc.dinfo.unifi.it/VISION/",
+    "file_list": "https://lesc.dinfo.unifi.it/VISION/VISION_files.txt",
+    "n_native": 500,
+    "kinds": {"nat": "native", "natWA": "whatsapp", "natFBH": "facebook_hq"},
+    "license": "CC BY-SA 4.0"
+  },
+  "raise_bfree": {
+    "url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/real_RAISE_1k.zip",
+    "n": 400,
+    "license": "GRIP non-commercial"
+  },
+  "synthbuster": {
+    "url": "https://zenodo.org/api/records/10066460/files/synthbuster.zip/content",
+    "record": "https://zenodo.org/records/10066460",
+    "n_per_generator": 120,
+    "generators": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-xl", "stable-diffusion-2"],
+    "license": "CC BY-NC-SA 4.0"
+  },
+  "bfree_gen": {
+    "checksum_url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/checksum.txt",
+    "sd3_flux_url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/sd3_flux.zip",
+    "latent_diffusion_url": "https://www.grip.unina.it/download/prog/B-Free/extended_synthbuster/latent-diffusion.zip",
+    "n_sd3": 150,
+    "n_flux": 150,
+    "n_latent_diffusion": 300,
+    "flux_split": "test_heldout",
+    "license": "GRIP non-commercial"
+  }
+}

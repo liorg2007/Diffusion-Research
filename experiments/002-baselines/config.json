@@ -1,0 +1,163 @@
+{
+ "date": "2026-10-21",
+ "python": "env/.venv/bin/python (3.12, torch 2.2.2, numpy 1.26.4)",
+ "scorer_import": "run_eval.py --path experiments/002-baselines --scorer scorers.<module>:<fn>   (MPS default; DD_DEVICE=cpu|mps overrides)",
+ "score_semantics": "all scorers return LOGITS (float64), higher = more fake; sigmoid(logit)=official probability; official decision threshold logit 0",
+ "scorers": {
+  "communityforensics": {
+   "fn": "scorers.communityforensics:score",
+   "paper": "Community Forensics, CVPR 2025",
+   "license": "MIT (code+weights)",
+   "repo": {
+    "url": "https://github.com/JeongsooP/Community-Forensics",
+    "commit": "ee5b71d43db0f3779e1edd64ee927b13f2dd6ad4",
+    "path": "third_party/Community-Forensics"
+   },
+   "weights": [
+    {
+     "file": "data/weights/community-forensics/commfor-model-384/model.safetensors",
+     "bytes": 87262324,
+     "sha256": "b89f36275f3bf5e2b040eee36597a8f19db051bff9a473a9cf7b2466284fb387",
+     "source": "hf:OwensLab/commfor-model-384@6076002bf0d9dd37537f965ee2f06f826c333b61"
+    }
+   ],
+   "arch": "timm vit_small_patch16_384 + Linear(384,1)",
+   "preprocessing": {
+    "resize": "Resize(440) shorter side, bilinear (RESIZES)",
+    "crop": "CenterCrop(384)",
+    "normalize": "ImageNet mean/std",
+    "multi_crop": false
+   }
+  },
+  "bfree": {
+   "fn": "scorers.bfree:score",
+   "paper": "B-Free, CVPR 2025",
+   "license": "GRIP-UNINA custom, NON-COMMERCIAL (research/nonprofit only)",
+   "repo": {
+    "url": "https://github.com/grip-unina/B-Free",
+    "commit": "c6a9f898782fb466b29af01f21960b67415afb0e",
+    "path": "third_party/B-Free"
+   },
+   "weights": [
+    {
+     "file": "data/weights/b-free/BFREE_dino2reg4/model_epoch_best.pth",
+     "bytes": 346171370,
+     "sha256": "5948ca78f4d94e820c250d24cdf155035b4a85960443800bfe6bb7f06bffe947",
+     "source": "https://www.grip.unina.it/download/prog/B-Free/weights/BFREE_dino2reg4.zip",
+     "zip_bytes": 321653488,
+     "zip_md5_verified": "f3f53fa647848b16cf81c913f148a198",
+     "zip_sha256": "8230fd3f0f3a64a6403acb692ce1663718ed16f36a5a4de4a68c0d273781769f"
+    }
+   ],
+   "arch": "timm vit_base_patch14_reg4_dinov2.lvd142m, 1 logit, Wrapper5crops(504)",
+   "preprocessing": {
+    "resize": "none",
+    "crop": "none at pixel level; whole image patch-embedded (patch 14, floor), then 5 windows of 36x36 tokens (centre+4 corners, =504px), logits averaged; <504px tiled",
+    "normalize": "ImageNet mean/std (norm_type resnet)",
+    "multi_crop": "5 token-space windows (identical for <=512px images, computed once)"
+   }
+  },
+  "rine": {
+   "fn": "scorers.rine:score (+ score_ldm_tencrop, score_4class, score_4class_tencrop)",
+   "paper": "RINE, ECCV 2024",
+   "license": "Apache-2.0 (code, ckpts); OpenAI CLIP MIT",
+   "repo": {
+    "url": "https://github.com/mever-team/rine",
+    "commit": "9b7fd5857cc205d0412be6aeee0d7611b95bd620",
+    "path": "third_party/rine"
+   },
+   "clip_repo": {
+    "url": "https://github.com/openai/CLIP",
+    "commit": "d05afc436d78f1c48dc0dbf8e5980a9d471f35f6",
+    "path": "third_party/CLIP"
+   },
+   "weights": [
+    {
+     "file": "data/weights/rine/model_ldm_trainable.pth",
+     "bytes": 42093973,
+     "sha256": "13986ffc86e1bd9d57fd640f891358c4f14c0f8aea8e590e52c598541f69fdc1"
+    },
+    {
+     "file": "data/weights/rine/model_4class_trainable.pth",
+     "bytes": 25298182,
+     "sha256": "6535ff6ecfa88d33c081e561c2cb2dcb594a1006b050eddb72a72ce005ed2ca1"
+    },
+    {
+     "file": "data/weights/rine/model_1class_trainable.pth",
+     "bytes": 42094118,
+     "sha256": "427621294b40f37f774ef53eff96d205b93c709790ae24f70b4f5687842c5875",
+     "note": "unused by a scorer, available"
+    },
+    {
+     "file": "data/weights/rine/model_2class_trainable.pth",
+     "bytes": 1139686,
+     "sha256": "680d301b6d191da85b9dabcebf42cd3df20c5c669fa8320c498f835d02bf5ccb",
+     "note": "unused by a scorer, available"
+    },
+    {
+     "file": "data/weights/openai-clip-vitl14/ViT-L-14.pt",
+     "bytes": 932768134,
+     "sha256": "b8cca3fd41ae0c99ba7e8951adf17d267cdb84cd88be6f7c2e0eca1737a03836",
+     "source": "openaipublic.azureedge.net (URL embeds sha256)"
+    }
+   ],
+   "arch": "frozen OpenAI CLIP ViT-L/14 (fp32), CLS of all 24 ln_2 outputs -> TIE + MLP; default checkpoint = LDM-trained",
+   "preprocessing": {
+    "resize": "none",
+    "crop": "CenterCrop(224) (zero-pad if smaller); *_tencrop variants: TenCrop(224), mean of 10 logits",
+    "normalize": "CLIP mean/std",
+    "multi_crop": "off by default"
+   }
+  },
+  "clipdet": {
+   "fn": "scorers.clipdet:score (latent10k_plus) / score_10k (latent10k)",
+   "paper": "Cozzolino et al., CVPRW 2024",
+   "license": "Apache-2.0 (code, heads); laion backbone MIT",
+   "repo": {
+    "url": "https://github.com/grip-unina/ClipBased-SyntheticImageDetection",
+    "commit": "c76ef7f5e158c5aba9e55b8b94ab0079720d281e",
+    "path": "third_party/ClipBased-SyntheticImageDetection"
+   },
+   "weights": [
+    {
+     "file": "data/weights/clipdet/clipdet_latent10k_plus/weights.pth",
+     "bytes": 5155,
+     "sha256": "1c9c9f48a47d975bde67e9924983aa4e4ccda96a15e7e983b6305f0c56d9ee18"
+    },
+    {
+     "file": "data/weights/clipdet/clipdet_latent10k/weights.pth",
+     "bytes": 5227,
+     "sha256": "04b022c6990709acb132337d7e432fc57090cec9db3869577111b031d40c19f9"
+    },
+    {
+     "file": "data/weights/laion-commonpool-vitl14/open_clip_pytorch_model.safetensors",
+     "bytes": 1710517748,
+     "sha256": "947d32621fa7da5c2fced632f85b50314ad581396628876f24d5a2e4ddebec0f",
+     "source": "hf:laion/CLIP-ViT-L-14-CommonPool.XL-s13B-b90K@d979a50bf428edbb14b32c4dce7da2d49f7f46ed"
+    }
+   ],
+   "arch": "open_clip ViT-L-14 CommonPool, next-to-last features (proj=None), L2-normalised, linear -> LLR",
+   "preprocessing": {
+    "resize": "Resize(224, bicubic) shorter side (RESIZES)",
+    "crop": "CenterCrop(224)",
+    "normalize": "CLIP mean/std",
+    "multi_crop": false
+   }
+  }
+ },
+ "packages_added": {
+  "open-clip-torch": "2.24.0",
+  "ftfy": "6.3.1",
+  "wcwidth": "0.9.3",
+  "protobuf": "7.36.2",
+  "sentencepiece": "0.2.2"
+ },
+ "default_batch_sizes": {
+  "communityforensics": 8,
+  "bfree": 4,
+  "rine": 8,
+  "rine_tencrop": 2,
+  "clipdet": 8
+ },
+ "mps_note": "ViT-L forward over 40 images on this MPS device returned silently wrong logits; defaults keep forwards <=20 images."
+}

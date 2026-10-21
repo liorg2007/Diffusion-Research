@@ -6,4 +6,4 @@
 - **Formats:** JPEG (camera native); shared copies re-compressed by WhatsApp/Facebook = free source of platform-processed REAL images for FPR calibration.
 - **Download procedure:** `wget -i VISION_files.txt` fetches everything; the list is plain URLs, so any subset (e.g. grep "/images/nat/") can be downloaded alone. Errata: six videos misplaced (irrelevant for images).
 - **Known issues:** old low-res sensors; JPEG reals vs PNG fakes -> must JPEG-compress or otherwise match fakes; scenes limited (many are flat walls/skies and indoor/outdoor from few photographers); Community Forensics also uses VISION as real data in training (communityforensics-cvpr2025) -> not independent of that detector.
-- **Used in our experiments?** no (candidate; best licence-clean phone-photo source)
+- **Used in our experiments?** yes — experiments/001-eval-set (D-005)

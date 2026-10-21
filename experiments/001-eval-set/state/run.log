@@ -1,0 +1,33 @@
+[57s] zip entries 100/1420 bytes 0.181 GB
+[116s] zip entries 200/1420 bytes 0.343 GB
+[172s] zip entries 300/1420 bytes 0.513 GB
+[475s] zip entries 400/1420 bytes 0.672 GB
+[533s] zip entries 500/1420 bytes 0.840 GB
+[595s] zip entries 600/1420 bytes 1.014 GB
+[655s] zip entries 700/1420 bytes 1.193 GB
+[746s] zip entries 800/1420 bytes 1.392 GB
+[851s] zip entries 900/1420 bytes 1.606 GB
+[954s] zip entries 1000/1420 bytes 1.791 GB
+[1037s] zip entries 1100/1420 bytes 1.961 GB
+[1126s] zip entries 1200/1420 bytes 2.152 GB
+[1202s] zip entries 1300/1420 bytes 2.321 GB
+[1298s] zip entries 1400/1420 bytes 2.514 GB
+latent-diffusion md5 ok: True sha256 57c25625843d897ba4305cbe785db317fac1a39feda022e6e08cde085e230317 entries 1000 crc bad 0
+zips done; bytes 2680411941
+[1439s] vision 100/1500 bytes 2.814 GB
+[1505s] vision 200/1500 bytes 2.944 GB
+[1572s] vision 300/1500 bytes 3.062 GB
+[1636s] vision 400/1500 bytes 3.169 GB
+[1737s] vision 500/1500 bytes 3.344 GB
+[1789s] vision 600/1500 bytes 3.447 GB
+[1862s] vision 700/1500 bytes 3.580 GB
+[1917s] vision 800/1500 bytes 3.670 GB
+[1967s] vision 900/1500 bytes 3.759 GB
+[2033s] vision 1000/1500 bytes 3.866 GB
+[2130s] vision 1100/1500 bytes 4.052 GB
+[2214s] vision 1200/1500 bytes 4.205 GB
+[2274s] vision 1300/1500 bytes 4.311 GB
+[2343s] vision 1400/1500 bytes 4.435 GB
+[2416s] vision 1500/1500 bytes 4.567 GB
+FAILED: []
+run complete; total bytes 4566674983

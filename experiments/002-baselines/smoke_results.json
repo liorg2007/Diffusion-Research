@@ -1,0 +1,404 @@
+{
+ "communityforensics": {
+  "synthetic_cpu_scores": [
+   0.90272,
+   -1.95712,
+   -1.2267,
+   -2.87039,
+   -2.50388,
+   -3.55126,
+   -1.32583
+  ],
+  "synthetic_cpu_first_call_s": 1.49,
+  "synthetic_mps_scores": [
+   0.90273,
+   -1.95712,
+   -1.22669,
+   -2.87041,
+   -2.50388,
+   -3.55126,
+   -1.32582
+  ],
+  "synthetic_mps_first_call_s": 2.01,
+  "synthetic_all_finite": true,
+  "synthetic_n": 7,
+  "mps_vs_cpu_max_abs_diff": 1.621246337890625e-05,
+  "mps_vs_cpu_max_rel_diff": 1.7412104568064736e-05,
+  "reference": {
+   "note": "notebook eval_using_huggingface.ipynb: sigmoid outputs [0.9988,0.9878,0.9569,0.9516,0.7860] (DALL-E 2 test images); compared in logit space, tol 0.05 (4-digit rounding)",
+   "cpu": [
+    6.75281,
+    4.39739,
+    3.09912,
+    2.97873,
+    1.30102
+   ],
+   "mps": [
+    6.75274,
+    4.39742,
+    3.0992,
+    2.97864,
+    1.30105
+   ],
+   "expected": [
+    6.72423,
+    4.39404,
+    3.10018,
+    2.97864,
+    1.30098
+   ],
+   "max_abs_err_cpu": 0.028580337621717078,
+   "max_abs_err_mps": 0.028511673070935828
+  },
+  "mps_vs_cpu_12img_max_abs_diff": 1.6927719116210938e-05,
+  "throughput_img_s_512px": {
+   "mps": 36.01,
+   "cpu": 11.03
+  }
+ },
+ "bfree": {
+  "synthetic_cpu_scores": [
+   -1.05151,
+   -1.42361,
+   -0.77576,
+   -0.25357,
+   0.09975,
+   -0.97209,
+   -0.63192
+  ],
+  "synthetic_cpu_first_call_s": 6.25,
+  "synthetic_mps_scores": [
+   -1.05149,
+   -1.4236,
+   -0.77577,
+   -0.25357,
+   0.09974,
+   -0.97209,
+   -0.63193
+  ],
+  "synthetic_mps_first_call_s": 4.39,
+  "synthetic_all_finite": true,
+  "synthetic_n": 7,
+  "mps_vs_cpu_max_abs_diff": 1.5139579772949219e-05,
+  "mps_vs_cpu_max_rel_diff": 9.820347735780191e-05,
+  "reference": {
+   "note": "demo_images/results.csv (official GPU run), tol 0.05",
+   "cpu": [
+    -5.93748,
+    -4.44192,
+    4.43052,
+    3.84998
+   ],
+   "mps": [
+    -5.93746,
+    -4.44192,
+    4.43054,
+    3.85001
+   ],
+   "expected": [
+    -5.93748,
+    -4.44192,
+    4.43052,
+    3.84998
+   ],
+   "max_abs_err_cpu": 4.872375487963154e-06,
+   "max_abs_err_mps": 3.3148165893504e-05
+  },
+  "mps_vs_cpu_12img_max_abs_diff": 2.008676528930664e-05,
+  "throughput_img_s_512px": {
+   "mps": 5.28,
+   "cpu": 1.53
+  }
+ },
+ "rine_ldm": {
+  "synthetic_cpu_scores": [
+   0.26825,
+   -0.48413,
+   -0.391,
+   -0.38056,
+   -0.38838,
+   -0.40284,
+   0.53647
+  ],
+  "synthetic_cpu_first_call_s": 6.9,
+  "synthetic_mps_scores": [
+   0.26826,
+   -0.48414,
+   -0.391,
+   -0.38056,
+   -0.38838,
+   -0.40284,
+   0.53647
+  ],
+  "synthetic_mps_first_call_s": 6.64,
+  "synthetic_all_finite": true,
+  "synthetic_n": 7,
+  "mps_vs_cpu_max_abs_diff": 9.208917617797852e-06,
+  "mps_vs_cpu_max_rel_diff": 3.420171210290846e-05,
+  "reference": {
+   "note": "demo real(jpg)/fake(png): no published numbers; expect p(real)<0.5<p(fake) for the ProGAN-4class model",
+   "cpu": [
+    -0.28747,
+    11.96849
+   ],
+   "mps": [
+    -0.28747,
+    11.96852
+   ],
+   "expected": null,
+   "max_abs_err_cpu": null,
+   "max_abs_err_mps": null
+  },
+  "mps_vs_cpu_12img_max_abs_diff": 7.748603820800781e-07,
+  "throughput_img_s_512px": {
+   "mps": 9.25,
+   "cpu": 2.36
+  }
+ },
+ "rine_ldm_tencrop": {
+  "synthetic_cpu_scores": [
+   0.55534,
+   -0.34729,
+   -0.41699,
+   -0.39913,
+   -0.43548,
+   -0.38106,
+   0.9086
+  ],
+  "synthetic_cpu_first_call_s": 34.35,
+  "synthetic_mps_scores": [
+   0.55535,
+   -0.34729,
+   -0.41699,
+   -0.39913,
+   -0.43548,
+   -0.38106,
+   0.9086
+  ],
+  "synthetic_mps_first_call_s": 15.75,
+  "synthetic_all_finite": true,
+  "synthetic_n": 7,
+  "mps_vs_cpu_max_abs_diff": 8.046627044677734e-06,
+  "mps_vs_cpu_max_rel_diff": 1.446344443357679e-05,
+  "reference": {
+   "note": "demo real(jpg)/fake(png): no published numbers; expect p(real)<0.5<p(fake) for the ProGAN-4class model",
+   "cpu": [
+    -0.33886,
+    11.45779
+   ],
+   "mps": [
+    -0.33886,
+    11.45779
+   ],
+   "expected": null,
+   "max_abs_err_cpu": null,
+   "max_abs_err_mps": null
+  },
+  "mps_vs_cpu_12img_max_abs_diff": 5.364418029785156e-07,
+  "throughput_img_s_512px": {
+   "mps": 0.72,
+   "cpu": 0.21
+  }
+ },
+ "rine_4class": {
+  "synthetic_cpu_scores": [
+   -14.64501,
+   -9.59082,
+   -5.08821,
+   -4.62348,
+   -3.63054,
+   -4.41456,
+   -16.99618
+  ],
+  "synthetic_cpu_first_call_s": 6.91,
+  "synthetic_mps_scores": [
+   -14.64501,
+   -9.59083,
+   -5.08819,
+   -4.62346,
+   -3.63059,
+   -4.41456,
+   -16.99614
+  ],
+  "synthetic_mps_first_call_s": 7.38,
+  "synthetic_all_finite": true,
+  "synthetic_n": 7,
+  "mps_vs_cpu_max_abs_diff": 4.172325134277344e-05,
+  "mps_vs_cpu_max_rel_diff": 1.1489119705423404e-05,
+  "reference": {
+   "note": "demo real(jpg)/fake(png): no published numbers; expect p(real)<0.5<p(fake) for the ProGAN-4class model",
+   "cpu": [
+    -5.09987,
+    16.44078
+   ],
+   "mps": [
+    -5.0999,
+    16.44082
+   ],
+   "expected": null,
+   "max_abs_err_cpu": null,
+   "max_abs_err_mps": null
+  },
+  "mps_vs_cpu_12img_max_abs_diff": 2.5272369384765625e-05,
+  "throughput_img_s_512px": {
+   "mps": 8.42,
+   "cpu": 2.1
+  }
+ },
+ "clipdet_latent10k_plus": {
+  "synthetic_cpu_scores": [
+   1.17141,
+   0.24954,
+   0.27655,
+   0.28099,
+   0.47564,
+   0.45828,
+   0.84931
+  ],
+  "synthetic_cpu_first_call_s": 10.79,
+  "synthetic_mps_scores": [
+   1.17142,
+   0.24955,
+   0.27655,
+   0.28099,
+   0.47564,
+   0.45828,
+   0.84933
+  ],
+  "synthetic_mps_first_call_s": 5.77,
+  "synthetic_all_finite": true,
+  "synthetic_n": 7,
+  "mps_vs_cpu_max_abs_diff": 1.2993812561035156e-05,
+  "mps_vs_cpu_max_rel_diff": 3.092720682456989e-05,
+  "reference": {
+   "note": "no shipped expected outputs (needs synthbuster download); sanity on 3 DALL-E-2 fakes + 1 real photo",
+   "cpu": [
+    0.96661,
+    -0.15251,
+    1.9484,
+    0.11544
+   ],
+   "mps": [
+    0.96664,
+    -0.1525,
+    1.94837,
+    0.11545
+   ],
+   "expected": null,
+   "max_abs_err_cpu": null,
+   "max_abs_err_mps": null
+  },
+  "mps_vs_cpu_12img_max_abs_diff": 1.1086463928222656e-05,
+  "throughput_img_s_512px": {
+   "mps": 9.15,
+   "cpu": 2.42
+  }
+ },
+ "clipdet_latent10k": {
+  "synthetic_cpu_scores": [
+   0.2749,
+   -0.30865,
+   -0.48635,
+   -0.08226,
+   -0.26015,
+   -0.25656,
+   -0.23484
+  ],
+  "synthetic_cpu_first_call_s": 5.35,
+  "synthetic_mps_scores": [
+   0.27492,
+   -0.30864,
+   -0.48635,
+   -0.08227,
+   -0.26015,
+   -0.25655,
+   -0.23483
+  ],
+  "synthetic_mps_first_call_s": 5.65,
+  "synthetic_all_finite": true,
+  "synthetic_n": 7,
+  "mps_vs_cpu_max_abs_diff": 1.8358230590820312e-05,
+  "mps_vs_cpu_max_rel_diff": 6.653930272154631e-05,
+  "reference": {
+   "note": "no shipped expected outputs (needs synthbuster download); sanity on 3 DALL-E-2 fakes + 1 real photo",
+   "cpu": [
+    -0.42744,
+    -0.4703,
+    0.13706,
+    -0.52773
+   ],
+   "mps": [
+    -0.42738,
+    -0.47028,
+    0.13708,
+    -0.52774
+   ],
+   "expected": null,
+   "max_abs_err_cpu": null,
+   "max_abs_err_mps": null
+  },
+  "mps_vs_cpu_12img_max_abs_diff": 5.424022674560547e-06,
+  "throughput_img_s_512px": {
+   "mps": 8.99,
+   "cpu": 2.62
+  }
+ },
+ "bfree_dedupe_check": {
+  "n": 8,
+  "sizes": [
+   [
+    512,
+    512
+   ],
+   [
+    512,
+    512
+   ],
+   [
+    512,
+    512
+   ],
+   [
+    512,
+    512
+   ],
+   [
+    512,
+    512
+   ],
+   [
+    512,
+    512
+   ],
+   [
+    512,
+    293
+   ],
+   [
+    1024,
+    1024
+   ]
+  ],
+  "dedupe": [
+   -1.05151,
+   -1.42361,
+   -0.77576,
+   -0.25357,
+   0.09975,
+   -0.97209,
+   -0.63192,
+   4.43052
+  ],
+  "official": [
+   -1.05151,
+   -1.42361,
+   -0.77576,
+   -0.25357,
+   0.09975,
+   -0.97209,
+   -0.63192,
+   4.43052
+  ],
+  "max_abs_diff": 0.0
+ }
+}

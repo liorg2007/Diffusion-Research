@@ -31,3 +31,15 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 
 **D-007 — Total download cap raised to 9 GB (owner-approved 2026-10-21 22:37)**
 - Data ≈4.3 GB (D-005) + model weights ≤4.5 GB. Each weight file's size checked before download; SHA256 recorded in env/SOURCES.md.
+
+**D-008 — MPS silent-error guard (2026-10-21 23:21)**
+- Finding (baselines agent): MPS on AMD 5500M returned wrong ViT-L logits (up to 0.4 off) for a 40-image batch WITHOUT raising; ≤30 was correct.
+- Decision: all forwards on MPS use batch ≤20; every eval run cross-checks a fixed 32-image subset on CPU and aborts if max |Δlogit| > 1e-3. Re-run experiments/002-baselines/smoke.py before changing batch sizes.
+
+**D-009 — Phase 3 baseline protocol (2026-10-21 23:21)**
+- Preprocess: EXIF-orientation, strip metadata, center crop 512 with NO resize, saved as PNG (harness default), same for both classes. Conditions: clean, jpeg75_resize05 (resize 0.5× then JPEG q75), plus social_sim as an extra.
+- latent-diffusion (256 px) cannot give a 512 crop → excluded from Phase 3 tables (kept for possible 256-crop ablation). Generators in tables: dalle2, dalle3, firefly, midjourney-v5, SDXL, SD2, SD3.5, FLUX (held out).
+- Real pools reported separately: VISION-native (JPEG phone), RAISE (PNG DSLR, format-matched control), VISION-WhatsApp and VISION-Facebook-HQ (platform-shared reals; FPR rows only). Firefly is JPEG (q≈95) under .png names → detect format by content, never extension.
+- Splits: VISION by device group (10 train / 25 test devices; WA/FB copies follow their native's device); RAISE 50/50 random by image; each fake generator 50/50, FLUX test-only. Calib reals = held-out slice of train-side reals.
+- Pretrained baselines are scored on the TEST split only (no training). Added trained baseline B0: frozen DINOv2 ViT-B/14 (Apache-2.0, ~350 MB; keeps total downloads ≈8.3 GB < 9 GB cap) + logistic probe, with leave-one-generator-out.
+- Threshold: native (logit 0) AND calibrated to 5% FPR on calib reals; headline metrics AUROC, AP, bal.acc, FPR@95TPR, TPR@1%FPR with bootstrap CIs. Format-bias probe reported per run. D-008 MPS guard applies.

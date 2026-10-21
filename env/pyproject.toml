@@ -16,6 +16,7 @@ dependencies = [
     "pandas",
     "matplotlib",
     "tqdm",
+    "open-clip-torch==2.24.0",
 ]
 
 [tool.uv]
