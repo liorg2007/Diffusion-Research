@@ -10,3 +10,4 @@ __pycache__/
 *.safetensors
 *.ckpt
 experiments/*/cache/
+env/.bootstrap/

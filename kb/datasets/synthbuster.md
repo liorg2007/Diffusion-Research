@@ -1,0 +1,8 @@
+# Synthbuster
+- **Source/URL:** https://zenodo.org/records/10066460 (DOI 10.5281/zenodo.10066460) · **Paper:** synthbuster-ojsp2024 · **License:** CC BY-NC-SA 4.0 (Zenodo API) -> **NON-COMMERCIAL, share-alike** · **Size:** ~9,000 fake images; single archive synthbuster.zip = 12.4 GB (12,372,557,226 bytes).
+- **Real sources:** none included. Fakes are prompted to resemble RAISE-1k; the RAISE-1k reals must be fetched separately (see raise.md) or use the resized RAISE set in bfree-extended-synthbuster.md.
+- **Generators (9, 1,000 images each):** DALL-E 2, DALL-E 3, Adobe Firefly, Midjourney v5, Stable Diffusion 1.3, 1.4, 2, XL, GLIDE.
+- **Formats:** all PNG (checked by me from the zip central directory: 9 x 1000 .png + prompts.csv etc.). Dataset description: "None of the images suffered degradations such as JPEG compression or resampling". Per-image resolution not stated on Zenodo **[unverified]**.
+- **Download procedure:** single zip, no official subsets. BUT the server supports HTTP range requests (I confirmed a 206 response), so individual PNGs can be pulled by reading the zip central directory (last ~3 MB) and range-fetching entries - a ~5 GB budget is feasible. Compressed sizes per folder I computed from the central directory: dalle2 1.96 GB, dalle3 2.16, firefly 1.55, glide 0.09, midjourney-v5 1.94, SD1.3 0.54, SD1.4 0.54, SD2 1.94, SDXL 1.66 (GB, sum ~12.4). A 100-image-per-generator sample is ~1.2 GB.
+- **Known issues:** NC licence; reals not included; fakes are PNG so pair with PNG/raw-derived reals (a JPEG real set would reintroduce format bias); prompts edited to be photorealistic; includes older generators (GLIDE, SD1.x).
+- **Used in our experiments?** no (candidate)

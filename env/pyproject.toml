@@ -1,0 +1,22 @@
+[project]
+name = "diffusion-detect-research"
+version = "0.1.0"
+description = "Research env: detecting diffusion-generated images (Intel Mac, torch 2.2.2)"
+requires-python = "==3.12.*"
+dependencies = [
+    "torch==2.2.2",          # last macOS x86_64 wheels (DECISIONS D-001)
+    "torchvision==0.17.2",
+    "numpy<2",               # torch 2.2.2 is built against numpy 1.x
+    "transformers>=4.56,<5", # DINOv3 support landed in 4.56
+    "huggingface-hub",
+    "safetensors",
+    "timm",
+    "scikit-learn",
+    "pillow",
+    "pandas",
+    "matplotlib",
+    "tqdm",
+]
+
+[tool.uv]
+package = false

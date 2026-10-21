@@ -1,0 +1,9 @@
+# VISION (smartphone/tablet photos, incl. WhatsApp/Facebook-shared copies)
+- **Source/URL:** https://lesc.dinfo.unifi.it/VISION/ · **Paper:** Shullani et al., "VISION: a video and image dataset for source identification", EURASIP J. Inf. Security 2017 (doi 10.1186/s13635-017-0067-2) · **License:** CC BY-SA 4.0 (README.txt; (c) CSP Lab, Univ. of Florence) - permissive, share-alike, commercial use allowed with attribution.
+- **Size:** README: >35,000 images and videos, 35 devices, 11 brands. From VISION_files.txt (my count): 34,427 .jpg total; 7,565 native "nat" photos, 4,167 "flat" photos, plus shared versions natWA (WhatsApp), natFBH / natFBL (Facebook high/low quality), 7,565 each. A native sample file was 3.16 MB (HEAD Content-Length) -> ~500 native images ~1.5 GB (estimate).
+- **Real sources:** real photos from phones/tablets (iPhone 4/4s/5c/6/6 Plus, Samsung, Huawei, LG, Sony, Lenovo, Lumia, iPad 2, ...); 2015-2017 era devices, not modern.
+- **Generators:** none (real-only). Pair with Synthbuster / B-Free-extended / Community Forensics fakes.
+- **Formats:** JPEG (camera native); shared copies re-compressed by WhatsApp/Facebook = free source of platform-processed REAL images for FPR calibration.
+- **Download procedure:** `wget -i VISION_files.txt` fetches everything; the list is plain URLs, so any subset (e.g. grep "/images/nat/") can be downloaded alone. Errata: six videos misplaced (irrelevant for images).
+- **Known issues:** old low-res sensors; JPEG reals vs PNG fakes -> must JPEG-compress or otherwise match fakes; scenes limited (many are flat walls/skies and indoor/outdoor from few photographers); Community Forensics also uses VISION as real data in training (communityforensics-cvpr2025) -> not independent of that detector.
+- **Used in our experiments?** no (candidate; best licence-clean phone-photo source)

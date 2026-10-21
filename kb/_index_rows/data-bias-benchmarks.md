@@ -1,0 +1,15 @@
+| bfree-cvpr2025 | A Bias-Free Training Paradigm for More General AI-generated Image Detection | data-bias-benchmarks | Content-aligned SD2.1 inpainted fakes + heavy augmentation; NPR drops to 49.9 bAcc (Table 11, FakeInversion, resize 0.7-1 + JPEG 70-100); weights NON-COMMERCIAL | partially-verified |
+| genimage-neurips2023 | GenImage: A Million-Scale Benchmark for Detecting AI-Generated Image | data-bias-benchmarks | 8 generators on ImageNet; SD1.4-trained ResNet50 avg 72.1 cross-generator (Table 3); CC BY-NC-SA, has JPEG/size bias | partially-verified |
+| aide-chameleon-iclr2025 | A Sanity Check for AI-generated Image Detection (AIDE + Chameleon) | data-bias-benchmarks | Human-filtered Chameleon fakes: detectors keep ~95-100% real acc but 0-27% fake acc; dataset gated and academic-only | partially-verified |
+| communityforensics-cvpr2025 | Community Forensics: Thousands of Generators to Train Fake Image Detectors | data-bias-benchmarks | 4,803 generators -> 21 unseen, 89.2% mean acc / 0.987 mAP (Table 2); MIT weights on HF OwensLab | partially-verified |
+| wildrf-ladeda-arxiv2024 | Real-Time Deepfake Detection in the Real-World (LaDeDa, WildRF) | data-bias-benchmarks | Originates WildRF (5,300 social-media images, hashtag labels); LaDeDa 85.7 ACC / 93.7 AP train-on-Reddit (Table 5) | partially-verified |
+| fakeorjpeg-arxiv2024 | Fake or JPEG? Revealing Common Biases in Generated Image Detection Datasets | data-bias-benchmarks | GenImage reals are JPEG (mostly Q96) vs PNG fakes; debiasing gives +11 pp cross-generator (Table 4) | partially-verified |
+| synthbuster-ojsp2024 | Synthbuster: Towards Detection of Diffusion Model Generated Images | data-bias-benchmarks | 9 diffusion generators x 1,000 uncompressed PNGs prompted from RAISE-1k; CC BY-NC-SA, 12.4 GB zip | read-abstract-only |
+| ds-synthbuster | Synthbuster dataset | dataset | 9,000 PNG fakes (12.4 GB zip, range-requestable); reals (RAISE) not included; NC licence | candidate |
+| ds-bfree-extended-synthbuster | B-Free extended Synthbuster | dataset | RAISE-1k resized PNG + FLUX + SD3.5 + LDM, ~5 GB, format-matched; research/nonprofit | candidate |
+| ds-communityforensics-eval | Community Forensics Eval (CompEval) | dataset | 51,836 imgs, 21 unseen generators incl. commercial; 206 GB total, stream a sample; CC BY-NC-SA | candidate |
+| ds-vision-phone-photos | VISION phone photos | dataset | Real JPEGs from 35 phones plus WhatsApp/Facebook-shared copies; CC BY-SA 4.0; wget URL list | candidate |
+| ds-openimages-v7-ccby | Open Images V7 CC-BY subset | dataset | Flickr JPEG reals, per-image CC BY 2.0 (verify per image), ID-list download | candidate |
+| ds-wildrf | WildRF | dataset | 5,300 Reddit/X/Facebook real+fake images, hashtag labels, no stated licence | candidate |
+| ds-raise | RAISE | dataset | Raw Nikon DSLR reals, ~350 GB full, non-commercial; use resized PNG version instead | candidate |
+| ds-chameleon | Chameleon | dataset | 26k human-filtered images, email+EULA gated, academic-only | candidate |
