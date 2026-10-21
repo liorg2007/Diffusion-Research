@@ -17,7 +17,7 @@
 
 - **Evidence for / against:**
   - For: alignment literature above; SD-family transfer is strong for LDM-trained detectors (corvi-icassp2023 Table 2: LDM-trained Grag2021 SD 99.7 acc after resize+JPEG).
-  - Against: LDM-trained detectors fail on DALL-E 2/3 and Firefly (corvi-icassp2023 Table 2: ADM 52.9, DALL-E 2 50.4 acc; bfree-cvpr2025 Table 5 via DMID: DALL-E 3 50.0, Firefly 51.0, FLUX 63.7 bAcc); the reproduction search result (arXiv 2512.21562) describes uneven cross-generator generalization for aligned training (table not read).
+  - Against: LDM-trained detectors fail on DALL-E 2/3 and Firefly (corvi-icassp2023 Table 2: ADM 52.9, DALL-E 2 50.4 acc; bfree-cvpr2025 Table 5 via DMID: DALL-E 3 50.0, Firefly 51.0, FLUX 63.7 bAcc); a search-result snippet (not opened) of a reproduction study, arXiv 2512.21562, describes uneven cross-generator generalization for aligned training (table not read).
 
 - **Test plan (Mac-feasible):**
   - Data: reals for training = RAISE train split (PNG, ~300) + VISION D_train devices native (JPEG, ~200); fakes for training = their round-trips through SD1.5 VAE and SDXL VAE at a 512x512 center crop (~1,000 VAE passes; round-trips of JPEG reals re-saved as JPEG at the source QF estimated from quantization tables; PNG reals -> PNG). FLUX VAE held out (FLUX is the held-out generator). Eval = shared eval set.
