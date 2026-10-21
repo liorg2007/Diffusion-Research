@@ -5,28 +5,30 @@
 
 **Acceptance targets for a full-scale validation:** FPR ≤ 1% on fresh phone photos; AUROC ≥ 0.95 after social-media laundering; evaluation against transfer attacks.
 
-## Current status — PAUSED 2026-10-21 (checkpoint commit "checkpoint: paused")
+## Current status — PAUSED 2026-10-21, mid-Phase 3 (checkpoint commit "checkpoint: paused mid-Phase 3")
 | Phase | State |
 |---|---|
-| 0 Setup | ✅ done — env built, MPS verified (LOG.md, DECISIONS D-001, D-003, D-004) |
-| 1 Survey | 🟡 partial — 5/5 literature agents finished (34 paper + 8 dataset entries, index merged). **Not done:** opus/high survey explainer `docs/01-survey-explainer.md` (never started) |
-| 2 Gaps & hypotheses | ⏸ not started (was to be launched in background before presenting the survey) |
-| 3 Data & baselines | ⏸ not started |
-| 4 Hypothesis tests | ⏸ not started |
-| 5 Final method & report | ⏸ not started |
+| 0 Setup | ✅ done — Python 3.12 / torch 2.2.2 / MPS verified (D-001, D-003, D-004) |
+| 1 Survey | ✅ done — 34 papers + 8 datasets in kb/, `docs/01-survey-explainer.md`, fact-check `kb/verification-log.md` (3 corrections applied) |
+| 2 Gaps & hypotheses | ✅ done — `docs/02-hypotheses.md`, 7 ideas in `kb/ideas/` (top: laundering-nuisance-projection, worst-env-conformal-fpr, neural-isp-fpr-audit) |
+| 3 Data & baselines | 🟡 **partial** — eval set ✅ (`experiments/001-eval-set`, 3,220 imgs), 4 baselines set up ✅ (`experiments/002-baselines`), harness ✅ (`experiments/lib`, 26 tests pass), **baseline eval INTERRUPTED** (`experiments/003-baselines-eval`) |
+| 4 Hypothesis tests | ⏸ not started — needs owner go-ahead after the baseline table |
+| 5 Final report | ⏸ not started |
 
-**Interrupted / partial work:** no experiments have been run, so none needs re-running. No subagent was running at pause time.
-All 34 `kb/papers/*.md` files are complete but most are status `partially-verified` (~83 `[unverified]` tags total), because
-several agents read arXiv HTML through a summarising fetch tool rather than the PDF tables. `kb/_index_rows/` holds the raw per-family rows (already merged into `kb/index.md`).
-
-**Known reconciliation item:** "WebAIG-25" is not a standalone benchmark; it is the internal eval set of arXiv 2509.12995 (see `kb/papers/vfm-baseline-arxiv2025.md`); the data-bias agent found no separate source.
+### What was interrupted (experiments/003-baselines-eval) — must be resumed, not re-run from scratch
+Stopped by owner request at 23:41 while scoring. On disk (all writes atomic; resumable):
+- ✅ prep: `data/processed/crop512/` (2,919 images; 300 latent-diffusion excluded at 256 px; 1 duplicate RAISE image dropped), `splits.csv`, `cache/prep_report.json`
+- ✅ Community Forensics scores: clean 1961/1961, jpeg75_resize05 1961/1961 (D-008 CPU check passed, max |Δlogit| ≈ 6e-5)
+- 🟡 Community Forensics social_sim: **432/1961 (partial)** — resumes from cache
+- ⏸ B-Free, RINE, ClipDet scores; B0 (DINOv2-base weights already downloaded to data/hf_cache, SHA256 in env/SOURCES.md); report → `results.json`, `tables.md`, `notes.md`, `config.json` not yet written
+- ⚠ `run.py` (written by the eval agent) has not yet been reviewed by the lead; review the split assertions in `stage_prep` and `stage_b0` before trusting results.
 
 ### Exact next steps to resume
-1. (Optional, cheap) Spot-check the `[unverified]` numbers that the survey will lean on: B-Free Tables 5/7/11, SPAI Table 1, 2509.12995 Table 4 — `grep -rn "unverified" kb/papers`.
-2. Launch Phase 2 (opus/high) in the background: gap analysis → `kb/ideas/*.md` + `docs/02-hypotheses.md`.
-3. Launch the Phase 1 survey writer (opus/high) → `docs/01-survey-explainer.md` (overview, per-method intuition, comparison table, glossary, open problems).
-4. Present the 15-line survey summary to the owner; answer questions while Phase 2 runs.
-5. Phase 3 needs owner approval before downloads: candidate sources are VISION (CC BY-SA 4.0 phone photos) for reals and Synthbuster / B-Free extended Synthbuster (non-commercial, partial download via range requests) for fakes — see `kb/datasets/`.
+1. `cd ~/projects/diffusion-detect-research && env/.venv/bin/python -I experiments/003-baselines-eval/run.py score` (resumes; ~40–60 min: B-Free is slowest at ~5 img/s). Optionally run in the background.
+2. `env/.venv/bin/python -I experiments/003-baselines-eval/run.py b0` then `... run.py report`.
+3. Lead checks `tables.md`, format-bias AUROCs, D-008 guard (`cache/d008_guard.json`), writes `notes.md`/`config.json` if missing, commits.
+4. **STOP and show the owner the baseline table** (required gate before Phase 4). Also ask: will the owner supply ~250 photos from a 2021+ phone for hypothesis neural-isp-fpr-audit? And DINOv3 (gated) access for Phase 4 (D-006).
+5. Phase 4: test top hypotheses vs B0 with an opus/high critic review per result.
 
 ## Hardware (verified 2026-10-21)
 Intel Core i9-9880H (8C), 32 GB RAM, AMD Radeon Pro 5500M 4 GB (Metal 3), macOS 15.6. **Not Apple Silicon.**
