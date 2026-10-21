@@ -18,3 +18,13 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 
 **D-004 — Use MPS (AMD Radeon Pro 5500M) for inference** (2026-10-21 10:07)
 - Evidence: ResNet-50 forward 141.5 img/s on MPS vs 18.9 img/s on CPU; DINOv3ViTModel (random init) forward OK on cpu+mps under torch 2.2.2 / transformers 4.57.6. 4 GB VRAM → small batches; fall back to CPU on op errors.
+
+**D-005 — Phase 3 eval set (owner-approved 2026-10-21 22:30)**
+- Reals: VISION native phone photos 500 (CC BY-SA 4.0) + their WhatsApp and Facebook-HQ shared copies (real-side laundering / FPR calibration); RAISE-1k resized PNG 400 (B-Free extended; NON-COMMERCIAL) as format-matched control.
+- Fakes: Synthbuster (CC BY-NC-SA 4.0) 120 each of DALL-E 2, DALL-E 3, Firefly, Midjourney v5, SDXL, SD2; B-Free extended (NON-COMMERCIAL) SD3.5 150, latent-diffusion 300, **FLUX 150 held out entirely (test only)**.
+- Budget ≈4.3 GB (hard cap 4.6 GB). Partial download via HTTP range requests + per-entry CRC32 check against zip central directory.
+- Rationale: only licence-clean phone-photo source found is VISION; no licence-clean diffusion fake source exists → NC fakes accepted for research use. Format bias (JPEG reals vs PNG fakes) controlled via RAISE PNG reals, both-class JPEG+resize condition, and a format-bias probe.
+
+**D-006 — Baselines and backbones (owner-approved 2026-10-21 22:30)**
+- Run 4 pretrained baselines: Community Forensics (MIT), B-Free (NON-COMMERCIAL), RINE (Apache-2.0), CLIP few-shot / Cozzolino (Apache-2.0).
+- Use DINOv2 (Apache-2.0, ungated) now; DINOv3 (gated, Meta licence) only when Phase 4 needs it — ask owner then.
