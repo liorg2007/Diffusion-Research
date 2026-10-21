@@ -1,0 +1,12 @@
+data/
+third_party/*/
+env/.venv/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+experiments/*/cache/
