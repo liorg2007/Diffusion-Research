@@ -1,6 +1,6 @@
 # TrueFake: A Real World Case Dataset of Last Generation Fake Images also Shared on Social Networks
 - **id:** truefake-ijcnn2025
-- **Authors / venue / year:** Dell'Anna, Montibeller, Boato (Univ. of Trento; first names not verified). IJCNN 2025 (per search result; unconfirmed on arXiv page).
+- **Authors / venue / year:** Stefano Dell'Anna, Andrea Montibeller, Giulia Boato (Univ. of Trento; Boato also Truebees srl) (PDF p.1). IJCNN 2025 is **[venue unverified]**: neither the PDF nor the arXiv abstract page prints a venue; only the repo name TrueFake-IJCNN25 suggests it.
 - **Links:** arXiv 2504.20658 · https://arxiv.org/abs/2504.20658 · code+data https://github.com/MMLab-unitn/TrueFake-IJCNN25
 - **Family:** robustness-attacks
 - **Status:** partially-verified
@@ -27,6 +27,7 @@ Repo license CC-BY-4.0 (GitHub API). Dataset license not verified separately.
 
 ## Verified?
 Partially: arXiv HTML via fetch summary.
+(verified vs PDF p.4 and p.6, 2026-10-21) Table IV: NPR TPR on SDXL via Facebook 0.21 (delta -0.79); MISLNet FFHQ-Facebook TNR 0.41 (-0.58). Table II: JPEG QF Facebook 61-92, X 87, Telegram 85; resize Facebook w>720, X w>1200 (none for <=768x768), Telegram h>800. Table III averages (TNR/TPR) all match. Authors verified from PDF/arXiv metadata.
 
 ## Relevance to this project
 - Real platform JPEG QFs (61-92, 85, 87) and resize caps to reproduce laundering cheaply.

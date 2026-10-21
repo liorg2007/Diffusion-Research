@@ -20,7 +20,7 @@
 8. **Foundation-model features** also help: CLIP intermediate layers (RINE), a small CLIP+SVM model (AUC 85.2 after crop/resize/JPEG) and a DINOv3 linear probe (94.5% on the authors' private set). That private set compares campus photos with Reddit Midjourney images, so the content differs between real and fake.
 9. Among signal-based methods, SPAI (a spectral model of real photos) reports the best average AUC: 91.0 on 13 modern generators. Its robustness results exist only as plots.
 10. Almost none of the strongest claims has been replicated independently. The same detector can look excellent or useless depending on which benchmark you use.
-11. Adversarial attacks transfer between detectors. Perturbations built on other detectors drop a CLIP detector's AUROC from 0.95 to 0.50 (RAID). On the commercial HIVE detector, an attack touching 20% of images cut real-image accuracy from 99% to 52%.
+11. Adversarial attacks transfer between detectors. Perturbations built on other detectors drop a CLIP detector's AUROC from 0.95 to 0.62, and to 0.54 with an ensemble of other detectors (RAID, 16/255; 0.50 is the white-box case). On the commercial HIVE detector, an attack touching 20% of images cut real-image accuracy from 99% to 52%.
 12. Licensing: B-Free, ZED, Effort, CNNDetection and most good evaluation datasets are **non-commercial**. MIT/Apache options include UnivFD, RINE, ClipDet, SPAI, FIRE, FatFormer, DMID and Community Forensics (weights).
 13. What follows for us: test on real/fake sets with matched formats; report the detection rate at a fixed false-positive rate on fresh real photos (modern phones, shared copies); test laundering and screenshots explicitly.
 
@@ -171,7 +171,7 @@ Each entry gives: **Intuition**, **Sketch**, **Results** (split into in-distribu
     - Crop/resize/JPEG: AUC 71.8 `[clipdet-cvprw2024, T5]`.
     - FakeInversion: AUC 54.9 → 49.7 under social-network simulation `[bfree-cvpr2025, T11 via univfd]`.
     - JPEG QF50: accuracy 68.68 `[aide-chameleon-iclr2025, T6 via univfd]`.
-    - Transfer attack: AUROC 0.95 → 0.50 `[raid-arxiv2025, T2]`.
+    - Transfer attack (ε=16/255, source K24): AUROC 0.95 → 0.62; N-model ensemble → 0.54; white-box → ~0.5 `[raid-arxiv2025, T2]` (corrected after PDF check, kb/verification-log.md).
   - *False positives on phone photos:* 0.2% at a ProGAN-EER threshold vs 39.1% at an NTIRE-2026-EER threshold `[laion-mobile-arxiv2026]`.
 - **Main weakness.** Ranking transfers but the threshold does not. The last layer is mostly about meaning and near chance in the wild. The fixed centre crop means resize behaviour is untested.
 
@@ -418,7 +418,7 @@ Each entry gives: **Intuition**, **Sketch**, **Results** (split into in-distribu
 - **Intuition.** A ready-made set of 72k adversarial images built against a 7-detector ensemble. It lets you estimate a new detector's transfer robustness without running attacks.
 - **Sketch.** `D3 images → PGD on ensemble (excluding target) → released adversarial set → evaluate held-out detector`
 - **Results.**
-  - *Transfer:* AUROC UnivFD-style (O23) 0.95 → 0.50; DRCT-ConvNeXt 0.94 → 0.59 `[T2]`.
+  - *Transfer:* AUROC UnivFD-style (O23) 0.95 → 0.62 (K24 source; 0.54 N-model ensemble); DRCT-ConvNeXt 0.94 → 0.59 `[T2]` (corrected after PDF check).
   - *Held-out baselines:* DINOv2 accuracy 83.1 → 54.6 `[T4]`.
   - *Commercial (50 pairs):* Sightengine AI-image accuracy 0.66 → 0.00 `[T7]`.
   - *Epsilon:* the released set uses ε=8/255; the experiments report 16–32/255 (mapping [unverified]).

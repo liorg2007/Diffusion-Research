@@ -28,6 +28,7 @@ Site referenced above; licence not verified **[unverified]**.
 
 ## Verified?
 Numbers from arXiv HTML v2 via fetch tool (not PDF-checked).
+(verified vs PDF p.10, 2026-10-21) Table 4 confirmed: ResNet50 71.68 -> 82.74 (+11.06), Swin-T 74.09 -> 85.83 (+11.74); max +41.29 pp; 320k -> 75k samples. Caveat: the "Ours" column is JPEG96 AND size-constrained training combined (Sec 4.2); the paper says JPEG-only de-biasing improves cross-generator results only marginally. Tables 2-3 (p.6, p.8) also match.
 
 ## Relevance to this project
 Direct warning: in our eval set, real and fake must share container format, JPEG quality history and resolution, otherwise measured accuracy is partly format detection.

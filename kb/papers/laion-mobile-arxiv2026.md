@@ -25,10 +25,11 @@ n/a (evaluation paper). Reference AI-content sets: ProGAN (ForenSynths) and NTIR
 Authors' limits (Sec 7): real-only so FPR only; "real" inferred from EXIF (forgeable); thresholds transferred from synthetic sets so FPR mixes domain shift; no current flagship phones; single run per pair; source images not redistributed, ~8% URL decay. JPEG handling not described in extracted text [unverified].
 
 ## Code + weights
-Dataset (IDs, EXIF, hashes, scores; no images) on HF; paper page CC BY 4.0; dataset license not stated in paper (HF tag shows a cc-* license, truncated: unverified).
+Dataset (IDs, EXIF, hashes, scores; no images) on HF; paper page CC BY 4.0; dataset license not stated in the paper PDF; HF API tag for the dataset reads license:cc-by-4.0 (checked 2026-10-21).
 
 ## Verified?
 Partially: arXiv HTML via fetch summary; HF API metadata. Date is after my training knowledge, so treat as read only through the tool summary.
+(verified vs PDF, 2026-10-21) 12 detectors (11 methods + RIGID-DINOv3 variant, p.2); 10,000 IDs requested, 9,171 retrieved, 9,115 scored (p.4); Table 4 (p.7): FPR at NTIRE-EER threshold CNNDetection 17.4, UnivFD 39.1, CLIP-RB 42.9, IAPL 89.3, Effort 91.3 and at ProGAN-ISP threshold 10.5/0.2/6.1/2.1/3.6 (the five detectors <=11%), matching the abstract's "17-91%"; 212 images (0.03%) from 2021+ phones (p.4). The abstract says "several" detectors; "5/12" is derived from Table 4.
 
 ## Relevance to this project
 - Directly relevant to phone-photo FPR, but covers old phones; the neural-ISP (2021+) question remains open.

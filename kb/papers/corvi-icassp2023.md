@@ -30,6 +30,7 @@ https://github.com/grip-unina/DMimageDetection . License: Apache-2.0 (LICENSE.md
 
 ## Verified?
 Yes for Tables 1-2 (copied from arXiv PDF text); venue not verified; license from raw file.
+(verified vs PDF p.4, 2026-10-21) Table 1 AVG, Grag2021 trained on ProGAN: uncompressed 75.8/92.8; resized+compressed 61.5/90.8 (Acc/AUC). Table 2 LDM-trained row and fusion/calibration averages also match. The PDF text carries no venue line, so ICASSP 2023 is still unconfirmed from the PDF.
 
 ## Relevance to this project
 - Concrete evidence that fingerprint-style detectors lose accuracy after resize+JPEG and that the decision threshold, not the ranking, is what breaks; motivates calibration on fresh real photos.

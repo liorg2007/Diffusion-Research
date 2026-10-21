@@ -28,6 +28,7 @@ Code repo; checkpoints via Google Drive linked from README Model Zoo. Chameleon:
 
 ## Verified?
 Numbers from arXiv HTML v3 via fetch tool; README read via fetch tool. Not PDF-checked.
+(verified vs PDF p.9, 2026-10-21) Table 5 AIDE rows (fake/real acc): ProGAN 5.04/98.46, SD1.4 20.33/94.38, All GenImage 26.80/95.06, i.e. real 94.4-98.5%, fake 5.0-26.8% (overall 58.37/62.60/65.77); NPR 2.20/98.70, 2.43/100.00, 1.68/100.00. The broader "94-100% real, 0-27% fake" range holds for AIDE, NPR, CNNSpot, Fusing, DIRE and LNP but NOT for all detectors: UnivFD fake 74.97/85.52 (real 41.09/41.56), FreDect real 87.12, PatchCraft real 92.82. ICLR 2025 confirmed by PDF header.
 
 ## Relevance to this project
 - Shows high real-accuracy / near-zero fake-accuracy failure mode -> report fake recall at fixed real FPR.

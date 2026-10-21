@@ -28,3 +28,6 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 **D-006 — Baselines and backbones (owner-approved 2026-10-21 22:30)**
 - Run 4 pretrained baselines: Community Forensics (MIT), B-Free (NON-COMMERCIAL), RINE (Apache-2.0), CLIP few-shot / Cozzolino (Apache-2.0).
 - Use DINOv2 (Apache-2.0, ungated) now; DINOv3 (gated, Meta licence) only when Phase 4 needs it — ask owner then.
+
+**D-007 — Total download cap raised to 9 GB (owner-approved 2026-10-21 22:37)**
+- Data ≈4.3 GB (D-005) + model weights ≤4.5 GB. Each weight file's size checked before download; SHA256 recorded in env/SOURCES.md.

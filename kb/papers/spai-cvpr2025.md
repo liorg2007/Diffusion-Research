@@ -16,7 +16,7 @@ Frozen spectral model G = ViT-B/16 pre-trained by MFM (Xie et al.) with masking 
 
 ## Reported results
 - Table 1 (AUC averaged over 5 real-image sources; 1k images per generator, MJv6.1 631): SPAI avg 91.0 vs RINE 85.5, DMID 83.5, PatchCraft 80.4, UnivFD 67.3, LGrad 65.9, CNNDet. 55.5, FreqDet. 57.1, NPR 45.4. SPAI per generator: Glide 90.2, SD1.3 99.6, SD1.4 99.6, Flux 83.0, DALL-E 2 91.1, SD2 96.5, SDXL 97.4, SD3 75.9, GigaGAN 85.4, MJv5 94.5, MJv6.1 84.0, DALL-E 3 90.2, Firefly 96.0.
-- Real sources: RAISE and FODB (DSLR), plus smartphone sources (three more; names not fully extracted) [unverified].
+- Real sources (1k each): RAISE (DSLR), FODB (smartphone), ImageNet, COCO and Open Images test sets (generic online images). CORRECTED: was "RAISE and FODB (DSLR), plus smartphone sources (three more)"; PDF p.6 says only FODB is smartphone, the other three are ImageNet/COCO/OpenImages.
 - Perturbed: Fig. 3 plots average AUC under JPEG and WebP (Q=85/70/50), Gaussian blur (k=3/5/7), noise (sigma 1/3/5) and resizing (85/70/50%) on two real sources (smartphone, DSLR); compared only against the two best competitors; text claims SPAI is best in all cases. Exact values only in the figure [unverified].
 - Ablations (Table 3): without JPEG compression augmentation and distortions, AUC falls (89.1 without JPEG; 87.7 without both JPEG and noise/blur, vs 91.0). MFM backbone 91.0 vs CLIP ViT-B/16 87.6 and DINOv2 87.5 (Table 2).
 - Fixed-threshold FPR / calibration: not reported (AUC only).
@@ -32,6 +32,7 @@ https://github.com/mever-team/spai . README: source code and model weights relea
 
 ## Verified?
 Table 1-3 numbers copied from CVF PDF text; license from README and raw LICENSE.
+(verified vs arXiv PDF p.6, 2026-10-21) Table 1: NPR avg AUC 45.4, LGrad 65.9, SPAI 91.0 over 13 generators (RINE 85.5, DMID 83.5, PatchCraft 80.4, UnivFD 67.3, CNNDet 55.5, FreqDet 57.1 and all SPAI per-generator values also match).
 
 ## Relevance to this project
 - Best current evidence that a spectral-prior detector can be robust and resolution-agnostic, while old low-level detectors (NPR 45.4, LGrad 65.9) collapse on the same 13 generators.

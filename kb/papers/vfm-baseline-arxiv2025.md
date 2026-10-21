@@ -17,7 +17,7 @@ GenImage SD v1.4 subset, no augmentation. Other detectors' numbers copied from t
 
 ## Reported results
 - **WebAIG-25 (Table 4, "unseen" set): DINOv3 R.Acc 97.5 / F.Acc 91.4 / Avg 94.5** - the figures in the brief are confirmed. Others (R.Acc/F.Acc/Avg): UnivFD 59.2/29.8/44.5; NPR 93.5/34.9/64.2; SAFE 99.7/21.3/60.5; C2P-CLIP 84.7/31.0/57.9; CLIP 46.7/71.1/58.9; SigLIP2 69.5/55.8/62.7; Meta CLIP-2 27.4/75.4/51.4; PE 44.4/91.7/68.1; DINOv2 40.9/54.2/47.6.
-- **Evaluation set**: WebAIG-25 = fakes: r/midjourney posts made after the models' training cut-offs; reals: private campus photographs taken by the authors. **Size and explicit cutoff date not stated** -> **[unverified]**. Confound: real = private campus photos vs fake = Reddit Midjourney posts (different content domain, source, and likely processing), so accuracy partly measures domain/source shortcut; and a single set, no stated threshold.
+- **Evaluation set**: WebAIG-25 = fakes: r/midjourney posts made after the models' training cut-offs; reals: private campus photographs taken by the authors. **Size and explicit cutoff date are not stated anywhere in the 5-page PDF** (checked 2026-10-21). Confound: real = private campus photos vs fake = Reddit Midjourney posts (different content domain, source, and likely processing), so accuracy partly measures domain/source shortcut; and a single set, no stated threshold.
 - Chameleon (Table 1): DINOv3 GenImage 96.3; Chameleon R.Acc 93.7 / F.Acc 90.5 / Avg 92.4 (-3.9 vs GenImage); PE 96.1; Meta CLIP-2 91.8; specialised detectors: AIDE 58.4, UnivFD 57.2, CNNSpot 56.9. (Specialised-detector numbers copied from prior papers.)
 - WildRF (Table 2, Avg): DINOv3 96.4 (Facebook 94.7, Reddit 96.7, Twitter 97.9); PE 85.1; SigLIP2 84.7; DINOv2 71.2; UnivFD 55.3; NPR 63.5.
 - SocialRF / CommunityAI (Table 3, Avg): DINOv3 93.3 / 95.3; PE 75.1 / 97.1; UnivFD 54.4 / 67.0.
@@ -34,6 +34,7 @@ Not identified. DINOv3 official weights are Meta's (license terms of DINOv3 not 
 
 ## Verified?
 partially: all numbers above from the arXiv v3 HTML via a fetch tool (the table header was reported as garbled in Table 1, column assignments inferred); not cross-checked against the PDF.
+(verified vs PDF p.3, 2026-10-21) Table 4: DINOv3 R.Acc 97.5 / F.Acc 91.4 / Avg 94.5 confirmed. WebAIG-25 composition confirmed (fakes: r/midjourney posts after all model cut-offs; reals: private campus photos); no image count given. Real accuracy of CLIP-family: CLIP 46.7, SigLIP 31.3, Meta CLIP 36.2, Meta CLIP-2 27.4, PE 44.4 (range 27.4-46.7) but SigLIP-2 is 69.5, so "27-47%" holds for five of six, not all.
 
 ## Relevance to this project
 - Strongest claim that DINOv3 linear probe generalizes to post-cutoff Midjourney content (97.5/91.4), but the real-photo side is a single private campus set, so it does not demonstrate low FPR on diverse phone/social photos.
