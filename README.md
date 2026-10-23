@@ -5,30 +5,28 @@
 
 **Acceptance targets for a full-scale validation:** FPR ≤ 1% on fresh phone photos; AUROC ≥ 0.95 after social-media laundering; evaluation against transfer attacks.
 
-## Current status — 2026-10-23: Phase 3 complete, waiting for the owner's go-ahead for Phase 4
+## Current status — 2026-10-23: Phase 4 in progress (pilot done; official run blocked by a data server outage)
 | Phase | State |
 |---|---|
-| 0 Setup | ✅ done — Python 3.12 / torch 2.2.2 / MPS verified (D-001, D-003, D-004) |
-| 1 Survey | ✅ done — 34 papers + 8 datasets in kb/, `docs/01-survey-explainer.md`, fact-check `kb/verification-log.md` |
-| 2 Gaps & hypotheses | ✅ done — `docs/02-hypotheses.md`, 7 ideas in `kb/ideas/` |
-| 3 Data & baselines | ✅ done — eval set (`experiments/001-eval-set`), 4 baselines (`experiments/002-baselines`), harness (`experiments/lib`, 26 tests), baseline table `experiments/003-baselines-eval/{tables.md,results.json,notes.md}`; D-010: B0 runs on CPU |
-| 4 Hypothesis tests | ⏸ **gated**: owner must approve after seeing the baseline table |
+| 0 Setup | ✅ Mac (D-001…D-004). GPU PC: WSL Ubuntu 22.04, uv-managed Python 3.12.15 (D-012), torch 2.8.0+cu128, RTX 4060 Ti |
+| 1 Survey | ✅ done |
+| 2 Gaps & hypotheses | ✅ done. Phase 4 plan in `docs/04-phase4-plan.md` (Amendments 1–4) |
+| 3 Data & baselines | ✅ done on the Mac. ⏸ GPU-PC reproduction (SETUP_WSL step 6) waits for grip.unina.it |
+| 4 Hypothesis tests | 🟡 PILOT done on VISION + 6 Synthbuster: H1 and H2 both "uninformative" per critics; not counted toward the stop rule. Official run code ready |
 | 5 Final report | ⏸ not started |
 
-### Moving to the GPU PC (D-011)
-- Code, KB, docs and results are in git: https://github.com/liorg2007/Diffusion-Research (private).
-- `data/` and `third_party/` are re-created there with `env/bootstrap_data.py`.
-- Follow `env/SETUP_WSL.md`. Its step 6 re-runs Phase 3 on the GPU as a portability check.
-- `CLAUDE.md` carries the project rules for new Claude Code sessions.
+### Blocker
+- grip.unina.it (RAISE reals, SD3.5/FLUX fakes, B-Free weights) has been unreachable since 2026-10-23 ~09:40, from both WSL and Windows.
+- When it returns: `env/.venv/bin/python -I env/bootstrap_data.py`, then SETUP_WSL step 6, then the official Phase 4 run (H4 first, D-013).
 
-### Next steps
-1. On the PC: complete `env/SETUP_WSL.md` steps 1–6. Phase 3 metrics must reproduce (splits byte-identical, AUROC within about ±0.005).
-2. The owner reviews `experiments/003-baselines-eval/tables.md` + `notes.md` and approves Phase 4.
-3. Open questions for the owner:
-   - (a) ~250 photos from a 2021+ phone (neural-isp-fpr-audit);
-   - (b) DINOv3 gated access (D-006);
-   - (c) optional novelty-check + KB clean-up agents.
-4. Phase 4: reconcile the Phase 2 plan with the actual data (DINOv2, 6 Synthbuster + SD3.5 + FLUX). Test laundering-nuisance-projection and drift-format-shortcut against B0, with an opus/high critic per result.
+### Key pilot findings (pilot data only)
+- **FOV confound** (D-013): real crops are ~2.5–3× more zoomed than fake crops. `fov512` removes the native-vs-WA/FBH gaps.
+- **Default thresholds are unusable:** B0 flags 17% of real photos at logit 0. Real-photo calibration transfers across VISION devices (pooled 1% → ~1% LODO); WhatsApp is the weak spot.
+
+### Owner decisions pending
+1. D-013: make `fov512` primary, or keep it as an extra arm.
+2. ~250 photos from a 2021+ phone (H3), now the main FPR ≤ 1% test.
+3. Larger backbone (DINOv2-L / DINOv3): exceeds the 9 GB cap (D-007).
 
 ## Hardware (verified 2026-10-21)
 Intel Core i9-9880H (8C), 32 GB RAM, AMD Radeon Pro 5500M 4 GB (Metal 3), macOS 15.6. **Not Apple Silicon.**
