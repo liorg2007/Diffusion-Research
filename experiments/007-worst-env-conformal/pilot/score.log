@@ -1,0 +1,224 @@
+17:33:48 communityforensics: CPU reference (32 imgs x 3 conds)
+17:33:52 cpuref communityforensics clean done in 3s
+17:33:55 cpuref communityforensics jpeg75_resize05 done in 3s
+17:33:58 cpuref communityforensics screenshot_sim done in 3s
+17:34:00 communityforensics clean: D-008 max|dlogit|=8.82e-05 (tol 0.001)
+17:34:01 communityforensics clean: 132/2220
+17:34:02 communityforensics clean: 232/2220
+17:34:03 communityforensics clean: 332/2220
+17:34:04 communityforensics clean: 432/2220
+17:34:05 communityforensics clean: 532/2220
+17:34:07 communityforensics clean: 632/2220
+17:34:08 communityforensics clean: 732/2220
+17:34:09 communityforensics clean: 832/2220
+17:34:10 communityforensics clean: 932/2220
+17:34:11 communityforensics clean: 1032/2220
+17:34:12 communityforensics clean: 1132/2220
+17:34:14 communityforensics clean: 1232/2220
+17:34:15 communityforensics clean: 1332/2220
+17:34:16 communityforensics clean: 1432/2220
+17:34:17 communityforensics clean: 1532/2220
+17:34:18 communityforensics clean: 1632/2220
+17:34:19 communityforensics clean: 1732/2220
+17:34:23 communityforensics clean: 1832/2220
+17:34:24 communityforensics clean: 1932/2220
+17:34:26 communityforensics clean: 2032/2220
+17:34:27 communityforensics clean: 2132/2220
+17:34:28 communityforensics clean: 2220/2220
+17:34:28 communityforensics jpeg75_resize05: D-008 max|dlogit|=9.04e-05 (tol 0.001)
+17:34:30 communityforensics jpeg75_resize05: 132/2220
+17:34:31 communityforensics jpeg75_resize05: 232/2220
+17:34:32 communityforensics jpeg75_resize05: 332/2220
+17:34:33 communityforensics jpeg75_resize05: 432/2220
+17:34:35 communityforensics jpeg75_resize05: 532/2220
+17:34:36 communityforensics jpeg75_resize05: 632/2220
+17:34:39 communityforensics jpeg75_resize05: 732/2220
+17:34:51 communityforensics jpeg75_resize05: 832/2220
+17:35:07 communityforensics jpeg75_resize05: 932/2220
+17:35:15 communityforensics jpeg75_resize05: 1032/2220
+17:35:33 communityforensics jpeg75_resize05: 1132/2220
+17:35:51 communityforensics jpeg75_resize05: 1232/2220
+17:36:11 communityforensics jpeg75_resize05: 1332/2220
+17:36:25 communityforensics jpeg75_resize05: 1432/2220
+17:36:48 communityforensics jpeg75_resize05: 1532/2220
+17:37:00 communityforensics jpeg75_resize05: 1632/2220
+17:37:21 communityforensics jpeg75_resize05: 1732/2220
+17:37:36 communityforensics jpeg75_resize05: 1832/2220
+17:37:54 communityforensics jpeg75_resize05: 1932/2220
+17:38:13 communityforensics jpeg75_resize05: 2032/2220
+17:38:32 communityforensics jpeg75_resize05: 2132/2220
+17:38:47 communityforensics jpeg75_resize05: 2220/2220
+17:38:51 communityforensics screenshot_sim: D-008 max|dlogit|=7.77e-05 (tol 0.001)
+17:39:09 communityforensics screenshot_sim: 132/2220
+17:39:18 communityforensics screenshot_sim: 232/2220
+17:39:29 communityforensics screenshot_sim: 332/2220
+17:39:42 communityforensics screenshot_sim: 432/2220
+17:39:53 communityforensics screenshot_sim: 532/2220
+17:40:08 communityforensics screenshot_sim: 632/2220
+17:40:24 communityforensics screenshot_sim: 732/2220
+17:40:32 communityforensics screenshot_sim: 832/2220
+17:40:51 communityforensics screenshot_sim: 932/2220
+17:41:06 communityforensics screenshot_sim: 1032/2220
+17:41:13 communityforensics screenshot_sim: 1132/2220
+17:41:27 communityforensics screenshot_sim: 1232/2220
+17:41:39 communityforensics screenshot_sim: 1332/2220
+17:41:56 communityforensics screenshot_sim: 1432/2220
+17:42:15 communityforensics screenshot_sim: 1532/2220
+17:42:30 communityforensics screenshot_sim: 1632/2220
+17:42:48 communityforensics screenshot_sim: 1732/2220
+17:43:02 communityforensics screenshot_sim: 1832/2220
+17:43:18 communityforensics screenshot_sim: 1932/2220
+17:43:29 communityforensics screenshot_sim: 2032/2220
+17:43:45 communityforensics screenshot_sim: 2132/2220
+17:43:54 communityforensics screenshot_sim: 2220/2220
+17:43:54 rine: CPU reference (32 imgs x 3 conds)
+17:46:32 cpuref rine clean done in 154s
+17:48:52 cpuref rine jpeg75_resize05 done in 141s
+17:51:10 cpuref rine screenshot_sim done in 138s
+17:51:40 rine clean: D-008 max|dlogit|=3.15e-05 (tol 0.001)
+17:51:54 rine clean: 132/2220
+17:52:00 rine clean: 232/2220
+17:52:04 rine clean: 332/2220
+17:52:25 rine clean: 432/2220
+17:52:46 rine clean: 532/2220
+17:53:13 rine clean: 632/2220
+17:53:23 rine clean: 732/2220
+17:53:44 rine clean: 832/2220
+17:54:01 rine clean: 932/2220
+17:54:09 rine clean: 1032/2220
+17:54:26 rine clean: 1132/2220
+17:54:38 rine clean: 1232/2220
+17:54:47 rine clean: 1332/2220
+17:55:14 rine clean: 1432/2220
+17:55:25 rine clean: 1532/2220
+17:55:41 rine clean: 1632/2220
+17:55:59 rine clean: 1732/2220
+17:56:16 rine clean: 1832/2220
+17:56:33 rine clean: 1932/2220
+17:56:51 rine clean: 2032/2220
+17:57:07 rine clean: 2132/2220
+17:57:26 rine clean: 2220/2220
+17:57:29 rine jpeg75_resize05: D-008 max|dlogit|=5.13e-06 (tol 0.001)
+17:57:39 rine jpeg75_resize05: 132/2220
+17:57:58 rine jpeg75_resize05: 232/2220
+17:58:14 rine jpeg75_resize05: 332/2220
+17:58:32 rine jpeg75_resize05: 432/2220
+17:58:51 rine jpeg75_resize05: 532/2220
+17:59:12 rine jpeg75_resize05: 632/2220
+17:59:21 rine jpeg75_resize05: 732/2220
+17:59:28 rine jpeg75_resize05: 832/2220
+17:59:37 rine jpeg75_resize05: 932/2220
+17:59:41 rine jpeg75_resize05: 1032/2220
+17:59:44 rine jpeg75_resize05: 1132/2220
+17:59:49 rine jpeg75_resize05: 1232/2220
+17:59:54 rine jpeg75_resize05: 1332/2220
+18:00:01 rine jpeg75_resize05: 1432/2220
+18:00:06 rine jpeg75_resize05: 1532/2220
+18:00:23 rine jpeg75_resize05: 1632/2220
+18:00:34 rine jpeg75_resize05: 1732/2220
+18:00:50 rine jpeg75_resize05: 1832/2220
+18:01:01 rine jpeg75_resize05: 1932/2220
+18:01:14 rine jpeg75_resize05: 2032/2220
+18:01:31 rine jpeg75_resize05: 2132/2220
+18:01:45 rine jpeg75_resize05: 2220/2220
+18:01:50 rine screenshot_sim: D-008 max|dlogit|=1.57e-05 (tol 0.001)
+18:02:12 rine screenshot_sim: 132/2220
+18:02:23 rine screenshot_sim: 232/2220
+18:02:38 rine screenshot_sim: 332/2220
+18:02:50 rine screenshot_sim: 432/2220
+18:03:03 rine screenshot_sim: 532/2220
+18:03:09 rine screenshot_sim: 632/2220
+18:03:12 rine screenshot_sim: 732/2220
+18:03:18 rine screenshot_sim: 832/2220
+18:03:30 rine screenshot_sim: 932/2220
+18:03:43 rine screenshot_sim: 1032/2220
+18:03:51 rine screenshot_sim: 1132/2220
+18:04:07 rine screenshot_sim: 1232/2220
+18:04:22 rine screenshot_sim: 1332/2220
+18:04:37 rine screenshot_sim: 1432/2220
+18:04:48 rine screenshot_sim: 1532/2220
+18:05:08 rine screenshot_sim: 1632/2220
+18:05:17 rine screenshot_sim: 1732/2220
+18:05:35 rine screenshot_sim: 1832/2220
+18:05:50 rine screenshot_sim: 1932/2220
+18:05:55 rine screenshot_sim: 2032/2220
+18:05:57 rine screenshot_sim: 2132/2220
+18:06:02 rine screenshot_sim: 2220/2220
+18:06:02 clipdet: CPU reference (32 imgs x 3 conds)
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+18:06:21 cpuref clipdet clean done in 17s
+18:06:33 cpuref clipdet jpeg75_resize05 done in 12s
+18:06:44 cpuref clipdet screenshot_sim done in 12s
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+18:06:54 clipdet clean: D-008 max|dlogit|=3.86e-05 (tol 0.001)
+18:06:57 clipdet clean: 132/2220
+18:06:59 clipdet clean: 232/2220
+18:07:02 clipdet clean: 332/2220
+18:07:04 clipdet clean: 432/2220
+18:07:07 clipdet clean: 532/2220
+18:07:09 clipdet clean: 632/2220
+18:07:12 clipdet clean: 732/2220
+18:07:14 clipdet clean: 832/2220
+18:07:17 clipdet clean: 932/2220
+18:07:19 clipdet clean: 1032/2220
+18:07:22 clipdet clean: 1132/2220
+18:07:24 clipdet clean: 1232/2220
+18:07:29 clipdet clean: 1332/2220
+18:07:32 clipdet clean: 1432/2220
+18:07:34 clipdet clean: 1532/2220
+18:07:37 clipdet clean: 1632/2220
+18:07:39 clipdet clean: 1732/2220
+18:07:41 clipdet clean: 1832/2220
+18:07:44 clipdet clean: 1932/2220
+18:07:46 clipdet clean: 2032/2220
+18:07:48 clipdet clean: 2132/2220
+18:07:51 clipdet clean: 2220/2220
+18:07:51 clipdet jpeg75_resize05: D-008 max|dlogit|=1.31e-04 (tol 0.001)
+18:07:54 clipdet jpeg75_resize05: 132/2220
+18:07:57 clipdet jpeg75_resize05: 232/2220
+18:07:59 clipdet jpeg75_resize05: 332/2220
+18:08:04 clipdet jpeg75_resize05: 432/2220
+18:08:07 clipdet jpeg75_resize05: 532/2220
+18:08:09 clipdet jpeg75_resize05: 632/2220
+18:08:12 clipdet jpeg75_resize05: 732/2220
+18:08:14 clipdet jpeg75_resize05: 832/2220
+18:08:17 clipdet jpeg75_resize05: 932/2220
+18:08:19 clipdet jpeg75_resize05: 1032/2220
+18:08:22 clipdet jpeg75_resize05: 1132/2220
+18:08:24 clipdet jpeg75_resize05: 1232/2220
+18:08:27 clipdet jpeg75_resize05: 1332/2220
+18:08:29 clipdet jpeg75_resize05: 1432/2220
+18:08:32 clipdet jpeg75_resize05: 1532/2220
+18:08:34 clipdet jpeg75_resize05: 1632/2220
+18:08:40 clipdet jpeg75_resize05: 1732/2220
+18:08:42 clipdet jpeg75_resize05: 1832/2220
+18:08:44 clipdet jpeg75_resize05: 1932/2220
+18:08:47 clipdet jpeg75_resize05: 2032/2220
+18:08:49 clipdet jpeg75_resize05: 2132/2220
+18:08:52 clipdet jpeg75_resize05: 2220/2220
+18:08:52 clipdet screenshot_sim: D-008 max|dlogit|=3.18e-05 (tol 0.001)
+18:08:55 clipdet screenshot_sim: 132/2220
+18:08:57 clipdet screenshot_sim: 232/2220
+18:09:00 clipdet screenshot_sim: 332/2220
+18:09:02 clipdet screenshot_sim: 432/2220
+18:09:05 clipdet screenshot_sim: 532/2220
+18:09:07 clipdet screenshot_sim: 632/2220
+18:09:10 clipdet screenshot_sim: 732/2220
+18:09:15 clipdet screenshot_sim: 832/2220
+18:09:18 clipdet screenshot_sim: 932/2220
+18:09:20 clipdet screenshot_sim: 1032/2220
+18:09:23 clipdet screenshot_sim: 1132/2220
+18:09:25 clipdet screenshot_sim: 1232/2220
+18:09:28 clipdet screenshot_sim: 1332/2220
+18:09:30 clipdet screenshot_sim: 1432/2220
+18:09:33 clipdet screenshot_sim: 1532/2220
+18:09:35 clipdet screenshot_sim: 1632/2220
+18:09:38 clipdet screenshot_sim: 1732/2220
+18:09:40 clipdet screenshot_sim: 1832/2220
+18:09:43 clipdet screenshot_sim: 1932/2220
+18:09:45 clipdet screenshot_sim: 2032/2220
+18:09:51 clipdet screenshot_sim: 2132/2220
+18:09:53 clipdet screenshot_sim: 2220/2220
+18:09:53 wrote /home/zera/project/Diffusion-Research/experiments/007-worst-env-conformal/pilot/scores_pretrained.csv.gz rows=19980

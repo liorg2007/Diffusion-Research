@@ -322,16 +322,21 @@ def dry_run():
             pass
 
 
-def write_config(args):
+def write_config(args, splits=None, cache=None):
     cfg = dict(spec=P.SPEC, input_size=P.INPUT_SIZE, primary=P.PRIMARY_CFG, secondary_layers=list(P.SECONDARY_LAYERS),
                secondary_stored="cls+mean per block, 6x768 = 4608-d float32 (primary = last 1536 columns)",
                eval_conditions=P.EVAL_CONDITIONS, held_out_conditions=P.HELD_OUT_CONDITIONS,
                grid_conditions=P.GRID_CONDITIONS, grid_rows="split == 'train'",
                eval_rows="in_scoring_set or split in (train, calib)", seed=P.SEED, batch=BATCH, chunk=CHUNK,
                d008=dict(n=N_GUARD, feat_tol_scaled=FEAT_TOL, logit_tol=LOGIT_TOL, tf32="disabled (features.get_device)",
-                         cpu_batch=4), hf_home="data/hf_cache (offline)", splits=str(SPLITS.relative_to(ROOT)),
-               cache="experiments/004-phase4-features/cache/feats/<condition>/part_*.npz (git-ignored)",
-               loader="p4features.load_features(feature, condition)")
+                         cpu_batch=4), hf_home="data/hf_cache (offline)", splits=str(Path(splits or SPLITS).resolve().relative_to(ROOT)),
+               cache=str(Path(cache or P.CACHE).resolve().relative_to(ROOT)) + "/<condition>/part_*.npz (git-ignored)",
+               loader="p4features.load_features(feature, condition)" + (f" [subdir={args.cache_subdir!r}]" if args.cache_subdir else ""))
+    if args.cache_subdir or args.splits:     # pilot / custom runs never overwrite the main config.json
+        out = HERE / "pilot" / "config_pilot.json" if args.cache_subdir == "pilot" else HERE / f"config_{args.cache_subdir or 'custom'}.json"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text(json.dumps(cfg, indent=1))
+        return
     (HERE / "config.json").write_text(json.dumps(cfg, indent=1))
 
 
@@ -344,16 +349,21 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--verify003", action="store_true")
     ap.add_argument("--device", default=None)
+    ap.add_argument("--splits", default=None, help="splits CSV (default: 003 splits.csv); e.g. pilot/splits_pilot.csv")
+    ap.add_argument("--cache-subdir", default=None,
+                    help="write/read features in cache/<subdir> instead of cache/feats (e.g. 'pilot')")
     a = ap.parse_args()
+    splits = Path(a.splits).resolve() if a.splits else SPLITS
+    cache = P.cache_root(a.cache_subdir)
     if a.dry_run:
         return dry_run()
-    write_config(a)
+    write_config(a, splits, cache)
     if a.verify003:
-        return verify003(load_splits(), P.CACHE)
+        return verify003(load_splits(splits), cache)
     if not weights_cached():
         print("SKIP: facebook/dinov2-base is not in data/hf_cache yet (run env/bootstrap_data.py first)")
         return 2
-    df = load_splits()
+    df = load_splits(splits)
     miss = [p for p in df.path if not Path(p).exists()]
     if miss:
         print(f"SKIP: {len(miss)}/{len(df)} images from splits.csv are missing (e.g. {miss[0]}); "
@@ -361,7 +371,7 @@ def main():
         return 2
     from features import get_device
     dev = get_device(a.device).type
-    log(f"device {dev}, {len(df)} rows")
+    log(f"device {dev}, {len(df)} rows from {splits.name}, cache {cache}")
     bb = secondary_backbone()
     pb = check_design_vs_003(bb)
     selfcheck_primary(df, bb, pb, dev)
@@ -370,9 +380,9 @@ def main():
     if unknown:
         raise SystemExit(f"unknown conditions {unknown}; choose from {P.ALL_CONDITIONS}")
     t0 = time.time()
-    run_extraction(df, bb, conds, P.CACHE, dev, P.SPEC, guard=not a.no_guard, limit=a.limit, workers=a.workers)
+    run_extraction(df, bb, conds, cache, dev, P.SPEC, guard=not a.no_guard, limit=a.limit, workers=a.workers)
     log(f"done in {time.time() - t0:.0f}s")
-    verify003(df, P.CACHE)
+    verify003(df, cache)   # optional: SKIPs when 003's B0 cache is absent
 
 
 if __name__ == "__main__":

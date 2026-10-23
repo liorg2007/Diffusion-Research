@@ -1,0 +1,20 @@
+{
+ "label": "PILOT",
+ "experiment": "H1 laundering-nuisance-projection (docs/04-phase4-plan.md H1 + Amendments 1, 2)",
+ "seed": 0,
+ "splits": "experiments/004-phase4-features/pilot/splits_pilot.csv",
+ "feature_cache_subdir": "pilot",
+ "features": {"primary": "1536-d (= B0 features)", "secondary": "4608-d (blocks 4/8/12 CLS+mean)"},
+ "eval_conditions": ["clean", "jpeg75_resize05", "social_sim", "resize(0.5)", "jpeg(75)", "jpeg(90)", "mavali_medium", "screenshot_sim"],
+ "grid": "jr(q,f), q in {60,75,90}, f in {0.5,0.75,1.0}",
+ "standardization": "z=(f-mu)/max(sigma,1e-6); mu,sigma from clean features of the 99 b0_train native reals",
+ "projector": {"delta": "z(WA)-z(nat), z(FBHQ)-z(nat) on split==train devices; z(jr cell)-z(clean) for the 99 train natives x 9 cells (n=1089)",
+               "M": "uncentered second moment (1/n) D^T D; centered variant reported as sensitivity",
+               "k_star": "smallest k with >=80% of trace(M)", "k_sweep": [16, 64, 256]},
+ "arms": ["A0", "A1", "A2", "A3", "A2_k16", "A2_k64", "A2_k256", "A2c (centered, sensitivity)", "A4 DRIFT-lite", "A1_sec", "A2_sec"],
+ "a4": {"arch": "1536-512-256 GELU MLP", "loss": "25*MSE(g(za),g(zb)) + 25*var-hinge(std>=1) + 1*cov-offdiag(sum sq / d) on g(z) of the 99 clean train natives",
+        "epochs": 300, "optimizer": "Adam lr 1e-3", "pair_batch": 256, "device": "cuda"},
+ "bootstrap": {"reps": 1000, "seed": 0, "stratified": true, "paired_across_arms": true},
+ "primary_endpoint": "LOGO-macro AUROC at jpeg75_resize05, A2 - A1",
+ "pass_fail": "pass: gain>=+0.03, clean>=A1-0.01, screenshot_sim>=A1, mean drift reduced >=50%; fail: gain<+0.01 or clean loss>0.02; else inconclusive"
+}

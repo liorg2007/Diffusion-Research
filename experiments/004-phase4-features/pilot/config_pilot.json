@@ -1,0 +1,60 @@
+{
+ "spec": "hf:dinov2:facebook/dinov2-base",
+ "input_size": 224,
+ "primary": {
+  "layers": [
+   -1
+  ],
+  "use_cls": true,
+  "use_mean": true,
+  "input_size": 224,
+  "crop_mode": "crop"
+ },
+ "secondary_layers": [
+  4,
+  8,
+  12
+ ],
+ "secondary_stored": "cls+mean per block, 6x768 = 4608-d float32 (primary = last 1536 columns)",
+ "eval_conditions": [
+  "clean",
+  "jpeg75_resize05",
+  "social_sim",
+  "resize(0.5)",
+  "jpeg(75)",
+  "jpeg(90)",
+  "mavali_medium",
+  "screenshot_sim"
+ ],
+ "held_out_conditions": [
+  "mavali_medium",
+  "screenshot_sim"
+ ],
+ "grid_conditions": [
+  "jr(60,0.5)",
+  "jr(60,0.75)",
+  "jr(60,1.0)",
+  "jr(75,0.5)",
+  "jr(75,0.75)",
+  "jr(75,1.0)",
+  "jr(90,0.5)",
+  "jr(90,0.75)",
+  "jr(90,1.0)"
+ ],
+ "grid_rows": "split == 'train'",
+ "eval_rows": "in_scoring_set or split in (train, calib)",
+ "seed": 0,
+ "batch": 20,
+ "chunk": 240,
+ "d008": {
+  "n": 32,
+  "feat_tol_scaled": 0.001,
+  "logit_tol": 0.001,
+  "tf32": "disabled (features.get_device)",
+  "cpu_batch": 4
+ },
+ "hf_home": "data/hf_cache (offline)",
+ "splits": "experiments/004-phase4-features/pilot/splits_pilot.csv",
+ "cache": "experiments/004-phase4-features/cache/pilot/<condition>/part_*.npz (git-ignored)",
+ "loader": "p4features.load_features(feature, condition) [subdir='pilot']"
+}

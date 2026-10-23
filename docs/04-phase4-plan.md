@@ -105,3 +105,56 @@
 - Each experiment gets one sonnet/high code agent and an opus/high critic on its result (CLAUDE.md).
 - A sonnet/medium agent re-reads the full text of DRIFT, RA-Det and RIGID, because Phase 2 checked them at abstract level only.
 - Stop rule: 3 failed hypotheses → stop and report.
+
+## Amendment 2 (2026-10-23 17:15, before any Phase 4 result): PILOT while grip.unina.it is down
+**Situation.** The server has been unreachable for 6+ hours, from both WSL and Windows. RAISE, SD3.5, FLUX and the B-Free weights are unavailable. The owner chose "pilot now, final later".
+
+**Pilot data.** Rows of 003 `splits.csv` whose raw files exist: VISION native/WA/FBH and the 6 Synthbuster generators. Splits are unchanged; missing rows are dropped.
+- The crops are regenerated with 003's preprocessing. Each crop's sha256 must equal the `splits.csv` sha256. This is the partial portability check that is possible now.
+
+**Pilot endpoint changes.**
+
+| Hypothesis | Change |
+|---|---|
+| H1 | FLUX is replaced by LOGO-macro over the 6 Synthbuster generators. LOGO-macro becomes the sole primary endpoint. The pass/fail thresholds are unchanged. Train reals are 99 VISION natives (no RAISE). |
+| H2 | Unchanged, except TPR is LOGO TPR (each generator scored by the probe that never saw it) instead of FLUX TPR. Detectors: B0 plus A1/A2, CommFor, RINE and ClipDet. B-Free is unavailable. |
+| H4 | Deferred to the final run. Settings (ii)–(iv) need the RAISE PNG reals. |
+
+**Status.** All pilot outputs are labelled PILOT and live in `<exp>/pilot/`. A pilot pass or fail is not a Phase 4 verdict and does not count toward the 3-failed-hypotheses stop rule. The official run repeats everything on the full data, together with the step-6 reproduction.
+
+## Amendment 3 (2026-10-23, after both PILOT critiques, before any official result)
+**Pilot outcome.** Both critics rate the pilots *uninformative*, with no verdict-changing bugs:
+- `experiments/005-nuisance-projection/pilot/critique.md`
+- `experiments/007-worst-env-conformal/pilot/critique.md`
+
+H1 had no headroom: A1 was 0.988, so the largest possible gain was +0.012. H2's M3 degenerates to the calibration max, because there are only about 43 reals per device. Neither counts toward the stop rule.
+
+**New confound (lead-verified, manifest_raw.csv).** The median short side is:
+
+| Pool | Median short side (px) |
+|---|---|
+| VISION native | 2448 |
+| Fakes | 768–1024 (Firefly 1792) |
+| WhatsApp | 960 |
+| FB-HQ | 1536 |
+| RAISE | 833 |
+
+Because D-009 takes a 512 crop with no resize, real crops are about 2.5–3× more zoomed in than fake crops.
+- Lead check (`005/pilot/lead_pool_check.txt`): A0 LOGO-macro clean AUROC is 0.992 against natives, 0.982 against FB-HQ and 0.965 against WA copies of the same test photos. So the confound explains part of the ceiling, not all of it.
+
+**Changes for the OFFICIAL run.** These are additive; D-009 stays the primary protocol unless the owner decides otherwise (D-013).
+1. **Order:** H4 runs first. It is extended with a scale arm, `fov512`: resize the short side to 512 (bicubic, antialiased), then center-crop 512. Both classes get this, so the field of view is roughly matched and every image is resampled. All 005/007 headline tables add a `fov512` column and per-real-pool rows (native / WA / FBH / RAISE).
+2. **Statistics, for all arms equally:**
+   - grouped CV in `fit_probe`, where a group = the source image, so augmented copies stay in one fold;
+   - a class-balanced logistic probe;
+   - a bootstrap over devices (reals) and images (fakes).
+3. **H1 headroom rule:** the +0.03 criterion is applied only if A1's LOGO-macro AUROC at jpeg75_resize05 is ≤ 0.96. Otherwise the result is reported as "no headroom / uninformative".
+   - The primary endpoint is unchanged.
+   - Drift (FPR stability) stays secondary, flagged as pilot-motivated.
+   - The A1_sec and A2_sec arms are also passed to 007.
+4. **H2 reformulated as protocol + recipe:**
+   - Groups have ≥ 100 reals (platform first, then brand), each with a proper per-group conformal threshold.
+   - The decisive comparison is worst-group vs pooled conformal at matched TPR, sweeping α.
+   - "Problem is real" now requires M1 or M2 > 2% (not M0).
+   - Evaluation is LODO × LOPO.
+5. **H3 (owner's modern-phone photos)** becomes the main FPR ≤ 1% test. The owner was asked.

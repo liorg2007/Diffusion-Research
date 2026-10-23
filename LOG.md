@@ -59,3 +59,35 @@
 - 2026-10-23 09:50 — Novelty check done (kb/novelty-check-phase4.md; section/table refs [unverified], from HTML summaries). H1: partial overlap with DRIFT (learned, synthetic transforms, no platform pairs, no FPR), still novel as closed-form + real pairs. H2: novelty is in the protocol, not the math. H4: gap confirmed (RIGID format-matched only DIRE, in its App. D). Plan amendment 1: add secondary arm A4 DRIFT-lite to 005.
 - 2026-10-23 09:54 — Feature-cache code agent done: experiments/004-phase4-features/{run.py,p4features.py,config.json,notes.md}; lib/perturb.py gained mavali_medium, screenshot_sim, jr(q,f) (existing conditions unchanged, lead reviewed the diff). Lead re-ran lib tests: 30 passed. Dry-run CUDA-vs-CPU guard on real dinov2-base weights (8 synthetic imgs): scaled |Δfeat| ≤ 6e-5, |Δlogit| ≤ 5e-6. Caveat: screenshot_sim factor 1.25 also narrows the field of view of the 224 crop (zoom), not just resampling. Extraction waits for the step-6 gate.
 - 2026-10-23 10:30 — fetch.py from-manifest made host-failure tolerant: an unreachable zip central directory now fails only that zip's files. Re-run: VISION 1,500 + Synthbuster 720 downloaded and sha256-verified (3.25 GB). Still missing, all on grip.unina.it (HTTPS timeout, failed twice → logged, waiting rather than looping): RAISE 400, SD3.5/FLUX 300, latent-diffusion 300 (excluded from eval), B-Free weights. A background watcher polls grip every 5 min for up to 6 h. Step 6 and Phase 4 extraction wait on it.
+- 2026-10-23 17:22 — grip.unina.it still down after the 6-h watch, unreachable from Windows too (unina.it main site answers) → server-side. Owner chose: pilot now on VISION + 6 Synthbuster, final run later. Plan Amendment 2 pre-registers pilot endpoints (H1: LOGO-macro over 6 gens; H2: LOGO TPR; H4 deferred). Re-armed watcher (48 h).
+- 2026-10-23 17:32 — PILOT prep + features done (experiments/004-phase4-features/pilot/):
+  - 2,220/2,919 rows kept. Raw-file sha256 = 003 manifest for 2220/2220; PIL format matches 2220/2220.
+  - Crop-pixel portability NOT verifiable yet: the 003 row sha is the raw-file hash, and the Mac crops were never hashed. Linux crop hashes stored in prep_report.json.
+  - 17 conditions extracted on CUDA in 276 s. D-008 guard (CUDA vs CPU) ok on all 17: max |dlogit| 1.63e-4, max scaled |dF| 5.19e-5.
+  - Lib tests 30 passed.
+  - Launching 005 H1 pilot (sonnet/high) and 007 H2 pilot (sonnet/high) in parallel.
+- 2026-10-23 18:08 — 005 H1 PILOT done (experiments/005-nuisance-projection/pilot/), pre-registered verdict FAIL (pilot; not counted toward the stop rule per Amendment 2):
+  - k*=90.
+  - Primary: LOGO-macro AUROC at jpeg75_resize05, A2−A1 = −0.0072 [−0.0104, −0.0044] (A1 0.988, A2 0.981).
+  - Clean −0.0085; screenshot_sim −0.0061; mean drift reduction 41% (A1 0.038 → A2 0.022; A0 0.187).
+  - The k-sweep declines monotonically with k. A4 DRIFT-lite 0.803 (not a fair DRIFT test: 99 reals).
+  - Ceiling caveat: all arms 0.97–1.0 vs 003 B0 0.861 laundered (no RAISE in the pilot → JPEG-real/PNG-fake shortcut likely).
+  - A1_sec (multi-layer + aug) 0.999 / TPR@1%FPR 0.982 laundered — needs a shortcut check.
+  - Launched opus/high critic → pilot/critique.md.
+- 2026-10-23 18:11 — 007 H2 PILOT done (experiments/007-worst-env-conformal/pilot/; pilot, not counted). 9 D-008 guards ok (max |dlogit| 1.31e-4). CommFor M0 FPR on VISION test natives 4.19% (003: 4.2%, sanity ok).
+  - B0/A0 (primary): INCONCLUSIVE. LODO FPR M0 17.0% / M1 0.37% / M2 1.02% / M3 0.09%. LOPO worst at M3: WA 1.96%. TPR ratio M3/M2 0.59 clean and laundered.
+  - A1, A2, CommFor, ClipDet: FAIL (TPR ratio). RINE: INCONCLUSIVE.
+  - M3 degenerates to the pooled max (~43 reals per device).
+  - Read: the default threshold is badly broken (B0 WA reals 29.6%), but simple real-photo calibration already transfers across VISION devices.
+  - Launched opus/high critic.
+- 2026-10-23 18:12 — H1 critic (opus/high, experiments/005-nuisance-projection/pilot/critique.md): 'Pilot FAIL is uninformative'.
+  - No verdict-changing bugs. Minor: fit_probe CV splits augmented copies across folds; the bootstrap is per image, not per device.
+  - NEW CONFOUND, lead-verified from manifest_raw.csv: median short side VISION native 2448 px vs fakes 768–1024 (firefly 1792), WA 960, FBH 1536, RAISE 833.
+    - The 512 center crop without resize (D-009) makes real crops ~2.5–3× more zoomed than fake crops → a scale/field-of-view shortcut.
+    - This likely re-explains 003 finding 5 (B0 VISION 0.962 vs RAISE 0.876: RAISE is fake-sized) and the high WA FPR. It affects all Phase 3/4 numbers.
+- 2026-10-23 18:17 — H2 critic (opus/high, 007/pilot/critique.md): 'uninformative for H2'.
+  - With ~43 reals per device, M3 = calibration max ≈ pooled conformal at α≈0.1%, so the TPR ratio compares operating points, not the worst-group idea. A proper per-device 1% conformal threshold is +inf for groups under 99 images.
+  - No verdict-changing bugs (LOPO leak moves one cell 0→0.28%).
+  - On VISION, plain calibration transfers across devices (M1 0.37%, M2 1.02% LODO); WA is the only >2% cell (M2 3.07%).
+  - Lead pool check: A0 LOGO clean AUROC native 0.992 / FBH 0.982 / WA 0.965 → FOV explains part of the pilot ceiling.
+  - Wrote plan Amendment 3.

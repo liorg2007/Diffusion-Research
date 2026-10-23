@@ -1,0 +1,29 @@
+{
+ "PILOT": true,
+ "hypothesis": "H2 worst-env-conformal-fpr (docs/04-phase4-plan.md H2 + Amendment 2)",
+ "seed": 0,
+ "alpha": 0.01,
+ "splits": "experiments/004-phase4-features/pilot/splits_pilot.csv",
+ "detectors": {"communityforensics": "scorers.communityforensics:score", "rine": "scorers.rine:score", "clipdet": "scorers.clipdet:score"},
+ "bfree": "unavailable (grip.unina.it down)",
+ "conditions": ["clean", "jpeg75_resize05", "screenshot_sim"],
+ "condition_call": "perturb.apply_condition(img, cond, key=sha256, seed=0)",
+ "batch": 20,
+ "d008": {"subset": "32 rows (16 real + 16 fake, seed 0, from split==test)", "tol": 0.001, "tf32": false, "device": "cuda vs cpu(batch 4)"},
+ "rules": {
+  "flag": "score > threshold",
+  "M0": "0",
+  "M1": "np.quantile(clean calib-device reals (10 devices x 3 pools), 1-alpha, method='higher')",
+  "M2": "ceil((n+1)(1-alpha))-th smallest calibration score, +inf if index > n",
+  "M3": "max over calibration devices of np.quantile(device reals, 1-alpha, method='higher')",
+  "M4": "M2 at alpha/2"
+ },
+ "splits_eval": {
+  "LODO": "calibrate M2-M4 on 24 other test devices' clean reals (native+WA+FBH), test on device d; pool",
+  "LOPO": "native/WA/FBH: calibrate on the other two platforms' clean reals of all 25 devices; jpeg75_resize05/screenshot_sim: calibrate on all clean reals, test on natives in that condition",
+  "TPR": "thresholds from all 25 test devices' clean reals (M1: calib devices); pretrained: all 720 fakes pooled and per generator; 005 files: logo_<g> on g's fakes, macro mean"
+ },
+ "criteria": "pass/fail/inconclusive exactly as in docs/04-phase4-plan.md H2 (see analyze.verdict)",
+ "primary_detector": "B0 = arm A0 of 005 (not yet available)",
+ "outputs": "pilot/scores_pretrained.csv.gz, pilot/results_<stem>.json, pilot/tables_<stem>.md"
+}

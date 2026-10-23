@@ -36,6 +36,11 @@ def safe(cond):
     return "".join(c if c.isalnum() or c in "-_.+()" else "_" for c in cond)
 
 
+def cache_root(subdir=None):
+    """Default cache (cache/feats) or cache/<subdir> (e.g. 'pilot' -> experiments/004-phase4-features/cache/pilot)."""
+    return HERE / "cache" / subdir if subdir else CACHE
+
+
 def cond_dir(cond, cache_dir=None):
     return Path(cache_dir or CACHE) / safe(cond)
 
@@ -68,8 +73,11 @@ def read_shards(cond, cache_dir=None):
     return keys, np.stack([store[k] for k in keys]).astype(np.float32)
 
 
-def load_features(feature, condition, cache_dir=None):
-    """feature: 'primary' (1536-d, = B0 features) | 'secondary' (4608-d, blocks 4/8/12). -> (sha256 array, matrix)."""
+def load_features(feature, condition, cache_dir=None, subdir=None):
+    """feature: 'primary' (1536-d, = B0 features) | 'secondary' (4608-d, blocks 4/8/12). -> (sha256 array, matrix).
+    subdir='pilot' reads the pilot cache (cache/pilot); default unchanged (cache/feats)."""
+    if cache_dir is None and subdir:
+        cache_dir = cache_root(subdir)
     keys, X = read_shards(condition, cache_dir)
     if feature == "secondary":
         return keys, X
@@ -78,9 +86,9 @@ def load_features(feature, condition, cache_dir=None):
     raise ValueError("feature must be 'primary' or 'secondary'")
 
 
-def load_features_aligned(df, feature, condition, cache_dir=None):
+def load_features_aligned(df, feature, condition, cache_dir=None, subdir=None):
     """Matrix aligned to df rows (df needs a sha256 column); rows without cached features are NaN."""
-    keys, X = load_features(feature, condition, cache_dir)
+    keys, X = load_features(feature, condition, cache_dir, subdir)
     pos = {k: i for i, k in enumerate(keys.tolist())}
     out = np.full((len(df), X.shape[1]), np.nan, np.float32)
     for r, s in enumerate(df.sha256.tolist()):

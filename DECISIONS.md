@@ -90,3 +90,9 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - Result: torch 2.8.0+cu128, CUDA available, RTX 4060 Ti (8 GB); lib tests 26/26.
 - Risk: Pillow/numpy come from the same locked wheels (they bundle their own libjpeg etc.), so the interpreter build should not change metrics; the step-6 reproduction check verifies this.
 
+
+**D-013 — Field-of-view confound: add a `fov512` protocol arm next to D-009 (2026-10-23; PROPOSED, owner review pending)**
+- Finding: median short side VISION native 2448 px vs fakes 768–1024 px (manifest_raw.csv). D-009's 512 crop without resize makes real crops ~2.5–3× more zoomed than fake crops, so detectors can partly use scene scale.
+- Proposal: keep D-009 as the primary protocol for continuity with Phase 3. Add `fov512` (resize the short side to 512, antialiased bicubic, then center-crop 512, both classes) and per-real-pool rows (RAISE 833 px and WA 960 px are scale-matched to fakes) to every Phase 4 table. Run H4, with this scale arm, first in the official run.
+- Alternative for the owner: make `fov512` primary. Every image is then resampled, which may also weaken genuine low-level traces.
+- Details: docs/04-phase4-plan.md Amendment 3.

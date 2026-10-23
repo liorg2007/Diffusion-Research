@@ -1,0 +1,7 @@
+arm            cond  vision_native  vision_whatsapp  vision_facebook_hq
+ A0           clean          0.992            0.965               0.982
+ A0 jpeg75_resize05          0.985            0.951               0.970
+ A1           clean          0.989            0.972               0.984
+ A1 jpeg75_resize05          0.988            0.970               0.979
+ A2           clean          0.981            0.969               0.975
+ A2 jpeg75_resize05          0.981            0.972               0.974
