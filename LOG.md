@@ -151,3 +151,6 @@
 - 2026-10-24 01:30 — RAID subset downloaded: 1,500 files, 157.08 MB, 1500/1500 sha256 match. The first attempt hit an HF 429 rate limit (8 threads); a serial, throttled resume finished it.
   - Manifest experiments/010-raid-transfer/raid_manifest.csv; SOURCES updated.
   - Running download total ≈ 8.8 GB of 9 GB (D-007): no further downloads without the owner.
+- 2026-10-24 01:45 — PDF verification pass (sonnet/medium, kb/verification-pass-2026-10-24.md): 17/17 headline sub-claims confirmed, 0 different.
+  - Caveats: LAION-Mobile's 17.4–91.3% FPR range covers the 5 detectors safe at the ProGAN threshold, not all 12. CommFor's 0.987/89.2% is the 384-px model on its own 26K-image set. RAID's 0.95→0.62 is at ε=16/255 (K24→O23). RINE's +9.0 ablation ≠ the abstract's +9.4.
+  - Field-map artifact wording updated accordingly.
