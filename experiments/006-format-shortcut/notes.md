@@ -29,3 +29,57 @@ All parameters: `config.json`. Outputs in `pilot/`: `results.json`, `tables.md` 
 - RIGID's AUROC(i) is far below 0.5 on this data (reals score higher than fakes), and the direction was fixed in advance, so the absolute RIGID AUROCs are not those of a working detector; the gap criterion is applied as specified.
 - In (iii-p) the reals have been compressed twice, so only their final format matches the fakes (Amendment 5).
 - Firefly files are already JPEG q~95; every number is given with and without Firefly.
+
+
+# Official run (code ready 2026-10-24; NOT yet run: RAISE PNG reals and SD3.5/FLUX fakes are on grip.unina.it, currently down)
+
+Spec: `docs/04-phase4-plan.md`, H4 section + Amendments 3, 5, 6. The pilot (`run.py`, `pilot/`) is frozen and unchanged; the official run is `run_official.py` (imports the pilot module for the RIGID score, the noise generator and the D-008 guard). Parameters: `config_official.json` (sigma/draws/batch come from `config.json`). New pure functions: `experiments/lib/h4.py` (+ `lib/tests/test_h4.py`).
+
+## What `run_official.py` does (Amendment 6 mapping)
+- **Rows:** official splits = `experiments/003-baselines-eval/splits.csv` (arm `orig`), `004-phase4-features/splits_fov512.csv` (`fov512`), `splits_fov224.csv` (`fov224`); same rows in the same order (asserted). Aborts if any crop, arm, feature cache, RAISE test row, `sd3_large` or `flux` is missing (`--allow-missing` only for dry runs). FLUX is test-only (asserted: no train/calib/b0_train row) and never enters B0 training, texture-direction calibration or residualisation.
+- **Settings** (test split, LOGO-macro AUROC over the 7 train-having generators dalle2, dalle3, firefly, midjourney-v5, stable-diffusion-2, stable-diffusion-xl, sd3_large; with and without Firefly; plus a `with_firefly_plus_flux` macro and per-generator tables that include FLUX): (i) VISION native clean vs clean fakes; (ii) RAISE clean vs clean; **M** RAISE `jpeg(90)` vs clean fakes; (iii) both `jpeg(90)`; (iv) both `jpeg75_resize05`; continuity (iii-p)/(iv-p) = the pilot's native-based versions.
+- **Primary contrast** AUROC(M) - AUROC(ii) (same RAISE reals, same fakes: paired CI). Secondary: (M)-(iii), (i)-(iii). Also (i)-(iii-p), (i)-(iv-p), (ii)-(iii), (ii)-(iv).
+- **Best sigma** = highest AUROC(ii). **Validity gate** (at that sigma): CI lower bound of AUROC(ii) > 0.5 AND RIGID AUROC(ii) > Laplacian-texture AUROC(ii) (direction set once on `clean`: calib reals of the pool vs TRAIN fakes, because the calib split holds no fakes), else the label is `UNINFORMATIVE`; labels `SUPPORTED` / `REFUTED` / `INCONCLUSIVE` use the unchanged thresholds (gap >= 0.10 with B0 gap < 0.05; gap < 0.03 for every sigma), `NOT_EVALUABLE` if (ii)/(M) are missing.
+- **Label arm** = `label_arm` in the config (`orig` until D-013 decides). `orig`, `fov512` and `fov224` are all reported; `fov224` has only the `clean` and `jpeg(90)` conditions (resize(0.5) would leave 112 px < 224), so settings (iv)/(iv-p) are skipped there.
+- **Manipulation check** (per contrast): mean Laplacian of the test reals and of the test fakes under the two settings (difference and ratio), next to B0's gap and the texture baseline's gap.
+- **Texture-residualized RIGID:** OLS of the score on log-Laplacian fitted on the calib reals of the setting's pool and real condition; AUROC of the residual on test (descriptive).
+- **Cross-scale B0:** probe fitted on arm A (b0_train, clean, standardised with A's reals) applied to arm B's cached features, all ordered arm pairs and all conditions the two arms share, next to the within-arm B0.
+- Also: orig - fov512 / orig - fov224 differences (setting i, ii, M), per real pool (native, RAISE, WA, FBH) clean tables, per-generator tables, 1%-FPR operating points from calib reals, `scores_long.csv.gz` (with the Laplacian), D-008 guard (CUDA vs CPU, abort > 1e-3) + pipeline-vs-004-cache check.
+
+## Exact command sequence (run from the repo root; `D=env/.venv/bin/python -I`)
+```
+# 0. data (network; owner/lead; records SOURCES): re-fetch RAISE, SD3.5, FLUX, weights when grip.unina.it is back
+env/.venv/bin/python -I env/bootstrap_data.py
+# 1. 003 crops for ALL rows WITHOUT touching splits.csv (003 `prep` would redo/overwrite it: do NOT use it). CPU, ~3-4 min each, 4 workers
+env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py --mode crop --out-splits experiments/004-phase4-features/official/splits_crop512_check.csv --report experiments/004-phase4-features/official/crop512_prep_report.json   # then: diff that csv against 003 splits.csv (must be identical)
+env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py --out-splits experiments/004-phase4-features/splits_fov512.csv --report experiments/004-phase4-features/fov512_prep_report.json
+env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py --size 224 --out-splits experiments/004-phase4-features/splits_fov224.csv --report experiments/004-phase4-features/fov224_prep_report.json
+# 2. 004 features (GPU). H4 needs only clean, jpeg(90), jpeg75_resize05 (fov224: clean, jpeg(90)); the full 17-condition run is what H1/H2 need
+env/.venv/bin/python -I experiments/004-phase4-features/run.py --check-sizes                       # orig -> cache/feats, all 17 conditions (~15-25 min [estimate]); H4-only: add --conditions clean "jpeg(90)" jpeg75_resize05
+env/.venv/bin/python -I experiments/004-phase4-features/run.py --check-sizes --splits experiments/004-phase4-features/splits_fov512.csv --cache-subdir fov512
+env/.venv/bin/python -I experiments/004-phase4-features/run.py --splits experiments/004-phase4-features/splits_fov224.csv --cache-subdir fov224 --conditions clean "jpeg(90)"   # no --check-sizes: that asserts 512x512 crops
+# 3. tests, then H4 official (GPU, batch 32; ~40-100 min depending on GPU contention [estimate from the pilot: 0.5 s/image contended])
+env/.venv/bin/python -I experiments/lib/tests/run_all.py
+env/.venv/bin/python -I experiments/006-format-shortcut/run_official.py
+```
+Outputs: `experiments/006-format-shortcut/official/{results.json, tables.md, scores_long.csv.gz, d008_guard.json, run.log}`; score caches `cache/official_scores/` (git-ignored, resumable: re-running reuses them). Not for the label: the dry-run directories under `cache/`.
+
+## Dry-run / code-path verification (not results)
+```
+env/.venv/bin/python -I experiments/006-format-shortcut/run_official.py --dry-run [--device cpu --skip-guard]            # pilot data, RAISE settings skipped -> cache/official_dryrun/
+env/.venv/bin/python -I experiments/006-format-shortcut/make_standin.py                                                  # 20 VISION natives re-saved as PNG -> cache/standin/ (pool raise_standin), prints the 004 extraction commands
+env/.venv/bin/python -I experiments/006-format-shortcut/run_official.py --dry-run --standin-raise [--device cpu --skip-guard]   # -> cache/official_standin_dryrun/
+```
+The stand-in is a fixture for the (ii)/(M)/(iii)/(iv) code and the gate; every number it produces is meaningless and its outputs live only under `cache/` (git-ignored).
+
+## 004 changes made for this (defaults unchanged, byte-identical outputs checked on 20 rows)
+`fov_prep.py`: `--size N` (fov224 arm; default 512), `--mode crop` (re-creates 003's plain centre crops from the raw files at the splits' own `path`, raw sha256 checked, no resize), `--out-dir` is resolved to an absolute path. Report key names such as `n_short_side_lt_512` keep their old names for any size.
+
+## Pilot addendum (`pilot_addendum/`, CPU only, descriptive, post-hoc to the pilot, pre-registered in Amendment 6.5-6.6)
+`pilot_addendum.py` -> `pilot_addendum/{results.json,tables.md}`: cross-scale B0 (orig <-> fov512) and the Laplacian texture baseline for setting (i), on the pilot test split.
+
+## Dry-run status (2026-10-24, CPU only: the owner paused GPU work; `--device cpu --skip-guard`, so the D-008 guard and GPU forwards were NOT exercised)
+- `--dry-run` (pilot data, no RAISE): ran end to end; settings (ii)/(M)/(iii)/(iv) skipped, labels `NOT_EVALUABLE`; (i), (iii-p), (iv-p), texture, B0, cross-scale, per-pool, operating points produced for orig, fov512 and fov224. Output (not a result): `cache/official_dryrun/out/`.
+- `--dry-run --standin-raise` (20 VISION natives as `raise_standin`): ran end to end incl. (ii)/(M)/(iii)/(iv), the gate, the labels (all `UNINFORMATIVE`, as expected for an inverted score on 14 test reals), residualised RIGID, manipulation check, cross-scale B0. Output (not a result): `cache/official_standin_dryrun/out/`.
+- The pilot-data fov224 arm was prepared for this (`004/pilot/splits_pilot_fov224.csv`, features `004/cache/pilot_fov224`, extracted on CPU in 591 s, log `004/pilot/extract_fov224_cpu.log`).
+- Still to do on the GPU once allowed: one `run_official.py --dry-run` WITHOUT `--skip-guard --device cpu` to exercise the D-008 guard code path with `facebook/dinov2-base` on CUDA (the guard is the unchanged pilot function).

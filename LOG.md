@@ -160,3 +160,11 @@
   - All 1500 manifest sha256 values pass; lib tests 58 passed.
   - Deviation D1 (canonicalization upsamples 128 → 256) adopted as an Amendment 9 clarification before any result.
   - Full run: `run.py --stage all --device cuda` (minutes on GPU), waiting for the owner's GPU OK; a CPU-only run would take about 2 h.
+- 2026-10-24 02:15 — Official H4 code done (006 run_official.py + config_official.json, lib/h4.py + tests; sonnet/high). CPU-only dry runs on the pilot and on a RAISE stand-in pass; labels are UNINFORMATIVE as expected. Pilot outputs untouched. Lib tests 58 passed.
+  - 004 fov_prep.py gained --size/--mode crop; default outputs byte-identical (20-row check). Pilot fov224 crops and features extracted on CPU.
+  - Do NOT rerun 003 prep (it would overwrite splits.csv); the official sequence is in 006/notes.md.
+  - pilot_addendum (descriptive), cross-scale B0 LOGO-macro AUROC, setting (i):
+    - within orig 0.990, within fov512 0.980;
+    - orig→fov512 0.969, fov512→orig 0.969;
+    - under jpeg75_resize05, orig→fov512 is 0.923 vs 0.980 within (−0.057). B0 is also scale-dependent once laundered.
+  - Laplacian texture AUROC (i): orig 0.778, fov512 0.607.

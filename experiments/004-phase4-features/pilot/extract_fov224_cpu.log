@@ -1,0 +1,27 @@
+00:30:41 device cpu, 2220 rows from splits_pilot_fov224.csv, cache /home/zera/project/Diffusion-Research/experiments/004-phase4-features/cache/pilot_fov224
+00:30:43 design check: primary config == 003 b0 config (backbone, input_size, layers, use_cls, use_mean)
+00:30:45 self-check: primary-config forward vs secondary[:, -1536:] max|diff|=0.00e+00
+00:30:45 condition clean
+00:31:17   clean: 240/2220 new (0 cached)
+00:31:50   clean: 480/2220 new (0 cached)
+00:32:26   clean: 720/2220 new (0 cached)
+00:33:06   clean: 960/2220 new (0 cached)
+00:33:38   clean: 1200/2220 new (0 cached)
+00:34:10   clean: 1440/2220 new (0 cached)
+00:34:42   clean: 1680/2220 new (0 cached)
+00:35:13   clean: 1920/2220 new (0 cached)
+00:35:45   clean: 2160/2220 new (0 cached)
+00:35:52   clean: 2220/2220 new (0 cached)
+00:35:52 condition jpeg(90)
+00:36:22   jpeg(90): 240/2220 new (0 cached)
+00:36:54   jpeg(90): 480/2220 new (0 cached)
+00:37:25   jpeg(90): 720/2220 new (0 cached)
+00:37:57   jpeg(90): 960/2220 new (0 cached)
+00:38:29   jpeg(90): 1200/2220 new (0 cached)
+00:38:56   jpeg(90): 1440/2220 new (0 cached)
+00:39:26   jpeg(90): 1680/2220 new (0 cached)
+00:39:56   jpeg(90): 1920/2220 new (0 cached)
+00:40:29   jpeg(90): 2160/2220 new (0 cached)
+00:40:37   jpeg(90): 2220/2220 new (0 cached)
+00:40:37 done in 591s
+SKIP verify003: /home/zera/project/Diffusion-Research/experiments/003-baselines-eval/cache/b0/hf-dinov2-facebook_dinov2-base_clean.npz not found (003 cache is git-ignored; produced by 003 run.py b0)

@@ -9,6 +9,12 @@
   env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py \
       --out-splits experiments/004-phase4-features/splits_fov512.csv --report experiments/004-phase4-features/fov512_prep_report.json
 
+  # fov224 (H4 Amendment 6, whole-image arm for RIGID's 224 input: short side -> 224, center crop 224)
+  env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py --size 224 \
+      --out-splits experiments/004-phase4-features/splits_fov224.csv --report experiments/004-phase4-features/fov224_prep_report.json
+  # (--size N writes data/processed/fov<N>/images; --mode crop re-creates 003's plain 512 centre crops from the raw files
+  #  at the splits' own `path` without touching splits.csv: use it after env/bootstrap_data.py re-fetched RAISE/SD3.5/FLUX)
+
 Both classes are processed from the RAW files (`src_path`; EXIF-oriented, metadata stripped, as lib/preprocess.py) into
 data/processed/fov512/images/<sha256>.png (git-ignored). The output splits file has the SAME rows and columns as the
 input; only `path` points at the fov512 crop. `sha256` stays the raw file's hash, so feature caches stay keyed alike.
@@ -37,7 +43,7 @@ import preprocess
 
 SPLITS003 = ROOT / "experiments" / "003-baselines-eval" / "splits.csv"
 OUT_DIR = ROOT / "data" / "processed" / "fov512"
-SIZE = 512
+SIZE = 512          # default; --size overrides (fov224 arm)
 
 
 def sha256_file(p):
@@ -49,8 +55,9 @@ def sha256_file(p):
 
 
 def _one(a):
-    src, dst = a
-    status, info = preprocess.process_image(src, dst, SIZE, mode="fov")
+    src, dst = a[:2]
+    size, mode = (a[2], a[3]) if len(a) > 2 else (SIZE, "fov")
+    status, info = preprocess.process_image(src, dst, size, mode=mode)
     ok_shape = None
     if status == "ok":
         with Image.open(dst) as im:
@@ -58,12 +65,12 @@ def _one(a):
     return dict(status=status, raw_sha=sha256_file(src), shape=ok_shape, **info)
 
 
-def manifest_preflight(manifest=ROOT / "data" / "manifest_raw.csv"):
+def manifest_preflight(manifest=ROOT / "data" / "manifest_raw.csv", size=SIZE):
     """Short-side census from the raw manifest dims (latent-diffusion excluded, as in 003)."""
     m = pd.read_csv(manifest, keep_default_na=False)
     m = m[m.generator != "latent-diffusion"].copy()
     m["short"] = m[["width", "height"]].astype(int).min(axis=1)
-    small = m[m.short < SIZE]
+    small = m[m.short < size]
     by = m.groupby("generator").short.agg(["count", "min", "median"]).reset_index()
     return dict(n_manifest_rows_excl_latent_diffusion=len(m), n_short_side_lt_512=int(len(small)),
                 short_side_lt_512_by_generator=small.groupby("generator").size().to_dict(),
@@ -74,7 +81,10 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--splits", default=str(SPLITS003))
     ap.add_argument("--out-splits", required=True)
-    ap.add_argument("--out-dir", default=str(OUT_DIR))
+    ap.add_argument("--out-dir", default=None, help="default data/processed/fov<size> (crop<size> with --mode crop)")
+    ap.add_argument("--size", type=int, default=SIZE, help="output side in px (default 512; 224 for the fov224 arm)")
+    ap.add_argument("--mode", choices=["fov", "crop"], default="fov",
+                    help="fov: resize short side to --size then centre-crop (default); crop: plain centre crop (003's crops)")
     ap.add_argument("--report", required=True)
     ap.add_argument("--drop-small", action="store_true", help="drop (and report) rows with short side < 512 instead of aborting")
     ap.add_argument("--workers", type=int, default=4)
@@ -83,11 +93,12 @@ def main():
     df = pd.read_csv(a.splits, keep_default_na=False, dtype={"vidx": str})
     missing = [p for p in df.src_path if not os.path.exists(p)]
     keep = df[[os.path.exists(p) for p in df.src_path]].copy().reset_index(drop=True)
-    out_dir = Path(a.out_dir)
+    size = a.size
+    out_dir = Path(a.out_dir).resolve() if a.out_dir else ROOT / "data" / "processed" / f"{a.mode if a.mode == 'crop' else 'fov'}{size}"
     (out_dir / "images").mkdir(parents=True, exist_ok=True)
     dst = [str(out_dir / "images" / f"{s}.png") for s in keep.sha256]
     with mp.Pool(a.workers) as pool:
-        res = pool.map(_one, list(zip(keep.src_path, dst)), chunksize=16)
+        res = pool.map(_one, [(sp, d, size, a.mode) for sp, d in zip(keep.src_path, dst)], chunksize=16)
     R = pd.DataFrame(res)
     R["sha256"] = keep.sha256.to_numpy()
     R["generator"] = keep.generator.to_numpy()
@@ -95,14 +106,15 @@ def main():
     R.to_csv(out_dir / f"sidecar_{Path(a.out_splits).stem}.csv", index=False)
     small = R[R.status == "skipped_small"]
     bad = R[R.status == "error"]
-    rep = dict(mode="fov (short side -> 512, PIL BICUBIC antialiased, center crop 512)", n_rows_in=len(df),
+    rep = dict(mode=(f"fov (short side -> {size}, PIL BICUBIC antialiased, center crop {size})" if a.mode == "fov"
+                     else f"crop (plain centre crop {size}, no resize)"), size=size, n_rows_in=len(df),
                n_missing_raw_dropped=len(missing), n_processed=len(keep),
                n_ok=int((R.status == "ok").sum()), n_short_side_lt_512=int(len(small)), n_error=int(len(bad)),
                short_side_lt_512=[dict(sha256=r.sha256, generator=r.generator, pool=r.pool,
                                        size=[r.orig_width, r.orig_height]) for r in small.itertuples()],
                raw_sha_match=dict(n_match=int((R.raw_sha == R.sha256).sum()), n_total=len(R)),
-               shape_ok_512_rgb=int(sum(s == [SIZE, SIZE, "RGB"] for s in R["shape"] if s is not None)),
-               manifest_preflight=manifest_preflight(), counts_pool_split=keep.groupby(["pool", "split"]).size()
+               shape_ok_512_rgb=int(sum(s == [size, size, "RGB"] for s in R["shape"] if s is not None)),
+               manifest_preflight=manifest_preflight(size=size), counts_pool_split=keep.groupby(["pool", "split"]).size()
                .rename("n").reset_index().to_dict("records"), out_dir=str(out_dir.relative_to(ROOT)),
                seconds=time.time() - t0)
     Path(a.report).parent.mkdir(parents=True, exist_ok=True)
@@ -113,7 +125,7 @@ def main():
     if rep["raw_sha_match"]["n_match"] != len(R):
         raise SystemExit("raw sha256 mismatch: the raw files differ from the splits file")
     if len(small) and not a.drop_small:
-        raise SystemExit(f"ABORT: {len(small)} images have short side < 512 (would need upscaling; see report). "
+        raise SystemExit(f"ABORT: {len(small)} images have short side < {size} (would need upscaling; see report). "
                          "Re-run with --drop-small to exclude them, or decide a policy.")
     ok = R.status == "ok"
     out = preprocess.rewrite_paths(keep[ok.to_numpy()], out_dir, root=ROOT)

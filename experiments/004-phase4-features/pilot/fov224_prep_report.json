@@ -1,0 +1,137 @@
+{
+ "mode": "fov (short side -> 224, PIL BICUBIC antialiased, center crop 224)",
+ "size": 224,
+ "n_rows_in": 2220,
+ "n_missing_raw_dropped": 0,
+ "n_processed": 2220,
+ "n_ok": 2220,
+ "n_short_side_lt_512": 0,
+ "n_error": 0,
+ "short_side_lt_512": [],
+ "raw_sha_match": {
+  "n_match": 2220,
+  "n_total": 2220
+ },
+ "shape_ok_512_rgb": 2220,
+ "manifest_preflight": {
+  "n_manifest_rows_excl_latent_diffusion": 2920,
+  "n_short_side_lt_512": 0,
+  "short_side_lt_512_by_generator": {},
+  "min_short_side": 576,
+  "by_generator": [
+   {
+    "generator": "dalle2",
+    "count": 120,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "dalle3",
+    "count": 120,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "firefly",
+    "count": 120,
+    "min": 1536,
+    "median": 1792.0
+   },
+   {
+    "generator": "flux",
+    "count": 150,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "midjourney-v5",
+    "count": 120,
+    "min": 896,
+    "median": 896.0
+   },
+   {
+    "generator": "real",
+    "count": 1900,
+    "min": 718,
+    "median": 1152.0
+   },
+   {
+    "generator": "sd3_large",
+    "count": 150,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "stable-diffusion-2",
+    "count": 120,
+    "min": 576,
+    "median": 768.0
+   },
+   {
+    "generator": "stable-diffusion-xl",
+    "count": 120,
+    "min": 576,
+    "median": 832.0
+   }
+  ]
+ },
+ "counts_pool_split": [
+  {
+   "pool": "fake",
+   "split": "test",
+   "n": 360
+  },
+  {
+   "pool": "fake",
+   "split": "train",
+   "n": 360
+  },
+  {
+   "pool": "vision_facebook_hq",
+   "split": "calib",
+   "n": 43
+  },
+  {
+   "pool": "vision_facebook_hq",
+   "split": "test",
+   "n": 358
+  },
+  {
+   "pool": "vision_facebook_hq",
+   "split": "train",
+   "n": 99
+  },
+  {
+   "pool": "vision_native",
+   "split": "calib",
+   "n": 43
+  },
+  {
+   "pool": "vision_native",
+   "split": "test",
+   "n": 358
+  },
+  {
+   "pool": "vision_native",
+   "split": "train",
+   "n": 99
+  },
+  {
+   "pool": "vision_whatsapp",
+   "split": "calib",
+   "n": 43
+  },
+  {
+   "pool": "vision_whatsapp",
+   "split": "test",
+   "n": 358
+  },
+  {
+   "pool": "vision_whatsapp",
+   "split": "train",
+   "n": 99
+  }
+ ],
+ "out_dir": "data/processed/fov224",
+ "seconds": 112.77237033843994
+}

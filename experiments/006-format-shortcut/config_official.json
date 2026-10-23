@@ -1,0 +1,70 @@
+{
+ "experiment": "006-format-shortcut",
+ "stage": "H4 OFFICIAL run (docs/04-phase4-plan.md, H4 section + Amendments 3, 5, 6). Code: run_official.py. Not yet run: waiting for RAISE PNG reals and SD3.5/FLUX fakes (grip.unina.it).",
+ "rigid_params_from": "config.json (sigmas, draws, batch, noise, feature variants, d008): imported unchanged from the pilot module, single source of truth",
+ "profiles": {
+  "official": {
+   "splits": {"orig": "experiments/003-baselines-eval/splits.csv",
+              "fov512": "experiments/004-phase4-features/splits_fov512.csv",
+              "fov224": "experiments/004-phase4-features/splits_fov224.csv"},
+   "feature_subdirs": {"orig": null, "fov512": "fov512", "fov224": "fov224"},
+   "out_dir": "official"
+  },
+  "pilot": {
+   "note": "used by --dry-run only (VISION + 6 Synthbuster; no RAISE/SD3.5/FLUX)",
+   "splits": {"orig": "experiments/004-phase4-features/pilot/splits_pilot.csv",
+              "fov512": "experiments/004-phase4-features/pilot/splits_pilot_fov512.csv",
+              "fov224": "experiments/004-phase4-features/pilot/splits_pilot_fov224.csv"},
+   "feature_subdirs": {"orig": "pilot", "fov512": "pilot_fov512", "fov224": "pilot_fov224"},
+   "out_dir": "cache/official_dryrun"
+  }
+ },
+ "arms": ["orig", "fov512", "fov224"],
+ "arm_notes": {
+  "orig": "003 crops: centre 512 crop of the raw image, NO resize (D-009); then the 224 centre crop",
+  "fov512": "short side -> 512 (bicubic, antialiased), centre crop 512 (004/fov_prep.py), then the 224 centre crop",
+  "fov224": "short side -> 224 (bicubic, antialiased), centre crop 224 (004/fov_prep.py --size 224): the whole image at 224. Settings (iv)/(iv-p) are not defined here: resize(0.5) would leave 112 px < the 224 input"
+ },
+ "label_arm": "orig",
+ "label_arm_note": "Amendment 6.4: the label comes from the arm D-013 makes primary; until the owner decides this is `orig` (D-009). The other arms are reported alongside.",
+ "arm_conditions": {
+  "orig": ["clean", "jpeg(90)", "jpeg75_resize05"],
+  "fov512": ["clean", "jpeg(90)", "jpeg75_resize05"],
+  "fov224": ["clean", "jpeg(90)"]
+ },
+ "pools": {"native": "vision_native", "raise": "raise", "derived": ["vision_whatsapp", "vision_facebook_hq"]},
+ "generators": {
+  "main": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl", "sd3_large"],
+  "test_only": ["flux"],
+  "note": "LOGO-macro (the headline AUROC) is over `main`; each has a LOGO B0 model. FLUX has no train/calib rows: B0 scores it with the model fitted on ALL b0_train rows, RIGID has no training; it is reported per generator and as a macro sensitivity `macro_incl_flux`."
+ },
+ "firefly_variants": {"with_firefly": "all main generators", "without_firefly": "main minus firefly"},
+ "primary_firefly_variant": "with_firefly",
+ "settings": {
+  "i":     {"reals": "native", "real_cond": "clean",           "fake_cond": "clean",           "desc": "VISION native camera JPEG vs clean PNG fakes"},
+  "ii":    {"reals": "raise",  "real_cond": "clean",           "fake_cond": "clean",           "desc": "RAISE PNG vs clean PNG fakes (no format shortcut on either side)"},
+  "M":     {"reals": "raise",  "real_cond": "jpeg(90)",        "fake_cond": "clean",           "desc": "RAISE re-saved jpeg(90) vs clean PNG fakes: only the reals' encoding differs from (ii)"},
+  "iii":   {"reals": "raise",  "real_cond": "jpeg(90)",        "fake_cond": "jpeg(90)",        "desc": "RAISE and fakes both jpeg(90)"},
+  "iv":    {"reals": "raise",  "real_cond": "jpeg75_resize05", "fake_cond": "jpeg75_resize05", "desc": "RAISE and fakes both jpeg75_resize05"},
+  "iii-p": {"reals": "native", "real_cond": "jpeg(90)",        "fake_cond": "jpeg(90)",        "desc": "pilot continuity: VISION native re-encoded jpeg(90) + fakes jpeg(90)"},
+  "iv-p":  {"reals": "native", "real_cond": "jpeg75_resize05", "fake_cond": "jpeg75_resize05", "desc": "pilot continuity: VISION native + fakes jpeg75_resize05"}
+ },
+ "primary_contrast": ["M", "ii"],
+ "primary_contrast_note": "AUROC(M) - AUROC(ii): same RAISE reals, same fakes, only the reals' encoding differs (Amendment 6.2)",
+ "secondary_contrasts": [["M", "iii"], ["i", "iii"]],
+ "other_contrasts": [["i", "iii-p"], ["i", "iv-p"], ["ii", "iii"], ["ii", "iv"]],
+ "validity_gate": "Amendment 6.1 at the best sigma (highest AUROC(ii)): CI lower bound of AUROC(ii) > 0.5 AND RIGID AUROC(ii) > texture-baseline AUROC(ii). Otherwise UNINFORMATIVE.",
+ "texture_baseline": {
+  "score": "mean |Laplacian| of the grey 224 input (after the condition), lib/h4.laplacian_texture",
+  "direction": "set ONCE per (arm, real pool, Firefly variant) on `clean` images: calib-split reals of that pool vs TRAIN-split fakes of the variant's generators (there are no calib-split fakes); never on test",
+  "note": "the pre-registration says 'calib-split reals and fakes'; since calib holds reals only, the fakes come from the train split. FLUX is never used."
+ },
+ "residualized_rigid": "Amendment 6.5: OLS score ~ a + b log(Laplacian) fitted on the calib-split reals of the setting's pool in the setting's real condition; AUROC of the residual on test (descriptive)",
+ "cross_scale_b0": "Amendment 6.6: B0 fitted on arm A features (b0_train, clean), standardised with A's b0_train reals, applied to arm B features of the same images; all ordered arm pairs, all conditions available in both arms (descriptive)",
+ "manipulation_check": "Amendment 6.3: for every contrast, mean Laplacian of the test reals and of the test fakes under the two settings (difference, ratio) next to B0's gap and the texture baseline's gap",
+ "operating_point": {"fpr": 0.01, "threshold": "calib-split reals of the pool, `clean`, per sigma; applied to the test reals/fakes of each setting"},
+ "aggregation": {"bootstrap": "lib/h4 FakeSet/RealSet: reals by device (a RAISE image is its own cluster), fakes by image per generator, fakes' resampling shared across real pools; n_boot 2000, seed 0, 95% percentile", "n_boot": 2000, "seed": 0},
+ "dry_run": {"native_test": 24, "native_calib": 10, "derived_test_per_pool": 4, "fakes_test_per_generator": 3, "fakes_train_per_generator": 3, "n_boot": 50},
+ "standin_raise": {"n": 20, "n_test": 14, "n_calib": 6, "pool_name": "raise_standin", "dir": "cache/standin",
+                   "note": "20 VISION train-split natives re-saved as PNG. A code-path fixture ONLY: it is not RAISE and every number computed with it is meaningless."}
+}
