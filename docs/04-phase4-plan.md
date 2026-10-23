@@ -241,3 +241,38 @@ Setting (ii) (RAISE PNG vs PNG) has no pilot version. Caveat: in (iii-p) the rea
 7. **Not adopted without the owner:** a DINOv2 ViT-L/14 backbone. It falls under the larger-backbone decision and the 9 GB cap (D-007).
 
 **Disclosure.** The pilot agent edited config.json (adding the pre-LN variant and making post-LN primary) after the dry run had already shown the inversion. Post-LN and pre-LN give identical labels in every cell, so this changes nothing.
+
+## Amendment 7 (2026-10-24, before any result): E1 zoom sensitivity of published detectors (experiments/008-scale-sensitivity)
+**Why.** The H1 and H4 pilots found a field-of-view (zoom) confound. Phone crops are 2.5–3× more zoomed in than fake crops. That moved the RIGID-style score by 0.10–0.16 AUROC and B0 by only 0.01–0.015. Do the released detectors we use (CommFor, RINE, ClipDet) also depend on zoom? Their published phone-photo FPRs, and our Phase 3 numbers, would be affected.
+
+**Status.** E1 is an exploratory diagnostic, not a hypothesis. It does not count toward the stop rule. It is PILOT data (VISION + 6 Synthbuster) and is repeated on the official data later.
+
+**Data.**
+- Pilot test split: VISION native / WA / FBH reals and 6 Synthbuster generators.
+- Calib-split VISION reals are used for thresholds.
+- Two arms with identical processing for both classes:
+  - `orig`: 003 crops;
+  - `fov512`: short side resized to 512, then center crop, using the existing 004 crops.
+- Conditions: `clean` and `jpeg75_resize05`.
+
+**Detectors.**
+- CommFor, RINE and ClipDet, each at its own preprocessing, scored with `007/score_pretrained.py` on both arms. B-Free is unavailable.
+- B0 = 005's A0 (grouped CV, balanced), from cached 004 features.
+- Texture baseline: mean |Laplacian| of the detector input, with its direction set on calib.
+
+**Primary measure (per detector).** ΔAUROC = AUROC(orig) − AUROC(fov512):
+- AUROC is the macro over the 6 generators, against test natives;
+- 95% CI from a paired cluster bootstrap (reals by device, fakes by image), 2,000 resamples.
+- A detector is labelled **scale-sensitive** if |ΔAUROC| ≥ 0.03 and the CI excludes 0.
+
+**Secondary (descriptive).**
+1. **Cross-zoom threshold transfer.**
+   - Fix a 1%-FPR threshold on calib natives in one arm. Report the test FPR on natives, WA and FBH in the *other* arm, and TPR.
+   - Do this in both directions, against a within-arm threshold.
+   - This mimics deployment, where the same photo can arrive at different resolutions.
+2. **Per-pool AUROC** (native / WA / FBH) in each arm.
+3. **Correlation** between each detector's real-photo score and the Laplacian texture.
+
+**Caveat (stated in advance).** `fov512` downsamples phone photos by about 4.8× but fakes by only about 2×. So it changes resampling history differently for the two classes. E1 measures sensitivity to zoom *and* resampling together, and cannot separate them.
+
+**D-008.** The guard runs for every new scoring run (|Δlogit| ≤ 1e-3).
