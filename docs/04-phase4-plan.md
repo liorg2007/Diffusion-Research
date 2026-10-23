@@ -276,3 +276,46 @@ Setting (ii) (RAISE PNG vs PNG) has no pilot version. Caveat: in (iii-p) the rea
 **Caveat (stated in advance).** `fov512` downsamples phone photos by about 4.8× but fakes by only about 2×. So it changes resampling history differently for the two classes. E1 measures sensitivity to zoom *and* resampling together, and cannot separate them.
 
 **D-008.** The guard runs for every new scoring run (|Δlogit| ≤ 1e-3).
+
+## Amendment 8 (2026-10-24, before any result): E2 PILOT of ideas #6 (aligned-VAE probe) and #7 (VAE double-reconstruction ratio) (experiments/009-vae-aligned)
+**Why now.** Phase 2 planned "a 20-image pilot when idle" for #6 and #7. The GPU is idle while grip.unina.it is down. Both ideas use only reals plus public VAEs, so they can be piloted now. Like every pilot, this does not count toward the stop rule.
+
+**Shared setup.**
+- VAEs: `stabilityai/sd-vae-ft-mse` (SD1.x family) and `stabilityai/sdxl-vae`.
+- `diffusers` 0.35.2 has been added to the lock.
+- The FLUX VAE is not used: FLUX is the held-out generator.
+- Pilot splits come from `004/pilot`, in two arms: `orig` (003 512 crops) and `fov512`.
+- Features are B0's DINOv2-base primary (1536-d) via the 004 pipeline.
+- Conditions: `clean` and `jpeg75_resize05`, applied identically to both classes.
+- **Timing gate.** First time 20 images. If one VAE pass at 512² takes more than 1 s, cut the test set to 30 fakes per generator and 150 natives, and say so.
+
+**#6 aligned-VAE probe.**
+- Aligned fakes = every train-split real (99 native + 99 WA + 99 FBH) round-tripped (encode → decode) through each VAE at its own crop. That gives 594 fakes.
+- Each round-trip is re-saved as JPEG at the source's estimated quality factor (`lib/preprocess.jpeg_quality_estimate`), so real and aligned fake share format and zoom.
+- **Arms:**
+  - A = probe on reals vs aligned fakes only. It never sees a generator image, so all 6 Synthbuster generators are unseen.
+  - B = B0 (005's A0, LOGO).
+  - C = B's LOGO training data plus the aligned fakes.
+- **Metrics:** macro AUROC over the 6 generators vs test natives, with cluster-bootstrap CIs. Generators are also grouped into SD-VAE family (SD2, SDXL) and other (DALL-E 2, DALL-E 3, Firefly, Midjourney v5).
+- **Pilot criteria:**
+  - A PASSES if macro AUROC at `jpeg75_resize05` is ≥ 0.85 in the label arm (`orig`).
+  - A FAILS if it is < 0.75.
+  - C vs B uses the +0.02 criterion only if B's LOGO-macro is ≤ 0.96 (headroom rule as in Amendment 3). Otherwise it is "no headroom / uninformative".
+  - The UnivFD comparison in the idea file is dropped: no UnivFD head is cached.
+- **Texture check** (lesson from H4): report the Laplacian-texture AUROC of reals vs aligned fakes, and A's AUROC within texture-matched strata. This shows whether A only learns "the VAE blurs".
+
+**#7 double-reconstruction ratio.**
+- x1 = VAE(x) and x2 = VAE(x1).
+- Score = ‖x − x1‖₂ / ‖x1 − x2‖₂, using the minimum over the two VAEs. Higher = more real, so the score for "fake" is the negative.
+- The direction is fixed by AEDR's premise and never flipped.
+- Data: test natives and test fakes, both arms, both conditions.
+- **Baselines:**
+  - single-pass reconstruction error ‖x − x1‖₂, min over the bank. This is an AEROBLADE-style baseline with L2 in place of LPIPS. LPIPS would need a further VGG download; this deviation is disclosed.
+  - the Laplacian texture baseline.
+- **Pilot criteria:**
+  - PASS if the ratio's macro AUROC (clean) is ≥ the single-pass baseline + 0.05, AND ≥ 0.65 at `jpeg75_resize05`, AND it beats the texture baseline.
+  - FAIL if any of these is missed.
+  - Validity gate as in Amendment 6: if the ratio's clean AUROC CI includes 0.5, the label is UNINFORMATIVE.
+  - The fusion criterion (+0.02 over B0 on FLUX) is not testable in the pilot: B0 is at ~0.98 with no FLUX.
+
+**D-008.** CUDA vs CPU VAE outputs on 32 images: max |Δpixel| ≤ 1e-3 (in [0,1]); max |Δlogit| ≤ 1e-3 for probes. Abort on failure. TF32 is disabled.
