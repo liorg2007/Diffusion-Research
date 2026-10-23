@@ -1,0 +1,36 @@
+{
+ "seed": 0,
+ "crop": 512,
+ "conditions": [
+  "clean",
+  "jpeg75_resize05",
+  "social_sim"
+ ],
+ "scorers": {
+  "communityforensics": "scorers.communityforensics:score",
+  "bfree": "scorers.bfree:score",
+  "rine": "scorers.rine:score",
+  "clipdet": "scorers.clipdet:score"
+ },
+ "b0": {
+  "backbone": "hf:dinov2:facebook/dinov2-base",
+  "input_size": 224,
+  "layers": [
+   -1
+  ],
+  "use_cls": true,
+  "use_mean": true,
+  "probe": "probe.fit_probe"
+ },
+ "mps_batch": 20,
+ "d008_tol": 0.001,
+ "d008_subset": 32,
+ "calib_frac": 0.3,
+ "fpr_calib": 0.05,
+ "n_train_devices": 10,
+ "n_boot": 1000,
+ "threshold_native": 0.0,
+ "excluded_generators": [
+  "latent-diffusion"
+ ]
+}

@@ -344,7 +344,9 @@ def stage_b0():
         if cond == "clean":
             m = m | df.b0_train
         idx = np.where(m.to_numpy())[0]
-        f = extract_features(bb, df.path.iloc[idx], cond, str(CACHE / "b0"), 16, keys=df.sha256.iloc[idx], seed=SEED)
+        # D-010: DINOv2's bicubic pos-embed interpolation is unsupported on MPS (torch 2.2.2); run on CPU only
+        f = extract_features(bb, df.path.iloc[idx], cond, str(CACHE / "b0"), 16, keys=df.sha256.iloc[idx], seed=SEED,
+                             device="cpu")
         Xc = np.zeros((len(df), f.shape[1]), np.float32)
         Xc[idx] = f
         X[cond] = Xc

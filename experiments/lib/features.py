@@ -122,8 +122,10 @@ def load_backbone(spec, input_size=224, layers=(-1,), use_cls=True, use_mean=Fal
 
 
 def embed_images(backbone, images, batch_size=16, device=None):
-    """PIL images -> float32 array [N, D]. Falls back to CPU if the accelerator raises."""
-    dev = get_device(device)
+    """PIL images -> float32 array [N, D]. Falls back to CPU if the accelerator raises.
+    The fallback is sticky for the backbone's lifetime (D-010): bouncing a model between MPS and CPU after a
+    failed MPS forward produced silently wrong DINOv2 features in 003-baselines-eval."""
+    dev = torch.device("cpu") if getattr(backbone, "force_cpu", False) else get_device(device)
     out = []
     for i in range(0, len(images), batch_size):
         x = torch.stack([backbone.to_tensor(im) for im in images[i:i + batch_size]])
@@ -135,6 +137,7 @@ def embed_images(backbone, images, batch_size=16, device=None):
                 raise
             print(f"[features] {dev} failed ({type(e).__name__}); falling back to cpu")
             dev = torch.device("cpu")
+            backbone.force_cpu = True
             backbone.model.to(dev)
             f = backbone.forward(x.to(dev))
         out.append(f.float().cpu().numpy())
