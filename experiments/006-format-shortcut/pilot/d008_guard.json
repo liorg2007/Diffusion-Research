@@ -1,0 +1,25 @@
+{
+ "n": 32,
+ "device": "cuda",
+ "feat_tol": 0.001,
+ "variants": {
+  "post": {
+   "max_abs_feature_diff": 3.781914710998535e-05,
+   "max_scaled_feature_diff": 1.1962455573666375e-05,
+   "max_abs_score_diff": 1.6208366615533265e-06,
+   "ok": true
+  },
+  "pre": {
+   "max_abs_feature_diff": 7.05718994140625e-05,
+   "max_scaled_feature_diff": 1.0882864444283769e-05,
+   "max_abs_score_diff": 1.4815639574061734e-06,
+   "ok": true
+  }
+ },
+ "ok": true,
+ "pipeline_vs_004_cache": {
+  "max_abs_diff": 0.0,
+  "max_scaled_diff": 0.0,
+  "ok": true
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "experiment": "006-format-shortcut",
+ "stage": "H4 PILOT (docs/04-phase4-plan.md, Amendment 5)",
+ "data": {
+  "splits_orig": "experiments/004-phase4-features/pilot/splits_pilot.csv",
+  "splits_fov512": "experiments/004-phase4-features/pilot/splits_pilot_fov512.csv",
+  "feature_subdirs": {"orig": "pilot", "fov512": "pilot_fov512"},
+  "rows": "split == test (RIGID scores, bootstrap); split == calib & pool == vision_native (1%-FPR threshold only)",
+  "primary_reals": "pool == vision_native (25 devices)",
+  "descriptive_pools_setting_i": ["vision_native", "vision_whatsapp", "vision_facebook_hq"],
+  "generators": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl"],
+  "firefly_variants": ["with_firefly", "without_firefly"],
+  "primary_firefly_variant": "with_firefly"
+ },
+ "settings": {
+  "i": "clean (VISION native camera JPEG vs clean PNG fakes)",
+  "iii-p": "jpeg(90) applied to both classes",
+  "iv-p": "jpeg75_resize05 applied to both classes"
+ },
+ "conditions": {"i": "clean", "iii-p": "jpeg(90)", "iv-p": "jpeg75_resize05"},
+ "arms": ["orig", "fov512"],
+ "rigid": {
+  "backbone": "hf:dinov2:facebook/dinov2-base (offline, data/hf_cache)",
+  "input": "condition applied to the 512 crop PNG (004 load_cond) -> 224 center crop -> [0,1]",
+  "noise": "n ~ N(0, sigma^2) added in [0,1] pixel space on the 224 crop, AFTER the condition, BEFORE mean/std normalization, then clip to [0,1]",
+  "sigmas": [0.01, 0.02, 0.05],
+  "draws": 4,
+  "noise_seed": "CPU torch.Generator, seed = first 8 bytes of sha256('<image sha256>:<draw>:<sigma:.4f>') & (2**63-1)",
+  "score": "1 - cos(f(x), f(x+n)), averaged over the 4 draws; higher = fake; never flipped",
+  "feature_variants": {
+   "post": "last_hidden_state CLS (after the final LayerNorm = the DINOv2 embedding) -- PRIMARY, fixed before any result",
+   "pre": "hidden_states[-1] CLS (before the final LayerNorm = 004/B0 'primary' CLS convention) -- sensitivity"
+  },
+  "primary_feature_variant": "post",
+  "batch": 32
+ },
+ "b0": {
+  "recipe": "005 A0: primary 1536-d clean features of b0_train rows, standardised with b0_train reals' mean/std, probe.fit_probe(seed=0, groups=sha256, class_weight='balanced'), LOGO (logo_<g> trained without g's fakes)",
+  "macro": "mean over generators of AUROC(test native reals vs g's TEST-split fakes) [primary]; 005-style (all fakes of g, train+test split) reported as sensitivity",
+  "conditions": ["clean", "jpeg(90)", "jpeg75_resize05"]
+ },
+ "aggregation": {
+  "auroc": "LOGO-macro over generators (each generator's fakes vs the same reals); pooled AUROC also reported",
+  "bootstrap": "metrics.bootstrap_weights: reals by device cluster, fakes by image stratified per generator; paired for differences",
+  "n_boot": 2000, "seed": 0, "ci": "95% percentile"
+ },
+ "verdict": {
+  "source": "docs/04-phase4-plan.md Amendment 5 (point estimates; CIs reported alongside)",
+  "SUPPORTED": "AUROC(i) - AUROC(iii-p) >= 0.10 at best sigma AND B0 gap (same cell) < 0.05",
+  "REFUTED": "gap < 0.03 for every sigma",
+  "INCONCLUSIVE": "otherwise",
+  "best_sigma": "argmax over sigma of AUROC(i) (per arm x firefly variant cell)",
+  "gap_iv_p": "reported, not used in the label"
+ },
+ "operating_point": {"fpr": 0.01, "threshold": "metrics.threshold_for_fpr on calib-split native reals (setting i), per sigma"},
+ "d008": {"n": 32, "subset": "16 native test reals + 16 test fakes (seed 0, sorted shas), orig arm, clean, draw 0, all sigmas", "feat_tol_scaled": 0.001, "tf32": "disabled (features.get_device)", "cpu_batch": 4},
+ "pipeline_check_vs_004": "unnoised pre-LN CLS from our forward vs 004 cache primary[:, :768] on the same 32 images, scaled tol 1e-3"
+}

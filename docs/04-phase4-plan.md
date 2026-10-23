@@ -218,3 +218,26 @@ Setting (ii) (RAISE PNG vs PNG) has no pilot version. Caveat: in (iii-p) the rea
 - The 1%-FPR operating point for the RIGID score, from the calib-split reals.
 
 **D-008 guard.** CUDA vs CPU on 32 noised images: scaled |Δfeature| ≤ 1e-3, with max |Δscore| reported. Abort if the guard fails.
+
+## Amendment 6 (2026-10-24, after the H4 pilot critique, before any official H4 data)
+**Pilot outcome** (`experiments/006-format-shortcut/pilot/critique.md`, no bug found):
+- The RIGID-style score is below chance on VISION + Synthbuster: AUROC(i) is 0.292 orig and 0.405 fov512.
+- The cause is input texture. Zoomed-in phone crops are smooth (median Laplacian 0.031 vs 0.080 for fakes), and smooth inputs drift more under noise. Spearman(score, Laplacian) is −0.73 within reals; the lead re-checked this from the critic's `c2_stats.csv.gz`.
+- Texture alone scores 0.222, and the texture-residualized score is about 0.51.
+- Both pilot labels are therefore read as **UNINFORMATIVE**: the score does not work on this data. "REFUTED" must NOT be taken to mean that drift scores are a valid fusion component.
+
+**Changes for the official H4 run.** Thresholds (0.10 / 0.03, B0 < 0.05) are unchanged; the direction is never flipped.
+1. **Validity gate.** A label other than UNINFORMATIVE is allowed only if, for the best σ:
+   - the lower bound of AUROC(ii)'s 95% CI is > 0.5; and
+   - RIGID's AUROC(ii) beats the Laplacian texture baseline's AUROC(ii). The baseline is mean |Laplacian| of the 224 input, with its direction set on calib-split reals and fakes.
+   - "Best σ" is now the σ with the highest AUROC(ii).
+2. **Primary contrast isolates format.** New setting **M** = RAISE reals `jpeg(90)` vs clean PNG fakes. The primary gap is AUROC(M) − AUROC(ii). Only the reals' encoding differs: same reals, same fakes, and a JPEG-real/PNG-fake shortcut is available in M only.
+   - The original (i) − (iii) and also (M) − (iii) are reported as secondary.
+   - This replaces the critic's suggested (ii) → (iii), because in (ii) → (iii) neither side offers a format shortcut.
+3. **Manipulation check.** For every contrast, report the mean change in Laplacian texture and B0's gap, so we can see how much the format change alters the inputs.
+4. **Which arm decides.** The label comes from the arm that D-013 makes primary; until the owner decides, that is `orig` (D-009). `fov512` and a new whole-image arm `fov224` are reported alongside. `fov224` resizes the short side to 224 and then center-crops, which may be closer to RIGID's preprocessing [unverified].
+5. **Texture-residualized RIGID** (descriptive). Regress the score on log-Laplacian using calib-split reals only, then report the AUROC of the residual on test.
+6. **Cross-scale B0** (descriptive). Train on orig and test on fov512, and the reverse. Retraining B0 inside each arm hides how scale-dependent the probe itself is.
+7. **Not adopted without the owner:** a DINOv2 ViT-L/14 backbone. It falls under the larger-backbone decision and the 9 GB cap (D-007).
+
+**Disclosure.** The pilot agent edited config.json (adding the pre-LN variant and making post-LN primary) after the dry run had already shown the inversion. Post-LN and pre-LN give identical labels in every cell, so this changes nothing.

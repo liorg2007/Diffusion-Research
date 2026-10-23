@@ -98,3 +98,24 @@
   - pilot_fov512 features: D-008 max |dlogit| 2.78e-5.
   - PILOT_v2 result: fov512 removes the native-vs-WA/FBH pool gaps (A0 clean WA 0.966→0.979) but the ceiling stays ~0.98; WA pooled-conformal FPR 3.31%→1.58%.
   - Wrote Amendment 4 (H2-v2 rule adopted after seeing pilot labels, disclosed). Official run ready; blocked on grip.unina.it.
+- 2026-10-23 23:00 — grip.unina.it still down (watcher running). Confirmed there is no other official host: the B-Free README links only to grip. Owner asked for work that doesn't depend on it.
+  - Pre-registered the H4 pilot as plan Amendment 5, committed as d278c70 before any H4 result.
+  - Settings: (i) native vs clean, (iii-p) both jpeg(90), (iv-p) both jpeg75_resize05, each × orig/fov512, with and without Firefly. Criteria unchanged from H4.
+  - Launched sonnet/high code agent → experiments/006-format-shortcut/pilot/.
+- 2026-10-24 00:05 — 006 H4 PILOT done (experiments/006-format-shortcut/pilot/; pilot, not counted toward the stop rule):
+  - D-008 passed: scaled |Δfeat| 1.2e-5, max |Δscore| 1.6e-6.
+  - The unnoised CLS matches the 004 cache; B0 reproduces 005 pilot_v2 A0 (0.99204).
+  - Lib tests 51 passed (via run_all.py; pytest is not in the venv).
+  - The RIGID-style score is INVERTED on this data: AUROC(i) 0.292 orig / 0.405 fov512, with Firefly, best σ = 0.01.
+  - Pre-registered labels: REFUTED orig (gap −0.003 [−0.023, +0.017]); INCONCLUSIVE fov512 (gap +0.067 [+0.043, +0.092]). B0 gap +0.002.
+  - Secondary: orig − fov512 AUROC(i) is RIGID −0.10 to −0.16 vs B0 +0.010 to +0.015. The training-free score is strongly scale-sensitive.
+  - Agent judgment calls fixed in config before results: post-LN CLS primary, noise on the 224 crop. Batch 32 because the GPU was shared.
+  - Launched opus/high critic → pilot/critique.md (is the inversion a bug, and how should REFUTED be read for a below-chance score?).
+- 2026-10-24 00:20 — H4 critic (opus/high, 006/pilot/critique.md): no bug; uninformative for H4.
+  - The inversion is real, and the direction matches RIGID Eq. 1. The score tracks input texture: Spearman −0.73 with Laplacian within reals; texture alone gives AUROC 0.222; the texture-residualized score is about 0.51.
+  - Lead re-checked from critic_checks/c2_stats.csv.gz: Laplacian AUROC 0.778 (= 1 − 0.222), Spearman −0.73, median Laplacian real/fake 0.031/0.080.
+  - Both pilot labels are read as UNINFORMATIVE.
+  - Wrote plan Amendment 6 (official H4): validity gate (AUROC(ii) CI > 0.5 and beats the texture baseline); primary contrast M − (ii) with RAISE reals jpeg(90) vs PNG fakes; manipulation check; label arm = D-013 primary (orig until decided) plus fov224; texture-residualized and cross-scale B0 as descriptive.
+  - ViT-L was not adopted (needs the owner, D-007).
+  - Disclosure: the agent edited config after the dry run showed the inversion; no label impact.
+  - KB idea drift-format-shortcut updated (negative result).

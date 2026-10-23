@@ -26,4 +26,11 @@
   - **Supported if:** AUROC(i) - AUROC(iii) >= 0.10 for the best sigma, while B0's gap < 0.05. **Refuted if:** gap < 0.03 for all sigma (then drift scores are a legitimate training-free component for fusion).
   - Cost: (1 + 4) ViT-L forwards per image x ~2,000 images x 4 settings = ~40k forwards, ~1-1.5 h on MPS (estimate; pilot first).
 
-- **Status:** proposed
+- **Pilot result (2026-10-24, NEGATIVE / UNINFORMATIVE; experiments/006-format-shortcut/pilot/, critique.md):**
+  - RIGID-style drift with DINOv2-base CLS is BELOW chance on VISION natives vs 6 Synthbuster generators: AUROC 0.292 at the 512 crop and 0.405 at fov512 (best sigma 0.01).
+  - Cause: the score tracks input texture. Smooth, zoomed-in phone crops drift more (Spearman -0.73 with Laplacian). Texture alone gives 0.222 and the texture-residualized score is about 0.51.
+  - The format-shortcut question therefore could not be tested on this data.
+  - Practical lesson: a training-free drift score must be compared against a trivial texture baseline, and real/fake field of view must be matched, before any claim.
+  - Consistent with RIGID's AUC 0.439 on a 20-generator mix (manifold-bias-iclr2025, Table 1).
+  - Official-run changes: plan Amendment 6.
+- **Status:** pilot done (uninformative); official run pending RAISE data

@@ -1,0 +1,80 @@
+23:06:57 H4 pilot out=experiments/006-format-shortcut/pilot n_boot=2000
+23:06:59 device cuda; rows to score: (i) 1477, (iii-p)/(iv-p) 718 per arm
+23:07:16 D-008 [post]: max|dF|=3.78e-05 scaled=1.20e-05 max|dscore|=1.62e-06 -> ok
+23:07:16 D-008 [pre]: max|dF|=7.06e-05 scaled=1.09e-05 max|dscore|=1.48e-06 -> ok
+23:07:16 pipeline check vs 004 cache (unnoised pre-LN CLS): max|d|=0.00e+00 scaled=0.00e+00
+23:07:16   orig/clean: scoring 1477 images x 3 sigmas x 4 draws
+23:07:21     clean: 64/1477
+23:07:46     clean: 384/1477
+23:08:10     clean: 704/1477
+23:08:35     clean: 1024/1477
+23:09:01     clean: 1344/1477
+23:09:11   orig/jpeg(90): scoring 718 images x 3 sigmas x 4 draws
+23:09:16     jpeg(90): 64/718
+23:09:49     jpeg(90): 384/718
+23:10:30     jpeg(90): 704/718
+23:10:32   orig/jpeg75_resize05: scoring 718 images x 3 sigmas x 4 draws
+23:10:41     jpeg75_resize05: 64/718
+23:11:24     jpeg75_resize05: 384/718
+23:12:27     jpeg75_resize05: 704/718
+23:12:31   fov512/clean: scoring 1477 images x 3 sigmas x 4 draws
+23:12:59     clean: 64/1477
+23:15:23     clean: 384/1477
+23:17:24 H4 pilot out=experiments/006-format-shortcut/pilot n_boot=2000
+23:17:27 device cuda; rows to score: (i) 1477, (iii-p)/(iv-p) 718 per arm
+23:17:50 D-008 [post]: max|dF|=3.78e-05 scaled=1.20e-05 max|dscore|=1.62e-06 -> ok
+23:17:50 D-008 [pre]: max|dF|=7.06e-05 scaled=1.09e-05 max|dscore|=1.48e-06 -> ok
+23:17:50 pipeline check vs 004 cache (unnoised pre-LN CLS): max|d|=0.00e+00 scaled=0.00e+00
+23:21:09 H4 pilot out=experiments/006-format-shortcut/pilot n_boot=2000
+23:21:12 device cuda; rows to score: (i) 1477, (iii-p)/(iv-p) 718 per arm
+23:21:35 D-008 [post]: max|dF|=3.78e-05 scaled=1.20e-05 max|dscore|=1.62e-06 -> ok
+23:21:35 D-008 [pre]: max|dF|=7.06e-05 scaled=1.09e-05 max|dscore|=1.48e-06 -> ok
+23:21:35 pipeline check vs 004 cache (unnoised pre-LN CLS): max|d|=0.00e+00 scaled=0.00e+00
+23:21:35   orig/clean: loaded from cache
+23:21:35   orig/jpeg(90): loaded from cache
+23:21:35   orig/jpeg75_resize05: loaded from cache
+23:21:35   fov512/clean: scoring 1477 images x 3 sigmas x 4 draws
+23:21:48     clean: 32/1477
+23:23:05     clean: 192/1477
+23:24:13     clean: 352/1477
+23:25:33     clean: 512/1477
+23:26:26     clean: 672/1477
+23:26:42     clean: 832/1477
+23:26:55     clean: 992/1477
+23:27:08     clean: 1152/1477
+23:27:23     clean: 1312/1477
+23:27:36     clean: 1472/1477
+23:27:37   fov512/jpeg(90): scoring 718 images x 3 sigmas x 4 draws
+23:27:40     jpeg(90): 32/718
+23:27:54     jpeg(90): 192/718
+23:28:29     jpeg(90): 352/718
+23:29:06     jpeg(90): 512/718
+23:29:55     jpeg(90): 672/718
+23:30:12   fov512/jpeg75_resize05: scoring 718 images x 3 sigmas x 4 draws
+23:30:22     jpeg75_resize05: 32/718
+23:31:25     jpeg75_resize05: 192/718
+23:32:24     jpeg75_resize05: 352/718
+23:33:15     jpeg75_resize05: 512/718
+23:34:21     jpeg75_resize05: 672/718
+23:34:56 B0[orig] logo_dalle2: n_train=399 C=10
+23:35:15 B0[orig] logo_dalle3: n_train=399 C=1
+23:35:29 B0[orig] logo_firefly: n_train=399 C=1
+23:35:47 B0[orig] logo_midjourney-v5: n_train=399 C=10
+23:36:03 B0[orig] logo_stable-diffusion-2: n_train=399 C=10
+23:36:22 B0[orig] logo_stable-diffusion-xl: n_train=399 C=10
+23:36:38 B0[fov512] logo_dalle2: n_train=399 C=0.001
+23:36:58 B0[fov512] logo_dalle3: n_train=399 C=0.01
+23:37:16 B0[fov512] logo_firefly: n_train=399 C=0.01
+23:37:35 B0[fov512] logo_midjourney-v5: n_train=399 C=0.01
+23:37:54 B0[fov512] logo_stable-diffusion-2: n_train=399 C=0.001
+23:38:12 B0[fov512] logo_stable-diffusion-xl: n_train=399 C=0.01
+23:38:14 [post/orig/with_firefly] best sigma 0.01: AUROC(i)=0.292 gap(iii-p)=-0.003 B0 gap=+0.002 -> REFUTED
+23:38:16 [post/orig/without_firefly] best sigma 0.01: AUROC(i)=0.237 gap(iii-p)=-0.024 B0 gap=+0.002 -> REFUTED
+23:38:19 [post/fov512/with_firefly] best sigma 0.01: AUROC(i)=0.405 gap(iii-p)=+0.067 B0 gap=+0.002 -> INCONCLUSIVE
+23:38:21 [post/fov512/without_firefly] best sigma 0.01: AUROC(i)=0.382 gap(iii-p)=+0.056 B0 gap=+0.001 -> INCONCLUSIVE
+23:38:37 [pre/orig/with_firefly] best sigma 0.05: AUROC(i)=0.313 gap(iii-p)=-0.008 B0 gap=+0.002 -> REFUTED
+23:38:39 [pre/orig/without_firefly] best sigma 0.05: AUROC(i)=0.254 gap(iii-p)=-0.013 B0 gap=+0.002 -> REFUTED
+23:38:43 [pre/fov512/with_firefly] best sigma 0.01: AUROC(i)=0.421 gap(iii-p)=+0.069 B0 gap=+0.002 -> INCONCLUSIVE
+23:38:46 [pre/fov512/without_firefly] best sigma 0.05: AUROC(i)=0.402 gap(iii-p)=+0.021 B0 gap=+0.001 -> INCONCLUSIVE
+23:39:03 B0 vs 005 pilot_v2 (orig clean, all-g fakes): {'ours': 0.9920352265673494, '005': 0.9920352265673494}
+23:39:03 done in 1074s; outputs in experiments/006-format-shortcut/pilot
