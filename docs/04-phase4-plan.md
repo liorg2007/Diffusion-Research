@@ -319,3 +319,43 @@ Setting (ii) (RAISE PNG vs PNG) has no pilot version. Caveat: in (iii-p) the rea
   - The fusion criterion (+0.02 over B0 on FLUX) is not testable in the pilot: B0 is at ~0.98 with no FLUX.
 
 **D-008.** CUDA vs CPU VAE outputs on 32 images: max |Δpixel| ≤ 1e-3 (in [0,1]); max |Δlogit| ≤ 1e-3 for probes. Abort on failure. TF32 is disabled.
+
+## Amendment 9 (2026-10-24, before any data is downloaded): E3 PILOT of idea #5 (canonicalization vs RAID transfer attacks) (experiments/010-raid-transfer)
+**Source.** `kb/datasets/raid.md`:
+- RAID is MIT-licensed, at aimagelab/RAID on HF. The upstream D3/LAION image licences are [unverified].
+- The attack ensemble is Wang20, Corvi23, Ojha23 (UnivFD), Cavia24, Koutlis24 (RINE) and DRCT. DINOv2 is a held-out baseline, so our DINOv2-base probe is outside the ensemble.
+
+**Subset.**
+- 100 ids per class × 5 classes (real, gen_0..gen_3), chosen with seed 0 from ids present in both `original/` and `epsilon8/`.
+- For each id: the eps-8 attacked PNG, the eps-16 attacked PNG (an anchor against the paper's Table 4) and the original JPEG.
+- About 140 MB. Each file's sha256 is checked against the HF LFS oid and logged in a committed manifest.
+- This is a pilot. It does not count toward the stop rule.
+
+**Inputs.**
+- Attacked images: 256² PNG, as released.
+- Clean control: the original JPEG (324²), resized with the short side to 256 and center-cropped to 256. Bicubic, antialiased; RAID's exact preprocessing is [unverified].
+- Every detector then applies its own preprocessing. For B0 that is the 224 center crop of the 256 image, which differs from the 512→224 crop it was trained on. This domain shift is stated up front.
+
+**Detectors.**
+- B0 = the A0 probe trained on ALL pilot train data (6 Synthbuster generators plus VISION train reals, `orig` arm). No LOGO is needed, since RAID's generators are unseen.
+- References: CommFor and ClipDet (not in the ensemble) and RINE (in the ensemble, so a near-white-box reference).
+
+**Test-time canonicalization.** `jpeg75_resize05`, applied to both classes, on clean and on attacked inputs.
+
+**Metrics.** AUROC of real vs fake (all 4 generators pooled, plus per generator), with 95% CIs from a bootstrap over ids. Then:
+- drop = AUROC(clean) − AUROC(attacked, eps 8);
+- recovery = [AUROC(attacked + canon) − AUROC(attacked)] / drop;
+- canonicalization clean cost = AUROC(clean) − AUROC(clean + canon). The originals are already JPEG at about q75, so this cost is probably understated. That caveat is stated in advance.
+
+**Pilot criteria for B0.**
+
+| Label | Condition |
+|---|---|
+| UNINFORMATIVE (validity gate) | AUROC(clean) < 0.80 |
+| PASS | drop ≤ 0.10, and either drop < 0.02 or recovery ≥ 50% |
+| FAIL | drop > 0.10 and recovery < 50% |
+| INCONCLUSIVE | Otherwise |
+
+Eps-16 numbers are descriptive only. They are compared with RAID Table 4 (DINOv2 accuracy 83.1 → 54.6).
+
+**D-008.** The guard runs for every scorer (|Δlogit| ≤ 1e-3).
