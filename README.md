@@ -22,6 +22,7 @@
 ### Key pilot findings (pilot data only)
 - **FOV confound** (D-013): real crops are ~2.5–3× more zoomed than fake crops. `fov512` removes the native-vs-WA/FBH gaps.
 - **Default thresholds are unusable:** B0 flags 17% of real photos at logit 0. Real-photo calibration transfers across VISION devices (pooled 1% → ~1% LODO); WhatsApp is the weak spot.
+- **H4 pilot** (`experiments/006-format-shortcut/pilot/`): the training-free RIGID-style drift score is below chance (AUROC 0.29) and mostly measures input texture, so the label is uninformative. The official-run fixes are in plan Amendment 6.
 
 ### Owner decisions pending
 1. D-013: make `fov512` primary, or keep it as an extra arm.
