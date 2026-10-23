@@ -643,7 +643,12 @@ def from_manifest():
                 mine.append((e, rel))
         if not mine:
             continue
-        ents, _ = read_central_directory(z["url"], z["src"], RAW / z["src"] / "_central_directory" / f"{keymap[key]}.cd")
+        try:
+            ents, _ = read_central_directory(z["url"], z["src"], RAW / z["src"] / "_central_directory" / f"{keymap[key]}.cd")
+        except Exception as ex_:  # host down: fail only this zip's files, keep fetching the other sources
+            print(f"central directory of {key} unreachable ({ex_!r}); skipping its {len(mine)} files", flush=True)
+            failed.extend((rel, f"central directory unreachable: {ex_!r}") for _, rel in mine)
+            continue
         live = {x["name"]: x for x in ents}
         for e, rel in mine:  # refresh offsets from the live central directory, require identical CRC32/size
             f = live.get(e["name"])

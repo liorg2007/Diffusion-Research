@@ -488,6 +488,8 @@ def check_all():
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--verify-only", action="store_true", help="download nothing; check everything; exit 1 on any problem")
+    ap.add_argument("--keep-going", action="store_true",
+                    help="on a failed item, log it and continue with the rest (e.g. one host down); still exits 1")
     args = ap.parse_args()
     print(f"project root: {ROOT}")
     results = check_all()
@@ -509,12 +511,11 @@ def main():
         print(f"\n[fetch] {it['name']}", flush=True)
         try:
             it["fetch"]()
-        except Abort as e:
-            print(f"ABORT: {e}")
-            sys.exit(1)
-        except subprocess.CalledProcessError as e:
-            print(f"ABORT: command failed: {e.cmd}\n{e.stderr}")
-            sys.exit(1)
+        except (Abort, subprocess.CalledProcessError) as e:
+            msg = f"command failed: {e.cmd}\n{e.stderr}" if isinstance(e, subprocess.CalledProcessError) else str(e)
+            print(f"{'FAILED (continuing)' if args.keep_going else 'ABORT'}: {msg}", flush=True)
+            if not args.keep_going:
+                sys.exit(1)
     print("\nFinal verification:")
     c = table(check_all())
     sys.exit(0 if c["OK"] == len(ITEMS) else 1)

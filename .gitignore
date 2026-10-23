@@ -11,3 +11,5 @@ __pycache__/
 *.ckpt
 experiments/*/cache/
 env/.bootstrap/
+env/.python/
+env/.uv-cache/

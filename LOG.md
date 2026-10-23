@@ -44,3 +44,18 @@
   - Agent (sonnet/high) wrote env/bootstrap_data.py + fetch.py from-manifest; lead re-ran `--verify-only` on the Mac: 24/24 OK.
   - Default download mode is untested (nothing downloaded on the Mac). The first real run happens on the PC.
   - Added CLAUDE.md and env/SETUP_WSL.md.
+- 2026-10-23 09:49 — GPU PC setup (env/SETUP_WSL.md steps 1–4) done:
+  - RTX 4060 Ti 8 GB, driver 591.86.
+  - WSL distro is Ubuntu 22.04 (no official python3.12). Owner chose uv-managed CPython 3.12.15 in env/.python (D-012).
+  - Locked env synced: torch 2.8.0+cu128, CUDA available. Lib tests 26/26.
+- 2026-10-23 09:49 — Step 5 (bootstrap_data.py), first real download run:
+  - The 5 git clones succeeded. The download ABORTED on BFREE_dino2reg4.zip: HTTPS to www.grip.unina.it times out (TCP 443).
+  - Plain HTTP only serves a Synology NAS redirect page to :5001, which returns 404 for these paths.
+  - grip hosts the B-Free weights, the RAISE reals and the SD3.5/FLUX fakes.
+  - Added a `--keep-going` flag to bootstrap_data.py; re-ran it to fetch everything else (VISION, Synthbuster, CLIP, HF weights).
+- 2026-10-23 09:49 — Owner said "continue the research". Taken as Phase 4 approval, gated on the step-6 reproduction.
+  - Wrote docs/04-phase4-plan.md, which pre-registers H1, H4 and H2 reconciled with the actual data.
+  - Launched in background: a novelty-check agent (sonnet/medium → kb/novelty-check-phase4.md) and a feature-cache code agent (sonnet/high → experiments/004-phase4-features, lib/perturb additions; no extraction yet).
+- 2026-10-23 09:50 — Novelty check done (kb/novelty-check-phase4.md; section/table refs [unverified], from HTML summaries). H1: partial overlap with DRIFT (learned, synthetic transforms, no platform pairs, no FPR), still novel as closed-form + real pairs. H2: novelty is in the protocol, not the math. H4: gap confirmed (RIGID format-matched only DIRE, in its App. D). Plan amendment 1: add secondary arm A4 DRIFT-lite to 005.
+- 2026-10-23 09:54 — Feature-cache code agent done: experiments/004-phase4-features/{run.py,p4features.py,config.json,notes.md}; lib/perturb.py gained mavali_medium, screenshot_sim, jr(q,f) (existing conditions unchanged, lead reviewed the diff). Lead re-ran lib tests: 30 passed. Dry-run CUDA-vs-CPU guard on real dinov2-base weights (8 synthetic imgs): scaled |Δfeat| ≤ 6e-5, |Δlogit| ≤ 5e-6. Caveat: screenshot_sim factor 1.25 also narrows the field of view of the 224 crop (zoom), not just resampling. Extraction waits for the step-6 gate.
+- 2026-10-23 10:30 — fetch.py from-manifest made host-failure tolerant: an unreachable zip central directory now fails only that zip's files. Re-run: VISION 1,500 + Synthbuster 720 downloaded and sha256-verified (3.25 GB). Still missing, all on grip.unina.it (HTTPS timeout, failed twice → logged, waiting rather than looping): RAISE 400, SD3.5/FLUX 300, latent-diffusion 300 (excluded from eval), B-Free weights. A background watcher polls grip every 5 min for up to 6 h. Step 6 and Phase 4 extraction wait on it.

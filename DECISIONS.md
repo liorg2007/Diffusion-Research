@@ -82,3 +82,11 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 **Check.** Before Phase 4, Phase 3 is re-run on the PC:
 - splits must be byte-identical;
 - metrics are compared with the Mac `tables.md` (expected to agree within about ±0.005 AUROC).
+
+**D-012 — GPU PC: Python 3.12 is uv-managed inside env/.python, not apt (owner-approved 2026-10-23)**
+- Situation: the WSL distro on the GPU PC is Ubuntu 22.04 (SETUP_WSL assumed 24.04). Official 22.04 repos have only Python 3.10; deadsnakes is a community PPA (not an allowed source).
+- Decision: system python3.10 → `env/.bootstrap` venv → `pip install uv==0.13.4` (PyPI) → `uv python install 3.12` with `UV_PYTHON_INSTALL_DIR=env/.python`, `UV_CACHE_DIR=env/.uv-cache` → CPython 3.12.15 (Astral python-build-standalone, same patch version as the Mac). `uv sync --frozen` against it. No sudo; both dirs git-ignored.
+- uv also dropped a `~/.local/bin/python3.12` symlink outside the repo; removed immediately.
+- Result: torch 2.8.0+cu128, CUDA available, RTX 4060 Ti (8 GB); lib tests 26/26.
+- Risk: Pillow/numpy come from the same locked wheels (they bundle their own libjpeg etc.), so the interpreter build should not change metrics; the step-6 reproduction check verifies this.
+

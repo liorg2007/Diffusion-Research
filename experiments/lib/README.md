@@ -7,7 +7,7 @@ No downloads happen anywhere except `features.load_backbone()` (pretrained weigh
 |---|---|
 | `manifest.py` | CSV schema `path,label,source_dataset,generator,camera_or_platform,license,split,sha256`; `assign_splits(df, holdout_generator, seed)`; `check_splits` |
 | `preprocess.py` | RGB, EXIF-orient, re-encode (strips EXIF/ICC), center crop (default 512, no resize), PNG; `sidecar.csv` with original format / JPEG quality / size |
-| `perturb.py` | `apply_condition(img, cond, key, seed)`: `clean`, `jpeg75_resize05`, `resize(f)`, `jpeg(q)`, `social_sim` |
+| `perturb.py` | `apply_condition(img, cond, key, seed)`: `clean`, `jpeg75_resize05`, `resize(f)`, `jpeg(q)`, `social_sim`, `mavali_medium`, `screenshot_sim`, `jr(q,f)` |
 | `metrics.py` | AUROC, AP, bal-acc (fixed thr and FPR=5%-calibrated), FPR@95TPR, TPR@1%FPR, seeded bootstrap CIs, per-generator |
 | `features.py` | `Backbone` adapters (HF CLIP/DINOv2/DINOv3, timm, torchvision), cached `extract_features` |
 | `probe.py` | standardized logistic probe (C by CV on train), `standard_eval`, `logo_eval` |

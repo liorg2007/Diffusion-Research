@@ -17,6 +17,15 @@ nvidia-smi                       # must list your GPU; if not, fix the Windows d
 sudo apt update && sudo apt install -y git unzip python3.12 python3.12-venv
 ```
 
+### Ubuntu 22.04 variant (D-012)
+22.04 has no official `python3.12`. Skip the python3.12 packages and get Python from uv instead, kept inside the repo (no sudo). After cloning (step 3), from `env/`:
+```
+python3 -m venv .bootstrap && .bootstrap/bin/pip install uv==0.13.4
+export UV_PYTHON_INSTALL_DIR=$PWD/.python UV_CACHE_DIR=$PWD/.uv-cache
+.bootstrap/bin/uv python install 3.12.15 && rm -f ~/.local/bin/python3.12   # uv adds that symlink; keep the workspace self-contained
+UV_PROJECT_ENVIRONMENT=.venv .bootstrap/bin/uv sync --frozen --python .python/cpython-3.12.15-linux-x86_64-gnu/bin/python3.12
+```
+
 ## 3. Clone into the Linux filesystem
 Use `~/projects`. Do **not** clone into `/mnt/c/...`: Windows-drive I/O from WSL is ~10× slower.
 ```
