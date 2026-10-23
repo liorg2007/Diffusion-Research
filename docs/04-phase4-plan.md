@@ -359,3 +359,9 @@ Setting (ii) (RAISE PNG vs PNG) has no pilot version. Caveat: in (iii-p) the rea
 Eps-16 numbers are descriptive only. They are compared with RAID Table 4 (DINOv2 accuracy 83.1 → 54.6).
 
 **D-008.** The guard runs for every scorer (|Δlogit| ≤ 1e-3).
+
+**Amendment 9 clarification** (2026-10-24, before any E3 result; only a 25-item CPU smoke test exists, numbers unread):
+- On RAID's 256² inputs, `jpeg75_resize05` gives 128², which is smaller than B0's 224 crop.
+- Canonicalization is therefore: resize ×0.5 → JPEG q75 → bicubic back up to 256.
+- This applies to both classes, and to clean and attacked inputs, for every detector.
+- The extra up-sampling is part of the canonicalization, so it counts toward the clean cost.

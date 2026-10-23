@@ -154,3 +154,9 @@
 - 2026-10-24 01:45 — PDF verification pass (sonnet/medium, kb/verification-pass-2026-10-24.md): 17/17 headline sub-claims confirmed, 0 different.
   - Caveats: LAION-Mobile's 17.4–91.3% FPR range covers the 5 detectors safe at the ProGAN threshold, not all 12. CommFor's 0.987/89.2% is the 384-px model on its own 26K-image set. RAID's 0.95→0.62 is at ε=16/255 (K24→O23). RINE's +9.0 ablation ≠ the abstract's +9.4.
   - Field-map artifact wording updated accordingly.
+- 2026-10-24 02:00 — E3 code done (experiments/010-raid-transfer/, sonnet/high).
+  - CPU smoke test only (25 items, outputs in cache/smoke).
+  - B0 refit matches the 005 pilot_v2 A0 to 8.3e-4.
+  - All 1500 manifest sha256 values pass; lib tests 58 passed.
+  - Deviation D1 (canonicalization upsamples 128 → 256) adopted as an Amendment 9 clarification before any result.
+  - Full run: `run.py --stage all --device cuda` (minutes on GPU), waiting for the owner's GPU OK; a CPU-only run would take about 2 h.

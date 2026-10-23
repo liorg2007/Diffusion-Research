@@ -1,0 +1,33 @@
+{
+ "PILOT": true,
+ "hypothesis": "idea #5 canonicalization vs RAID transfer attacks (docs/04-phase4-plan.md Amendment 9); does not count toward the stop rule",
+ "seed": 0,
+ "manifest": "experiments/010-raid-transfer/raid_manifest.csv (1,500 files; sha256 verified on load; never modified)",
+ "subset": "100 ids x 5 classes (real, gen_0..gen_3); the same 100 ids in every class; per id: original JPEG, eps8 PNG, eps16 PNG",
+ "input_sets": {
+  "clean": "original JPEG -> short side 256 (PIL BICUBIC, antialiased) -> center crop 256; in memory, no re-encode",
+  "eps8": "attacked PNG 256x256 as released",
+  "eps16": "attacked PNG 256x256 as released (descriptive only)",
+  "<set>_canon": "perturb.jpeg75_resize05 (resize 0.5 bicubic -> JPEG q75) then bicubic upsample back to 256x256 (see notes.md: DEVIATION D1)"
+ },
+ "canon": {"fn": "lib/perturb.jpeg75_resize05", "restore_to": 256, "restore_filter": "BICUBIC", "applied_to": "both classes, clean and attacked inputs"},
+ "detectors": {
+  "b0": "A0 recipe of 005 (balanced logistic probe on 1536-d DINOv2-base primary features), trained on ALL pilot train rows (b0_train) of splits_pilot.csv, 'orig' arm, 004 cache subdir 'pilot'; RAID images embedded with the 004 backbone/config (224 center crop of the 256 input)",
+  "communityforensics": "002-baselines scorers.communityforensics (own preprocessing)",
+  "rine": "002-baselines scorers.rine, LDM checkpoint, 224 center crop (in the attack ensemble: near white-box reference)",
+  "clipdet": "002-baselines scorers.clipdet (not in the ensemble)"
+ },
+ "b0_probe": {"features": "primary", "feature_cache_subdir": "pilot", "condition": "clean", "balanced": true, "grouped_cv": "StratifiedGroupKFold, group = sha256 (as 005 pilot_v2 --grouped-cv --balanced)", "reproduces": "experiments/005-nuisance-projection/pilot_v2/orig/cache/scores_A0.npz['full'][clean] (checked, logged)"},
+ "batch": 20,
+ "d008": {"subset": "32 items (16 real + 16 fake, seed 0)", "tol": 0.001, "tf32": false, "reference": "CPU, chunk of 4", "applies_to": "every detector x every input set (6)", "device_cpu_run": "guard not applicable (reference is CPU); recorded as such"},
+ "bootstrap": {"reps": 2000, "seed": 0, "unit": "id (the 100 ids are shared by all 5 classes; one id-draw is applied to reals and to every generator's fakes; the same draw for every input set and detector)", "ci": "percentile 95%"},
+ "metrics": ["AUROC pooled (real vs 4 generators) + per generator", "drop = AUROC(clean) - AUROC(eps8)", "recovery = [AUROC(eps8+canon) - AUROC(eps8)] / drop", "canon clean cost = AUROC(clean) - AUROC(clean+canon)", "eps16 descriptive (same quantities)", "balanced accuracy at logit 0 (descriptive; anchor to RAID Table 4 accuracy)"],
+ "b0_label": {
+  "UNINFORMATIVE": "AUROC(clean) < 0.80",
+  "PASS": "drop <= 0.10 and (drop < 0.02 or recovery >= 0.5)",
+  "FAIL": "drop > 0.10 and recovery < 0.5",
+  "INCONCLUSIVE": "otherwise"
+ },
+ "raid_table4_anchor": "DINOv2 accuracy 83.1 -> 54.6 at eps 16/255 (paper arXiv 2506.03988 Table 4, via kb/datasets/raid.md); our probe differs, so descriptive only",
+ "outputs": "pilot/{results.json,tables.md,scores_long.csv.gz,d008_guard.json,run.log}; caches in cache/; smoke only in cache/smoke/"
+}
