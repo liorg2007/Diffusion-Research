@@ -4,6 +4,9 @@
   env/.venv/bin/python -I experiments/004-phase4-features/run.py --conditions clean "jr(60,0.5)"
   env/.venv/bin/python -I experiments/004-phase4-features/run.py --dry-run       # synthetic smoke test, tiny random model
   env/.venv/bin/python -I experiments/004-phase4-features/run.py --verify003     # primary clean == 003 B0 cache
+  # fov512 (D-013): crops from fov_prep.py, same 8 eval + 9 grid conditions, own cache (pilot_fov512 now, fov512 later)
+  env/.venv/bin/python -I experiments/004-phase4-features/run.py --check-sizes \
+      --splits experiments/004-phase4-features/pilot/splits_pilot_fov512.csv --cache-subdir pilot_fov512
 
 One forward pass per image/condition with layers=(4,8,12), CLS+mean -> 4608-d, stored as float32 shards in
 cache/feats/<condition>/part_*.npz keyed by sha256. Primary = last 1536 columns (hidden_states[12] == hidden_states[-1]).
@@ -99,6 +102,32 @@ def load_cond(path, sha, cond):
     if min(out.size) < P.INPUT_SIZE:   # features.Backbone.to_tensor would raise; fail early with context
         raise ValueError(f"{cond}: {path} -> {out.size} is smaller than the {P.INPUT_SIZE} center crop")
     return out
+
+
+def check_condition_sizes(conds, size=512, n_keys=300):
+    """Every condition must leave >= INPUT_SIZE px on both sides for a size x size crop (the 224 center crop needs it).
+    Deterministic conditions are tried once; the seeded ones (social_sim, screenshot_sim) over n_keys keys."""
+    from perturb import apply_condition
+    blank = Image.new("RGB", (size, size), (128, 128, 128))
+    worst = {}
+    for c in conds:
+        keys = [f"k{i}" for i in range(n_keys)] if c in ("social_sim", "screenshot_sim") else ["k0"]
+        worst[c] = min(min(apply_condition(blank, c, key=k, seed=P.SEED).size) for k in keys)
+    bad = {c: w for c, w in worst.items() if w < P.INPUT_SIZE}
+    if bad:
+        raise SystemExit(f"conditions leave < {P.INPUT_SIZE}px on a {size}px crop: {bad}")
+    return worst
+
+
+def check_image_sizes(df, size=512):
+    """All crops exist and are size x size (header read only)."""
+    bad = []
+    for p in df.path:
+        with Image.open(p) as im:
+            if im.size != (size, size):
+                bad.append((p, im.size))
+    if bad:
+        raise SystemExit(f"{len(bad)} crops are not {size}x{size}, e.g. {bad[0]}")
 
 
 def extract_condition(df, bb, cond, cache, device, pool, spec, limit=None):
@@ -333,7 +362,8 @@ def write_config(args, splits=None, cache=None):
                cache=str(Path(cache or P.CACHE).resolve().relative_to(ROOT)) + "/<condition>/part_*.npz (git-ignored)",
                loader="p4features.load_features(feature, condition)" + (f" [subdir={args.cache_subdir!r}]" if args.cache_subdir else ""))
     if args.cache_subdir or args.splits:     # pilot / custom runs never overwrite the main config.json
-        out = HERE / "pilot" / "config_pilot.json" if args.cache_subdir == "pilot" else HERE / f"config_{args.cache_subdir or 'custom'}.json"
+        sub = args.cache_subdir
+        out = HERE / "pilot" / f"config_{sub}.json" if sub and sub.startswith("pilot") else HERE / f"config_{sub or 'custom'}.json"
         out.parent.mkdir(exist_ok=True)
         out.write_text(json.dumps(cfg, indent=1))
         return
@@ -350,6 +380,8 @@ def main():
     ap.add_argument("--verify003", action="store_true")
     ap.add_argument("--device", default=None)
     ap.add_argument("--splits", default=None, help="splits CSV (default: 003 splits.csv); e.g. pilot/splits_pilot.csv")
+    ap.add_argument("--check-sizes", action="store_true",
+                    help="before extracting: assert every condition leaves >=224px on a 512px crop and every crop is 512x512")
     ap.add_argument("--cache-subdir", default=None,
                     help="write/read features in cache/<subdir> instead of cache/feats (e.g. 'pilot')")
     a = ap.parse_args()
@@ -372,13 +404,16 @@ def main():
     from features import get_device
     dev = get_device(a.device).type
     log(f"device {dev}, {len(df)} rows from {splits.name}, cache {cache}")
-    bb = secondary_backbone()
-    pb = check_design_vs_003(bb)
-    selfcheck_primary(df, bb, pb, dev)
     conds = a.conditions or P.ALL_CONDITIONS
     unknown = [c for c in conds if c not in P.ALL_CONDITIONS]
     if unknown:
         raise SystemExit(f"unknown conditions {unknown}; choose from {P.ALL_CONDITIONS}")
+    if a.check_sizes:
+        log("condition min sizes on a 512px crop:", check_condition_sizes(conds))
+        check_image_sizes(df)
+    bb = secondary_backbone()
+    pb = check_design_vs_003(bb)
+    selfcheck_primary(df, bb, pb, dev)
     t0 = time.time()
     run_extraction(df, bb, conds, cache, dev, P.SPEC, guard=not a.no_guard, limit=a.limit, workers=a.workers)
     log(f"done in {time.time() - t0:.0f}s")

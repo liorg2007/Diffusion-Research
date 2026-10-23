@@ -158,3 +158,20 @@ Because D-009 takes a 512 crop with no resize, real crops are about 2.5–3× mo
    - "Problem is real" now requires M1 or M2 > 2% (not M0).
    - Evaluation is LODO × LOPO.
 5. **H3 (owner's modern-phone photos)** becomes the main FPR ≤ 1% test. The owner was asked.
+
+## Amendment 4 (2026-10-23, before the official run): settling the implementation's judgment calls
+1. **H2-v2 groups:** platform × brand, with groups of ≥ 100 reals.
+   - On the VISION test devices this degenerates to platform-only (Apple has 99 reals per platform). The official run therefore uses platform-only groups at min-group 100.
+   - min-group 50 (platform × brand) is a reported sensitivity analysis.
+2. **H2-v2 verdict rule:** adopted as implemented in `007/h2v2.py:32`.
+   - SUPPORTED if the CI upper bound of (worst-group FPR − pooled FPR at matched clean TPR) is < 0 at ≥ 3 of the 4 α values.
+   - NOT_SUPPORTED if the point estimate is ≥ 0 at ≥ 3 of the 4.
+   - INCONCLUSIVE otherwise.
+   - **Transparency:** the code author proposed this rule, and the lead adopts it after seeing the pilot_v2 labels (NOT_SUPPORTED everywhere, pilot only).
+   - **Clipping:** groups too small for a finite conformal threshold are clipped to the group max, and the clipped share is reported.
+3. **H1 "both":** the +0.03 gain must hold for FLUX AND for LOGO-macro separately. The code takes the minimum of the two, which matches the original pre-registration.
+
+**Pilot_v2 note** (`005/pilot_v2/{orig,fov512}`, grouped CV + balanced probe + cluster bootstrap):
+- With fov512, the real-pool gaps vanish: A0 clean is native 0.979 / WA 0.979 / FBH 0.980, against orig 0.992 / 0.966 / 0.982.
+- The ceiling stays about 0.98, so there is still no headroom on the pilot data.
+- WA pooled-conformal FPR at 1%: 3.31% orig vs 1.58% fov512 (`007/pilot_v2`, indicative).

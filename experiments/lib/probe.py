@@ -3,7 +3,7 @@ import warnings
 
 import numpy as np
 from sklearn.linear_model import LogisticRegressionCV
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedGroupKFold, StratifiedKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -12,14 +12,29 @@ from metrics import KEYS, compute_metrics
 CS = np.logspace(-4, 1, 6)
 
 
-def fit_probe(X, y, seed=0, Cs=CS, folds=5):
-    """Standardize + L2 logistic regression; C picked by stratified CV (AUROC) on the given train set only."""
+def fit_probe(X, y, seed=0, Cs=CS, folds=5, groups=None, class_weight=None):
+    """Standardize + L2 logistic regression; C picked by stratified CV (AUROC) on the given train set only.
+
+    groups: optional per-row group ids (e.g. the source image of an augmented copy). When given, CV uses
+        StratifiedGroupKFold(shuffle, seed) so all rows of one group stay in ONE fold (no augmented-copy leakage into
+        the C selection). The fold count is min(folds, rows of the rarer class, number of groups).
+    class_weight: passed to LogisticRegressionCV (e.g. "balanced"). Note the CV scoring (AUROC) is weight-free.
+    With groups=None, class_weight=None the behaviour is exactly the original."""
     y = np.asarray(y)
     k = min(folds, int(np.bincount(y).min()))
+    if groups is not None:
+        groups = np.asarray(groups)
+        if len(groups) != len(y):
+            raise ValueError("groups must have one entry per row")
+        k = min(k, len(np.unique(groups)))
     if k < 2:
         raise ValueError("need >=2 samples of each class in train")
-    clf = LogisticRegressionCV(Cs=Cs, cv=StratifiedKFold(k, shuffle=True, random_state=seed),
-                               scoring="roc_auc", max_iter=2000, random_state=seed)
+    if groups is None:
+        cv = StratifiedKFold(k, shuffle=True, random_state=seed)
+    else:   # explicit list of (train, test) index arrays: LogisticRegressionCV needs no metadata routing
+        cv = list(StratifiedGroupKFold(k, shuffle=True, random_state=seed).split(X, y, groups))
+    clf = LogisticRegressionCV(Cs=Cs, cv=cv, scoring="roc_auc", max_iter=2000, random_state=seed,
+                               class_weight=class_weight)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", FutureWarning)  # sklearn 1.9 deprecation chatter about l1_ratios
         return make_pipeline(StandardScaler(), clf).fit(X, y)

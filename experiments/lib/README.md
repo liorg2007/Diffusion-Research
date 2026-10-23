@@ -6,11 +6,11 @@ No downloads happen anywhere except `features.load_backbone()` (pretrained weigh
 | module | purpose |
 |---|---|
 | `manifest.py` | CSV schema `path,label,source_dataset,generator,camera_or_platform,license,split,sha256`; `assign_splits(df, holdout_generator, seed)`; `check_splits` |
-| `preprocess.py` | RGB, EXIF-orient, re-encode (strips EXIF/ICC), center crop (default 512, no resize), PNG; `sidecar.csv` with original format / JPEG quality / size |
+| `preprocess.py` | RGB, EXIF-orient, re-encode (strips EXIF/ICC), center crop (default 512, no resize), PNG; `sidecar.csv` with original format / JPEG quality / size. `mode="fov"` (D-013 fov512): short side -> 512 (PIL bicubic, antialiased) then center crop; never upscales (short side < 512 -> `skipped_small`); `rewrite_paths` builds a splits file pointing at other crops |
 | `perturb.py` | `apply_condition(img, cond, key, seed)`: `clean`, `jpeg75_resize05`, `resize(f)`, `jpeg(q)`, `social_sim`, `mavali_medium`, `screenshot_sim`, `jr(q,f)` |
-| `metrics.py` | AUROC, AP, bal-acc (fixed thr and FPR=5%-calibrated), FPR@95TPR, TPR@1%FPR, seeded bootstrap CIs, per-generator |
+| `metrics.py` | AUROC, AP, bal-acc (fixed thr and FPR=5%-calibrated), FPR@95TPR, TPR@1%FPR, seeded bootstrap CIs, per-generator. Grouped bootstrap (Amendment 3): `bootstrap_weights` (reals by cluster/device, fakes by image stratified per generator), `weighted_auroc`, `grouped_bootstrap_auroc`, `grouped_bootstrap_auroc_diff` (paired) |
 | `features.py` | `Backbone` adapters (HF CLIP/DINOv2/DINOv3, timm, torchvision), cached `extract_features` |
-| `probe.py` | standardized logistic probe (C by CV on train), `standard_eval`, `logo_eval` |
+| `probe.py` | standardized logistic probe (C by CV on train; `groups=` -> StratifiedGroupKFold so augmented copies of one source image share a fold; `class_weight=` e.g. "balanced"), `standard_eval`, `logo_eval` |
 | `format_bias_probe.py` | dumb file-size/quant-table/dims/HF-energy baseline (leakage detector) |
 | `run_eval.py` | CLI producing `results.json` |
 

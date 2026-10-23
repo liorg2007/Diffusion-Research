@@ -9,6 +9,13 @@ Outputs (next to this script, in pilot/): results_<stem>.json, tables_<stem>.md,
 (without .csv / .gz). Pure numpy/pandas/scipy; seconds on CPU. Pre-registered criteria: docs/04-phase4-plan.md H2
 (+ Amendment 2) and kb/ideas/worst-env-conformal-fpr.md; they are encoded verbatim in `verdict()`.
 Rule used everywhere: a real/fake is FLAGGED fake iff score > threshold (strict, as in conformal prediction).
+
+H2-v2 (Amendment 3 item 4), new mode `--v2` (implemented in h2v2.py; the original analysis above is unchanged):
+  python -I experiments/007-worst-env-conformal/analyze.py --v2 --scores <scores_long.csv.gz> \
+      [--splits S.csv] [--out-dir DIR] [--min-group 100] [--groupings platform_brand platform] [--n-boot 2000]
+  Groups = platform x phone brand (>= --min-group reals each, small brands merged into "other"; falls back to platform-only
+  if the brand is not derivable), per-group split-conformal thresholds, worst-group vs pooled conformal at matched TPR over
+  alpha in {0.5,1,2,5}%, LODO x LOPO, device bootstrap. Outputs results_v2_<stem>.json, tables_v2_<stem>.md.
 """
 import argparse
 import json
@@ -310,6 +317,11 @@ def main():
     ap.add_argument("--scores", required=True)
     ap.add_argument("--splits", default=str(SPLITS))
     ap.add_argument("--out-dir", default=str(HERE / "pilot"))
+    ap.add_argument("--v2", action="store_true", help="H2-v2 analysis (h2v2.py) instead of the original pilot analysis")
+    ap.add_argument("--min-group", type=int, default=100, help="--v2: minimum reals per (platform, brand) group")
+    ap.add_argument("--groupings", nargs="+", default=["platform_brand", "platform"], choices=["platform_brand", "platform"])
+    ap.add_argument("--n-boot", type=int, default=2000, help="--v2: device-bootstrap replicates")
+    ap.add_argument("--label", default="PILOT", help="--v2: PILOT or OFFICIAL (written to the outputs)")
     a = ap.parse_args()
     D = Data(a.splits)
     p = Path(a.scores)
@@ -319,6 +331,17 @@ def main():
     long = pd.read_csv(p, dtype={"sha256": str})
     assert {"arm", "model", "condition", "sha256", "score"} <= set(long.columns), long.columns
     assert long.score.notna().all() and np.isfinite(long.score).all(), "non-finite scores"
+    if a.v2:
+        import sys
+        sys.path.insert(0, str(HERE))
+        import h2v2
+        R2 = h2v2.run_v2(D, long, tuple(a.groupings), a.min_group, a.n_boot, stem, pilot=(a.label == "PILOT"))
+        out = Path(a.out_dir)
+        out.mkdir(exist_ok=True, parents=True)
+        (out / f"results_v2_{stem}.json").write_text(json.dumps(R2, indent=1))
+        (out / f"tables_v2_{stem}.md").write_text(h2v2.tables_v2(R2, stem))
+        print("wrote", out / f"results_v2_{stem}.json", out / f"tables_v2_{stem}.md")
+        return
     R = {"PILOT": True, "scores_file": str(p), "alpha": ALPHA, "seed": SEED, "arms": {}}
     for arm, g in long.groupby("arm", sort=True):
         models = {}

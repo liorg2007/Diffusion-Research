@@ -34,3 +34,8 @@ Run: `env/.venv/bin/python -I experiments/005-nuisance-projection/run.py` (resum
 
 ## Sanity check
 A0 LOGO-macro clean AUROC = 0.9917 vs 003 B0 LOGO clean 0.916. Higher than 003 as expected: reals are VISION natives only (no RAISE), 6 generators only (no SD3.5), and the JPEG-vs-PNG format shortcut is uncontrolled. Plausible for this pilot but not comparable; the official run on full data must be rechecked.
+
+
+## Amendment-3 options and the pilot_v2 runs (2026-10-23; PILOT, no verdict)
+New `run.py` options (defaults reproduce the original pilot byte for byte: checked results.json / tables.md / scores_long.csv.gz against `pilot/`, and a fresh A0 refit equals `pilot/cache/scores_A0.npz`): `--subdir`, `--splits`, `--out-dir`, `--label`, `--arms`, `--generators`, `--heldout-generators`, `--grouped-cv` (StratifiedGroupKFold, group = source image), `--balanced`, `--group-bootstrap` (reals by device, RAISE per image; fakes by image stratified per generator, one plan shared by all arms), `--per-pool`, `--headroom-rule` (+0.03 test only if A1 LOGO-macro jpeg75_resize05 <= 0.96, else `UNINFORMATIVE_NO_HEADROOM`), `--primary-pools`. With held-out generators (FLUX) the gain criterion uses the minimum over endpoints (LOGO-macro and each held-out generator); this is my reading of "both FLUX and LOGO-macro", please confirm. RAISE train reals (official run) enter the standardization and the grid deltas only; platform pairs stay native-only. A score cache is tied to its options (`cache/opts.json`).
+pilot_v2 = A0/A1 only, `--grouped-cv --balanced --group-bootstrap --per-pool --headroom-rule`, on the original pilot features (`pilot_v2/orig`) and the fov512 features (`pilot_v2/fov512`). Numbers: `pilot_v2/*/results.json` and `tables.md` (key `per_pool`).

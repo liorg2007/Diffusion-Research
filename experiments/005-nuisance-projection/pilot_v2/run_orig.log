@@ -1,0 +1,17 @@
+18:34:57 PILOT_V2 rows 2220 pairs 99 b0_train reals 99
+18:35:00 PILOT_V2 primary: k*=90 (centered 92); mean-shift energy frac 0.031
+18:35:20 PILOT_V2 A0/full: n_train=459 C=10
+18:35:38 PILOT_V2 A0/logo_dalle2: n_train=399 C=10
+18:35:56 PILOT_V2 A0/logo_dalle3: n_train=399 C=1
+18:36:15 PILOT_V2 A0/logo_firefly: n_train=399 C=1
+18:36:37 PILOT_V2 A0/logo_midjourney-v5: n_train=399 C=10
+18:36:58 PILOT_V2 A0/logo_stable-diffusion-2: n_train=399 C=10
+18:37:19 PILOT_V2 A0/logo_stable-diffusion-xl: n_train=399 C=10
+18:37:39 PILOT_V2 A1/full: n_train=4590 C=0.1
+18:38:00 PILOT_V2 A1/logo_dalle2: n_train=3990 C=1
+18:38:23 PILOT_V2 A1/logo_dalle3: n_train=3990 C=1
+18:38:46 PILOT_V2 A1/logo_firefly: n_train=3990 C=0.01
+18:39:10 PILOT_V2 A1/logo_midjourney-v5: n_train=3990 C=1
+18:39:31 PILOT_V2 A1/logo_stable-diffusion-2: n_train=3990 C=10
+18:39:52 PILOT_V2 A1/logo_stable-diffusion-xl: n_train=3990 C=1
+18:40:08 PILOT_V2 verdict NOT_EVALUATED (needs A1 and A2) | gain nan | A0 clean 0.992

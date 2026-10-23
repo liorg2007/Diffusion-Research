@@ -67,3 +67,9 @@ Column order of the 4608-d matrix: `[b4 CLS | b4 mean | b8 CLS | b8 mean | b12 C
 ## Runtime [estimate]
 31,200 conditioned images (8 x 2,919 + 9 x 872). GPU forward is cheap (ViT-B/14 at 224, fp32, a few hundred img/s); the CPU side (PNG decode + resize + JPEG,
 4 threads) is the bottleneck at roughly 25-40 ms/img, so about 15-25 min, plus about 5 min for the CPU guard (17 x 32 images). Cache size about 0.7 GB.
+
+
+## fov512 arm (D-013 / Amendment 3; PILOT run 2026-10-23, official run pending)
+- `fov_prep.py`: raw file -> EXIF-orient -> resize short side to 512 (PIL BICUBIC, antialiased; `lib/preprocess.process_image(mode="fov")`) -> center crop 512 -> `data/processed/fov512/images/<sha>.png`. Writes a splits file with the same rows/columns as its input (only `path` changes) and a report. Short side < 512 is never upscaled: the script lists such images and ABORTS unless `--drop-small`.
+- Pilot: `pilot/splits_pilot_fov512.csv`, `pilot/fov512_prep_report.json`: 2,220/2,220 ok, 512x512 RGB, raw sha256 match 2,220/2,220, 0 images with short side < 512 (manifest census over all 2,920 non-latent-diffusion rows incl. RAISE and the SD3.5/FLUX rows not yet re-fetched: min short side 576 px, 0 below 512).
+- Features: `run.py --check-sizes --splits pilot/splits_pilot_fov512.csv --cache-subdir pilot_fov512` (same 8 eval + 9 grid conditions; `--check-sizes` asserts every condition leaves >= 224 px on a 512 crop and every crop is 512x512: min sizes resize(0.5) 256, screenshot_sim 230). Log `pilot/extract_fov512.log`, guard `cache/pilot_fov512/d008_guard.json`: all 17 conditions ok, max |dlogit| 2.78e-05 (jr(90,1.0)), max scaled feature diff 4.81e-05, tol 1e-3. Official run: same command with the 003 splits file replaced by `splits_fov512.csv` (from `fov_prep.py` with no `--splits`) and `--cache-subdir fov512`.

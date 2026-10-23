@@ -1,5 +1,5 @@
 """Identical preprocessing for both classes: RGB, EXIF-orientation applied, metadata stripped by
-re-encoding from raw pixels, center crop (NO resize), lossless PNG. Format info goes to a sidecar CSV."""
+re-encoding from raw pixels, center crop (NO resize; optional mode="fov": short side -> 512 first), lossless PNG. Format info goes to a sidecar CSV."""
 import os
 from pathlib import Path
 
@@ -37,8 +37,22 @@ def center_crop(img, size):
     return img.crop((l, t, l + size, t + size))
 
 
-def process_image(src, dst, size=512):
-    """Returns (status, info). status in {'ok','skipped_small','error'}."""
+def fov_resize(img, size):
+    """Resize so the SHORT side equals `size` (long side scaled by the same factor, rounded). PIL BICUBIC; PIL's
+    resize widens the kernel when downscaling, i.e. it is antialiased (same function family as perturb.resize).
+    Never called for short side < size (that would be an upscale; process_image skips such images)."""
+    w, h = img.size
+    nw, nh = (size, max(size, round(h * size / w))) if w <= h else (max(size, round(w * size / h)), size)
+    return img if (nw, nh) == (w, h) else img.resize((nw, nh), Image.BICUBIC)
+
+
+def process_image(src, dst, size=512, mode="crop"):
+    """Returns (status, info). status in {'ok','skipped_small','error'}.
+    mode="crop" (default, D-009): center crop, NO resize. mode="fov" (D-013 `fov512`): resize the short side to
+    `size` (bicubic, antialiased) then center-crop `size`x`size`; images with short side < size are NOT upscaled but
+    returned as 'skipped_small' (and counted by the caller). Both read the RAW file, EXIF-orient and strip metadata."""
+    if mode not in ("crop", "fov"):
+        raise ValueError(f"unknown preprocessing mode {mode!r}")
     info = dict(orig_format=None, orig_jpeg_quality=None, orig_width=None, orig_height=None,
                 orig_bytes=None, has_quant_table=0)
     try:
@@ -51,6 +65,9 @@ def process_image(src, dst, size=512):
             im = ImageOps.exif_transpose(im).convert("RGB")
         if min(im.size) < size:
             return "skipped_small", info
+        if mode == "fov":
+            im = fov_resize(im, size)
+            info["fov_resized_w"], info["fov_resized_h"] = im.size
         arr = np.asarray(center_crop(im, size))
         Image.fromarray(arr).save(dst, "PNG")  # fresh image: no EXIF / ICC / text chunks
         return "ok", info
@@ -59,7 +76,7 @@ def process_image(src, dst, size=512):
         return "error", info
 
 
-def preprocess_manifest(df, out_dir, size=512):
+def preprocess_manifest(df, out_dir, size=512, mode="crop"):
     """Process every row. Returns (processed_manifest, sidecar_df, report).
     The processed manifest has the same schema; `path` points at <out_dir>/images/<sha256>.png and
     `sha256` stays the ORIGINAL file's hash (key for the sidecar). Writes manifest_processed.csv + sidecar.csv."""
@@ -68,9 +85,11 @@ def preprocess_manifest(df, out_dir, size=512):
     rows, side = [], []
     for r in df.to_dict("records"):
         dst = out_dir / "images" / f"{r['sha256']}.png"
-        status, info = process_image(r["path"], dst, size)
+        status, info = process_image(r["path"], dst, size, mode)
         side.append(dict(sha256=r["sha256"], src_path=r["path"], label=r["label"], generator=r["generator"],
-                         status=status, crop_size=size, **info))
+                         status=status, crop_size=size, **info) if mode == "crop" else
+                    dict(sha256=r["sha256"], src_path=r["path"], label=r["label"], generator=r["generator"],
+                         status=status, crop_size=size, mode=mode, **info))
         if status == "ok":
             rows.append({**r, "path": str(dst)})
     sidecar = pd.DataFrame(side)
@@ -80,4 +99,17 @@ def preprocess_manifest(df, out_dir, size=512):
     report = dict(n_total=len(df), n_ok=int((sidecar.status == "ok").sum()),
                   n_skipped_small=int((sidecar.status == "skipped_small").sum()),
                   n_error=int((sidecar.status == "error").sum()), crop_size=size)
+    if mode != "crop":
+        report["mode"] = mode
     return pm, sidecar, report
+
+
+def rewrite_paths(df, out_dir, root=None):
+    """Same rows/columns as `df`, with `path` -> <out_dir>/images/<sha256>.png (relative to `root` when given and
+    out_dir lies under it; D-011 repo-relative paths). Used to build splits_fov512 from a splits file."""
+    out = Path(out_dir) / "images"
+    if root is not None:
+        out = out.resolve().relative_to(Path(root).resolve())
+    res = df.copy()
+    res["path"] = [str(out / f"{sha}.png") for sha in df.sha256]
+    return res

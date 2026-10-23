@@ -91,3 +91,10 @@
   - On VISION, plain calibration transfers across devices (M1 0.37%, M2 1.02% LODO); WA is the only >2% cell (M2 3.07%).
   - Lead pool check: A0 LOGO clean AUROC native 0.992 / FBH 0.982 / WA 0.965 → FOV explains part of the pilot ceiling.
   - Wrote plan Amendment 3.
+- 2026-10-23 18:44 — Amendment-3 implementation agent done.
+  - Lib tests 51 passed (lead re-ran).
+  - New options in probe.py (grouped CV, class_weight), metrics.py (cluster bootstrap) and preprocess.py (fov). New 004/fov_prep.py, 005 run.py flags, 007/h2v2.py. Defaults reproduce the pilot outputs.
+  - 0 images with short side <512 (min 576).
+  - pilot_fov512 features: D-008 max |dlogit| 2.78e-5.
+  - PILOT_v2 result: fov512 removes the native-vs-WA/FBH pool gaps (A0 clean WA 0.966→0.979) but the ceiling stays ~0.98; WA pooled-conformal FPR 3.31%→1.58%.
+  - Wrote Amendment 4 (H2-v2 rule adopted after seeing pilot labels, disclosed). Official run ready; blocked on grip.unina.it.
