@@ -168,3 +168,15 @@
     - orig→fov512 0.969, fov512→orig 0.969;
     - under jpeg75_resize05, orig→fov512 is 0.923 vs 0.980 within (−0.057). B0 is also scale-dependent once laundered.
   - Laplacian texture AUROC (i): orig 0.778, fov512 0.607.
+- 2026-10-24 02:45 — Pre-run review of official H4 + E3 (opus/high): experiments/006-format-shortcut/code_review_official.md and experiments/010-raid-transfer/code_review.md.
+  - H4 official: READY WITH FIXES.
+    - The B0-JM arm is not implemented: implement it or record a dated deferral.
+    - Official mode must abort on missing B0 caches or rows instead of silently skipping.
+    - Key RIGID caches by σ, draws and config.
+    - Low: guard covers orig/clean only; seeds; fov_prep --mode crop writes into data/processed/crop512.
+  - E3: NOT READY.
+    - Our clean control (resize → crop) ≠ RAID's own preprocessing (plain center crop, zero-padded). Attacked vs crop differ by ≤9/255 at eps8 and ≤17/255 at eps16; vs ours, by 64–83 grey levels.
+    - 52/100 RAID reals are smaller than 256 px, so they are zero-padded: a black-border shortcut that no fake has. Its handling must be pre-registered (e.g. a sensitivity run on the 48 unpadded reals).
+    - Caches must be keyed by preprocessing and device.
+    - The size description in kb/datasets/raid.md is wrong.
+  - None of these fixes has been applied yet. The E1/E2 fix agents (CPU only) were still running when the session hit its usage limit.
