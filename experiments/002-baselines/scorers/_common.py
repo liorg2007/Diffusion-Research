@@ -16,10 +16,14 @@ os.environ.setdefault("HF_HUB_OFFLINE", "1")                          # weights 
 
 
 def pick_device(device=None):
-    """DD_DEVICE env var > explicit arg > mps (if available) > cpu."""
+    """DD_DEVICE env var > explicit arg > cuda > mps > cpu. TF32 off on CUDA (D-008 guard compares against fp32 CPU)."""
     device = os.environ.get("DD_DEVICE") or device
     if device:
         return torch.device(device)
+    if torch.cuda.is_available():
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
+        return torch.device("cuda")
     return torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
 

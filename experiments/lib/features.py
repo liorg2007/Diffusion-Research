@@ -21,8 +21,13 @@ CLIP = ((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711
 
 
 def get_device(prefer=None):
+    """explicit arg > cuda > mps > cpu. On CUDA, TF32 is disabled so GPU-vs-CPU guards (D-008) compare fp32 to fp32."""
     if prefer:
         return torch.device(prefer)
+    if torch.cuda.is_available():
+        torch.backends.cuda.matmul.allow_tf32 = False
+        torch.backends.cudnn.allow_tf32 = False
+        return torch.device("cuda")
     return torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
 

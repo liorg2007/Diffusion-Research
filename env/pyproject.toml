@@ -1,12 +1,14 @@
 [project]
 name = "diffusion-detect-research"
 version = "0.1.0"
-description = "Research env: detecting diffusion-generated images (Intel Mac, torch 2.2.2)"
+description = "Research env: detecting diffusion-generated images (Intel Mac torch 2.2.2; Linux/WSL2 CUDA torch 2.8.0)"
 requires-python = "==3.12.*"
 dependencies = [
-    "torch==2.2.2",          # last macOS x86_64 wheels (DECISIONS D-001)
-    "torchvision==0.17.2",
-    "numpy<2",               # torch 2.2.2 is built against numpy 1.x
+    "torch==2.2.2; sys_platform == 'darwin'",       # last macOS x86_64 wheels (DECISIONS D-001)
+    "torchvision==0.17.2; sys_platform == 'darwin'",
+    "torch==2.8.0; sys_platform == 'linux'",        # PyPI Linux wheels bundle CUDA 12.8 (D-011)
+    "torchvision==0.23.0; sys_platform == 'linux'",
+    "numpy<2",               # torch 2.2.2 is built against numpy 1.x; kept on Linux too so both machines match
     "transformers>=4.56,<5", # DINOv3 support landed in 4.56
     "huggingface-hub",
     "safetensors",
@@ -21,3 +23,7 @@ dependencies = [
 
 [tool.uv]
 package = false
+environments = [
+    "sys_platform == 'darwin' and platform_machine == 'x86_64'",   # Intel Mac (original machine)
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",    # GPU PC under WSL2 Ubuntu
+]

@@ -43,8 +43,8 @@ DINO_SPEC = "hf:dinov2:facebook/dinov2-base"
 FAKE_GENS = ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-xl", "stable-diffusion-2",
              "sd3_large", "flux"]
 POOLS_REAL = ["vision_native", "raise", "vision_whatsapp", "vision_facebook_hq"]
-MPS_BATCH = 20          # D-008
-TOL = 1e-3              # D-008 abort threshold on max |dlogit| MPS vs CPU
+MPS_BATCH = 20          # D-008 (also used on CUDA so batch composition matches)
+TOL = 1e-3              # D-008 abort threshold on max |dlogit| accelerator vs CPU
 CALIB_FRAC = 0.30
 N_TRAIN_DEV = 10
 CFG = dict(seed=SEED, crop=512, conditions=CONDITIONS, scorers={k: f"{m}:{f}" for k, (m, f) in SCORERS.items()},
@@ -52,6 +52,12 @@ CFG = dict(seed=SEED, crop=512, conditions=CONDITIONS, scorers={k: f"{m}:{f}" fo
            mps_batch=MPS_BATCH, d008_tol=TOL, d008_subset=32, calib_frac=CALIB_FRAC, fpr_calib=0.05,
            n_train_devices=N_TRAIN_DEV, n_boot=1000, threshold_native=0.0,
            excluded_generators=["latent-diffusion"])
+
+
+def accelerator():
+    """'cuda' | 'mps' | 'cpu' — the device the guarded (D-008) runs use."""
+    from features import get_device
+    return get_device().type
 
 
 def log(*a):
@@ -121,7 +127,7 @@ def stage_prep(force=False):
     ok = set(side.sha256[side.status == "ok"])
     df = raw[raw.sha256.isin(ok)].copy().reset_index(drop=True)
     df["src_path"] = df["path"]
-    df["path"] = [str(PROC / "images" / f"{s}.png") for s in df.sha256]
+    df["path"] = [str((PROC / "images" / f"{s}.png").relative_to(ROOT)) for s in df.sha256]  # repo-relative (cwd = ROOT)
     # real file format from content (sidecar), never extension
     df["orig_format"] = side.set_index("sha256").loc[df.sha256, "orig_format"].values
     fire = df[df.generator == "firefly"]
@@ -304,7 +310,7 @@ def stage_score(names=None):
             if r.returncode != 0:
                 raise SystemExit(f"cpuref failed for {name}")
         ref = json.loads(rp.read_text())
-        os.environ["DD_DEVICE"] = "mps"
+        os.environ["DD_DEVICE"] = accelerator()
         fn = _get_fn(name)
         for cond in CONDITIONS:
             t0 = time.time()
@@ -344,9 +350,9 @@ def stage_b0():
         if cond == "clean":
             m = m | df.b0_train
         idx = np.where(m.to_numpy())[0]
-        # D-010: DINOv2's bicubic pos-embed interpolation is unsupported on MPS (torch 2.2.2); run on CPU only
+        # D-010: DINOv2's bicubic pos-embed interpolation is unsupported on MPS (torch 2.2.2); CPU there, CUDA is fine
         f = extract_features(bb, df.path.iloc[idx], cond, str(CACHE / "b0"), 16, keys=df.sha256.iloc[idx], seed=SEED,
-                             device="cpu")
+                             device="cpu" if accelerator() == "mps" else accelerator())
         Xc = np.zeros((len(df), f.shape[1]), np.float32)
         Xc[idx] = f
         X[cond] = Xc

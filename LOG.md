@@ -37,3 +37,10 @@
   - B-Free VISION-native FPR: 17.3% at logit 0.
   - B0 shows a format shortcut: VISION 0.962 vs RAISE 0.876.
   - **Phase 3 complete. Gate: waiting for owner approval before Phase 4.**
+- 2026-10-23 09:40 — Owner will move to a GPU PC (Windows + NVIDIA via WSL2), with a private GitHub repo and data re-downloaded (D-011).
+  - Lockfile now covers linux x86_64 (torch 2.8.0 + CUDA 12.8); the Mac env is unchanged.
+  - Device code is CUDA-aware; splits.csv paths are relative.
+  - Lib tests: 26/26.
+  - Agent (sonnet/high) wrote env/bootstrap_data.py + fetch.py from-manifest; lead re-ran `--verify-only` on the Mac: 24/24 OK.
+  - Default download mode is untested (nothing downloaded on the Mac). The first real run happens on the PC.
+  - Added CLAUDE.md and env/SETUP_WSL.md.

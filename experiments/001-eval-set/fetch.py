@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Evaluation-set fetcher (D-005).  Usage: python -I fetch.py plan|run|finalize
 
+from-manifest : re-create EXACTLY the files listed in manifest_raw.csv (sha256-verified), using the committed
+           state/plan.json + state/latent_diffusion.json; does not touch state/ or the budget (fresh-machine rebuild).
 plan     : select samples (seed 0), read zip central directories via HTTP Range, HEAD VISION files,
            write state/plan.json (exact planned download bytes).
 run      : download everything in plan.json (resumable), per-entry CRC32 verified, budget enforced.
@@ -14,7 +16,7 @@ import urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-ROOT = Path("/Users/liorgleizer/projects/diffusion-detect-research")
+ROOT = Path(__file__).resolve().parents[2]
 EXP = ROOT / "experiments" / "001-eval-set"
 STATE = EXP / "state"
 DATA = ROOT / "data"
@@ -57,6 +59,8 @@ class Budget:
         with LOCK:
             self.d["total"] += n
             self.d["by_source"][src] = self.d["by_source"].get(src, 0) + n
+            if self.path is None:  # from-manifest mode: in-memory accounting only
+                return
             tmp = str(self.path) + ".tmp"
             json.dump(self.d, open(tmp, "w"))
             os.replace(tmp, self.path)
@@ -582,6 +586,139 @@ def run():
     print("run complete; total bytes", BUD.d["total"])
 
 
+# ------------------------------------------------------------------ FROM-MANIFEST (exact rebuild on a fresh machine)
+def from_manifest():
+    """Download exactly the files in experiments/001-eval-set/manifest_raw.csv that are missing/wrong on disk.
+    Selection is NOT re-done: URLs / zip entry names come from the committed state/plan.json, latent-diffusion
+    picks from the manifest itself. Every file is checked against the manifest sha256. state/ is not modified."""
+    global HARD
+    HARD = float("inf")
+    BUD.d = {"total": 0, "by_source": {}}
+    BUD.path = None
+    man = list(csv.DictReader(open(EXP / "manifest_raw.csv")))
+    plan_ = json.load(open(STATE / "plan.json"))
+    want = {r["path"]: r for r in man}
+
+    def good(rel):
+        p = ROOT / rel
+        return p.is_file() and p.stat().st_size == int(want[rel]["bytes"]) and sha256_file(p) == want[rel]["sha256"]
+
+    with ThreadPoolExecutor(CFG["workers"]) as ex:
+        okmap = dict(zip(want, ex.map(good, want)))
+    todo = {rel for rel, ok in okmap.items() if not ok}
+    print(f"manifest files {len(want)}, already good {len(want) - len(todo)}, to fetch {len(todo)}", flush=True)
+    failed = []
+
+    def put(rel, data):
+        if hashlib.sha256(data).hexdigest() != want[rel]["sha256"]:
+            raise RuntimeError(f"sha256 mismatch for {rel}")
+        write_atomic(ROOT / rel, data)
+
+    def do_v(it):
+        last = None
+        for attempt in range(RETRIES):
+            try:
+                data, _, _ = http(it["url"], "vision")
+                put(it["rel"], data)
+                return
+            except Exception as e:
+                last = e
+                time.sleep(1.5 * (attempt + 1))
+        failed.append((it["rel"], repr(last)))
+
+    def do_z(z, e, rel):
+        try:
+            put(rel, fetch_entry_retry(z["url"], z["src"], e))
+        except Exception as ex_:
+            failed.append((rel, repr(ex_)))
+
+    jobs = []
+    vis = [it for it in plan_["vision"] if it["rel"] in todo]
+    keymap = {"raise": "real_RAISE_1k", "synthbuster": "synthbuster", "sd3_flux": "sd3_flux"}
+    for key, z in plan_["zips"].items():
+        mine = []
+        for e in z["entries"]:
+            rel = f"data/raw/{z['src']}/{e['folder']}/{safe_name(e['name'])[-1]}"
+            if rel in todo:
+                mine.append((e, rel))
+        if not mine:
+            continue
+        ents, _ = read_central_directory(z["url"], z["src"], RAW / z["src"] / "_central_directory" / f"{keymap[key]}.cd")
+        live = {x["name"]: x for x in ents}
+        for e, rel in mine:  # refresh offsets from the live central directory, require identical CRC32/size
+            f = live.get(e["name"])
+            if f is None or f["crc"] != e["crc"] or f["usize"] != e["usize"]:
+                failed.append((rel, "zip entry missing or changed upstream"))
+                continue
+            jobs.append((z, dict(e, off=f["off"], csize=f["csize"], nl=f["nl"], method=f["method"]), rel))
+    ld_rels = [r for r in json.load(open(STATE / "latent_diffusion.json"))["rels"] if r in todo]
+    with ThreadPoolExecutor(CFG["workers"]) as ex:
+        futs = [ex.submit(do_z, z, e, rel) for z, e, rel in jobs] + [ex.submit(do_v, it) for it in vis]
+        for i, f in enumerate(as_completed(futs), 1):
+            f.result()
+            if i % 200 == 0:
+                print(f"fetched {i}/{len(futs)} ({BUD.d['total']/1e9:.3f} GB)", flush=True)
+    if ld_rels:
+        src = "bfree_gen"
+        d = RAW / src / "_archive"
+        d.mkdir(parents=True, exist_ok=True)
+        zpath = d / "latent-diffusion.zip"
+        part = d / "latent-diffusion.zip.part"
+        info = json.load(open(STATE / "latent_diffusion.json"))
+        url = CFG["bfree_gen"]["latent_diffusion_url"]
+        size = 127295883
+        for attempt in range(RETRIES):
+            have = part.stat().st_size if part.exists() else 0
+            if have == size:
+                break
+            try:
+                h = dict(UA)
+                if have:
+                    h["Range"] = f"bytes={have}-"
+                with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=60) as r:
+                    if have and r.status != 206:  # server ignored Range: restart from scratch
+                        part.unlink()
+                    f = open(part, "ab")
+                    while True:
+                        b = r.read(1 << 20)
+                        if not b:
+                            break
+                        f.write(b)
+                        BUD.add(src, len(b))
+                    f.close()
+            except Exception as e:
+                print("latent-diffusion download retry:", repr(e), flush=True)
+                time.sleep(2 * (attempt + 1))
+        if not part.exists() or part.stat().st_size != size:
+            failed.append(("latent-diffusion.zip", "download incomplete"))
+        else:
+            os.replace(part, zpath)
+            if sha256_file(zpath) != info["sha256"]:
+                failed.append(("latent-diffusion.zip", "sha256 differs from state/latent_diffusion.json"))
+            else:
+                import zipfile
+                with zipfile.ZipFile(zpath) as zf:
+                    byname = {}
+                    for i in zf.infolist():
+                        sp = safe_name(i.filename)
+                        if sp:
+                            byname.setdefault(sp[-1], []).append(i)
+                    for rel in ld_rels:
+                        try:
+                            c = byname[rel.rsplit("/", 1)[-1]]
+                            assert len(c) == 1
+                            put(rel, zf.read(c[0]))
+                        except Exception as ex_:
+                            failed.append((rel, repr(ex_)))
+                zpath.unlink()
+    bad = [rel for rel in want if not good(rel)]
+    print(f"from-manifest done: downloaded {BUD.d['total']} bytes; failed {len(failed)}; still bad/missing {len(bad)}")
+    for f in failed[:20]:
+        print("  FAIL", f)
+    if failed or bad:
+        sys.exit(5)
+
+
 # ------------------------------------------------------------------ FINALIZE
 def finalize():
     from collections import Counter, defaultdict
@@ -638,7 +775,7 @@ def finalize():
 if __name__ == "__main__":
     cmd = sys.argv[1]
     try:
-        {"plan": plan, "run": run, "finalize": finalize}[cmd]()
+        {"plan": plan, "run": run, "finalize": finalize, "from-manifest": from_manifest}[cmd]()
     except BudgetStop as e:
         print("HARD STOP (budget):", e, "total", BUD.d["total"])
         sys.exit(3)

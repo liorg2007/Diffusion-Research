@@ -48,3 +48,37 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - Finding: B0 aborted on the D-008 guard (max |Δlogit| 5.8, max |Δfeature| 102). Diagnosis (scratchpad tests): DINOv2's bicubic position-embedding interpolation raises NotImplementedError on MPS in torch 2.2.2, so every batch went through the harness's MPS→CPU fallback. Pure CPU is bit-exact across batch sizes 1–32, SDPA and eager attention, and repeats; a failed-MPS round-trip of weights is lossless in isolation; yet the fallback path inside the full B0 run produced features differing from CPU by up to 102 and differing between runs. Exact root cause NOT identified (appears order/state-dependent: MPS attempted before any CPU forward in the process).
 - Decision: run.py stage_b0 extracts DINOv2 features with device="cpu"; lib/features.embed_images now pins a backbone to CPU permanently after its first MPS failure (backbone.force_cpu). Corrupt cache deleted. D-008 guard stays mandatory. Pretrained scorers unaffected (own code path; all 12 guards passed).
 - Cost: B0 feature extraction on CPU (~15 min).
+
+## D-011 — 2026-10-23 — Move compute to the owner's GPU PC (Windows + NVIDIA, WSL2 Ubuntu)
+**Decision.** The project continues on the owner's GPU PC under WSL2 Ubuntu 24.04. The Intel Mac stays a valid environment.
+
+**Code and git**
+- Code goes through a private GitHub repo (owner-created).
+- `data/` and `third_party/` are NOT copied. They are re-downloaded from the original sources by `env/bootstrap_data.py`:
+  - every weight is SHA256-checked against env/SOURCES.md;
+  - every eval image is checked against the committed `experiments/001-eval-set/manifest_raw.csv`;
+  - repos are checked out at pinned commits.
+  - Re-acquisition is about 7.96 GB of the same, already-approved files (the D-007 cap is about new material, not re-downloads).
+
+**Environment**
+- One `env/uv.lock` with platform markers:
+  - darwin x86_64: torch 2.2.2 / torchvision 0.17.2 (unchanged; `uv sync --frozen --dry-run` on the Mac reports no changes);
+  - linux x86_64: torch 2.8.0 / torchvision 0.23.0 from PyPI (bundles CUDA 12.8).
+- numpy<2 stays on both.
+
+**Code changes**
+- Device order is cuda > mps > cpu, in `experiments/lib/features.get_device` and `scorers/_common.pick_device`.
+- TF32 is disabled on CUDA, so the D-008 guard compares fp32 to fp32.
+- run.py uses the detected accelerator instead of hard-coded "mps". B0 stays on CPU only when the accelerator is MPS (D-010).
+- `splits.csv` paths are now repo-relative (prefix stripped; no other change).
+- `fetch.py` derives ROOT from `__file__` and gained a `from-manifest` mode.
+- `CLAUDE.md` holds the project rules (reconstructed from the brief) for new sessions.
+
+**Rationale**
+- MPS on the AMD card caused two silent-error incidents (D-008, D-010).
+- B0 on CPU took about 30 min per pass.
+- Phase 4 needs many feature passes and possibly DINOv3 / larger backbones.
+
+**Check.** Before Phase 4, Phase 3 is re-run on the PC:
+- splits must be byte-identical;
+- metrics are compared with the Mac `tables.md` (expected to agree within about ±0.005 AUROC).

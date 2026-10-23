@@ -15,10 +15,20 @@
 | 4 Hypothesis tests | ⏸ **gated**: owner must approve after seeing the baseline table |
 | 5 Final report | ⏸ not started |
 
+### Moving to the GPU PC (D-011)
+- Code, KB, docs and results are in git: https://github.com/liorg2007/Diffusion-Research (private).
+- `data/` and `third_party/` are re-created there with `env/bootstrap_data.py`.
+- Follow `env/SETUP_WSL.md`. Its step 6 re-runs Phase 3 on the GPU as a portability check.
+- `CLAUDE.md` carries the project rules for new Claude Code sessions.
+
 ### Next steps
-1. The owner reviews `experiments/003-baselines-eval/tables.md` + `notes.md` and approves Phase 4.
-2. Open questions for the owner: (a) ~250 photos from a 2021+ phone (neural-isp-fpr-audit); (b) DINOv3 gated access (D-006); (c) optional novelty-check + KB clean-up agents.
-3. Phase 4: reconcile the Phase 2 plan with the actual data (DINOv2, 6 Synthbuster + SD3.5 + FLUX). Test laundering-nuisance-projection and drift-format-shortcut against B0, with an opus/high critic per result.
+1. On the PC: complete `env/SETUP_WSL.md` steps 1–6. Phase 3 metrics must reproduce (splits byte-identical, AUROC within about ±0.005).
+2. The owner reviews `experiments/003-baselines-eval/tables.md` + `notes.md` and approves Phase 4.
+3. Open questions for the owner:
+   - (a) ~250 photos from a 2021+ phone (neural-isp-fpr-audit);
+   - (b) DINOv3 gated access (D-006);
+   - (c) optional novelty-check + KB clean-up agents.
+4. Phase 4: reconcile the Phase 2 plan with the actual data (DINOv2, 6 Synthbuster + SD3.5 + FLUX). Test laundering-nuisance-projection and drift-format-shortcut against B0, with an opus/high critic per result.
 
 ## Hardware (verified 2026-10-21)
 Intel Core i9-9880H (8C), 32 GB RAM, AMD Radeon Pro 5500M 4 GB (Metal 3), macOS 15.6. **Not Apple Silicon.**
