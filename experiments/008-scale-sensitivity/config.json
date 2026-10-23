@@ -1,0 +1,22 @@
+{
+ "PILOT": true,
+ "experiment": "E1 zoom (scale) sensitivity of published detectors (docs/04-phase4-plan.md Amendment 7); exploratory diagnostic, not a hypothesis, not counted toward the stop rule",
+ "seed": 0,
+ "n_boot": 2000,
+ "bootstrap": "paired cluster bootstrap: reals by device, fakes by image stratified per generator (lib/metrics.bootstrap_weights); one plan per real pool shared by both arms and all detectors",
+ "arms": {"orig": "experiments/004-phase4-features/pilot/splits_pilot.csv (003 crop512 crops)",
+          "fov512": "experiments/004-phase4-features/pilot/splits_pilot_fov512.csv (short side -> 512 bicubic antialiased, center crop 512)"},
+ "conditions": ["clean", "jpeg75_resize05"],
+ "condition_call": "perturb.apply_condition(img, cond, key=sha256, seed=0), identical for both classes",
+ "detectors": {"communityforensics": "scorers.communityforensics:score", "rine": "scorers.rine:score", "clipdet": "scorers.clipdet:score",
+               "b0": "005 arm A0 (DINOv2-base primary features, class-balanced logistic probe, StratifiedGroupKFold), LOGO over 6 generators"},
+ "generators": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl"],
+ "rows_scored_pretrained": "split in (calib, test), both arms; orig-arm scores reused from experiments/007-worst-env-conformal/pilot/scores_pretrained.csv.gz after a 32-image GPU re-score check",
+ "test": "358 reals per pool (VISION native / WA / FBH; 25 devices) and 60 fakes x 6 generators",
+ "thresholds": "1%-FPR threshold = lib/metrics.threshold_for_fpr(calib natives, 0.01) (43 reals -> the calib max + eps); sensitivity variant with all 129 calib reals",
+ "primary": "delta = AUROC(orig) - AUROC(fov512), macro over 6 generators vs test natives; scale-sensitive iff |delta| >= 0.03 and the 95% CI excludes 0",
+ "texture": "mean |4-neighbour Laplacian| of the grayscale (mean of RGB, /255) of each detector's actual model input before normalisation (CommFor Resize440+Crop384, RINE Crop224, ClipDet Resize224bicubic+Crop224, B0 Crop224), after the condition; direction (sign) chosen per (input, arm, condition) on TRAIN natives vs train fakes (calib has reals only)",
+ "d008": {"subset": "007's 32 rows (16 real + 16 fake, seed 0, split==test)", "tol": 0.001, "tf32": false, "device": "cuda vs cpu(batch 4); applies to every new scoring run (fov512 arm); orig arm = re-score check vs 007 stored scores"},
+ "outputs": "pilot/{results.json,tables.md,scores_long.csv.gz,d008_guard.json,run.log}",
+ "deviations": "see notes.md"
+}

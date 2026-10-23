@@ -1,0 +1,14 @@
+00:20:18 E1 start; rows scored 1563 of 2220
+00:20:44 E1 lap orig: 2022 rows in 23s
+00:21:08 E1 lap fov512: 2022 rows in 25s
+00:21:28 E1-B0 A0/full: n_train=459 C=10
+00:21:48 E1-B0 A0/logo_dalle2: n_train=399 C=10
+00:22:04 E1-B0 A0/logo_dalle3: n_train=399 C=1
+00:22:22 E1-B0 A0/logo_firefly: n_train=399 C=1
+00:22:42 E1-B0 A0/logo_midjourney-v5: n_train=399 C=10
+00:23:00 E1-B0 A0/logo_stable-diffusion-2: n_train=399 C=10
+00:23:21 E1-B0 A0/logo_stable-diffusion-xl: n_train=399 C=10
+00:23:21 E1 B0 orig: max|dscore| vs 005/pilot_v2 cache = 0.00e+00
+00:23:48 E1-B0 A0/full: n_train=459 C=0.01
+00:24:10 E1-B0 A0/logo_dalle2: n_train=399 C=0.001
+00:24:34 E1-B0 A0/logo_dalle3: n_train=399 C=0.01
