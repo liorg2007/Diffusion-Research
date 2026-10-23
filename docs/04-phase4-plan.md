@@ -365,3 +365,20 @@ Eps-16 numbers are descriptive only. They are compared with RAID Table 4 (DINOv2
 - Canonicalization is therefore: resize ×0.5 → JPEG q75 → bicubic back up to 256.
 - This applies to both classes, and to clean and attacked inputs, for every detector.
 - The extra up-sampling is part of the canonicalization, so it counts toward the clean cost.
+
+**Amendment 7–8 clarifications** (2026-10-24, from the pre-run code reviews `008/code_review.md` and `009/code_review.md`; no E1 or E2 result exists yet)
+- **E2 #7 validity gate:**
+  - Amendment 8 said "as in Amendment 6", but its parenthetical ("CI includes 0.5") misstated that gate.
+  - The rule is Amendment 6's: a label other than UNINFORMATIVE requires the lower bound of the 95% CI of the ratio's clean AUROC to be > 0.5.
+  - So a ratio that is significantly *below* chance is UNINFORMATIVE, not FAIL.
+- **E2 aligned fakes in the `fov512` arm** are saved as PNG, not JPEG.
+  - fov512 reals are resampled PNGs with no fresh JPEG pass, so a JPEG re-save would give only the fakes a format cue.
+  - The `orig` arm (the label arm) keeps the JPEG re-save at the source quality factor.
+- **E2 CV groups** = source photo (`device:vidx`). The native, WA and FBH copies of one photo, and all of their round-trips, then share a fold.
+- **E2 guard order:**
+  - the VAE D-008 guard runs before the bulk VAE stage;
+  - `analyze` refuses to write results unless both guards passed.
+- **E1 transfer table:**
+  - For B0, only within-arm rows plus the fixed-probe rows `b0_trained_*` are reported. "Cross" rows that pair one arm's threshold with the other arm's retrained probe are dropped as meaningless.
+  - Rows beyond Amendment 7 (the 129-calib-reals variant and the fixed-probe B0 rows) are marked "not pre-registered".
+  - The texture sign is set once per (detector input, condition), on train data.
