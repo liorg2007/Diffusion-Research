@@ -119,3 +119,35 @@
   - ViT-L was not adopted (needs the owner, D-007).
   - Disclosure: the agent edited config after the dry run showed the inversion; no label impact.
   - KB idea drift-format-shortcut updated (negative result).
+- 2026-10-24 00:30 — Owner asked for continuous work with subagents while grip is down.
+  - Wave 1 launched: (a) sonnet/high: official H4 code per Amendment 6 plus a pilot_addendum (cross-scale B0, texture baseline); (b) sonnet/high: E1 zoom sensitivity of CommFor/RINE/ClipDet/B0 (Amendment 7, pre-registered f7b258e); (c) sonnet/medium: RAID scouting → kb/datasets/raid.md (no download); (d) haiku: download stabilityai sd-vae-ft-mse + sdxl-vae (~0.67 GB).
+  - Budget: ~7.96 GB approved re-acquisition + 0.67 GB ≈ 8.63 GB of 9 GB, so a RAID sample over ~0.37 GB needs the owner.
+  - Added diffusers 0.35.2 to the lock (additive: diffusers, importlib-metadata, zipp); synced with --inexact.
+  - Pre-registered E2 (#6 aligned-VAE probe, #7 VAE ratio pilot) as Amendment 8 (fb68ac1). It launches after the VAE download.
+- 2026-10-24 00:45 — RAID scout done (kb/datasets/raid.md):
+  - MIT licence; per-file layout; eps 8 is released.
+  - DINOv2 is a held-out baseline in RAID, so it is not in the attack ensemble.
+  - A minimal 100 ids/class subset is about 73 MB.
+  - Pre-registered E3 (idea #5) as Amendment 9 (9dc6bb2).
+- 2026-10-24 00:50 — VAEs downloaded: sd-vae-ft-mse + sdxl-vae, 669 MB, MIT. Lead re-verified the sha256 values; SOURCES updated (212ecf3).
+  - Running total ≈ 8.63 GB of 9 GB (D-007), plus RAID ≤ 0.2 GB → ≈ 8.8 GB.
+  - Launched: E2 pilot (sonnet/high → experiments/009-vae-aligned/pilot/) and the RAID subset download (haiku, 1,500 files, stop if over 200 MB).
+  - Still running: official H4 code; E1.
+- 2026-10-24 01:00 — Owner: "please don't do GPU heavy work right now".
+  - Lead terminated the GPU processes: 008 run.py (E1 scoring) and 009 run.py --stage timing (twice; the agent relaunched before the message arrived).
+  - All three experiment agents told to do CPU-only work and wait for the lead.
+  - Still allowed: CPU fov224 crop prep, lib tests, RAID download (network only).
+- 2026-10-24 01:10 — E2 agent paused before any result.
+  - 009 code is implemented with 5 resumable stages (timing → vae → guard → feat → analyze); nothing is computed or cached.
+  - Lib tests 58 passed (CPU).
+  - Resume with `env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage all` once the owner allows GPU.
+  - Choices noted in notes.md: texture sign set on calib natives vs train fakes; a C_all_reals sensitivity arm; #6 evaluated on all 120 fakes per generator (A sees none), #7 on the 60 test fakes per generator.
+- 2026-10-24 01:15 — E1 agent paused before any result.
+  - 008 is coded; the 20-image dry run was clean (orig re-score matches 007 within 2.7e-5; D-008 max |Δlogit| < 1e-4).
+  - Cached: Laplacian of each detector's input; B0 orig refit, identical to 005 pilot_v2 A0.
+  - Remaining: ~15–20 min of GPU scoring of fov512, plus CPU analysis. Resume with `env/.venv/bin/python -I experiments/008-scale-sensitivity/run.py`.
+  - Deviations in notes.md: texture sign set on train data; an extra 1%-FPR variant using all 129 calib reals (43 natives give calib-max thresholds); fixed-probe cross-arm B0 rows.
+  - Lib tests 58 passed.
+- 2026-10-24 01:30 — RAID subset downloaded: 1,500 files, 157.08 MB, 1500/1500 sha256 match. The first attempt hit an HF 429 rate limit (8 threads); a serial, throttled resume finished it.
+  - Manifest experiments/010-raid-transfer/raid_manifest.csv; SOURCES updated.
+  - Running download total ≈ 8.8 GB of 9 GB (D-007): no further downloads without the owner.
