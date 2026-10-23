@@ -175,3 +175,46 @@ Because D-009 takes a 512 crop with no resize, real crops are about 2.5–3× mo
 - With fov512, the real-pool gaps vanish: A0 clean is native 0.979 / WA 0.979 / FBH 0.980, against orig 0.992 / 0.966 / 0.982.
 - The ceiling stays about 0.98, so there is still no headroom on the pilot data.
 - WA pooled-conformal FPR at 1%: 3.31% orig vs 1.58% fov512 (`007/pilot_v2`, indicative).
+
+## Amendment 5 (2026-10-23 22:58, before any H4 result): H4 PILOT on the data we have
+**Why now.** grip.unina.it is still down, and H4 runs first in the official order (Amendment 3), because it decides how H1 and H2 are read. Two of its comparisons need no RAISE, so they are piloted now. Like every pilot, this does not count toward the stop rule and is not a Phase 4 verdict. Outputs go to `experiments/006-format-shortcut/pilot/`.
+
+**Data.** The pilot test split from `004-phase4-features/pilot/splits_pilot.csv`: 1,074 VISION reals (native, WA, FBH; 25 devices) and 360 fakes (6 Synthbuster generators × 60). Each result is reported both with and without Firefly, whose files are already JPEG q≈95.
+
+**Settings.** Every image passes through the same processing:
+
+| Setting | Reals | Fakes | Replaces |
+|---|---|---|---|
+| (i) | VISION native, as is (camera JPEG) | clean PNG | (i) unchanged |
+| (iii-p) | VISION native re-encoded `jpeg(90)` | `jpeg(90)` | (iii); RIGID App. D protocol, both classes converted to JPEG |
+| (iv-p) | VISION native `jpeg75_resize05` | `jpeg75_resize05` | (iv) |
+
+Setting (ii) (RAISE PNG vs PNG) has no pilot version. Caveat: in (iii-p) the reals are compressed twice, so their *final* format matches the fakes, but not their whole history.
+
+**Scale arm.** Each setting is run twice: on the 003 crops (`orig`) and on `fov512` crops (short side resized to 512, then center crop), using the existing 004 preprocessing. The WA and FBH copies appear only in a descriptive per-pool table for setting (i).
+
+**RIGID-style score.** As pre-registered in the H4 section:
+- score = 1 − cos(f(x), f(x + n)), with f = the DINOv2-base last-layer CLS on the 224 input used by 004;
+- n is Gaussian, added in [0,1] pixel space before normalization and clipped to [0,1];
+- σ ∈ {0.01, 0.02, 0.05}, averaged over 4 seeded draws;
+- the noise is generated on the CPU from a fixed seed per (image, draw), so it is identical across devices;
+- the direction is fixed in advance (higher = fake) and is never flipped.
+
+**Supervised comparator.** B0 = the A0 probe of 005 (primary 1536-d features, grouped CV, balanced). Its LOGO-macro AUROC comes from the cached 004 features for `clean` and `jpeg(90)` and `jpeg75_resize05`, in both `orig` and `fov512`.
+
+**Pilot criteria.** These are the original H4 thresholds, applied with (iii-p) in place of (iii):
+
+| Pilot result | Condition |
+|---|---|
+| SUPPORTED | For the best σ, AUROC(i) − AUROC(iii-p) ≥ 0.10, while B0's gap is < 0.05 |
+| REFUTED | The gap is < 0.03 for every σ |
+| INCONCLUSIVE | Otherwise |
+
+- "Best σ" is the σ with the highest AUROC(i).
+- Uncertainty comes from a cluster bootstrap: devices for reals, images for fakes, 2,000 resamples.
+
+**Secondary (descriptive, no verdict).**
+- The `orig` − `fov512` difference in AUROC(i), for the RIGID score and for B0. This is the first direct measurement of the zoom shortcut for a training-free score.
+- The 1%-FPR operating point for the RIGID score, from the calib-split reals.
+
+**D-008 guard.** CUDA vs CPU on 32 noised images: scaled |Δfeature| ≤ 1e-3, with max |Δscore| reported. Abort if the guard fails.
