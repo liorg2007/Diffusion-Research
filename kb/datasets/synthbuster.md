@@ -6,3 +6,5 @@
 - **Download procedure:** single zip, no official subsets. BUT the server supports HTTP range requests (I confirmed a 206 response), so individual PNGs can be pulled by reading the zip central directory (last ~3 MB) and range-fetching entries - a ~5 GB budget is feasible. Compressed sizes per folder I computed from the central directory: dalle2 1.96 GB, dalle3 2.16, firefly 1.55, glide 0.09, midjourney-v5 1.94, SD1.3 0.54, SD1.4 0.54, SD2 1.94, SDXL 1.66 (GB, sum ~12.4). A 100-image-per-generator sample is ~1.2 GB.
 - **Known issues:** NC licence; reals not included; fakes are PNG so pair with PNG/raw-derived reals (a JPEG real set would reintroduce format bias); prompts edited to be photorealistic; includes older generators (GLIDE, SD1.x).
 - **Used in our experiments?** yes — experiments/001-eval-set (D-005)
+
+- **Correction (2026-10-24):** the Firefly files are JPEG at q≈95 despite their .png names (H4 plan; `experiments/013-latent-grid/pilot/critique.md`). Every other generator is PNG.

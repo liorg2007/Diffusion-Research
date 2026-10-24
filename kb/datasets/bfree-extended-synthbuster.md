@@ -7,5 +7,3 @@
 - **Download procedure:** direct HTTPS zip files, server supports range requests (accept-ranges: bytes), so partial extraction works.
 - **Known issues:** the real set is resized RAISE (DSLR, 2011-2014, not phones); possible resize-vs-native-resolution shortcut; not peer-reviewed as separate dataset.
 - **Used in our experiments?** yes — experiments/001-eval-set (D-005)
-
-- **Correction (2026-10-24):** the Firefly files are JPEG at q≈95 despite their .png names (H4 plan; `experiments/013-latent-grid/pilot/critique.md`). Every other generator is PNG.
