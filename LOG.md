@@ -264,3 +264,8 @@
   - Lead spot-checked cited numbers: 003 B0 laundered 0.875 and FLUX 0.813 (003/tables.md); threshold drift 0.197 → 0.004 (005 pilot_v2 orig/fov512 tables).
   - Bottom line: no pilot answered its hypothesis; the cross-cutting finding is the zoom/texture shortcut; none of the Phase 5 targets is met or properly tested yet. Stop-rule count stays at 0.
   - D-013 recommendation for the owner: fov512 primary for training/calibrating our probes and every FPR claim; orig as a required second arm; published detectors scored in their native-protocol arm.
+- 2026-10-24 12:15 — Owner refocused the research on diffusion-generated images. Asked to choose, they picked "diffusion-specific signals" → D-014 (243c718).
+  - Paused: idea #5 (RAID attacks) and H2 as a protocol.
+  - Kept: H4/zoom controls as hygiene; the Phase 5 targets are unchanged.
+  - Pre-registered E4 (Amendment 11): VAE-trace detectability by feature family (B0, DINOv2 blocks, residual spectrum, both) on real vs own SD-VAE round-trip pairs, plus transfer.
+  - Launched a diffusion-signals literature survey (sonnet/medium → new kb/papers entries + kb/_index_rows/diffusion-signals.md) and E4 (sonnet/high → experiments/011-vae-trace/pilot/).
