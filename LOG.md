@@ -327,3 +327,4 @@
   - Regenerated splits are byte-identical to 003 splits.csv.
   - crop512 / fov512 / fov224: 2919 rows each; 2220 existing crops pixel-equal, 699 newly written (RAISE, SD3.5, FLUX, …); raw sha 2919/2919.
   - The existing crops were also made on this PC (pilot), so Mac crop-pixel parity is tested only through the step-6 metric match (±0.005).
+- 2026-10-24 19:56 — Timestamp correction: the entries stamped "20:00" (bootstrap verified) and "20:10" (official crops) were written at about 19:53 and 19:56. Lead entries now take their time from `date`, never from estimates.
