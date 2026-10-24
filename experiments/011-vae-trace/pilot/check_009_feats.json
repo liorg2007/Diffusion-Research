@@ -1,0 +1,18 @@
+{
+ "orig/clean": {
+  "n": 297,
+  "max_abs_diff_vs_009": 2.09808349609375e-05
+ },
+ "orig/jpeg75_resize05": {
+  "n": 297,
+  "max_abs_diff_vs_009": 1.621246337890625e-05
+ },
+ "fov512/clean": {
+  "n": 297,
+  "max_abs_diff_vs_009": 2.288818359375e-05
+ },
+ "fov512/jpeg75_resize05": {
+  "n": 297,
+  "max_abs_diff_vs_009": 3.62396240234375e-05
+ }
+}

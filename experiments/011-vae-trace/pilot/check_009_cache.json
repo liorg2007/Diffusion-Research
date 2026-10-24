@@ -1,0 +1,22 @@
+{
+ "orig": {
+  "n_train": 297,
+  "missing": 0,
+  "wrong_format": 0,
+  "wrong_qf": 0,
+  "wrong_size": 0,
+  "regen_n": 16,
+  "regen_mismatch_frac_mean": 0.0,
+  "regen_max_abs_diff_uint8": 0
+ },
+ "fov512": {
+  "n_train": 297,
+  "missing": 0,
+  "wrong_format": 0,
+  "wrong_qf": 0,
+  "wrong_size": 0,
+  "regen_n": 16,
+  "regen_mismatch_frac_mean": 0.0,
+  "regen_max_abs_diff_uint8": 0
+ }
+}

@@ -280,3 +280,12 @@
   - no FLUX-specific VAE-trace detector was found;
   - most relevant for a VAE-only, laundering-robust method: HFI (AEROBLADE + aliasing, VAE-only), RDD (debiased recon, abstract only; PDF returned 403), InpX (VAE re-encoding is the carrier) + Stay-Positive (non-negative head);
   - caveat: fragile-recon shows white-box attacks take recon detectors to ~0.
+- 2026-10-24 13:55 — E4 PILOT done (011-vae-trace/pilot/; diagnostic). The run finished at 12:47, before the agent was cut off by the API limit; the lead read the outputs. D-008 probe guards ok (max |Δlogit| 2.5e-4).
+  - Pair AUROC (real vs own SD-VAE round-trip), primary probe trained on clean pairs:
+    - orig: F1 0.670, F2 0.859, F3 0.625, F4 0.862 [0.833, 0.894] clean; all ~0.53–0.60 laundered.
+    - fov512 (descriptive): F4 0.962 [0.953, 0.972] clean, 0.600 laundered.
+  - Win-rate (round-trip scores above its own real): F2/F4 0.99–1.00 clean. Paired comparison is far stronger than the pooled AUROC.
+  - Decision rules (orig label arm): detectable NOT met (0.862 < 0.90); survives laundering NOT met (0.598); trace-specific MET (beats texture 0.554 by ≥ 0.10).
+  - Transfer of pair probes to Synthbuster: F1 0.819 / F2 0.776 / F4 0.768 clean; SD-family > other.
+  - Reading: the SD-VAE trace is visible in mid-level DINOv2 features (strongly in fov512) but erased by jpeg75_resize05. It is a constraint for any diffusion-specific method.
+  - Launching opus/high critic and opus/high hypothesis generation.
