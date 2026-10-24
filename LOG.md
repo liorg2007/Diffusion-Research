@@ -260,3 +260,7 @@
   - CommFor laundered flips to zoom (its "resampling" term was real-side and grew with each photo's downsampling factor). RINE laundered becomes zoom (+0.011 / +0.217). ClipDet is not identifiable.
   - Never quote a du2 number. Run used uncommitted code (results git_head 428a066), but 54 regenerated crops are pixel-identical to the committed code.
   - D-013: E1b only strengthens "train and calibrate our probes in fov512".
+- 2026-10-24 09:55 — Wrote docs/05-phase4-pilot-synthesis.md (opus/high synthesis).
+  - Lead spot-checked cited numbers: 003 B0 laundered 0.875 and FLUX 0.813 (003/tables.md); threshold drift 0.197 → 0.004 (005 pilot_v2 orig/fov512 tables).
+  - Bottom line: no pilot answered its hypothesis; the cross-cutting finding is the zoom/texture shortcut; none of the Phase 5 targets is met or properly tested yet. Stop-rule count stays at 0.
+  - D-013 recommendation for the owner: fov512 primary for training/calibrating our probes and every FPR claim; orig as a required second arm; published detectors scored in their native-protocol arm.
