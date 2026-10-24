@@ -225,3 +225,8 @@
   - "B0 not sensitive" holds only when B0 is retrained per arm. A fixed orig-trained probe is zoom-fragile (−0.059 laundered); a fixed fov512-trained probe is stable (cross-zoom FPR ~1.1%) but has lower TPR@1% (0.683 vs 0.900).
   - Each published detector's native protocol: RINE = orig; CommFor and ClipDet = fov512.
   - Recommendations: a du2 (down-then-up) arm to separate zoom from resampling; input scale treated as an H2/H3 environment; device-bootstrap FPR CIs. D-013 evidence favours fov512 primary for our probes (owner decides).
+- 2026-10-24 06:00 — E3 critic (opus/high, 010/pilot/critique.md): UNINFORMATIVE, label correct, no bug; all AUROCs reproduced.
+  - B0 calls 77% of RAID reals fake (median logit +4.29): a camera-photo prior from the VISION-only training reals.
+  - Post-hoc controls (not pre-registered): random-sign noise explains ClipDet's drop fully and ~0.09–0.17 of CommFor's 0.233; at most ~0.065 is image-specific. The drop is driven by attacked fakes.
+  - Recovery was capped below 0.5 by construction. Inside canonicalized space the attack costs only 0.007–0.061, but canonicalization costs ~0.08–0.16 of clean AUROC.
+  - Idea #5 untested in its proper form. The official design (in-domain trained probe, canon-trained arm, ≥500 calib reals) needs ~0.9 GB of RAID originals, over the cap, so the owner must decide. KB idea updated.

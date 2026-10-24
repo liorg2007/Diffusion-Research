@@ -1,0 +1,22 @@
+b0                   clean 0.643
+   eps8: 0.559 drop 0.083 [0.042, 0.127] | reals-only 0.719 fakes-only 0.476 | med shift real -1.18 fake -2.30
+   signflip: 0.613 drop 0.030 [0.005, 0.057] | reals-only 0.705 fakes-only 0.545 | med shift real -0.99 fake -1.27
+   shuffled: 0.579 drop 0.063 [0.035, 0.091] | reals-only 0.710 fakes-only 0.500 | med shift real -1.17 fake -1.95
+clipdet              clean 0.821
+   eps8: 0.735 drop 0.086 [0.025, 0.149] | reals-only 0.629 fakes-only 0.896 | med shift real +0.81 fake +0.40
+   signflip: 0.733 drop 0.088 [0.036, 0.143] | reals-only 0.662 fakes-only 0.874 | med shift real +0.74 fake +0.25
+   shuffled: 0.759 drop 0.062 [0.006, 0.119] | reals-only 0.586 fakes-only 0.924 | med shift real +0.81 fake +0.61
+communityforensics   clean 0.952
+   eps8: 0.719 drop 0.233 [0.175, 0.296] | reals-only 0.945 fakes-only 0.756 | med shift real -0.08 fake -8.05
+   signflip: 0.863 drop 0.089 [0.049, 0.138] | reals-only 0.939 fakes-only 0.888 | med shift real -0.16 fake -4.56
+   shuffled: 0.783 drop 0.168 [0.115, 0.225] | reals-only 0.943 fakes-only 0.821 | med shift real +0.29 fake -6.73
+rine                 clean 0.898
+   eps8: 0.754 drop 0.144 [0.084, 0.206] | reals-only 0.899 fakes-only 0.716 | med shift real -0.04 fake -0.95
+   signflip: 0.865 drop 0.033 [-0.008, 0.078] | reals-only 0.506 fakes-only 0.992 | med shift real +1.96 fake +3.26
+   shuffled: 0.841 drop 0.057 [0.001, 0.117] | reals-only 0.656 fakes-only 0.982 | med shift real +0.92 fake +1.41
+
+content-paired win rate P(score fake(id) > score real(id)), unpadded real ids, all 4 generators (vs pooled AUROC)
+b0                   clean 0.708 | eps8 0.589 | clean_canon 0.651 | eps8_canon 0.630
+communityforensics   clean 0.938 | eps8 0.693 | clean_canon 0.792 | eps8_canon 0.755
+rine                 clean 0.906 | eps8 0.802 | clean_canon 0.896 | eps8_canon 0.812
+clipdet              clean 0.833 | eps8 0.745 | clean_canon 0.750 | eps8_canon 0.693

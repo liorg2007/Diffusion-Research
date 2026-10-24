@@ -1,0 +1,74 @@
+== 1. recompute pooled AUROC primary (unpadded reals) and compare with results.json
+max |recomputed - reported| = 0
+fake padded count: 0  real padded ids: 52
+
+== 2. per-class median score and median paired shift (clean->eps8, clean->clean_canon, eps8->eps8_canon); primary reals
+               det        grp   n  med_clean  med_eps8  med_cc  med_e8c  shift_attack  shift_canon_clean  shift_canon_att  p_attack
+                b0 real_unpad  48      4.286     3.152   3.570    2.193        -1.176             -0.643           -0.377     0.000
+                b0   real_pad  52      2.572     0.819   1.138    0.358        -1.383             -1.621           -1.209     0.000
+                b0      gen_0 100      6.818     4.600   6.102    4.779        -2.482             -1.142            0.149     0.000
+                b0      gen_1 100      5.453     4.131   4.778    3.536        -1.816             -1.186           -0.054     0.000
+                b0      gen_2 100      6.090     4.319   5.098    3.756        -2.025             -1.054           -0.567     0.000
+                b0      gen_3 100      6.641     3.082   4.905    3.158        -2.991             -1.473           -0.392     0.000
+communityforensics real_unpad  48    -10.311    -9.670  -9.114  -10.218        -0.083              0.676            0.108     0.412
+communityforensics   real_pad  52    -10.127    -9.032  -8.092   -8.648         1.579              1.748           -0.256     0.000
+communityforensics      gen_0 100     -4.295    -9.007  -7.999   -9.305        -4.514             -3.014           -0.040     0.000
+communityforensics      gen_1 100      4.978    -5.264  -3.868   -6.656        -8.903             -8.793           -1.576     0.000
+communityforensics      gen_2 100      2.772    -5.102  -5.197   -7.252        -8.268             -8.369           -1.741     0.000
+communityforensics      gen_3 100      4.993    -6.474  -2.643   -5.902       -11.474             -6.415            1.839     0.000
+              rine real_unpad  48     -0.639    -0.824  -0.216   -0.191        -0.043              0.785            1.157     0.461
+              rine   real_pad  52     -0.478    -0.442  -0.261   -0.186         0.107              0.403            0.466     0.099
+              rine      gen_0 100      0.874    -0.239   0.751    1.046        -0.866              0.068            1.171     0.000
+              rine      gen_1 100      1.612    -0.190   1.167    1.186        -1.530             -0.573            1.154     0.000
+              rine      gen_2 100      0.633    -0.284   0.824    0.958        -0.626              0.242            1.123     0.001
+              rine      gen_3 100      1.501     0.600   1.720    1.820        -0.649              0.242            0.986     0.000
+           clipdet real_unpad  48     -0.211     0.578   1.020    1.021         0.808              1.414            0.850     0.000
+           clipdet   real_pad  52     -0.446     0.164   1.000    1.159         0.549              1.362            1.147     0.000
+           clipdet      gen_0 100      0.881     1.296   1.850    1.909         0.407              0.863            0.551     0.000
+           clipdet      gen_1 100      0.840     1.024   1.697    1.510         0.403              0.879            0.442     0.000
+           clipdet      gen_2 100      0.880     1.215   1.809    1.654         0.436              0.893            0.533     0.000
+           clipdet      gen_3 100      1.260     1.408   2.001    1.857         0.296              0.910            0.395     0.000
+
+== 3. cross-class decomposition (primary). AUROC(reals from set A, fakes from set B)
+det                      b0  communityforensics   rine  clipdet
+what                                                           
+attack fakes only     0.476               0.756  0.716    0.896
+attack reals only     0.719               0.945  0.899    0.629
+both att+canon        0.594               0.736  0.786    0.691
+both attacked         0.559               0.719  0.754    0.735
+both canon            0.602               0.797  0.817    0.730
+canon att fakes only  0.542               0.693  0.934    0.871
+canon att reals only  0.612               0.749  0.448    0.521
+canon fakes only      0.553               0.844  0.947    0.957
+canon reals only      0.687               0.939  0.765    0.432
+clean                 0.643               0.952  0.898    0.821
+
+== 4. fixed-FPR operating points: threshold set on CLEAN unpadded reals at FPR 5% / 1% (from the 48), then FPR on attacked reals and TPR on clean/attacked fakes (descriptive; 48 reals -> 1% = 0 or 1 real)
+               det  target_fpr    thr  FPR_clean  TPR_clean  FPR_eps8  TPR_eps8  FPR_eps16  TPR_eps16  FPR_clean_canon  TPR_clean_canon  FPR_eps8_canon  TPR_eps8_canon
+                b0        0.05  9.710      0.062      0.182     0.000     0.037      0.042      0.035            0.062            0.095           0.021           0.037
+                b0        0.10  8.821      0.104      0.250     0.042     0.083      0.104      0.060            0.083            0.152           0.042           0.070
+communityforensics        0.05 -2.660      0.062      0.795     0.062     0.207      0.083      0.172            0.062            0.300           0.062           0.140
+communityforensics        0.10 -6.110      0.104      0.905     0.125     0.453      0.188      0.405            0.167            0.618           0.125           0.355
+              rine        0.05  0.509      0.062      0.715     0.125     0.393      0.021      0.020            0.354            0.782           0.417           0.812
+              rine        0.10 -0.179      0.104      0.735     0.146     0.443      0.021      0.033            0.396            0.833           0.458           0.853
+           clipdet        0.05  1.214      0.062      0.355     0.188     0.500      0.146      0.430            0.438            0.775           0.458           0.752
+           clipdet        0.10  0.845      0.104      0.540     0.333     0.675      0.292      0.630            0.583            0.875           0.667           0.890
+
+== 5. fraction of items whose score moved toward the other class under eps8 (sign of shift)
+b0                   reals up(=more fake) 0.19  fakes down(=more real) 0.91
+communityforensics   reals up(=more fake) 0.48  fakes down(=more real) 0.94
+rine                 reals up(=more fake) 0.44  fakes down(=more real) 0.77
+clipdet              reals up(=more fake) 0.83  fakes down(=more real) 0.29
+
+== 6. CI widths, primary vs sensitivity (eps8 drop/recovery/cost)
+b0                   primary          cleanCIw 0.163 dropCIw 0.085 recCIw 0.977 costCIw 0.051
+b0                   sensitivity_all  cleanCIw 0.121 dropCIw 0.053 recCIw 0.726 costCIw 0.039
+communityforensics   primary          cleanCIw 0.044 dropCIw 0.121 recCIw 0.666 costCIw 0.105
+communityforensics   sensitivity_all  cleanCIw 0.037 dropCIw 0.104 recCIw 0.423 costCIw 0.086
+rine                 primary          cleanCIw 0.071 dropCIw 0.122 recCIw 0.967 costCIw 0.114
+rine                 sensitivity_all  cleanCIw 0.061 dropCIw 0.096 recCIw 0.461 costCIw 0.082
+clipdet              primary          cleanCIw 0.121 dropCIw 0.124 recCIw 2.49 costCIw 0.134
+clipdet              sensitivity_all  cleanCIw 0.083 dropCIw 0.08 recCIw 4.056 costCIw 0.091
+
+== 7. B0: correlation of clean score with original size (reals) and per-class mean
+['id', 'cls', 'kind', 'path', 'bytes', 'sha256', 'hf_lfs_sha256', 'match']

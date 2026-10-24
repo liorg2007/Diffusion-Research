@@ -1,0 +1,14 @@
+communityforensics harness check max|cpu - saved cuda| = 3.9577484130859375e-05
+communityforensics signflip done
+communityforensics shuffled done
+b0 harness check max|cpu - saved cuda| = 1.805014789546533e-05
+b0 signflip done
+b0 shuffled done
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+clipdet harness check max|cpu - saved cuda| = 4.792213439930304e-05
+clipdet signflip done
+clipdet shuffled done
+rine harness check max|cpu - saved cuda| = 4.506111145019531e-05
+rine signflip done
+rine shuffled done

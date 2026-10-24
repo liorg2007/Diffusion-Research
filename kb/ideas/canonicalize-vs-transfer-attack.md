@@ -24,4 +24,11 @@
   - **Pass:** B0 drop <= 0.10 AUROC; canonicalization recovers >= 50% of the drop; clean cost <= 0.03. **Fail:** B0 drop > 0.20 or recovery < 25%.
   - Optional: own PGD transfer from UnivFD surrogate (eps 8/255, 10 steps) on 100 images - backprop through ViT-L may need CPU; time-box to 2 h.
 
-- **Status:** proposed
+- **Pilot result (2026-10-24, UNINFORMATIVE; experiments/010-raid-transfer/pilot/, critique.md):**
+  - Our B0 probe fails the validity gate on RAID: clean AUROC 0.643. It calls 77% of LAION/D3 web reals fake, because it learned "real = camera photo" from 99 VISION training reals.
+  - Out-of-ensemble references at eps 8: CommFor 0.952 → 0.719, ClipDet 0.821 → 0.735.
+  - Post-hoc noise controls (not pre-registered): random-sign noise of the same magnitude explains ClipDet's drop fully, and about 0.09–0.17 of CommFor's 0.233. At most ~0.065 is image-specific.
+  - The drop comes from attacked fakes; attacked reals barely move.
+  - JPEG q75 + 0.5x canonicalization nearly cancels the attack inside canonicalized space (residual drop 0.007–0.061), but costs about as much clean AUROC (0.08–0.16). RINE and ClipDet then flag 35–44% of reals.
+  - Conclusion: idea #5 is untested in its proper form (a canonicalized-input detector trained in-domain), not refuted. A proper test needs about 0.9 GB more RAID originals, which exceeds the 9 GB cap and needs the owner.
+- **Status:** pilot done (uninformative); official design in the critique
