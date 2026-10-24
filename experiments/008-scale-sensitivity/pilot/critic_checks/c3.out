@@ -1,0 +1,33 @@
+calib natives: 43 devices: 10 | test natives 358 devices 25 | calib/test device overlap 0
+
+#### clean
+b0x(trained orig) thr:orig->test:fov512              within(max)=0.015 cross: max=0.234 2nd=0.498 3rd=0.533 all129=0.048 | devboot median 0.234 [0.234,0.703] | oracle within 1/2/5% -> cross 0.172/0.276/0.575
+b0x(trained fov512) thr:fov512->test:orig            within(max)=0.015 cross: max=0.011 2nd=0.023 3rd=0.033 all129=0.011 | devboot median 0.011 [0.011,0.068] | oracle within 1/2/5% -> cross 0.003/0.021/0.062
+communityforensics thr:fov512->test:orig             within(max)=0.017 cross: max=0.064 2nd=0.145 3rd=0.159 all129=0.145 | devboot median 0.064 [0.064,0.218] | oracle within 1/2/5% -> cross 0.047/0.089/0.151
+communityforensics thr:orig->test:fov512             within(max)=0.017 cross: max=0.003 2nd=0.028 3rd=0.034 all129=0.003 | devboot median 0.003 [0.003,0.034] | oracle within 1/2/5% -> cross 0.000/0.003/0.014
+rine thr:orig->test:fov512                           within(max)=0.003 cross: max=0.020 2nd=0.036 3rd=0.042 all129=0.036 | devboot median 0.020 [0.020,0.142] | oracle within 1/2/5% -> cross 0.025/0.042/0.059
+rine thr:fov512->test:orig                           within(max)=0.053 cross: max=0.036 2nd=0.061 3rd=0.237 all129=0.061 | devboot median 0.036 [0.036,0.360] | oracle within 1/2/5% -> cross 0.000/0.008/0.028
+clipdet thr:orig->test:fov512                        within(max)=0.003 cross: max=0.003 2nd=0.014 3rd=0.017 all129=0.014 | devboot median 0.003 [0.003,0.031] | oracle within 1/2/5% -> cross 0.003/0.003/0.014
+
+#### jpeg75_resize05
+b0x(trained orig) thr:orig->test:fov512              within(max)=0.002 cross: max=0.022 2nd=0.073 3rd=0.088 all129=0.024 | devboot median 0.022 [0.022,0.310] | oracle within 1/2/5% -> cross 0.096/0.155/0.351
+b0x(trained fov512) thr:fov512->test:orig            within(max)=0.014 cross: max=0.013 2nd=0.016 3rd=0.025 all129=0.014 | devboot median 0.013 [0.013,0.063] | oracle within 1/2/5% -> cross 0.010/0.020/0.079
+communityforensics thr:fov512->test:orig             within(max)=0.017 cross: max=0.089 2nd=0.103 3rd=0.126 all129=0.089 | devboot median 0.089 [0.089,0.358] | oracle within 1/2/5% -> cross 0.036/0.101/0.170
+communityforensics thr:orig->test:fov512             within(max)=0.042 cross: max=0.017 2nd=0.017 3rd=0.022 all129=0.017 | devboot median 0.017 [0.017,0.025] | oracle within 1/2/5% -> cross 0.006/0.006/0.017
+rine thr:orig->test:fov512                           within(max)=0.017 cross: max=0.316 2nd=0.327 3rd=0.422 all129=0.039 | devboot median 0.316 [0.316,0.422] | oracle within 1/2/5% -> cross 0.288/0.332/0.422
+rine thr:fov512->test:orig                           within(max)=0.039 cross: max=0.000 2nd=0.000 3rd=0.000 all129=0.000 | devboot median 0.000 [0.000,0.000] | oracle within 1/2/5% -> cross 0.000/0.000/0.000
+clipdet thr:orig->test:fov512                        within(max)=0.017 cross: max=0.006 2nd=0.022 3rd=0.025 all129=0.006 | devboot median 0.006 [0.006,0.025] | oracle within 1/2/5% -> cross 0.000/0.008/0.017
+
+B0 fixed probe (trained orig): median score of test natives / fakes, orig vs fov512 features
+clean dalle2 natives -8.69 -> -0.58 | calib-nat max 2.67 2nd -0.4 | fakes(g) 5.99 -> 7.65
+clean dalle3 natives -5.83 -> 0.16 | calib-nat max 1.5 2nd 0.54 | fakes(g) 7.08 -> 8.32
+clean firefly natives -6.1 -> 0.34 | calib-nat max 1.59 2nd 0.41 | fakes(g) 5.9 -> 8.01
+clean midjourney-v5 natives -8.28 -> -0.68 | calib-nat max 2.51 2nd -0.27 | fakes(g) 7.55 -> 7.68
+clean stable-diffusion-2 natives -8.21 -> -0.22 | calib-nat max 2.26 2nd -0.8 | fakes(g) 8.44 -> 8.77
+clean stable-diffusion-xl natives -8.15 -> -0.21 | calib-nat max 2.55 2nd -0.67 | fakes(g) 10.0 -> 10.37
+jpeg75_resize05 dalle2 natives -3.66 -> 1.09 | calib-nat max 6.23 2nd 5.34 | fakes(g) 7.19 -> 6.76
+jpeg75_resize05 dalle3 natives -2.28 -> 1.34 | calib-nat max 6.85 2nd 4.33 | fakes(g) 7.79 -> 7.46
+jpeg75_resize05 firefly natives -2.35 -> 1.92 | calib-nat max 6.72 2nd 4.88 | fakes(g) 6.85 -> 7.62
+jpeg75_resize05 midjourney-v5 natives -4.05 -> 0.61 | calib-nat max 8.42 2nd 7.1 | fakes(g) 7.29 -> 7.04
+jpeg75_resize05 stable-diffusion-2 natives -3.52 -> 1.39 | calib-nat max 7.5 2nd 5.46 | fakes(g) 7.77 -> 7.99
+jpeg75_resize05 stable-diffusion-xl natives -3.54 -> 1.49 | calib-nat max 9.21 2nd 5.64 | fakes(g) 9.09 -> 9.54

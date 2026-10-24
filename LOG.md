@@ -218,3 +218,10 @@
   - fov_prep --no-clobber never overwrites existing crops; it re-creates beside them, compares, and aborts on any difference.
   - GPU guard dry-run (stand-in RAISE) passed: max scaled feature diff 1.8e-5, |Δscore| 2.5e-6. Lib tests 60 passed.
   - The official run is fully ready, waiting on grip.unina.it.
+- 2026-10-24 05:50 — E1 critic (opus/high, 008/pilot/critique.md): sound, no bug; three readings reframed.
+  - CORRECTION to the 05:20 entry: the "23.4% cross-zoom FPR" rests on a single calib photo (43 calib natives from 10 devices). Other threshold rules give 17–70%; the all-129-reals variant gives 4.8% (about 16× its within-arm rate). Report "FPR inflated ≥5× across scale", not 23.4%. RINE laundered orig→fov512 reaches 31.6% FPR.
+  - Zoom and resampling cannot be separated in fov512 (same factor). WA pools hint that ClipDet's clean effect comes from natives and CommFor's laundered drop from fakes losing traces.
+  - RINE's laundered 0.945 > clean 0.813 is real and driven by DALL-E 3 (0.166 → 0.935); it matches 003. Never cite it as robustness.
+  - "B0 not sensitive" holds only when B0 is retrained per arm. A fixed orig-trained probe is zoom-fragile (−0.059 laundered); a fixed fov512-trained probe is stable (cross-zoom FPR ~1.1%) but has lower TPR@1% (0.683 vs 0.900).
+  - Each published detector's native protocol: RINE = orig; CommFor and ClipDet = fov512.
+  - Recommendations: a du2 (down-then-up) arm to separate zoom from resampling; input scale treated as an H2/H3 environment; device-bootstrap FPR CIs. D-013 evidence favours fov512 primary for our probes (owner decides).

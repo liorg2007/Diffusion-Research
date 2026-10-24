@@ -1,0 +1,58 @@
+                       n  short_med  short_min  short_max  long_med
+grp                                                                
+dalle2                60     1024.0       1024       1024    1024.0
+dalle3                60     1024.0       1024       1024    1024.0
+firefly               60     1792.0       1536       2048    2304.0
+midjourney-v5         60      896.0        896        896    1360.0
+stable-diffusion-2    60      768.0        576       1024    1344.0
+stable-diffusion-xl   60      832.0        576        960    1216.0
+vision_facebook_hq   401     1536.0        720       1536    2048.0
+vision_native        401     2448.0        720       3936    3264.0
+vision_whatsapp      401      960.0        718        960    1280.0
+generator            orig_format
+dalle2               PNG            60
+dalle3               PNG            60
+firefly              JPEG           60
+midjourney-v5        PNG            60
+stable-diffusion-2   PNG            60
+stable-diffusion-xl  PNG            60
+dtype: int64
+
+median score by group (test)
+grp                                        dalle2  dalle3  firefly  midjourney-v5  stable-diffusion-2  stable-diffusion-xl  vision_facebook_hq  vision_native  vision_whatsapp
+detector           condition       arm                                                                                                                                        
+clipdet            clean           fov512   -0.07    0.20    -0.19          -0.33                0.22                 0.03               -1.37          -1.66            -1.49
+                                   orig     -0.04    0.37    -0.00          -0.59               -0.14                -0.44               -1.38          -1.12            -1.81
+                   jpeg75_resize05 fov512    0.16    0.59    -0.14          -0.24                0.26                 0.41               -0.58          -0.62            -0.55
+                                   orig      0.31    0.51    -0.36          -0.09                0.23                 0.55               -0.04           0.16            -0.32
+communityforensics clean           fov512    5.35    3.38     3.80           7.48                9.00                12.19               -9.93          -9.13            -9.71
+                                   orig      7.49    5.92    10.91          13.92               13.41                13.36               -9.11          -9.35            -9.55
+                   jpeg75_resize05 fov512   -3.69   -6.31    -7.47          -6.28               -2.90                -1.37               -9.83          -9.78            -9.95
+                                   orig      3.80   -2.97     5.16          -2.67                1.86                 2.64               -8.51          -7.10            -9.11
+rine               clean           fov512    0.88   -2.06    -0.18          -0.18                0.55                 1.71               -2.72          -1.30            -1.84
+                                   orig      1.68   -2.40    -0.19           3.68                2.31                 7.40               -0.91          -0.75            -1.24
+                   jpeg75_resize05 fov512   -0.19   -0.22    -0.22          -0.24                0.57                 0.61               -0.40          -0.41            -0.41
+                                   orig     -0.10   -0.19    -0.20          -0.22                0.52                 0.97               -0.89          -0.99            -0.53
+
+per-generator AUROC vs test natives
+cond                                    clean        jpeg75_resize05       
+arm                                    fov512   orig          fov512   orig
+det                gen                                                     
+clipdet            dalle2               0.891  0.806           0.698  0.539
+                   dalle3               0.942  0.906           0.824  0.646
+                   firefly              0.887  0.836           0.649  0.338
+                   midjourney-v5        0.874  0.646           0.665  0.456
+                   stable-diffusion-2   0.935  0.792           0.782  0.553
+                   stable-diffusion-xl  0.911  0.692           0.830  0.613
+communityforensics dalle2               0.997  0.990           0.858  0.959
+                   dalle3               0.985  0.988           0.780  0.735
+                   firefly              0.988  0.993           0.733  0.978
+                   midjourney-v5        0.999  0.999           0.765  0.793
+                   stable-diffusion-2   1.000  0.999           0.895  0.937
+                   stable-diffusion-xl  1.000  1.000           0.938  0.941
+rine               dalle2               0.938  0.959           0.698  0.955
+                   dalle3               0.363  0.166           0.680  0.935
+                   firefly              0.872  0.792           0.655  0.907
+                   midjourney-v5        0.833  0.983           0.640  0.902
+                   stable-diffusion-2   0.899  0.979           0.820  0.983
+                   stable-diffusion-xl  0.974  1.000           0.806  0.985
