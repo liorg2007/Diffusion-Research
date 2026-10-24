@@ -180,3 +180,23 @@
     - Caches must be keyed by preprocessing and device.
     - The size description in kb/datasets/raid.md is wrong.
   - None of these fixes has been applied yet. The E1/E2 fix agents (CPU only) were still running when the session hit its usage limit.
+- 2026-10-24 03:55 — Owner: GPU work allowed again.
+  - E1/E2 review fixes committed (60d8920); lib tests 58 passed; E2 selftest PASS.
+  - Launched the E1 (008) and E2 (009 --stage all) GPU runs in the background.
+  - Pre-registered E3 clarification 2 (5c95ef0): RAID-native center crop with zero padding as the clean control, an asserted pairing check, and an unpadded-reals primary set. The E3 agent is applying the fixes and will then run E3 on GPU.
+  - The H4 agent is applying the official-code fixes: B0-JM arm, abort on missing caches, cache keys, guard on all arms, and no overwrite of data/processed/crop512.
+- 2026-10-24 04:45 — E2 GPU run aborted by its own VAE guard: sd-vae-ft-mse ok (max |Δpixel| 9.2e-5); sdxl-vae FAIL (5.26e-3, 0.07% uint8 mismatch). Timing 0.37 s/pass, so no cut.
+  - Lead diagnostic: deterministic cuDNN gives identical diffs (max 2.5e-3, p99.99 2.9e-4 on 8 images). This is inherent fp32 rounding, not a D-010-style silent error. CPU fallback ≈ 11 s/pass, ~10 h.
+  - Pre-registered Amendment 8 clarification 2 (d0ef641): sdxl-vae is accepted if CLAUDE.md's logit-level D-008 holds downstream (B0 |Δlogit| ≤ 1e-3 on GPU- vs CPU-made round-trips); otherwise E2 uses SD-VAE only.
+  - E2 agent is implementing it and finishing the run.
+- 2026-10-24 05:10 — E3 PILOT done (010-raid-transfer/pilot/; idea #5; pilot, not counted). Review fixes applied first (Amendment 9 clarification 2).
+  - Pairing check: worst per-item mean |attacked − clean| is 7.24/255 at eps8 and 10.96/255 at eps16.
+  - Primary set: 48 unpadded reals vs 400 fakes. D-008: 24/24 ok (max |Δlogit| 1.0e-4). Lib tests 60 passed.
+  - B0: UNINFORMATIVE. AUROC(clean) 0.643 [0.560, 0.723] is under the 0.80 gate (RAID's 256-px D3 domain is far from our training data). Descriptive: drop 0.083, recovery 0.42, canonicalization cost 0.041.
+  - References, eps 8, primary set (lead recomputed from scores_long):
+    - CommFor (not in the ensemble): 0.952 → 0.719; canonicalized 0.736 (recovery 0.075).
+    - RINE (in the ensemble): 0.898 → 0.754.
+    - ClipDet: 0.821 → 0.735.
+    - Canonicalization costs 0.08–0.16 on clean images.
+  - Reading: transfer attacks hurt even detectors outside the ensemble, and JPEG + resize does not undo them, consistent with Mavali.
+  - Launching opus/high critic.

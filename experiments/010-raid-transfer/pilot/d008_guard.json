@@ -1,0 +1,194 @@
+{
+ "b0/clean": {
+  "max_abs_dlogit": 2.3807138486375834e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "b0/clean_canon": {
+  "max_abs_dlogit": 2.897838513682416e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "b0/eps8": {
+  "max_abs_dlogit": 4.863461661841484e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "b0/eps8_canon": {
+  "max_abs_dlogit": 7.756463095631716e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "b0/eps16": {
+  "max_abs_dlogit": 2.683499247790877e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "b0/eps16_canon": {
+  "max_abs_dlogit": 2.132329949589007e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "communityforensics/clean": {
+  "max_abs_dlogit": 4.035234451293945e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "communityforensics/clean_canon": {
+  "max_abs_dlogit": 6.389617919921875e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "communityforensics/eps8": {
+  "max_abs_dlogit": 0.00010120868682861328,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "communityforensics/eps8_canon": {
+  "max_abs_dlogit": 5.91278076171875e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "communityforensics/eps16": {
+  "max_abs_dlogit": 5.7578086853027344e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "communityforensics/eps16_canon": {
+  "max_abs_dlogit": 5.8650970458984375e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "rine/clean": {
+  "max_abs_dlogit": 1.1444091796875e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "rine/clean_canon": {
+  "max_abs_dlogit": 3.0517578125e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "rine/eps8": {
+  "max_abs_dlogit": 9.5367431640625e-06,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "rine/eps8_canon": {
+  "max_abs_dlogit": 1.5914440155029297e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "rine/eps16": {
+  "max_abs_dlogit": 4.291534423828125e-06,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "rine/eps16_canon": {
+  "max_abs_dlogit": 2.6494264602661133e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "clipdet/clean": {
+  "max_abs_dlogit": 1.8835067749023438e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "clipdet/clean_canon": {
+  "max_abs_dlogit": 9.453296661376953e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "clipdet/eps8": {
+  "max_abs_dlogit": 5.02467155456543e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "clipdet/eps8_canon": {
+  "max_abs_dlogit": 5.161762237548828e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "clipdet/eps16": {
+  "max_abs_dlogit": 4.172325134277344e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ },
+ "clipdet/eps16_canon": {
+  "max_abs_dlogit": 2.9802322387695312e-05,
+  "n": 32,
+  "tol": 0.001,
+  "ok": true,
+  "device": "cuda",
+  "ver": "p79d04831"
+ }
+}

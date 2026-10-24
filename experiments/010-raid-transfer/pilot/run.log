@@ -1,0 +1,183 @@
+03:56:15 stage=all device=cuda smoke=0 detectors=['b0', 'communityforensics', 'rine', 'clipdet'] threads=4
+03:56:17 verify: 1500 files exist and match the manifest sha256 (== HF LFS oid)
+03:56:26 pairing check OK (500 items): eps8 max item-mean 7.24 (limit 10), eps16 max item-mean 10.96 (limit 18); max pixel diff 9/17
+03:56:29 b0fit: max|score - 005 A0/full clean| = 8.34e-04 over 2220 rows
+03:56:29 b0fit: {'n_train': 459, 'n_real': 99, 'n_fake': 360, 'generators': ['dalle2', 'dalle3', 'firefly', 'midjourney-v5', 'stable-diffusion-2', 'stable-diffusion-xl'], 'C': 10.0, 'max_abs_diff_vs_005_A0_full_clean': 0.0008342655286615042}
+03:56:29 b0fit: probe cached
+03:56:29 b0: fresh CPU reference (32 items x 6 sets)
+03:56:31 stage=cpuref device=cpu smoke=0 detectors=['b0'] threads=4
+03:56:47 cpuref b0 clean done in 13s
+03:57:12 cpuref b0 clean_canon done in 25s
+03:57:38 cpuref b0 eps8 done in 27s
+03:57:50 cpuref b0 eps8_canon done in 12s
+03:58:20 cpuref b0 eps16 done in 30s
+03:58:42 cpuref b0 eps16_canon done in 22s
+03:58:45 b0 clean: D-008 max|dlogit|=2.38e-05 (tol 0.001)
+03:58:46 b0 clean: 132/500
+03:58:47 b0 clean: 232/500
+03:58:48 b0 clean: 332/500
+03:58:49 b0 clean: 432/500
+03:58:50 b0 clean: 500/500
+03:58:50 b0 clean_canon: D-008 max|dlogit|=2.90e-05 (tol 0.001)
+03:58:51 b0 clean_canon: 132/500
+03:58:53 b0 clean_canon: 232/500
+03:58:54 b0 clean_canon: 332/500
+03:58:55 b0 clean_canon: 432/500
+03:58:57 b0 clean_canon: 500/500
+03:58:57 b0 eps8: D-008 max|dlogit|=4.86e-05 (tol 0.001)
+03:58:58 b0 eps8: 132/500
+03:59:00 b0 eps8: 232/500
+03:59:01 b0 eps8: 332/500
+03:59:03 b0 eps8: 432/500
+03:59:04 b0 eps8: 500/500
+03:59:04 b0 eps8_canon: D-008 max|dlogit|=7.76e-05 (tol 0.001)
+03:59:06 b0 eps8_canon: 132/500
+03:59:08 b0 eps8_canon: 232/500
+03:59:10 b0 eps8_canon: 332/500
+03:59:11 b0 eps8_canon: 432/500
+03:59:12 b0 eps8_canon: 500/500
+03:59:13 b0 eps16: D-008 max|dlogit|=2.68e-05 (tol 0.001)
+03:59:14 b0 eps16: 132/500
+03:59:15 b0 eps16: 232/500
+03:59:17 b0 eps16: 332/500
+03:59:18 b0 eps16: 432/500
+03:59:20 b0 eps16: 500/500
+03:59:20 b0 eps16_canon: D-008 max|dlogit|=2.13e-05 (tol 0.001)
+03:59:22 b0 eps16_canon: 132/500
+03:59:23 b0 eps16_canon: 232/500
+03:59:25 b0 eps16_canon: 332/500
+03:59:26 b0 eps16_canon: 432/500
+03:59:28 b0 eps16_canon: 500/500
+03:59:28 communityforensics: fresh CPU reference (32 items x 6 sets)
+03:59:31 stage=cpuref device=cpu smoke=0 detectors=['communityforensics'] threads=4
+03:59:50 cpuref communityforensics clean done in 18s
+04:00:10 cpuref communityforensics clean_canon done in 19s
+04:00:26 cpuref communityforensics eps8 done in 17s
+04:00:44 cpuref communityforensics eps8_canon done in 18s
+04:01:02 cpuref communityforensics eps16 done in 17s
+04:01:20 cpuref communityforensics eps16_canon done in 18s
+04:01:23 communityforensics clean: D-008 max|dlogit|=4.04e-05 (tol 0.001)
+04:01:24 communityforensics clean: 132/500
+04:01:26 communityforensics clean: 232/500
+04:01:27 communityforensics clean: 332/500
+04:01:29 communityforensics clean: 432/500
+04:01:30 communityforensics clean: 500/500
+04:01:31 communityforensics clean_canon: D-008 max|dlogit|=6.39e-05 (tol 0.001)
+04:01:34 communityforensics clean_canon: 132/500
+04:01:36 communityforensics clean_canon: 232/500
+04:01:38 communityforensics clean_canon: 332/500
+04:01:40 communityforensics clean_canon: 432/500
+04:01:42 communityforensics clean_canon: 500/500
+04:01:42 communityforensics eps8: D-008 max|dlogit|=1.01e-04 (tol 0.001)
+04:01:44 communityforensics eps8: 132/500
+04:01:46 communityforensics eps8: 232/500
+04:01:49 communityforensics eps8: 332/500
+04:01:51 communityforensics eps8: 432/500
+04:01:53 communityforensics eps8: 500/500
+04:01:54 communityforensics eps8_canon: D-008 max|dlogit|=5.91e-05 (tol 0.001)
+04:01:56 communityforensics eps8_canon: 132/500
+04:01:59 communityforensics eps8_canon: 232/500
+04:02:01 communityforensics eps8_canon: 332/500
+04:02:03 communityforensics eps8_canon: 432/500
+04:02:05 communityforensics eps8_canon: 500/500
+04:02:06 communityforensics eps16: D-008 max|dlogit|=5.76e-05 (tol 0.001)
+04:02:07 communityforensics eps16: 132/500
+04:02:09 communityforensics eps16: 232/500
+04:02:11 communityforensics eps16: 332/500
+04:02:14 communityforensics eps16: 432/500
+04:02:15 communityforensics eps16: 500/500
+04:02:16 communityforensics eps16_canon: D-008 max|dlogit|=5.87e-05 (tol 0.001)
+04:02:19 communityforensics eps16_canon: 132/500
+04:02:21 communityforensics eps16_canon: 232/500
+04:02:24 communityforensics eps16_canon: 332/500
+04:02:27 communityforensics eps16_canon: 432/500
+04:02:29 communityforensics eps16_canon: 500/500
+04:02:29 rine: fresh CPU reference (32 items x 6 sets)
+04:02:33 stage=cpuref device=cpu smoke=0 detectors=['rine'] threads=4
+04:03:37 cpuref rine clean done in 61s
+04:04:29 cpuref rine clean_canon done in 52s
+04:05:26 cpuref rine eps8 done in 57s
+04:06:26 cpuref rine eps8_canon done in 60s
+04:07:32 cpuref rine eps16 done in 66s
+04:08:39 cpuref rine eps16_canon done in 67s
+04:08:52 rine clean: D-008 max|dlogit|=1.14e-05 (tol 0.001)
+04:08:55 rine clean: 132/500
+04:08:58 rine clean: 232/500
+04:09:01 rine clean: 332/500
+04:09:03 rine clean: 432/500
+04:09:05 rine clean: 500/500
+04:09:06 rine clean_canon: D-008 max|dlogit|=3.05e-05 (tol 0.001)
+04:09:10 rine clean_canon: 132/500
+04:09:18 rine clean_canon: 232/500
+04:09:29 rine clean_canon: 332/500
+04:09:41 rine clean_canon: 432/500
+04:09:48 rine clean_canon: 500/500
+04:09:52 rine eps8: D-008 max|dlogit|=9.54e-06 (tol 0.001)
+04:10:02 rine eps8: 132/500
+04:10:14 rine eps8: 232/500
+04:10:22 rine eps8: 332/500
+04:10:34 rine eps8: 432/500
+04:10:41 rine eps8: 500/500
+04:10:46 rine eps8_canon: D-008 max|dlogit|=1.59e-05 (tol 0.001)
+04:11:15 rine eps8_canon: 132/500
+04:11:53 rine eps8_canon: 232/500
+04:12:07 rine eps8_canon: 332/500
+04:12:35 rine eps8_canon: 432/500
+04:12:45 rine eps8_canon: 500/500
+04:12:47 rine eps16: D-008 max|dlogit|=4.29e-06 (tol 0.001)
+04:13:06 rine eps16: 132/500
+04:13:25 rine eps16: 232/500
+04:13:37 rine eps16: 332/500
+04:13:46 rine eps16: 432/500
+04:13:53 rine eps16: 500/500
+04:13:55 rine eps16_canon: D-008 max|dlogit|=2.65e-05 (tol 0.001)
+04:14:14 rine eps16_canon: 132/500
+04:14:24 rine eps16_canon: 232/500
+04:22:54 rine eps16_canon: 332/500
+04:23:52 rine eps16_canon: 432/500
+04:24:15 rine eps16_canon: 500/500
+04:24:15 clipdet: fresh CPU reference (32 items x 6 sets)
+04:24:17 stage=cpuref device=cpu smoke=0 detectors=['clipdet'] threads=4
+04:24:40 cpuref clipdet clean done in 22s
+04:24:59 cpuref clipdet clean_canon done in 18s
+04:25:20 cpuref clipdet eps8 done in 22s
+04:25:52 cpuref clipdet eps8_canon done in 32s
+04:26:25 cpuref clipdet eps16 done in 33s
+04:26:52 cpuref clipdet eps16_canon done in 27s
+04:27:40 clipdet clean: D-008 max|dlogit|=1.88e-05 (tol 0.001)
+04:27:57 clipdet clean: 132/500
+04:28:14 clipdet clean: 232/500
+04:28:21 clipdet clean: 332/500
+04:28:27 clipdet clean: 432/500
+04:28:32 clipdet clean: 500/500
+04:28:35 clipdet clean_canon: D-008 max|dlogit|=9.45e-05 (tol 0.001)
+04:28:40 clipdet clean_canon: 132/500
+04:28:51 clipdet clean_canon: 232/500
+04:28:58 clipdet clean_canon: 332/500
+04:29:04 clipdet clean_canon: 432/500
+04:29:10 clipdet clean_canon: 500/500
+04:29:12 clipdet eps8: D-008 max|dlogit|=5.02e-05 (tol 0.001)
+04:29:20 clipdet eps8: 132/500
+04:29:28 clipdet eps8: 232/500
+04:29:36 clipdet eps8: 332/500
+04:29:44 clipdet eps8: 432/500
+04:29:47 clipdet eps8: 500/500
+04:29:49 clipdet eps8_canon: D-008 max|dlogit|=5.16e-05 (tol 0.001)
+04:29:57 clipdet eps8_canon: 132/500
+04:30:08 clipdet eps8_canon: 232/500
+04:30:35 clipdet eps8_canon: 332/500
+04:32:01 clipdet eps8_canon: 432/500
+04:32:50 clipdet eps8_canon: 500/500
+04:33:02 clipdet eps16: D-008 max|dlogit|=4.17e-05 (tol 0.001)
+04:34:21 clipdet eps16: 132/500
+04:34:41 clipdet eps16: 232/500
+04:34:51 clipdet eps16: 332/500
+04:35:04 clipdet eps16: 432/500
+04:35:15 clipdet eps16: 500/500
+04:35:20 clipdet eps16_canon: D-008 max|dlogit|=2.98e-05 (tol 0.001)
+04:35:32 clipdet eps16_canon: 132/500
+04:35:53 clipdet eps16_canon: 232/500
+04:36:17 clipdet eps16_canon: 332/500
+04:36:30 clipdet eps16_canon: 432/500
+04:36:45 clipdet eps16_canon: 500/500
+04:36:48 export: wrote results.json, tables.md, scores_long.csv.gz, d008_guard.json to /home/zera/project/Diffusion-Research/experiments/010-raid-transfer/pilot
