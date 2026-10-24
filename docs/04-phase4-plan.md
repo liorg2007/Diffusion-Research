@@ -393,3 +393,16 @@ Eps-16 numbers are descriptive only. They are compared with RAID Table 4 (DINOv2
    - The bootstrap resamples reals and fakes independently, by id, within each class.
 3. **Canonicalization** (clarification 1) still applies on top of this 256² input.
 4. **Caches** are keyed by (input set, preprocessing version, device). Score caches made before this clarification are invalid and must be deleted or ignored.
+
+**Amendment 8 clarification 2** (2026-10-24 04:45; no E2 result exists, only guard numbers)
+- **What happened.**
+  - The pixel-level VAE guard (max |Δpixel| ≤ 1e-3, an addition beyond CLAUDE.md's logit-level D-008 rule) passed for sd-vae-ft-mse (9.2e-5).
+  - It FAILED for sdxl-vae: max 5.26e-3 (x1) and 1.25e-3 (x2), with 0.07% of uint8 pixels differing.
+  - A lead diagnostic on 8 of the guard images gives the same result with deterministic cuDNN: max 2.5e-3, p99.99 = 2.9e-4. TF32 was already off. So the error is inherent fp32 GPU-vs-CPU rounding in SDXL's VAE (which has large activations), not a silent failure like D-010's.
+  - SDXL on CPU takes about 11 s per pass, roughly 10 h for the pilot.
+- **Rule** (fixed before any result):
+  - sdxl-vae is accepted on CUDA if the D-008 criterion holds downstream on the same 32 guard images.
+  - The criterion: B0 (005 A0) logits on 004 features of the GPU-made vs CPU-made round-trips (features computed on the same device for both) differ by ≤ 1e-3 at max |Δlogit|.
+  - Also reported: max relative |Δ| of the #7 ratio, and Spearman ρ between GPU and CPU ratios.
+  - If the criterion fails, E2 runs with sd-vae-ft-mse ONLY. The "min over bank" becomes that single VAE, the change is reported, and SD-family results are then based on SD1.x only.
+- The pixel guard for sd-vae-ft-mse stays as pre-registered.

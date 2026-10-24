@@ -1,0 +1,20 @@
+{
+ "vae": {
+  "sd-vae-ft-mse": {
+   "n": 32,
+   "max_abs_dpixel_x1": 9.194016456604004e-05,
+   "max_abs_dpixel_x2": 2.8371810913085938e-05,
+   "tol": 0.001,
+   "uint8_mismatch_frac_x1": 8.769830067952474e-05,
+   "ok": true
+  },
+  "sdxl-vae": {
+   "n": 32,
+   "max_abs_dpixel_x1": 0.005263566970825195,
+   "max_abs_dpixel_x2": 0.0012486577033996582,
+   "tol": 0.001,
+   "uint8_mismatch_frac_x1": 0.0007102886835734049,
+   "ok": false
+  }
+ }
+}
