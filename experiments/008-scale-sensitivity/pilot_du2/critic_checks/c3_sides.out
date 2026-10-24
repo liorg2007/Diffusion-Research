@@ -1,0 +1,178 @@
+
+######## clean
+communityforensics   native AUROC o/d/f 0.995/0.989/0.995 | dR +0.005 = fake +0.001 + real +0.004 | dZ -0.005 = fake +0.020 + real -0.025 | realsDU2 vs fakesORIG 0.992 | |recomp-reported| 0.0e+00
+communityforensics   WA     AUROC o/d/f 0.999/0.997/0.996 | dR +0.002 = fake +0.001 + real +0.001 | dZ +0.001 = fake +0.007 + real -0.006 | realsDU2 vs fakesORIG 0.999 | |recomp-reported| 0.0e+00
+communityforensics   FBH    AUROC o/d/f 0.998/0.994/0.996 | dR +0.004 = fake +0.001 + real +0.003 | dZ -0.003 = fake +0.014 + real -0.016 | realsDU2 vs fakesORIG 0.996 | |recomp-reported| 2.2e-16
+rine                 native AUROC o/d/f 0.813/0.742/0.813 | dR +0.071 = fake -0.054 + real +0.125 | dZ -0.071 = fake +0.060 + real -0.131 | realsDU2 vs fakesORIG 0.765 | |recomp-reported| 0.0e+00
+rine                 WA     AUROC o/d/f 0.856/0.910/0.873 | dR -0.055 = fake -0.097 + real +0.043 | dZ +0.037 = fake +0.122 + real -0.085 | realsDU2 vs fakesORIG 0.832 | |recomp-reported| 2.2e-16
+rine                 FBH    AUROC o/d/f 0.834/0.846/0.916 | dR -0.012 = fake -0.075 + real +0.063 | dZ -0.069 = fake +0.106 + real -0.175 | realsDU2 vs fakesORIG 0.802 | |recomp-reported| 4.4e-16
+clipdet              native AUROC o/d/f 0.780/0.867/0.907 | dR -0.087 = fake -0.198 + real +0.111 | dZ -0.040 = fake +0.406 + real -0.445 | realsDU2 vs fakesORIG 0.409 | |recomp-reported| 0.0e+00
+clipdet              WA     AUROC o/d/f 0.887/0.891/0.880 | dR -0.003 = fake -0.104 + real +0.100 | dZ +0.011 = fake +0.340 + real -0.329 | realsDU2 vs fakesORIG 0.500 | |recomp-reported| 0.0e+00
+clipdet              FBH    AUROC o/d/f 0.840/0.863/0.863 | dR -0.023 = fake -0.147 + real +0.125 | dZ -0.000 = fake +0.385 + real -0.385 | realsDU2 vs fakesORIG 0.426 | |recomp-reported| 4.4e-16
+b0_trained_orig      native AUROC o/d/f 0.990/0.979/0.969 | dR +0.011 = fake +0.000 + real +0.010 | dZ +0.011 = fake -0.016 + real +0.027 | realsDU2 vs fakesORIG 0.981 | |recomp-reported| 0.0e+00
+b0_trained_orig      WA     AUROC o/d/f 0.962/0.960/0.974 | dR +0.002 = fake +0.004 + real -0.002 | dZ -0.014 = fake -0.030 + real +0.015 | realsDU2 vs fakesORIG 0.964 | |recomp-reported| 0.0e+00
+b0_trained_orig      FBH    AUROC o/d/f 0.979/0.969/0.974 | dR +0.010 = fake +0.002 + real +0.008 | dZ -0.005 = fake -0.023 + real +0.019 | realsDU2 vs fakesORIG 0.972 | |recomp-reported| 0.0e+00
+b0_trained_fov512    native AUROC o/d/f 0.969/0.965/0.980 | dR +0.004 = fake -0.001 + real +0.005 | dZ -0.016 = fake -0.011 + real -0.004 | realsDU2 vs fakesORIG 0.964 | |recomp-reported| 2.2e-16
+b0_trained_fov512    WA     AUROC o/d/f 0.969/0.970/0.980 | dR -0.001 = fake -0.001 + real -0.000 | dZ -0.010 = fake -0.008 + real -0.002 | realsDU2 vs fakesORIG 0.969 | |recomp-reported| 0.0e+00
+b0_trained_fov512    FBH    AUROC o/d/f 0.970/0.969/0.981 | dR +0.000 = fake -0.001 + real +0.001 | dZ -0.012 = fake -0.010 + real -0.002 | realsDU2 vs fakesORIG 0.968 | |recomp-reported| 0.0e+00
+b0                   native AUROC o/d/f 0.990/0.981/0.980 | dR +0.009 = fake +0.005 + real +0.004 | dZ +0.001 = fake +0.014 + real -0.013 | realsDU2 vs fakesORIG 0.987 | |recomp-reported| 0.0e+00
+b0                   WA     AUROC o/d/f 0.962/0.947/0.980 | dR +0.015 = fake +0.013 + real +0.002 | dZ -0.034 = fake +0.067 + real -0.100 | realsDU2 vs fakesORIG 0.960 | |recomp-reported| 0.0e+00
+b0                   FBH    AUROC o/d/f 0.979/0.966/0.981 | dR +0.013 = fake +0.009 + real +0.004 | dZ -0.015 = fake +0.035 + real -0.050 | realsDU2 vs fakesORIG 0.976 | |recomp-reported| 0.0e+00
+
+--- clean: median score per group per arm (pretrained detectors; B0 = logo_dalle2 model) ---
+communityforensics
+arm                   orig    du2  fov512
+grp                                      
+FBH                  -9.11  -7.67   -9.93
+WA                   -9.55  -8.89   -9.71
+dalle2                7.49   9.86    5.35
+dalle3                5.92   6.90    3.38
+firefly              10.91   8.17    3.80
+midjourney-v5        13.92  14.81    7.48
+native               -9.35  -7.44   -9.13
+stable-diffusion-2   13.41  14.49    9.00
+stable-diffusion-xl  13.36  14.33   12.19
+rine
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -0.91 -0.62   -2.72
+WA                  -1.24 -0.95   -1.84
+dalle2               1.68 -0.26    0.88
+dalle3              -2.40 -0.21   -2.06
+firefly             -0.19 -0.26   -0.18
+midjourney-v5        3.68 -0.19   -0.18
+native              -0.75 -0.38   -1.30
+stable-diffusion-2   2.31 -0.09    0.55
+stable-diffusion-xl  7.40  0.74    1.71
+clipdet
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -1.38  0.05   -1.37
+WA                  -1.81 -0.15   -1.49
+dalle2              -0.04  1.26   -0.07
+dalle3               0.37  2.07    0.20
+firefly             -0.00  1.63   -0.19
+midjourney-v5       -0.59  1.06   -0.33
+native              -1.12  0.19   -1.66
+stable-diffusion-2  -0.14  1.27    0.22
+stable-diffusion-xl -0.44  0.94    0.03
+b0_trained_orig
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -4.92 -4.55   -1.00
+WA                  -2.88 -2.95   -1.11
+dalle2               5.99  5.79    7.65
+dalle3               8.49  7.97    9.92
+firefly              8.30  6.81   10.14
+midjourney-v5        7.39  6.23    7.97
+native              -8.69 -5.93   -0.58
+stable-diffusion-2   8.89  7.87    9.51
+stable-diffusion-xl  9.28  8.35    9.90
+b0_trained_fov512
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -1.20 -1.16   -1.24
+WA                  -1.22 -1.21   -1.25
+dalle2               0.20  0.24    0.67
+dalle3               1.70  1.68    1.90
+firefly              0.62  0.61    1.39
+midjourney-v5        0.84  0.91    1.00
+native              -1.19 -1.15   -1.23
+stable-diffusion-2   1.20  1.02    1.30
+stable-diffusion-xl  1.24  1.14    1.32
+
+--- clean: within test natives, Spearman(k, score_du2 - score_orig) and (k, score_fov512 - score_du2) ---
+communityforensics   rho(k, du2-orig) +0.22  rho(k, fov-du2) -0.21 | median(du2-orig) k<4 (n=116) +0.94 vs k>=4 +1.62
+rine                 rho(k, du2-orig) +0.26  rho(k, fov-du2) -0.21 | median(du2-orig) k<4 (n=116) +0.04 vs k>=4 +0.41
+clipdet              rho(k, du2-orig) +0.07  rho(k, fov-du2) -0.04 | median(du2-orig) k<4 (n=116) +1.42 vs k>=4 +1.18
+b0_trained_orig      rho(k, du2-orig) +0.19  rho(k, fov-du2) +0.25 | median(du2-orig) k<4 (n=116) +1.60 vs k>=4 +3.37
+b0_trained_fov512    rho(k, du2-orig) -0.01  rho(k, fov-du2) -0.11 | median(du2-orig) k<4 (n=116) +0.02 vs k>=4 +0.04
+
+######## jpeg75_resize05
+communityforensics   native AUROC o/d/f 0.891/0.808/0.828 | dR +0.082 = fake -0.003 + real +0.085 | dZ -0.020 = fake +0.307 + real -0.327 | realsDU2 vs fakesORIG 0.805 | |recomp-reported| 3.3e-16
+communityforensics   WA     AUROC o/d/f 0.937/0.924/0.826 | dR +0.014 = fake -0.002 + real +0.015 | dZ +0.098 = fake +0.176 + real -0.078 | realsDU2 vs fakesORIG 0.922 | |recomp-reported| 0.0e+00
+communityforensics   FBH    AUROC o/d/f 0.926/0.898/0.827 | dR +0.028 = fake -0.003 + real +0.031 | dZ +0.071 = fake +0.235 + real -0.164 | realsDU2 vs fakesORIG 0.894 | |recomp-reported| 2.2e-16
+rine                 native AUROC o/d/f 0.945/0.855/0.717 | dR +0.089 = fake +0.011 + real +0.078 | dZ +0.139 = fake +0.013 + real +0.126 | realsDU2 vs fakesORIG 0.884 | |recomp-reported| 3.3e-16
+rine                 WA     AUROC o/d/f 0.825/0.856/0.711 | dR -0.031 = fake +0.045 + real -0.076 | dZ +0.145 = fake +0.007 + real +0.138 | realsDU2 vs fakesORIG 0.886 | |recomp-reported| 1.1e-16
+rine                 FBH    AUROC o/d/f 0.924/0.886/0.722 | dR +0.038 = fake +0.018 + real +0.020 | dZ +0.165 = fake +0.013 + real +0.151 | realsDU2 vs fakesORIG 0.910 | |recomp-reported| 0.0e+00
+clipdet              native AUROC o/d/f 0.524/0.470/0.742 | dR +0.054 = fake -0.221 + real +0.275 | dZ -0.271 = fake +0.251 + real -0.522 | realsDU2 vs fakesORIG 0.226 | |recomp-reported| 1.1e-16
+clipdet              WA     AUROC o/d/f 0.660/0.748/0.719 | dR -0.088 = fake -0.179 + real +0.090 | dZ +0.030 = fake +0.237 + real -0.207 | realsDU2 vs fakesORIG 0.524 | |recomp-reported| 0.0e+00
+clipdet              FBH    AUROC o/d/f 0.593/0.550/0.728 | dR +0.043 = fake -0.196 + real +0.239 | dZ -0.178 = fake +0.253 + real -0.431 | realsDU2 vs fakesORIG 0.306 | |recomp-reported| 1.1e-16
+b0_trained_orig      native AUROC o/d/f 0.981/0.977/0.923 | dR +0.004 = fake +0.006 + real -0.002 | dZ +0.055 = fake -0.007 + real +0.062 | realsDU2 vs fakesORIG 0.983 | |recomp-reported| 0.0e+00
+b0_trained_orig      WA     AUROC o/d/f 0.940/0.932/0.924 | dR +0.008 = fake +0.014 + real -0.005 | dZ +0.008 = fake -0.020 + real +0.027 | realsDU2 vs fakesORIG 0.945 | |recomp-reported| 2.2e-16
+b0_trained_orig      FBH    AUROC o/d/f 0.963/0.961/0.924 | dR +0.002 = fake +0.009 + real -0.007 | dZ +0.037 = fake -0.013 + real +0.050 | realsDU2 vs fakesORIG 0.969 | |recomp-reported| 1.1e-16
+b0_trained_fov512    native AUROC o/d/f 0.979/0.977/0.980 | dR +0.002 = fake +0.000 + real +0.001 | dZ -0.003 = fake +0.002 + real -0.005 | realsDU2 vs fakesORIG 0.977 | |recomp-reported| 4.4e-16
+b0_trained_fov512    WA     AUROC o/d/f 0.980/0.979/0.981 | dR +0.001 = fake +0.001 + real +0.000 | dZ -0.001 = fake +0.001 + real -0.003 | realsDU2 vs fakesORIG 0.980 | |recomp-reported| 0.0e+00
+b0_trained_fov512    FBH    AUROC o/d/f 0.977/0.977/0.981 | dR -0.000 = fake +0.000 + real -0.001 | dZ -0.004 = fake +0.002 + real -0.006 | realsDU2 vs fakesORIG 0.977 | |recomp-reported| 2.2e-16
+b0                   native AUROC o/d/f 0.981/0.978/0.980 | dR +0.003 = fake +0.003 + real +0.000 | dZ -0.002 = fake +0.068 + real -0.070 | realsDU2 vs fakesORIG 0.979 | |recomp-reported| 0.0e+00
+b0                   WA     AUROC o/d/f 0.940/0.938/0.981 | dR +0.002 = fake +0.009 + real -0.008 | dZ -0.042 = fake +0.191 + real -0.233 | realsDU2 vs fakesORIG 0.942 | |recomp-reported| 1.1e-16
+b0                   FBH    AUROC o/d/f 0.963/0.958/0.981 | dR +0.005 = fake +0.006 + real -0.001 | dZ -0.022 = fake +0.127 + real -0.150 | realsDU2 vs fakesORIG 0.960 | |recomp-reported| 6.7e-16
+
+--- jpeg75_resize05: median score per group per arm (pretrained detectors; B0 = logo_dalle2 model) ---
+communityforensics
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -8.51 -6.96   -9.83
+WA                  -9.11 -8.59   -9.95
+dalle2               3.80  3.77   -3.69
+dalle3              -2.97 -3.09   -6.31
+firefly              5.16  3.96   -7.47
+midjourney-v5       -2.67 -1.86   -6.28
+native              -7.10 -4.48   -9.78
+stable-diffusion-2   1.86  1.78   -2.90
+stable-diffusion-xl  2.64  2.81   -1.37
+rine
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -0.89 -0.78   -0.40
+WA                  -0.53 -0.70   -0.41
+dalle2              -0.10 -0.21   -0.19
+dalle3              -0.19 -0.24   -0.22
+firefly             -0.20 -0.20   -0.22
+midjourney-v5       -0.22 -0.31   -0.24
+native              -0.99 -0.61   -0.41
+stable-diffusion-2   0.52 -0.21    0.57
+stable-diffusion-xl  0.97  0.53    0.61
+clipdet
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -0.04  0.77   -0.58
+WA                  -0.32  0.13   -0.55
+dalle2               0.31  0.61    0.16
+dalle3               0.51  1.46    0.59
+firefly             -0.36  1.18   -0.14
+midjourney-v5       -0.09  0.73   -0.24
+native               0.16  0.97   -0.62
+stable-diffusion-2   0.23  0.63    0.26
+stable-diffusion-xl  0.55  0.71    0.41
+b0_trained_orig
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -1.26 -1.91    1.03
+WA                  -0.20 -0.42    1.13
+dalle2               7.19  6.68    6.76
+dalle3               9.56  9.46    9.64
+firefly              9.48  8.00    9.00
+midjourney-v5        7.71  7.53    7.47
+native              -3.66 -3.82    1.09
+stable-diffusion-2   8.43  8.35    8.81
+stable-diffusion-xl  9.45  9.25    9.00
+b0_trained_fov512
+arm                  orig   du2  fov512
+grp                                    
+FBH                 -1.18 -1.16   -1.19
+WA                  -1.17 -1.20   -1.19
+dalle2               0.64  0.62    0.71
+dalle3               1.85  1.87    1.99
+firefly              1.02  0.89    1.42
+midjourney-v5        0.98  0.97    0.97
+native              -1.18 -1.19   -1.19
+stable-diffusion-2   1.23  1.23    1.33
+stable-diffusion-xl  1.35  1.35    1.24
+
+--- jpeg75_resize05: within test natives, Spearman(k, score_du2 - score_orig) and (k, score_fov512 - score_du2) ---
+communityforensics   rho(k, du2-orig) +0.35  rho(k, fov-du2) -0.42 | median(du2-orig) k<4 (n=116) +0.93 vs k>=4 +2.68
+rine                 rho(k, du2-orig) +0.14  rho(k, fov-du2) -0.10 | median(du2-orig) k<4 (n=116) +0.23 vs k>=4 +0.33
+clipdet              rho(k, du2-orig) +0.11  rho(k, fov-du2) -0.11 | median(du2-orig) k<4 (n=116) +0.80 vs k>=4 +0.85
+b0_trained_orig      rho(k, du2-orig) +0.14  rho(k, fov-du2) +0.29 | median(du2-orig) k<4 (n=116) -0.37 vs k>=4 +0.03
+b0_trained_fov512    rho(k, du2-orig) +0.10  rho(k, fov-du2) -0.01 | median(du2-orig) k<4 (n=116) -0.01 vs k>=4 +0.01

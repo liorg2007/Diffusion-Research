@@ -1,0 +1,6 @@
+clean            lap   median natives du2 0.0052 du2m 0.0119 fakes du2 0.0244 | AUROC(fakes du2 vs natives du2) 0.907 -> vs natives du2m 0.684
+clean            hf25  median natives du2 0.0001 du2m 0.0012 fakes du2 0.0019 | AUROC(fakes du2 vs natives du2) 0.839 -> vs natives du2m 0.565
+clean            hf125 median natives du2 0.0012 du2m 0.0158 fakes du2 0.0213 | AUROC(fakes du2 vs natives du2) 0.875 -> vs natives du2m 0.547
+jpeg75_resize05  lap   median natives du2 0.0143 du2m 0.0266 fakes du2 0.0539 | AUROC(fakes du2 vs natives du2) 0.859 -> vs natives du2m 0.670
+jpeg75_resize05  hf25  median natives du2 0.0016 du2m 0.0101 fakes du2 0.0142 | AUROC(fakes du2 vs natives du2) 0.838 -> vs natives du2m 0.554
+jpeg75_resize05  hf125 median natives du2 0.0160 du2m 0.0459 fakes du2 0.0639 | AUROC(fakes du2 vs natives du2) 0.762 -> vs natives du2m 0.562

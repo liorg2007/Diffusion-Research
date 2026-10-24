@@ -253,3 +253,10 @@
   - #7 FAIL is correct: single-pass L2 is mostly texture (rho 0.85), and the ratio collapses when laundered. Dropped.
   - C − B < 0 because aligned fakes share VISION content.
   - KB ideas #6 and #7 updated.
+- 2026-10-24 09:35 — E1b critic (opus/high, 008/pilot_du2/critique.md): execution sound, design confounded.
+  - du2 blurs natives (~4.8× down/up) far more than fakes (~2×): sharpness AUROC is 0.875 in du2 vs 0.61 orig and 0.59 fov512.
+  - A control arm du2m (fixed 2× for natives; exploratory) shows a large artefact term.
+  - Label that survives: fixed orig-trained B0, laundered = zoom-dominated.
+  - CommFor laundered flips to zoom (its "resampling" term was real-side and grew with each photo's downsampling factor). RINE laundered becomes zoom (+0.011 / +0.217). ClipDet is not identifiable.
+  - Never quote a du2 number. Run used uncommitted code (results git_head 428a066), but 54 regenerated crops are pixel-identical to the committed code.
+  - D-013: E1b only strengthens "train and calibrate our probes in fov512".

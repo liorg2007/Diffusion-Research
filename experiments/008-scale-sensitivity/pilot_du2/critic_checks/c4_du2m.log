@@ -1,0 +1,22 @@
+09:05:38 self-check (i): in-memory du2 == stored du2 PNG for 8 natives
+09:08:01 built 358 du2m natives
+09:08:28 communityforensics clean du2chk 8 25s
+09:17:57 communityforensics clean du2m 358 569s
+09:19:03 rine clean du2chk 8 66s
+09:20:03 self-check (i): in-memory du2 == stored du2 PNG for 8 natives
+09:22:01 built 358 du2m natives
+09:22:09 communityforensics jpeg75_resize05 du2chk 8 4s
+09:24:24 communityforensics jpeg75_resize05 du2m 358 136s
+09:24:45 clipdet jpeg75_resize05 du2chk 8 21s
+09:33:15 clipdet jpeg75_resize05 du2m 358 510s
+09:33:35 rine jpeg75_resize05 du2chk 8 19s
+09:40:20 rine jpeg75_resize05 du2m 358 405s
+09:40:21 self-check (iii) B0 features jpeg75_resize05: max scaled |dF| CPU vs 004 du2 cache = 4.01e-06
+09:40:21 b0 jpeg75_resize05 du2chk 8 1s
+09:41:00 b0 jpeg75_resize05 du2m 358 39s
+09:41:03 clipdet clean du2chk 8 3s
+09:43:18 clipdet clean du2m 358 136s
+09:43:19 self-check (iii) B0 features clean: max scaled |dF| CPU vs 004 du2 cache = 4.06e-06
+09:43:19 b0 clean du2chk 8 1s
+09:43:58 b0 clean du2m 358 39s
+09:43:58 done

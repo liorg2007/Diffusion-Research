@@ -1,0 +1,66 @@
+grp
+FBH                    3.00
+WA                     1.88
+dalle2                 2.00
+dalle3                 2.00
+firefly                3.50
+midjourney-v5          1.75
+native                 4.78
+stable-diffusion-2     1.50
+stable-diffusion-xl    1.62
+
+=== clean: group medians (lap / hf>0.25 / hf>0.125) ===
+                        lap                    hf25                   hf125                
+arm                     du2  fov512    orig     du2  fov512    orig     du2  fov512    orig
+grp                                                                                        
+FBH                  0.0100  0.0463  0.0292  0.0003  0.0149  0.0091  0.0072  0.0478  0.0360
+WA                   0.0211  0.0484  0.0569  0.0023  0.0155  0.0212  0.0222  0.0481  0.0513
+dalle2               0.0165  0.0532  0.0601  0.0008  0.0118  0.0129  0.0115  0.0423  0.0328
+dalle3               0.0295  0.0809  0.1125  0.0025  0.0347  0.0463  0.0324  0.0872  0.1064
+firefly              0.0078  0.0537  0.0359  0.0001  0.0218  0.0130  0.0030  0.0573  0.0393
+midjourney-v5        0.0260  0.0625  0.0896  0.0019  0.0187  0.0305  0.0205  0.0533  0.0587
+native               0.0052  0.0474  0.0320  0.0001  0.0154  0.0103  0.0012  0.0480  0.0394
+stable-diffusion-2   0.0447  0.0917  0.1022  0.0098  0.0478  0.0532  0.0731  0.1458  0.1407
+stable-diffusion-xl  0.0242  0.0526  0.0615  0.0026  0.0162  0.0204  0.0240  0.0557  0.0469
+--- clean: AUROC(stat, fakes=1 vs reals of pool), all 360 test fakes; >0.5 = fakes sharper ---
+native lap   orig 0.789 | du2 0.907 | fov512 0.601
+native hf25  orig 0.689 | du2 0.839 | fov512 0.587
+native hf125 orig 0.610 | du2 0.875 | fov512 0.586
+WA     lap   orig 0.571 | du2 0.527 | fov512 0.589
+WA     hf25  orig 0.526 | du2 0.447 | fov512 0.583
+WA     hf125 orig 0.538 | du2 0.475 | fov512 0.585
+FBH    lap   orig 0.771 | du2 0.776 | fov512 0.607
+FBH    hf25  orig 0.703 | du2 0.766 | fov512 0.592
+FBH    hf125 orig 0.618 | du2 0.691 | fov512 0.589
+clean native: median hf25 ratio du2/orig 0.012; Spearman(k, ratio) -0.04; median k 4.78
+clean WA: median hf25 ratio du2/orig 0.093; Spearman(k, ratio) -0.63; median k 1.88
+clean FBH: median hf25 ratio du2/orig 0.035; Spearman(k, ratio) -0.53; median k 3.00
+clean fakes: median hf25 ratio du2/orig 0.072; Spearman(k, ratio) -0.80; median k 2.00
+
+=== jpeg75_resize05: group medians (lap / hf>0.25 / hf>0.125) ===
+                        lap                    hf25                   hf125                
+arm                     du2  fov512    orig     du2  fov512    orig     du2  fov512    orig
+grp                                                                                        
+FBH                  0.0284  0.0595  0.0421  0.0055  0.0242  0.0184  0.0434  0.0761  0.0635
+WA                   0.0447  0.0595  0.0513  0.0148  0.0239  0.0220  0.0586  0.0763  0.0656
+dalle2               0.0393  0.0710  0.0481  0.0084  0.0214  0.0138  0.0468  0.0699  0.0554
+dalle3               0.0684  0.0926  0.0923  0.0245  0.0452  0.0435  0.0932  0.1309  0.1140
+firefly              0.0223  0.0717  0.0433  0.0026  0.0269  0.0160  0.0238  0.0838  0.0427
+midjourney-v5        0.0572  0.0739  0.0706  0.0138  0.0280  0.0210  0.0600  0.0838  0.0690
+native               0.0143  0.0599  0.0309  0.0016  0.0244  0.0160  0.0160  0.0765  0.0553
+stable-diffusion-2   0.0848  0.1039  0.0997  0.0465  0.0758  0.0604  0.1656  0.1952  0.1841
+stable-diffusion-xl  0.0521  0.0698  0.0614  0.0145  0.0280  0.0190  0.0639  0.1010  0.0709
+--- jpeg75_resize05: AUROC(stat, fakes=1 vs reals of pool), all 360 test fakes; >0.5 = fakes sharper ---
+native lap   orig 0.686 | du2 0.859 | fov512 0.615
+native hf25  orig 0.589 | du2 0.838 | fov512 0.589
+native hf125 orig 0.576 | du2 0.762 | fov512 0.596
+WA     lap   orig 0.579 | du2 0.550 | fov512 0.615
+WA     hf25  orig 0.545 | du2 0.491 | fov512 0.589
+WA     hf125 orig 0.540 | du2 0.516 | fov512 0.596
+FBH    lap   orig 0.631 | du2 0.703 | fov512 0.616
+FBH    hf25  orig 0.570 | du2 0.672 | fov512 0.590
+FBH    hf125 orig 0.556 | du2 0.597 | fov512 0.596
+jpeg75_resize05 native: median hf25 ratio du2/orig 0.119; Spearman(k, ratio) -0.39; median k 4.78
+jpeg75_resize05 WA: median hf25 ratio du2/orig 0.658; Spearman(k, ratio) -0.63; median k 1.88
+jpeg75_resize05 FBH: median hf25 ratio du2/orig 0.295; Spearman(k, ratio) -0.58; median k 3.00
+jpeg75_resize05 fakes: median hf25 ratio du2/orig 0.629; Spearman(k, ratio) -0.89; median k 2.00
