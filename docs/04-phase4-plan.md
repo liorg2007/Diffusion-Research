@@ -406,3 +406,27 @@ Eps-16 numbers are descriptive only. They are compared with RAID Table 4 (DINOv2
   - Also reported: max relative |Δ| of the #7 ratio, and Spearman ρ between GPU and CPU ratios.
   - If the criterion fails, E2 runs with sd-vae-ft-mse ONLY. The "min over bank" becomes that single VAE, the change is reported, and SD-family results are then based on SD1.x only.
 - The pixel guard for sd-vae-ft-mse stays as pre-registered.
+
+## Amendment 10 (2026-10-24, before any result): E1b, separating zoom from resampling (experiments/008-scale-sensitivity, subdir pilot_du2)
+**Why.** In E1, `fov512` changes zoom and resampling by the same factor, so the two cannot be separated (`008/pilot/critique.md`). This exploratory pilot does not count toward the stop rule.
+
+**New arm `du2`.**
+1. Resize the image so its short side is 512, exactly as `fov512` does (bicubic, antialiased).
+2. Resize it back up to its original size (bicubic).
+3. Take the 003-style 512 center crop with no further resize.
+
+So `du2` has the zoom (field of view) of `orig` and the downsampling history of `fov512`. The same processing is applied to both classes, under the same conditions as E1 (`clean`, `jpeg75_resize05`).
+
+**Decomposition** (per detector, macro AUROC over the 6 generators vs test natives, paired cluster bootstrap as in E1):
+- Δ_resample = AUROC(orig) − AUROC(du2): the resampling effect at fixed zoom.
+- Δ_zoom = AUROC(du2) − AUROC(fov512): the zoom effect at fixed resampling.
+- Δ_resample + Δ_zoom equals E1's Δ exactly.
+
+**Labels** (descriptive): "resampling-dominated" or "zoom-dominated" if |Δ_resample| − |Δ_zoom| has a 95% CI that excludes 0 in that direction; "mixed" otherwise. Only detectors E1 flagged as scale-sensitive in a condition get a label for that condition.
+
+**Also.**
+- A fixed-probe B0 (trained on `orig`, and on `fov512`) scored on `du2`.
+- Cross-scale 1%-FPR with device-bootstrap CIs and a second-highest-calibration-score threshold variant, as the critic recommended.
+- WA and RAISE-like scale-matched pools are reported per pool.
+
+**D-008.** The guard runs for every new scoring run.
