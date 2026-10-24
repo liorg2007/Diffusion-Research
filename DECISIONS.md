@@ -96,3 +96,11 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - Proposal: keep D-009 as the primary protocol for continuity with Phase 3. Add `fov512` (resize the short side to 512, antialiased bicubic, then center-crop 512, both classes) and per-real-pool rows (RAISE 833 px and WA 960 px are scale-matched to fakes) to every Phase 4 table. Run H4, with this scale arm, first in the official run.
 - Alternative for the owner: make `fov512` primary. Every image is then resampled, which may also weaken genuine low-level traces.
 - Details: docs/04-phase4-plan.md Amendment 3.
+
+**D-014 — Research focus: diffusion-specific signals (owner, 2026-10-24 12:09)**
+- The owner chose to focus the research on diffusion-generated images. Asked to choose, they picked: build the method around how diffusion models create images (VAE decoder traces, denoising/reconstruction behaviour, diffusion frequency signatures), still evaluated on UNSEEN diffusion generators and under laundering.
+- **Paused side tracks:** idea #5 (RAID transfer attacks) and H2 as a worst-group threshold *protocol*. Their code and pilot results stay in the repo.
+- **Kept as hygiene, not as research questions:** the format/zoom controls (H4 official, D-013 arms, texture baselines). H4's official run still goes first when grip returns, because it guards every later number.
+- **Unchanged:** the Phase 5 acceptance targets in CLAUDE.md (phone-photo FPR, laundered AUROC, transfer attacks). They are still how a method is judged.
+- **Next:** a diffusion-specific literature pass (2024–2026), then new hypotheses (opus/high), and a first diagnostic, E4 (Amendment 11), on how detectable the SD-VAE decoder trace is.
+- **Constraint:** about 0.2 GB of the 9 GB download cap is left. Methods needing full diffusion UNet weights (2–5 GB) need the owner's approval for more download budget.

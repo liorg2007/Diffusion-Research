@@ -430,3 +430,32 @@ So `du2` has the zoom (field of view) of `orig` and the downsampling history of 
 - WA and RAISE-like scale-matched pools are reported per pool.
 
 **D-008.** The guard runs for every new scoring run.
+
+## Amendment 11 (2026-10-24 12:15, before any result): E4, how detectable is the diffusion VAE decoder trace? (experiments/011-vae-trace)
+**Why** (D-014). Diffusion-specific methods (AEROBLADE, FIRE, LaRE², aligned training) assume the latent-diffusion decoder leaves a detectable trace. In E2, our B0 features separated real photos from their own SD-VAE round-trips at only 0.66 clean / 0.56 laundered (`009/pilot/critique.md`). E4 measures directly which features see the trace and whether it survives laundering. It is a diagnostic pilot that does not count toward the stop rule.
+
+**Data.**
+- Pilot splits (`004/pilot`, `orig` arm as the label arm, `fov512` reported).
+- Pairs: each real (native, WA, FBH) and its own sd-vae-ft-mse round-trip, made as in E2 (latent mode, uint8). The orig arm re-saves at the source JPEG quality factor; fov512 saves PNG (Amendment 7–8 clarifications).
+- Train on train-split pairs (297 + 297); test on test-split pairs (1,074 + 1,074).
+- Groups and clusters are by source photo (`device:vidx`) and device.
+- Conditions: `clean` and `jpeg75_resize05`, applied identically to both members of a pair.
+
+**Feature families** (logistic probe, balanced, grouped CV for C):
+- F1: B0 primary (DINOv2-base last-layer CLS + mean).
+- F2: DINOv2-base blocks 4/8/12 CLS + mean (the 004 secondary features).
+- F3: a fixed low-level residual spectrum. The image minus a 3×3 median filter, then the azimuthally averaged log power spectrum in 32 radial bins per channel (96-d), plus the 8×8-grid periodicity peaks at the latent stride (f = 1/8, 2/8, 3/8, 4/8 cycles/px in x and y, 8 values per channel). These are standard choices fixed here, before results.
+- F4: F2 + F3 concatenated.
+- Baseline: the Laplacian texture score (fixed direction set on train).
+
+**Measures.**
+1. **Pair AUROC** (real vs own round-trip) on test, per feature family and condition, with cluster-bootstrap CIs.
+2. **Transfer:** each pair-trained probe scored on test natives vs Synthbuster fakes, macro AUROC split into SD-VAE family (SD2, SDXL) and other generators.
+
+**Decision rules** (for the direction; this is not a hypothesis verdict):
+- "VAE trace detectable" if the best family's pair AUROC is ≥ 0.90 clean, with CI lower bound > 0.85.
+- "Survives laundering" if it is ≥ 0.75 at `jpeg75_resize05`, with CI lower bound > 0.70.
+- "Trace-specific" if the best family beats the texture baseline by ≥ 0.10 on pairs.
+- If the trace is not detectable or does not survive laundering, VAE-trace methods are deprioritized in the Phase 5 design.
+
+**D-008.** Guards apply to VAE outputs (pixel ≤ 1e-3 for sd-vae-ft-mse, which already passed) and to new features (|Δlogit| ≤ 1e-3).
