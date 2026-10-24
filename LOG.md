@@ -273,3 +273,10 @@
   - New env/STORAGE.md ledger.
   - Deleted the confounded du2 crops (587 MB) and features (81 MB). Disk: 783 GB free.
   - Downloads are chosen after the diffusion-signals survey and E4.
+- 2026-10-24 12:45 — Diffusion-signals survey done (sonnet/medium): 13 new kb/papers entries, merged into kb/index.md:
+  - entries: hfi, rdd, warpad, eires, tsg, eside, latte, dtad, staypositive, inpx, fragile-recon, sonoda-zeroshot, f2c;
+  - none reports FPR on real photos or JPEG+resize numbers;
+  - FLUX is evaluated only in ESIDE, Stay-Positive, Fragile-recon and Sonoda;
+  - no FLUX-specific VAE-trace detector was found;
+  - most relevant for a VAE-only, laundering-robust method: HFI (AEROBLADE + aliasing, VAE-only), RDD (debiased recon, abstract only; PDF returned 403), InpX (VAE re-encoding is the carrier) + Stay-Positive (non-negative head);
+  - caveat: fragile-recon shows white-box attacks take recon detectors to ~0.
