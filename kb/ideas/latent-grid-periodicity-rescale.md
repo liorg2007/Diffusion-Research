@@ -28,3 +28,10 @@
   - *Phase-5 reach:* NO at jpeg75_resize05 by its own prediction. Value: a fusion feature for social_sim-type laundering, a mechanistic explanation of E4, and a protocol recommendation (add non-dyadic resize conditions, and report dyadic ones as adversarial).
 
 - **Status:** proposed
+
+- **Pilot result (2026-10-24, UNINFORMATIVE; experiments/013-latent-grid/pilot/, critique.md):**
+  - The validity gate failed: the 1-D 1/8 peak is absent in SD2/SDXL fakes, and O is at chance at every scale.
+  - Critic (post hoc): the 8-px lattice IS present in about 70% of SD fakes, but mostly as period 2–4 harmonics and off-axis. VISION camera-JPEG grids sit on the same lattice, so grid energy cannot separate them (0.44–0.47).
+  - The dyadic-collision mechanism is not supported: the trace decays smoothly with downscaling.
+  - Deprioritise frequency-exact grid features for laundered targets. Any future grid score needs a 2-D fold, an off-period control and a grid-free real reference.
+- **Status (updated):** pilot uninformative; mechanism not supported (post hoc)

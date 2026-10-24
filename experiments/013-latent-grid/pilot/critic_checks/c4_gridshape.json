@@ -1,0 +1,47 @@
+{
+ "n_features": 34,
+ "SD2+SDXL": {
+  "shape+z8": {
+   "auroc": 0.885,
+   "per_gen": {
+    "stable-diffusion-2": 0.869,
+    "stable-diffusion-xl": 0.901
+   }
+  },
+  "z8_only": {
+   "auroc": 0.539,
+   "per_gen": {
+    "stable-diffusion-2": 0.555,
+    "stable-diffusion-xl": 0.524
+   }
+  }
+ },
+ "all6": {
+  "shape+z8": {
+   "auroc": 0.809,
+   "per_gen": {
+    "dalle2": 0.746,
+    "dalle3": 0.826,
+    "firefly": 0.862,
+    "midjourney-v5": 0.809,
+    "stable-diffusion-2": 0.783,
+    "stable-diffusion-xl": 0.828
+   }
+  },
+  "z8_only": {
+   "auroc": 0.438,
+   "per_gen": {
+    "dalle2": 0.518,
+    "dalle3": 0.44,
+    "firefly": 0.362,
+    "midjourney-v5": 0.421,
+    "stable-diffusion-2": 0.47,
+    "stable-diffusion-xl": 0.417
+   }
+  }
+ },
+ "SD2+SDXL_JM_fakes_jpeg_at_native_qf": {
+  "shape+z8": 0.854,
+  "z8_only": 0.56
+ }
+}

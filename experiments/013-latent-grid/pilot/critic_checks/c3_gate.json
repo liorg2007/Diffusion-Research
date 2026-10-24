@@ -1,0 +1,70 @@
+{
+ "ref=nat_orig": {
+  "thr_O": 1.509975797519747,
+  "thr_z8": 145.09383845876027,
+  "share_O_above": {
+   "dalle2": 0.0,
+   "dalle3": 0.0,
+   "firefly": 0.0,
+   "midjourney-v5": 0.0,
+   "stable-diffusion-2": 0.0,
+   "stable-diffusion-xl": 0.0,
+   "nat_orig": 0.011,
+   "nat_fov": 0.0
+  },
+  "share_z8_above": {
+   "dalle2": 0.0,
+   "dalle3": 0.0,
+   "firefly": 0.033,
+   "midjourney-v5": 0.0,
+   "stable-diffusion-2": 0.0,
+   "stable-diffusion-xl": 0.0,
+   "nat_orig": 0.011,
+   "nat_fov": 0.0
+  }
+ },
+ "ref=nat_fov": {
+  "thr_O": 0.9328133826221757,
+  "thr_z8": 3.662468821906959,
+  "share_O_above": {
+   "dalle2": 0.008,
+   "dalle3": 0.025,
+   "firefly": 0.1,
+   "midjourney-v5": 0.042,
+   "stable-diffusion-2": 0.058,
+   "stable-diffusion-xl": 0.033,
+   "nat_orig": 0.078,
+   "nat_fov": 0.011
+  },
+  "share_z8_above": {
+   "dalle2": 0.008,
+   "dalle3": 0.117,
+   "firefly": 1.0,
+   "midjourney-v5": 0.425,
+   "stable-diffusion-2": 0.317,
+   "stable-diffusion-xl": 0.342,
+   "nat_orig": 0.478,
+   "nat_fov": 0.011
+  }
+ },
+ "within_image_z8_gt_1.5x_max_z7_z9": {
+  "dalle2": 0.025,
+  "dalle3": 0.142,
+  "firefly": 1.0,
+  "midjourney-v5": 0.758,
+  "stable-diffusion-2": 0.708,
+  "stable-diffusion-xl": 0.717,
+  "nat_orig": 0.723,
+  "nat_fov": 0.028
+ },
+ "median_O_1_8": {
+  "dalle2": 0.362,
+  "dalle3": 0.387,
+  "firefly": 0.56,
+  "midjourney-v5": 0.44,
+  "stable-diffusion-2": 0.385,
+  "stable-diffusion-xl": 0.376,
+  "nat_orig": 0.433,
+  "nat_fov": 0.355
+ }
+}

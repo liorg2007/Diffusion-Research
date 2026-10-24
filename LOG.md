@@ -313,3 +313,9 @@
   - Post-hoc positive control: known SD-VAE round-trips also show no coherent 1/8 line (O 0.52). The VAE trace is not a spectral grid line in this residual.
   - E4 add-on (pre-registered descriptive): pair AUROC at jpeg75_resize07 vs 05 — F2 0.597 → 0.672 primary, 0.670 → 0.703 matched. The gain is in DINOv2 features, not F3.
   - Selftest 6/6, lib 62/62, D-008 ok (2.4e-4). Launching opus/high critic.
+- 2026-10-24 20:10 — H-D2 critic (opus/high, 013/pilot/critique.md): procedurally SOUND; UNINFORMATIVE stands.
+  - Correction: an 8-px grid exists in about 70% of SD fakes (period 2–4 harmonics, off-axis), but VISION camera-JPEG grids share the lattice (grid energy 0.44–0.47).
+  - Dyadic collision not supported: the trace decays smoothly with downscaling.
+  - E4 add-on 0.60 → 0.67 is real, but means "less downscaling keeps more resolution", not "0.5× is special".
+  - Minor: Firefly files are JPEG q95 under .png names (kb/datasets/synthbuster.md says "all PNG").
+  - notes.md corrected; KB idea updated.

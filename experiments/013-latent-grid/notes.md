@@ -32,3 +32,7 @@ Peak at 1/8 for an injected 8-px grid; peak at 1/(8 s) for s = 0.8, 0.75, 0.7, 0
 - O uses the average of x and y axes, Hann window, max over +-1 bin; S uses the combined curve. FPR rule read as clean natives vs clean WA/FBH copies (threshold from the same 358 test natives; the copies are of those photos).
 - JM JPEG lattice is phase-aligned with the crop origin; natives' capture lattice has random phase.
 - Bootstrap: 2000 replicates, reals by device, fakes by image per generator.
+
+## Lead correction after the critic (2026-10-24)
+The statement "there is no 8-px grid in SD fakes" is WRONG (`pilot/critique.md`). An 8-px lattice is present in about 70% of SD2/SDXL fakes (fold z8 about 2.7 vs about 1.1 at periods 7/9). Only about 10% of its energy is at the 1/8 fundamental the O score measures; the rest is at period 2–4 px harmonics and off-axis. VISION natives carry a capture-JPEG grid on the same lattice, so grid energy does not separate them from SD fakes (AUROC 0.44–0.47).
+The pre-registered label UNINFORMATIVE stands. The dyadic-collision mechanism is "not supported (post hoc)": the trace decays smoothly with downscaling and has no dip at 0.5×.
