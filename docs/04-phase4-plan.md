@@ -459,3 +459,24 @@ So `du2` has the zoom (field of view) of `orig` and the downsampling history of 
 - If the trace is not detectable or does not survive laundering, VAE-trace methods are deprioritized in the Phase 5 design.
 
 **D-008.** Guards apply to VAE outputs (pixel ≤ 1e-3 for sd-vae-ft-mse, which already passed) and to new features (|Δlogit| ≤ 1e-3).
+
+## Amendment 12 (2026-10-24, before any H-D1 or H-D2 result): pilots of H-D1 self-ref-trace-contrast and H-D2 latent-grid-periodicity-rescale (experiments/012-self-ref, experiments/013-latent-grid)
+**Source of criteria.** The pass/fail rules, gates and predictions are those in `kb/ideas/self-ref-trace-contrast.md` and `kb/ideas/latent-grid-periodicity-rescale.md`, as committed in ca58d61, with the pilot adaptations below. Both are pilots under D-014 and do not count toward the stop rule.
+
+**Disclosure (written before running).** The E4 critic (`011/pilot/critique.md`, post hoc, on a 60-images-per-generator sample) already checked a related reference score s(x) − s(VAE(x)). It reached 0.850 macro at clean native scale but fell below the single-image probe once laundered (0.56 orig, 0.45 fov512). It also found that a plain Gaussian blur reproduces the 0.97–0.99 paired win-rate, and that the 0.5× resize, more than JPEG, erases the trace. H-D1 is still run, because its deployable score (L0 applied to both t and VAE(t) of the OBSERVED image) differs from that check and costs about an hour. Its criteria are not changed in light of the preview.
+
+**Pilot adaptations (both).**
+- Pilot data: VISION + 6 Synthbuster. There is no FLUX; the SD-family = SD2, SDXL.
+- E4's laundered win-rate came from pairs laundered after the VAE, so it is NOT a ceiling for H-D1's deployable score.
+- The label arm is the one each idea file names (fov512 for H-D1); orig is reported.
+
+**H-D1 additions.**
+1. **Matched-blur control (mandatory).** The same score with VAE(t) replaced by a Gaussian blur of t, with σ chosen on train reals to match the mean F2 shift of the VAE round-trip. H-D1 counts as diffusion-specific only if its laundered AUROC beats the blur version by ≥ 0.05 (CI lower bound > 0). Otherwise the label is "not diffusion-specific", whatever the AUROC.
+2. **Texture baseline and validity gate** as in Amendment 6.
+
+**H-D2 additions** (from the E4 critic).
+1. Extra conditions: JPEG-only (q75), resize-only (0.5× and 0.75×), and `jr(75, 0.75)`, so each component can be read separately.
+2. A "folded-grid energy" feature: the image folded on the 8×8 phase grid (mean over each phase position of the high-pass residual), giving one energy number. It is reported beside the idea file's spectrum statistics.
+3. JPEG-history-matched control as in the idea file.
+
+**D-008.** Guards apply to any new GPU features (|Δlogit| ≤ 1e-3) and to VAE outputs (sd-vae-ft-mse pixel guard, already passed).

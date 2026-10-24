@@ -298,3 +298,10 @@
   - Agent deviation: two read-only HF metadata queries via curl (licence/gating check).
   - Lead note for H-D1: E4's laundered win-rate came from pairs laundered AFTER the VAE, so it is not a ceiling for the deployable score w·[φ(L0(VAE(t))) − φ(L0(t))] on an observed t. This goes into its pre-registration.
   - H-D1 and H-D2 are pre-registered after the E4 critic, since H-D1 reuses E4's trace direction.
+- 2026-10-24 14:40 — E4 critic (opus/high, 011/pilot/critique.md): SOUND, all numbers reproduce. Post hoc:
+  - orig < fov512 is caused by the source-QF JPEG coding (fov512 coded at QF drops 0.962 → 0.871).
+  - The 0.5× resize, more than JPEG q75, erases the trace (JPEG-only ~0.78–0.80, resize-only ~0.64–0.67).
+  - The 0.99 win-rate is reproduced by a plain blur.
+  - A reference score s(x) − s(VAE(x)) reaches 0.850 at clean native scale but 0.56 / 0.45 laundered.
+  - A single folded 8×8 grid-energy number reaches 0.911 in fov512.
+  - Pre-registered H-D1 + H-D2 pilots as Amendment 12, with the critic's preview disclosed, a mandatory matched-blur control for H-D1, and component conditions + folded-grid feature for H-D2.

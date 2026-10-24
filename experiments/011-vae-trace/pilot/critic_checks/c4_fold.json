@@ -1,0 +1,74 @@
+{
+ "orig/clean": {
+  "z_median_real": 1.3762883784846673,
+  "z_median_rt": 2.173835908050946,
+  "z_pooled_auroc": 0.6637545991420715,
+  "z_win": 0.6703910614525139,
+  "tmpl_pooled_auroc": 0.6642054104289989,
+  "tmpl_win": 0.6694599627560521,
+  "tmpl_median_real": -0.03465252369642258,
+  "tmpl_median_rt": 0.05591503530740738,
+  "template_train_amplitude": 0.08781300485134125,
+  "period": 8
+ },
+ "orig/jpeg75_resize05": {
+  "z_median_real": 1.176047637208745,
+  "z_median_rt": 1.3063447193133115,
+  "z_pooled_auroc": 0.5408114256386782,
+  "z_win": 0.5437616387337058,
+  "tmpl_pooled_auroc": 0.5186254417083667,
+  "tmpl_win": 0.5344506517690876,
+  "tmpl_median_real": 0.011952679604291916,
+  "tmpl_median_rt": 0.029635727405548096,
+  "template_train_amplitude": 0.015868421643972397,
+  "period": 4
+ },
+ "orig/resize(0.5)": {
+  "z_median_real": 1.1552539757584497,
+  "z_median_rt": 1.6885756691671272,
+  "z_pooled_auroc": 0.6359438774625567,
+  "z_win": 0.6834264432029795,
+  "tmpl_pooled_auroc": 0.5712138787456349,
+  "tmpl_win": 0.5968342644320298,
+  "tmpl_median_real": -0.0024787774309515953,
+  "tmpl_median_rt": 0.06586896628141403,
+  "template_train_amplitude": 0.018787985667586327,
+  "period": 4
+ },
+ "fov512/clean": {
+  "z_median_real": 1.001410439511666,
+  "z_median_rt": 2.223356721273732,
+  "z_pooled_auroc": 0.9112335237144076,
+  "z_win": 0.9236499068901304,
+  "tmpl_pooled_auroc": 0.7944378556640971,
+  "tmpl_win": 0.8277467411545624,
+  "tmpl_median_real": 0.0034076236188411713,
+  "tmpl_median_rt": 0.1893104910850525,
+  "template_train_amplitude": 0.08079735934734344,
+  "period": 8
+ },
+ "fov512/jpeg75_resize05": {
+  "z_median_real": 1.0956069255655594,
+  "z_median_rt": 1.2847869837587211,
+  "z_pooled_auroc": 0.5667018646248383,
+  "z_win": 0.6219739292364991,
+  "tmpl_pooled_auroc": 0.5593042247953144,
+  "tmpl_win": 0.5810055865921788,
+  "tmpl_median_real": -0.02494058385491371,
+  "tmpl_median_rt": 0.048860445618629456,
+  "template_train_amplitude": 0.030141454190015793,
+  "period": 4
+ },
+ "fov512/resize(0.5)": {
+  "z_median_real": 1.0149997992976314,
+  "z_median_rt": 1.4542680348854398,
+  "z_pooled_auroc": 0.6391333673175688,
+  "z_win": 0.7067039106145251,
+  "tmpl_pooled_auroc": 0.5778837184302057,
+  "tmpl_win": 0.6201117318435754,
+  "tmpl_median_real": -0.0025201463140547276,
+  "tmpl_median_rt": 0.07788139581680298,
+  "template_train_amplitude": 0.05792888626456261,
+  "period": 4
+ }
+}
