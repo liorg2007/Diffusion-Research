@@ -1,0 +1,97 @@
+{
+ "mode": "crop (plain centre crop 512, no resize)",
+ "size": 512,
+ "n_rows_in": 2919,
+ "n_missing_raw_dropped": 0,
+ "n_processed": 2919,
+ "n_ok": 2919,
+ "n_short_side_lt_512": 0,
+ "n_error": 0,
+ "short_side_lt_512": [],
+ "no_clobber": {
+  "enabled": true,
+  "n_existing_equal": 2220,
+  "n_existing_differ": 0,
+  "n_newly_written": 699
+ },
+ "raw_sha_match": {
+  "n_match": 2919,
+  "n_total": 2919
+ },
+ "shape_ok_512_rgb": 2919,
+ "counts_pool_split": [
+  {
+   "pool": "fake",
+   "split": "test",
+   "n": 585
+  },
+  {
+   "pool": "fake",
+   "split": "train",
+   "n": 435
+  },
+  {
+   "pool": "raise",
+   "split": "calib",
+   "n": 60
+  },
+  {
+   "pool": "raise",
+   "split": "test",
+   "n": 199
+  },
+  {
+   "pool": "raise",
+   "split": "train",
+   "n": 140
+  },
+  {
+   "pool": "vision_facebook_hq",
+   "split": "calib",
+   "n": 43
+  },
+  {
+   "pool": "vision_facebook_hq",
+   "split": "test",
+   "n": 358
+  },
+  {
+   "pool": "vision_facebook_hq",
+   "split": "train",
+   "n": 99
+  },
+  {
+   "pool": "vision_native",
+   "split": "calib",
+   "n": 43
+  },
+  {
+   "pool": "vision_native",
+   "split": "test",
+   "n": 358
+  },
+  {
+   "pool": "vision_native",
+   "split": "train",
+   "n": 99
+  },
+  {
+   "pool": "vision_whatsapp",
+   "split": "calib",
+   "n": 43
+  },
+  {
+   "pool": "vision_whatsapp",
+   "split": "test",
+   "n": 358
+  },
+  {
+   "pool": "vision_whatsapp",
+   "split": "train",
+   "n": 99
+  }
+ ],
+ "out_dir": "data/processed/crop512",
+ "seconds": 76.90181350708008
+}
+wrote experiments/004-phase4-features/official/splits_crop512_check.csv 2919 rows
