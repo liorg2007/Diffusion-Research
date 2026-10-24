@@ -289,3 +289,12 @@
   - Transfer of pair probes to Synthbuster: F1 0.819 / F2 0.776 / F4 0.768 clean; SD-family > other.
   - Reading: the SD-VAE trace is visible in mid-level DINOv2 features (strongly in fov512) but erased by jpeg75_resize05. It is a constraint for any diffusion-specific method.
   - Launching opus/high critic and opus/high hypothesis generation.
+- 2026-10-24 14:20 — Diffusion-specific hypotheses written (opus/high): docs/06-diffusion-hypotheses.md + 5 kb/ideas, ranked N×G×F:
+  - H-D1 self-ref-trace-contrast (60);
+  - H-D2 latent-grid-periodicity-rescale (45);
+  - H-D3 variance-contraction-patch-rank (30);
+  - H-D4 laundering-floor-timestep (27; SD1.5 UNet 1.72 GB);
+  - H-D5 decoder-bank-universality (24; MoVQ 271 MB).
+  - Agent deviation: two read-only HF metadata queries via curl (licence/gating check).
+  - Lead note for H-D1: E4's laundered win-rate came from pairs laundered AFTER the VAE, so it is not a ceiling for the deployable score w·[φ(L0(VAE(t))) − φ(L0(t))] on an observed t. This goes into its pre-registration.
+  - H-D1 and H-D2 are pre-registered after the E4 critic, since H-D1 reuses E4's trace direction.
