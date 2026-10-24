@@ -319,3 +319,4 @@
   - E4 add-on 0.60 → 0.67 is real, but means "less downscaling keeps more resolution", not "0.5× is special".
   - Minor: Firefly files are JPEG q95 under .png names (kb/datasets/synthbuster.md says "all PNG").
   - notes.md corrected; KB idea updated.
+- 2026-10-24 19:31 — Timestamp correction: the two previous entries, stamped "19:30" (H-D2 pilot) and "20:10" (H-D2 critic), were written by the lead before 19:31. Those times were estimates, not clock readings. LOG order is still correct.
