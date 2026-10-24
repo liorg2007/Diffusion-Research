@@ -1,0 +1,36 @@
+{
+ "PILOT": true,
+ "experiment": "H-D2 PILOT: latent-grid periodicity under rescaling. Criteria: kb/ideas/latent-grid-periodicity-rescale.md (ca58d61) + docs/04-phase4-plan.md Amendment 12. Diagnostic under D-014; does not count toward the stop rule.",
+ "seed": 0,
+ "n_boot": 2000,
+ "arms": {"orig": "experiments/004-phase4-features/pilot/splits_pilot.csv", "fov512": "experiments/004-phase4-features/pilot/splits_pilot_fov512.csv"},
+ "label_arm": "orig (plain unresampled 512 centre crops: crop offsets of SD2/SDXL fakes are multiples of 8, the latent grid phase is 0 mod 8). fov512 resamples fakes by 512/short_side, so it is descriptive only",
+ "rows": {"reals": "TEST split of vision_native (358, 25 devices), vision_whatsapp (358), vision_facebook_hq (358)", "fakes": "all 120 per generator x 6 generators (train+test: nothing is trained)"},
+ "weights": "none (training-free scores)",
+ "conditions": {
+   "clean": "clean (s=1, no JPEG)", "jpeg75": "jr(75,1.0) JPEG only (s=1)",
+   "rs050": "resize(0.5)", "rs060": "resize(0.6)", "rs070": "resize(0.7)", "rs075": "resize(0.75)", "rs080": "resize(0.8)",
+   "jr050": "jr(75,0.5) (== jpeg75_resize05)", "jr060": "jr(75,0.6)", "jr070": "jr(75,0.7)", "jr075": "jr(75,0.75)", "jr080": "jr(75,0.8)",
+   "social_sim": "lib/perturb social_sim (seeded per image by sha256)"},
+ "score_definitions": {
+   "residual": "x = grayscale ('L') of the conditioned image (full frame, no further crop), r = x - median3x3(x) (reflect), float32",
+   "profiles": "p_x = mean over rows of r (length W), p_y = mean over columns of r; coherent average (an 8-px pattern has fixed phase over the frame)",
+   "spectrum": "L = log10(|rfft((p - mean(p)) * hann)|^2 + 1e-10); prominence curve prom[i] = L[i] - median(L[i+d], d in {-4,-3,-2,2,3,4}) (bins outside the array ignored)",
+   "O (oracle s)": "target frequency f* = 1/(8 s_tot) cycles/px with s_tot = s_pre * (output width / input width of the condition) (s_pre = 1 in orig); bin b = f* n; O_axis = max over bins round(b)-1..round(b)+1 of prom; O = (O_x + O_y)/2. Max over +-1 bin makes the fractional-bin position irrelevant",
+   "S (blind scan)": "curve = (prom_x + prom_y)/2; S = max over bins with 1/16 <= f <= 1/2.5 (periods 2.5-16 px) excluding bins within +-1 of k n/8 for k = 1..4 (JPEG-grid harmonics and 0.5)",
+   "texture": "Laplacian lap224 of 009 (mean |4-neighbour Laplacian| of the 224 centre crop, gray); AUROC reported in the more favourable direction (conservative for the 'beats texture by 0.10' rule)",
+   "folded-grid energy (Amendment 12)": "r folded on the p x p phase grid, M[a,b] = mean r[a::p, b::p], z = var(M) (N/p^2) / var(r) (experiments/011/pilot/critic_checks/c4_fold.py). z8: p = 8 (the 8x8 phase grid of the conditioned image, = JPEG block grid of the laundered image); zs: p = 8 s_tot when that is an integer (s = 0.5 -> 4, 0.75 -> 6, 1 -> 8), else NaN"},
+ "validity_gate": {"definition_primary": "PRE-DECLARED reading: a clean SD2/SDXL fake 'shows the peak at 1/8 +-1 bin' if its O prominence at 1/8 (max over +-1 bin) exceeds the 99th percentile of the same quantity over the 358 clean test natives. Gate passes if >= 60% of SD2+SDXL fakes (pooled; per generator also listed) do.",
+                   "definition_secondary": "argmax of the combined prominence curve over 0.05 <= f <= 0.45 lies within +-1 bin of 1/8 (reported, natives' rate beside it)",
+                   "if_fail": "label UNINFORMATIVE"},
+ "jm_control": "SD2+SDXL fakes are first JPEG-saved (libjpeg 4:2:0, perturb.jpeg) at the estimated quality factor of a randomly paired test native (seeded by the fake's sha256), THEN the condition is applied; natives unchanged (they already carry their capture JPEG). JM JPEG grid is aligned with the crop origin (phase 0), natives' capture grid has a random phase; after any resize the phase relation is destroyed. Pass: |O_JM - O| <= 0.05 at each of s = 0.6, 0.7, 0.8 (jr conditions); s = 0.5 / jpeg-only reported",
+ "pass_fail": {
+   "pass": "O-AUROC (SD2+SDXL macro vs test natives, jr conditions) >= 0.80 at each of s = 0.6, 0.7, 0.8 AND <= 0.65 at s = 0.5 AND mean(O at 0.6,0.7,0.8) - mean(O at jr050, jpeg75) >= 0.15 AND JM control within 0.05 AND O beats texture by >= 0.10 at each non-dyadic s AND S at social_sim >= 0.80 (SD-family) and >= 0.70 (all-6 macro) AND FPR(S, 99th percentile of clean test natives, on clean WA/FBH test copies) <= 2%",
+   "fail": "O < 0.70 at all three non-dyadic s (0.6, 0.7, 0.8), or gap < 0.05",
+   "labels": "UNINFORMATIVE (gate fails) > FAIL > PASS > MIXED (neither pass nor fail)",
+   "extras_reported_only": "s = 0.75 (jr075) and the resize-only / JPEG-only components, z8/zs, per-generator O, fov512, E4 add-on"},
+ "fpr_rule": "threshold = 99th percentile (np.percentile, linear) of S over clean test natives; FPR = share of WA / FBH test copies above it. Primary: clean copies. Also reported: social_sim copies vs the social_sim-native threshold",
+ "bootstrap": "e2.Plan (009): reals by device cluster, fakes by image stratified per generator, 2000 replicates, one plan shared by all scores (paired differences)",
+ "e4_addon": {"condition": "jr(75,0.7) ('jpeg75_resize07')", "what": "011's pair setup (test round-trips of sd-vae-ft-mse vs their own reals; 297 train / 1074 test pairs; same families F1-F4 and texture; probe = lib/probe.fit_probe via 009's fit), DINOv2 + F3 features recomputed at the new condition; primary = probe fit on CLEAN train pairs, matched = fit on train pairs of the same condition", "reference": "011 pilot/results.json: F4 primary jpeg75_resize05 = 0.598, matched 0.670 (orig)", "criterion": "descriptive: pair AUROC >= 0.70 at 0.7x would show part of E4's collapse is a dyadic artefact", "d008": "32 test round-trips per arm: DINOv2 CPU vs CUDA logits, |dlogit| <= 1e-3 for all probes used at the new condition"},
+ "outputs": "pilot/{results.json,tables.md,scores_long.csv.gz,run.log,d008_guard.json}; caches in cache/ (git-ignored)"
+}

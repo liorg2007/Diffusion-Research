@@ -305,3 +305,11 @@
   - A reference score s(x) − s(VAE(x)) reaches 0.850 at clean native scale but 0.56 / 0.45 laundered.
   - A single folded 8×8 grid-energy number reaches 0.911 in fov512.
   - Pre-registered H-D1 + H-D2 pilots as Amendment 12, with the critic's preview disclosed, a mandatory matched-blur control for H-D1, and component conditions + folded-grid feature for H-D2.
+- 2026-10-24 19:30 — H-D2 PILOT done (013-latent-grid/pilot/; pilot under D-014, not counted). The agent was cut off by the API limit and then resumed.
+  - Label UNINFORMATIVE: validity gate failed, 0.000 of SD2+SDXL clean fakes show a 1/8 grid peak above the natives' 99th percentile.
+  - O-AUROC at chance for every s (0.49–0.53); non-dyadic − dyadic gap −0.023. The JM control is within 0.01.
+  - Texture baseline 0.72–0.83; S at social_sim 0.48.
+  - Folded-grid z8/zs weak (≤ 0.64, likely resize/texture).
+  - Post-hoc positive control: known SD-VAE round-trips also show no coherent 1/8 line (O 0.52). The VAE trace is not a spectral grid line in this residual.
+  - E4 add-on (pre-registered descriptive): pair AUROC at jpeg75_resize07 vs 05 — F2 0.597 → 0.672 primary, 0.670 → 0.703 matched. The gain is in DINOv2 features, not F3.
+  - Selftest 6/6, lib 62/62, D-008 ok (2.4e-4). Launching opus/high critic.

@@ -1,0 +1,18 @@
+14:48:43 H-D2 start stage=scan
+14:48:44 H-D2 native QF (test natives) counts: {88: 2, 90: 14, 93: 6, 95: 172, 96: 107, 97: 42, 100: 15}
+14:49:33 H-D2 scan orig/main: 1794 images x 13 conditions, 49s
+14:49:40 H-D2 scan orig/jm: 240 images x 13 conditions, 7s
+14:50:29 H-D2 scan fov512/main: 1794 images x 13 conditions, 48s
+14:50:34 H-D2 start stage=e4
+14:59:01 H-D2 e4 features orig/plain: 1371 images, 505s
+15:00:07 H-D2 e4 features orig/rt: 1371 images, 66s
+15:01:13 H-D2 e4 features fov512/plain: 1371 images, 67s
+15:02:19 H-D2 e4 features fov512/rt: 1371 images, 66s
+15:02:40 H-D2 D-008 e4 orig: max|dlogit|=2.74e-05 -> ok
+15:02:57 H-D2 D-008 e4 fov512: max|dlogit|=2.40e-04 -> ok
+15:02:57 H-D2 e4 add-on: max |refit - 011| over F1-F4 / protocols / arms at jpeg75_resize05 = 0.00e+00
+18:51:36 H-D2 start stage=analyze
+18:51:49 H-D2 start stage=analyze
+18:51:58 H-D2 analysis done in 9s; label UNINFORMATIVE
+18:52:54 H-D2 start stage=analyze
+18:53:02 H-D2 analysis done in 8s; label UNINFORMATIVE
