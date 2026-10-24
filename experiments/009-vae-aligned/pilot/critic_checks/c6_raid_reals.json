@@ -1,0 +1,35 @@
+{
+ "n": {
+  "gen_0": 100,
+  "gen_1": 100,
+  "gen_2": 100,
+  "gen_3": 100,
+  "real": 48
+ },
+ "A": {
+  "auroc_per_gen": {
+   "gen_0": 0.4175,
+   "gen_1": 0.5420833333333334,
+   "gen_2": 0.5052083333333334,
+   "gen_3": 0.6225
+  },
+  "auroc_pooled": 0.5218229166666667,
+  "frac_raid_reals_flagged_at_vision_1pctFPR": 0.020833333333333332,
+  "median_raid_real": 0.04377694302938721,
+  "median_vision_test_native": -0.14180872992476112,
+  "auroc_vision_natives_vs_raid_reals_fake_high": 0.6799348230912476
+ },
+ "B0_full": {
+  "auroc_per_gen": {
+   "gen_0": 0.6866666666666666,
+   "gen_1": 0.5985416666666666,
+   "gen_2": 0.6279166666666667,
+   "gen_3": 0.6585416666666667
+  },
+  "auroc_pooled": 0.6429166666666667,
+  "frac_raid_reals_flagged_at_vision_1pctFPR": 0.6666666666666666,
+  "median_raid_real": 4.335051669251271,
+  "median_vision_test_native": -8.390329794620932,
+  "auroc_vision_natives_vs_raid_reals_fake_high": 0.9727071694599627
+ }
+}

@@ -247,3 +247,9 @@
     - fixed orig-trained B0, laundered: zoom-dominated (+0.004 / +0.055).
     - Caveat: the texture baseline jumps to 0.89 in du2 (up-sampling 4.8×-downsampled reals blurs them), so du2 may add its own cue.
   - Launching opus/high critics for E2 and E1b.
+- 2026-10-24 09:20 — E2 critic (opus/high, 009/pilot/critique.md): SOUND, no bug or leakage, labels correct.
+  - #6 A is not a format, JPEG-grid, zoom or texture shortcut, and also not a VAE-trace detector: it separates natives from their own round-trips at only 0.66 clean / 0.56 laundered. It rides a "not straight from a camera" axis that fails on RAID web reals (0.52). fov512 gives 0.681 laundered (D-013 changes the label).
+  - The SDXL guard failure is real but harmless: JPEG q75 amplifies ±1 pixel differences.
+  - #7 FAIL is correct: single-pass L2 is mostly texture (rho 0.85), and the ratio collapses when laundered. Dropped.
+  - C − B < 0 because aligned fakes share VISION content.
+  - KB ideas #6 and #7 updated.

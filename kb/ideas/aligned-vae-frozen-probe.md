@@ -26,4 +26,11 @@
   - **Pass:** A: FLUX AUROC at q75+0.5x >= 0.85 and >= UnivFD + 0.10; C: FLUX AUROC >= B + 0.02 (clean and laundered). Report non-LDM generators separately (expectation: A weak there). **Fail:** A < 0.75 on FLUX laundered, or C <= B.
   - Cost: VAE passes ~1,000 at 512^2 on MPS/CPU - time unknown on this GPU; pilot 20 images first (budget <= 2 h); licences of VAE weights to be checked before download [unverified].
 
-- **Status:** proposed
+- **Pilot result (2026-10-24, INCONCLUSIVE; experiments/009-vae-aligned/pilot/, critique.md):**
+  - Arm A is a DINOv2-base probe trained only on VISION reals vs their sd-vae-ft-mse round-trips (the SDXL VAE failed D-008 and was dropped). On 6 unseen Synthbuster generators it scores macro AUROC 0.819 clean and 0.778 laundered (label band 0.75–0.85). DALL-E 3 0.754, MJ v5 0.719.
+  - Critic checks found no format, JPEG-grid, zoom or texture shortcut.
+  - But A is NOT detecting the VAE trace: it separates unseen-device natives from their own round-trips at only 0.66 clean / 0.56 laundered. It rides a broader "not straight from a camera" axis, which does not travel to RAID web reals (0.52).
+  - The fov512 arm gives 0.681 laundered, so the arm choice (D-013) changes the label.
+  - Adding aligned fakes to B0 hurts (−0.044): they share VISION content.
+  - Official test design (in critique): FLUX held out, RAISE PNG reals, ≥30 devices, SDXL round-trips on CPU, and a pair-trace gate.
+- **Status:** pilot done (inconclusive); official design pending

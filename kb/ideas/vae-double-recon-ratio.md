@@ -23,4 +23,8 @@
   - Baseline: AEROBLADE-style LPIPS_2 single-pass min-over-bank on the same crops.
   - **Pass:** mean AUROC >= AEROBLADE + 0.05 (clean), >= 0.65 at q75+0.5x, fusion gain >= +0.02 on held-out FLUX over B0 alone. **Fail:** any of the three missed.
 
-- **Status:** proposed
+- **Pilot result (2026-10-24, FAIL; experiments/009-vae-aligned/pilot/, critique.md):**
+  - The AEDR-style ratio with sd-vae-ft-mse only scores macro AUROC 0.601 clean. That beats single-pass L2 error (0.319, which is below chance because it is mostly texture, rho 0.85), but loses to the Laplacian texture baseline (0.778). Laundered it falls to 0.318.
+  - It works only for SD2 and Midjourney v5 (0.98 each; MJ's VAE family is [unverified]), and collapses once laundered (SD2 0.19).
+  - Drop this idea in its current form.
+- **Status:** pilot failed; dropped
