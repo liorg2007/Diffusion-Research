@@ -382,3 +382,14 @@ Eps-16 numbers are descriptive only. They are compared with RAID Table 4 (DINOv2
   - For B0, only within-arm rows plus the fixed-probe rows `b0_trained_*` are reported. "Cross" rows that pair one arm's threshold with the other arm's retrained probe are dropped as meaningless.
   - Rows beyond Amendment 7 (the 129-calib-reals variant and the fixed-probe B0 rows) are marked "not pre-registered".
   - The texture sign is set once per (detector input, condition), on train data.
+
+**Amendment 9 clarification 2** (2026-10-24, from `010/code_review.md`; no E3 result exists, only a 25-item CPU smoke test whose numbers were not read)
+1. **Clean control = RAID's own preprocessing.** That is a plain center crop to 256², zero-padded when a side is under 256, with no resize. It replaces the earlier resize-then-crop.
+   - The code asserts the pairing: for every id, the mean |attacked − clean| must be ≤ 10/255 at eps 8 and ≤ 18/255 at eps 16, or the run aborts.
+2. **Padding shortcut.** 52 of the 100 selected reals are smaller than 256 px, so the crop gives them black borders that the fakes lack.
+   - The **primary** label uses only reals with no padding (both sides ≥ 256) against all fakes.
+   - **Sensitivity:** all 100 reals, reported but never labelled.
+   - Any fake that needs padding is excluded from the primary analysis in the same way. The counts are reported.
+   - The bootstrap resamples reals and fakes independently, by id, within each class.
+3. **Canonicalization** (clarification 1) still applies on top of this 256² input.
+4. **Caches** are keyed by (input set, preprocessing version, device). Score caches made before this clarification are invalid and must be deleted or ignored.
