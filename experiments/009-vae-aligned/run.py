@@ -1,8 +1,8 @@
 """E2 PILOT (docs/04-phase4-plan.md Amendment 8): idea #6 aligned-VAE probe, idea #7 VAE double-reconstruction ratio.
 
   env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage timing   # 20-image timing gate (decides the cut)
+  env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage guard    # D-008 VAE CUDA-vs-CPU (32 images); must pass before vae
   env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage vae      # round-trips (train reals) + #7 e1/e2 (test rows)
-  env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage guard    # D-008 VAE CUDA-vs-CPU (32 images)
   env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage feat     # DINOv2 features of the round-trips
   env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage analyze  # probes, metrics, labels, tables, probe D-008
   (--stage all runs them in this order; every stage is resumable from cache/)
@@ -223,11 +223,37 @@ def get_qf(df):
 
 
 def rt_path(arm, vn, sha):
-    return CACHE / "rt" / arm / vn / f"{sha}.jpg"
+    """orig arm: JPEG re-save at the source QF (Amendment 8). fov512 arm: PNG (Amendment 7-8 clarifications: the fov512 real
+    crops are resampled PNGs, so a fresh JPEG would give only the fakes a format cue)."""
+    return CACHE / "rt" / arm / vn / f"{sha}.{'jpg' if arm == 'orig' else 'png'}"
+
+
+def save_rt(path, im_u8, arm, q):
+    """Atomic write (tmp + os.replace) so a killed run never leaves a truncated file that the cache counts as done."""
+    tmp = Path(str(path) + ".tmp")
+    if arm == "orig":
+        Image.fromarray(im_u8).save(tmp, "JPEG", quality=int(q))
+    else:
+        Image.fromarray(im_u8).save(tmp, "PNG")
+    os.replace(tmp, path)
+
+
+def source_groups(df):
+    """CV group per row = the SOURCE PHOTO: 'device:vidx' for VISION reals (native, WA and FBH copies of one photo share
+    it), the sha256 for everything else (fakes). Amendment 7-8 clarifications."""
+    dev, vidx, sha = df.device.to_numpy(), df.vidx.to_numpy(), df.sha256.to_numpy()
+    return np.array([f"{d}:{v}" if (d != "" and v != "") else s for d, v, s in zip(dev, vidx, sha)], dtype=object)
+
+
+def vae_guard_ok():
+    g = jdump_existing(PILOT / "d008_guard.json").get("vae", {})
+    return len(g) == len(VAES) and all(v.get("ok") for v in g.values())
 
 
 def stage_vae():
     import torch
+    if not vae_guard_ok():
+        raise SystemExit("D-008 VAE guard has not passed: run --stage guard first (the bulk VAE stage must follow it)")
     cut = read_timing()["cut_applied"]
     dev = get_dev()
     dfs = {a: load_df(a) for a in SPLITS}
@@ -246,7 +272,7 @@ def stage_vae():
                 arr = load_arr(ch, "clean", pool)
                 y = q8(b(lambda a: recon_f(vae, a), arr))
                 for sha, im in zip(ch.sha256, y):
-                    Image.fromarray(im).save(rt_path(arm, vn, sha), "JPEG", quality=int(qf[sha]))
+                    save_rt(rt_path(arm, vn, sha), im, arm, qf[sha])
             log(f"rt {vn}/{arm}: {len(todo)} new round-trips ({len(tr) - len(todo)} cached), {time.time() - t0:.0f}s, batch {b.bs}")
             sel = rows7(df, cut)
             for cond in CONDS:
@@ -265,7 +291,8 @@ def stage_vae():
                     E1.append(np.sqrt(((xf - f1) ** 2).reshape(len(x), -1).sum(1)))
                     E2.append(np.sqrt(((f1 - f2) ** 2).reshape(len(x), -1).sum(1)))
                     shas += ch.sha256.tolist()
-                np.savez(f, sha=np.array(shas), e1=np.concatenate(E1), e2=np.concatenate(E2))
+                np.savez(str(f) + ".tmp.npz", sha=np.array(shas), e1=np.concatenate(E1), e2=np.concatenate(E2))
+                os.replace(str(f) + ".tmp.npz", f)
                 log(f"r7 {vn}/{arm}/{cond}: {len(sel)} rows, {time.time() - t0:.0f}s, batch {b.bs}")
         del vae
         torch.cuda.empty_cache()
@@ -336,7 +363,8 @@ def stage_feat():
                 X.append(__import__("features").embed_images(bb, imgs[i:i + 240], BATCH_FEAT, dev))
             if getattr(bb, "force_cpu", False) and dev != "cpu":
                 raise SystemExit("accelerator forward fell back to CPU; aborting (D-010)")
-            np.savez(f, keys=np.array(keys), feats=np.concatenate(X).astype(np.float32))
+            np.savez(str(f) + ".tmp.npz", keys=np.array(keys), feats=np.concatenate(X).astype(np.float32))
+            os.replace(str(f) + ".tmp.npz", f)
             log(f"feats {arm}/{cond}: {len(keys)} round-trips, {time.time() - t0:.0f}s")
 
 
@@ -486,6 +514,8 @@ def cpu_feats(arm, cond, keys):
 
 
 def stage_analyze():
+    if not vae_guard_ok():
+        raise SystemExit("D-008 VAE guard has not passed: refusing to analyze (run --stage guard)")
     timing = read_timing()
     cut = timing["cut_applied"]
     res = dict(label=LABEL, config=CFG, timing=timing, arms={}, labels={})
@@ -503,7 +533,8 @@ def stage_analyze():
         Xrt = {c: load_rt_feats(arm, c, sha[tr]) for c in CONDS}
         n_al = len(Xrt["clean"])
         assert n_al == 594, n_al
-        al_group = np.tile(sha[tr], len(VAES))
+        grp = source_groups(df)       # CV group = source photo (device:vidx); fakes keep their sha256
+        al_group = np.tile(grp[tr], len(VAES))     # a round-trip carries its source real's photo group
         b0 = df.b0_train.to_numpy()
         te_nat = np.where((lab == 0) & (sp == "test") & (pool == "vision_native"))[0]
         fak = np.where(lab == 1)[0]
@@ -519,32 +550,32 @@ def stage_analyze():
             S = {}
             t0 = time.time()
             mA = fit(np.vstack([Xr["clean"][tr], Xrt["clean"]]), np.r_[np.zeros(len(tr)), np.ones(n_al)].astype(int),
-                     np.concatenate([sha[tr], al_group]))
+                     np.concatenate([grp[tr], al_group]))
             S["A"] = np.stack([mA.decision_function(Xr[c]) for c in CONDS]).astype(np.float32)
             probes_for_guard[(arm, "A")] = mA
             for g in GENS:
                 keep = np.where(b0 & (gen != g))[0]
                 yk, Xk = lab[keep], Xr["clean"][keep]
-                mB = fit(Xk, yk, sha[keep])
-                mC = fit(np.vstack([Xk, Xrt["clean"]]), np.r_[yk, np.ones(n_al, int)], np.concatenate([sha[keep], al_group]))
+                mB = fit(Xk, yk, grp[keep])
+                mC = fit(np.vstack([Xk, Xrt["clean"]]), np.r_[yk, np.ones(n_al, int)], np.concatenate([grp[keep], al_group]))
                 mD = fit(np.vstack([Xk, Xrt["clean"], Xr["clean"][tr_nonnat]]),
                          np.r_[yk, np.ones(n_al, int), np.zeros(len(tr_nonnat), int)],
-                         np.concatenate([sha[keep], al_group, sha[tr_nonnat]]))
+                         np.concatenate([grp[keep], al_group, grp[tr_nonnat]]))
                 for nm, m in (("B", mB), ("C", mC), ("C_all_reals", mD)):
                     S[f"{nm}__{g}"] = np.stack([m.decision_function(Xr[c]) for c in CONDS]).astype(np.float32)
                 log(f"{arm}: LOGO {g} fitted (B C={mB[-1].C_[0]:.3g}, C C={mC[-1].C_[0]:.3g}, C_all C={mD[-1].C_[0]:.3g})")
             keep = np.where(b0)[0]
             mCf = fit(np.vstack([Xr["clean"][keep], Xrt["clean"]]), np.r_[lab[keep], np.ones(n_al, int)],
-                      np.concatenate([sha[keep], al_group]))
+                      np.concatenate([grp[keep], al_group]))
             probes_for_guard[(arm, "C_full")] = mCf
             np.savez(sc, **S)
             log(f"{arm}: probes fitted in {time.time() - t0:.0f}s")
         if (arm, "A") not in probes_for_guard:       # guard needs the probes themselves: refit if scores were cached
             mA = fit(np.vstack([Xr["clean"][tr], Xrt["clean"]]), np.r_[np.zeros(len(tr)), np.ones(n_al)].astype(int),
-                     np.concatenate([sha[tr], al_group]))
+                     np.concatenate([grp[tr], al_group]))
             keep = np.where(b0)[0]
             mCf = fit(np.vstack([Xr["clean"][keep], Xrt["clean"]]), np.r_[lab[keep], np.ones(n_al, int)],
-                      np.concatenate([sha[keep], al_group]))
+                      np.concatenate([grp[keep], al_group]))
             probes_for_guard[(arm, "A")], probes_for_guard[(arm, "C_full")] = mA, mCf
 
         # ---------------- #6 metrics
@@ -656,17 +687,24 @@ def stage_analyze():
                         long_rows.append((arm, c, "6", nm, mdl, sha[i], pool[i], gen[i], int(lab[i]), float(arr[i])))
         log(f"{arm}: analysis done")
 
-    # ---------------- labels
-    res["labels"] = labels(res)
-    # ---------------- D-008 probe guard
+    # ---------------- D-008 probe guard BEFORE anything is written; both guards must have passed
     res["d008_probe"] = probe_guard(probes_for_guard)
+    if not res["d008_probe"]["ok"]:
+        raise SystemExit("D-008 ABORT: probe features/logits CUDA vs CPU exceed 1e-3; results.json NOT written")
+    res["labels"] = labels(res)
     jdump(PILOT / "results.json", res)
     cols = ["arm", "cond", "task", "method", "model", "sha256", "pool", "generator", "label", "score"]
     pd.DataFrame(long_rows, columns=cols).to_csv(PILOT / "scores_long.csv.gz", index=False)
     write_tables(res)
     log("results.json / tables.md / scores_long.csv.gz written")
-    if not res["d008_probe"]["ok"]:
-        raise SystemExit("D-008 ABORT: probe features/logits CUDA vs CPU exceed 1e-3")
+
+
+def validity_gate(ci_lo, ci_hi):
+    """#7 validity gate (Amendment 6 as clarified in 'Amendment 7-8 clarifications'): valid iff the lower bound of the 95% CI
+    of the ratio's clean AUROC is > 0.5. A ratio significantly BELOW chance is therefore UNINFORMATIVE, not FAIL.
+    The literal Amendment-8 wording ('CI includes 0.5') is stored too, for transparency; it differs only when ci_hi < 0.5."""
+    return dict(valid=bool(ci_lo > 0.5), rule_A6_lower_bound_gt_0p5=bool(ci_lo > 0.5),
+                literal_ci_includes_0p5=bool(ci_lo <= 0.5 <= ci_hi))
 
 
 def labels(res):
@@ -689,9 +727,10 @@ def labels(res):
     c2 = cl["ratio_min_over_vaes"]["value"] >= 0.65
     c3 = (cr["ratio_min_over_vaes"]["value"] > cr["texture_baseline"]["value"]
           and cl["ratio_min_over_vaes"]["value"] > cl["texture_baseline"]["value"])
-    ci_has_half = r_clean["ci_lo"] <= 0.5 <= r_clean["ci_hi"]
-    lab = "PILOT UNINFORMATIVE (clean CI includes 0.5)" if ci_has_half else ("PILOT PASS" if (c1 and c2 and c3) else "PILOT FAIL")
-    L["seven"] = dict(label=lab, arm="orig", ratio_clean=r_clean["value"], ratio_clean_ci=[r_clean["ci_lo"], r_clean["ci_hi"]],
+    gate = validity_gate(r_clean["ci_lo"], r_clean["ci_hi"])
+    lab = "PILOT UNINFORMATIVE (clean-AUROC CI lower bound <= 0.5)" if not gate["valid"] else (
+        "PILOT PASS" if (c1 and c2 and c3) else "PILOT FAIL")
+    L["seven"] = dict(label=lab, validity_gate=gate, arm="orig", ratio_clean=r_clean["value"], ratio_clean_ci=[r_clean["ci_lo"], r_clean["ci_hi"]],
                       single_clean=cr["single_pass_min_over_vaes"]["value"], texture_clean=cr["texture_baseline"]["value"],
                       ratio_laundered=cl["ratio_min_over_vaes"]["value"], single_laundered=cl["single_pass_min_over_vaes"]["value"],
                       texture_laundered=cl["texture_baseline"]["value"],
@@ -797,7 +836,7 @@ def main():
     a = ap.parse_args()
     PILOT.mkdir(exist_ok=True)
     CACHE.mkdir(exist_ok=True)
-    order = ["timing", "vae", "guard", "feat", "analyze"] if a.stage == "all" else [a.stage]
+    order = ["timing", "guard", "vae", "feat", "analyze"] if a.stage == "all" else [a.stage]
     fns = dict(timing=stage_timing, vae=stage_vae, guard=stage_guard, feat=stage_feat, analyze=stage_analyze)
     for s in order:
         log(f"=== stage {s}")

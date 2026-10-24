@@ -197,6 +197,7 @@ def stage_b0():
         out[arm] = {k: S[k][[r.CI[c] for c in CONDS]] for k in S.files}
         chk[arm] = float(max(np.abs(S[k] - v2[k]).max() for k in S.files))
         log(f"B0 {arm}: max|dscore| vs 005/pilot_v2 cache = {chk[arm]:.2e}")
+        assert chk[arm] <= 1e-6, f"B0 {arm} is not 005's A0: max|dscore| {chk[arm]:.3e} vs 005/pilot_v2 cache (Amendment 7 requires B0 = 005 A0)"
     if DRY:
         return out, {tr: {te: out[te] if tr == te else out[tr] for te in ARMS} for tr in ARMS}, chk
     r_ci = [r.CI[c] for c in CONDS]
@@ -352,19 +353,22 @@ def analyze(df, B0, B0X, LAP, PS, guard, b0chk):
             S[a][c]["b0"] = (lambda g, a=a, ci_=ci_: B0[a][f"logo_{g}"][ci_])
             for tr in ARMS:   # one fixed probe (trained on arm `tr`) scored on arm a's features
                 S[a][c][f"b0_trained_{tr}"] = (lambda g, tr=tr, a=a, ci_=ci_: B0X[tr][a][f"logo_{g}"][ci_])
-    # texture baseline: direction per (input, arm, cond) from TRAIN natives vs train fakes
+    # texture baseline: ONE sign per (input, cond), set on the orig arm's (label arm) TRAIN natives vs train fakes and used in
+    # both arms (so the texture 'delta' compares one fixed scorer). The per-arm train AUROCs are kept as descriptive output.
     tdir = {}
-    for a in ARMS:
-        for ci_, c in enumerate(CONDS):
-            for ii, inp in enumerate(INPUTS):
+    for ci_, c in enumerate(CONDS):
+        for ii, inp in enumerate(INPUTS):
+            for a in ARMS:
                 L = LAP[a][:, ci_, ii]
                 trn = (split == "train") & (pool == "vision_native") & ~np.isnan(L)
                 trf = (split == "train") & (pool == "fake") & ~np.isnan(L)
                 au = float(metrics.weighted_auroc(L[trn], L[trf], np.ones((1, trn.sum())), np.ones((1, trf.sum())))[0])
-                tdir[f"{inp}/{a}/{c}"] = dict(auroc_laplacian_train=au, sign=1 if au >= 0.5 else -1,
-                                              n_real=int(trn.sum()), n_fake=int(trf.sum()))
-                sgn = tdir[f"{inp}/{a}/{c}"]["sign"]
-                S[a][c]["texture_" + inp] = (lambda g, v=sgn * L: v)
+                tdir[f"{inp}/{a}/{c}"] = dict(auroc_laplacian_train=au, n_real=int(trn.sum()), n_fake=int(trf.sum()))
+            sgn = 1 if tdir[f"{inp}/orig/{c}"]["auroc_laplacian_train"] >= 0.5 else -1
+            for a in ARMS:
+                tdir[f"{inp}/{a}/{c}"]["sign"] = sgn
+                tdir[f"{inp}/{a}/{c}"]["sign_set_on"] = "orig arm train"
+                S[a][c]["texture_" + inp] = (lambda g, v=sgn * LAP[a][:, ci_, ii]: v)
     XB0 = [f"b0_trained_{a}" for a in ARMS]
     allnames = INPUTS + XB0 + ["texture_" + i for i in INPUTS]
     res = dict(n_boot=N_BOOT, seed=SEED, texture_direction=tdir, b0_vs_005_pilot_v2=b0chk, d008=guard,
@@ -384,7 +388,8 @@ def analyze(df, B0, B0X, LAP, PS, guard, b0chk):
                 po, fo, bo = A[(nm, "orig", c, d)]; pf, ff, bf = A[(nm, "fov512", c, d)]
                 dl, dbt = fo - ff, bo - bf
                 lo, hi = ci(dbt)
-                e = dict(auroc_orig=fo, auroc_orig_ci=ci(bo), auroc_fov512=ff, auroc_fov512_ci=ci(bf), delta=dl,
+                e = dict(pre_registered=bool(d in INPUTS), kind=("detector" if d in INPUTS else "texture baseline (descriptive)" if d.startswith("texture_") else "extra, not pre-registered"),
+                         auroc_orig=fo, auroc_orig_ci=ci(bo), auroc_fov512=ff, auroc_fov512_ci=ci(bf), delta=dl,
                          delta_ci=[lo, hi], per_generator_orig=po, per_generator_fov512=pf)
                 if nm == "native":
                     e["scale_sensitive"] = label_for(dl, lo, hi)
@@ -403,6 +408,8 @@ def analyze(df, B0, B0X, LAP, PS, guard, b0chk):
             for cal_name, cal in (("calib_natives", calib_nat), ("calib_all_reals", calib_all)):
                 for src in ARMS:
                     for tgt in ARMS:
+                        if d == "b0" and src != tgt:    # two different retrained probes: not a meaningful pairing (b0_trained_* rows do it right)
+                            continue
                         key = f"{cal_name}|thr:{src}->test:{tgt}" + ("(within)" if src == tgt else "(cross)")
                         fpr = {nm: [] for nm in nrm}; tpr = []; thrs = []
                         for g in GENS:     # B0 = LOGO model of g; pretrained: g only selects the fakes
@@ -412,7 +419,8 @@ def analyze(df, B0, B0X, LAP, PS, guard, b0chk):
                             for nm, R in nrm.items():
                                 fpr[nm].append(float((stgt[R] >= t).mean()))
                             tpr.append(float((stgt[plans["native"].F[g]] >= t).mean()))
-                        o = dict(threshold_mean=float(np.mean(thrs)), n_calib=int(len(cal)))
+                        o = dict(threshold_mean=float(np.mean(thrs)), n_calib=int(len(cal)),
+                                 pre_registered=bool(cal_name == "calib_natives" and d in INPUTS))
                         for nm, R in nrm.items():
                             f = float(np.mean(fpr[nm])); k = f * len(R)
                             o[f"fpr_{nm}"] = dict(value=f, cp95=cp_ci(k, len(R)), n=int(len(R)), per_model=fpr[nm])
@@ -454,7 +462,8 @@ def tables(res):
             L.append(f"| {d} | {f3(e['auroc_orig'])} [{f3(e['auroc_orig_ci'][0])},{f3(e['auroc_orig_ci'][1])}] | "
                      f"{f3(e['auroc_fov512'])} [{f3(e['auroc_fov512_ci'][0])},{f3(e['auroc_fov512_ci'][1])}] | "
                      f"{e['delta']:+.3f} [{e['delta_ci'][0]:+.3f},{e['delta_ci'][1]:+.3f}] | "
-                     f"{'YES' if e['scale_sensitive'] else 'no'} ({'orig' if e['delta'] > 0 else 'fov512'} higher) |")
+                     f"{'YES' if e['scale_sensitive'] else 'no'} ({'orig' if e['delta'] > 0 else 'fov512'} higher)"
+                     f"{'' if e['pre_registered'] else ' [' + e['kind'] + ']'} |")
         L.append("")
     L += ["## Per-real-pool macro AUROC (orig / fov512 / delta [CI])", ""]
     for c in CONDS:
@@ -465,17 +474,18 @@ def tables(res):
         L.append("")
     L += ["## Cross-zoom 1%-FPR threshold transfer (test FPR with Clopper-Pearson 95%; TPR on 360 test fakes)", "",
           "Threshold from calibration natives (43 reals: the calib max + eps, so nominal FPR is 0 on calib) of the source arm, applied to the target arm. "
-          "B0 = mean over the 6 LOGO models (CP CI approximate). Within = source arm == target arm.", ""]
+          "B0 = mean over the 6 LOGO models (CP CI approximate). Within = source arm == target arm. For `b0` (retrained per arm) only within-arm rows are given; "
+          "the rows `b0_trained_<arm>` (one fixed probe scored on the other arm's features) are an extra, NOT PRE-REGISTERED addition.", ""]
     for c in CONDS:
         for cal in ("calib_natives", "calib_all_reals"):
-            L += [f"### {c}, thresholds from {cal}", "",
+            L += [f"### {c}, thresholds from {cal}" + ("" if cal == "calib_natives" else " (NOT PRE-REGISTERED sensitivity variant)"), "",
                   "| detector | thr -> test | FPR native | FPR WA | FBH | TPR |", "|---|---|---|---|---|---|"]
             for d in INPUTS + [f"b0_trained_{a}" for a in ARMS]:
                 for k, o in res["transfer"][c][d].items():
                     if not k.startswith(cal):
                         continue
                     cell = lambda x: f"{x['value']:.3f} [{x['cp95'][0]:.3f},{x['cp95'][1]:.3f}]"
-                    L.append(f"| {d} | {k.split('|')[1]} | {cell(o['fpr_native'])} | {cell(o['fpr_WA'])} | {cell(o['fpr_FBH'])} | {cell(o['tpr'])} |")
+                    L.append(f"| {d}{'' if d in INPUTS else ' (not pre-registered)'} | {k.split('|')[1]} | {cell(o['fpr_native'])} | {cell(o['fpr_WA'])} | {cell(o['fpr_FBH'])} | {cell(o['tpr'])} |")
             L.append("")
     L += ["## Spearman(score, mean|Laplacian| of the detector input) on test reals (B0: 'full' model)", "",
           "| cond | detector | arm | native | WA | FBH | all reals | fakes | median Lap native / fakes |", "|---|---|---|---|---|---|---|---|---|"]
@@ -485,7 +495,7 @@ def tables(res):
                 e = res["spearman"][c][d][a]
                 L.append(f"| {c} | {d} | {a} | {e['native']:+.2f} | {e['WA']:+.2f} | {e['FBH']:+.2f} | {e['all3']:+.2f} | {e['fakes']:+.2f} | "
                          f"{e['median_lap_native_reals']:.4f} / {e['median_lap_fakes']:.4f} |")
-    L += ["", "## Texture direction (set on TRAIN natives vs train fakes; AUROC of raw Laplacian, > 0.5 -> higher Laplacian = fake)", "",
+    L += ["", "## Texture direction (ONE sign per input/condition, set on the orig arm's TRAIN natives vs train fakes, used in both arms; per-arm AUROC of the raw Laplacian shown for information)", "",
           "| input/arm/cond | AUROC(Lap) on train | sign used |", "|---|---|---|"]
     for k, e in res["texture_direction"].items():
         L.append(f"| {k} | {f3(e['auroc_laplacian_train'])} | {e['sign']:+d} |")

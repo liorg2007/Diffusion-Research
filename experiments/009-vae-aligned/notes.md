@@ -5,8 +5,8 @@ STATUS: code written and compiled; NO result yet. The owner asked for no GPU-hea
 
 ## Resume (when the lead allows GPU use)
     env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage timing    # 20-image gate -> pilot/timing.json (cut decided here)
+    env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage guard     # D-008 VAE CUDA vs CPU (32 images; CPU is slow); vae and analyze refuse to run unless it passed
     env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage vae       # 594 round-trips per arm + #7 e1/e2 (resumable)
-    env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage guard     # D-008 VAE CUDA vs CPU (32 images; CPU is slow)
     env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage feat      # DINOv2 features of round-trips (004 pipeline)
     env/.venv/bin/python -I experiments/009-vae-aligned/run.py --stage analyze   # CPU probes, metrics, labels, tables + probe D-008 (CPU DINOv2 features)
 (`--stage all` runs them in that order.) The analyze stage needs no GPU except that D-008 compares against the cached GPU features.
@@ -29,3 +29,10 @@ anything (CLAUDE.md); the run was killed before the load finished, so it is not 
 
 ## Tests
 `CUDA_VISIBLE_DEVICES="" env/.venv/bin/python -I experiments/lib/tests/run_all.py`: 58 passed, 0 failed (CPU only).
+
+## Fixes applied after the pre-run code review (code_review.md; docs/04-phase4-plan.md "Amendment 7-8 clarifications")
+1. #7 validity gate: valid iff the CI lower bound of the clean ratio AUROC is > 0.5 (below chance = UNINFORMATIVE); both readings stored in results.json.
+2. fov512 arm: aligned fakes saved as PNG (orig: JPEG at the source QF). All cache writes are atomic (tmp + os.replace).
+3. CV groups = source photo `device:vidx` (fakes: sha256); a round-trip carries its source real's group. B uses the same groups (005 used sha256; the B-vs-005 reproduction is reported, not asserted).
+4. Order timing -> guard -> vae -> feat -> analyze; `vae` and `analyze` refuse to run unless the VAE guard passed; the probe guard runs before results.json (nothing is written if it fails).
+Self-test (CPU, no GPU): `CUDA_VISIBLE_DEVICES="" env/.venv/bin/python -I experiments/009-vae-aligned/selftest.py`.

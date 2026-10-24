@@ -16,7 +16,9 @@ Design (all per Amendment 7; criteria unchanged):
 - Texture baseline: mean |Laplacian| of each detector's actual input (pre-normalisation tensor transform reproduced).
 
 Deviations / judgment calls (to be restated in the final report):
-1. Texture direction is set on TRAIN natives vs train fakes, because the calib split contains reals only.
+1. Texture direction: one sign per (detector input, condition), set on the orig arm's TRAIN natives vs train fakes (calib has reals only), used in both arms (Amendment 8 clarifications).
 2. 1%-FPR thresholds on 43 calib natives are the calib max + eps (floor(0.01*43)=0); a sensitivity variant uses all 129 calib reals.
 3. Clopper-Pearson CIs treat images as independent (reals cluster by device); descriptive. B0 transfer CIs are approximate (mean over 6 LOGO models).
 4. Pretrained detectors are scored only on calib+test rows.
+5. Per code_review.md / Amendment 7-8 clarifications: b0 transfer has within-arm rows only; the B0 fov512 reproduction vs 005/pilot_v2 is asserted (<= 1e-6); the 129-calib variant and b0_trained_* rows are flagged 'not pre-registered' in tables.md/results.json.
+6. E1 evaluates all detectors on the 60 test fakes per generator, so B0's AUROC will differ slightly from 005's tables (which use 120 fakes per generator).
