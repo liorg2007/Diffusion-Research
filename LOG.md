@@ -230,3 +230,20 @@
   - Post-hoc controls (not pre-registered): random-sign noise explains ClipDet's drop fully and ~0.09–0.17 of CommFor's 0.233; at most ~0.065 is image-specific. The drop is driven by attacked fakes.
   - Recovery was capped below 0.5 by construction. Inside canonicalized space the attack costs only 0.007–0.061, but canonicalization costs ~0.08–0.16 of clean AUROC.
   - Idea #5 untested in its proper form. The official design (in-domain trained probe, canon-trained arm, ≥500 calib reals) needs ~0.9 GB of RAID originals, over the cap, so the owner must decide. KB idea updated.
+- 2026-10-24 08:55 — E2 and E1b runs both finished around 05:26–05:58. Both agents were then cut off by the API session limit; the lead checked outputs, lib edits (additive `du2` mode) and tests (62 passed).
+  - E2 PILOT (009-vae-aligned/pilot/):
+    - The SDXL downstream guard also FAILED (B0 max |Δlogit| 0.015 clean, 0.12 laundered), so per Amendment 8 clarification 2 the bank is sd-vae-ft-mse ONLY.
+    - #6 A (reals vs SD-VAE round-trips only, never a generator image): macro AUROC clean 0.819 [0.769, 0.861], laundered 0.778 [0.731, 0.817] → PILOT INCONCLUSIVE (0.75 ≤ x < 0.85).
+      - SD-family 0.865 / other 0.796 clean; DALL-E 3 0.754, MJ 0.719.
+      - Texture-matched pairs 0.797, so not just "VAE blur".
+    - C vs B: no headroom (B 0.985). Descriptively C − B = −0.044.
+    - #7 ratio: PILOT FAIL. The validity gate passes (clean 0.601 [0.540, 0.669]) and it beats single-pass (0.319), but it loses to texture (0.778) and is 0.318 laundered.
+    - D-008 probe guards ok (max |Δlogit| 1.5e-4).
+  - E1b (008/pilot_du2/), Δ_resample = orig − du2, Δ_zoom = du2 − fov512:
+    - laundered CommFor: resampling-dominated (+0.082 / −0.020);
+    - laundered ClipDet: zoom-dominated (+0.054 / −0.271);
+    - RINE: mixed (+0.089 / +0.139);
+    - clean ClipDet: mixed (−0.087 / −0.040);
+    - fixed orig-trained B0, laundered: zoom-dominated (+0.004 / +0.055).
+    - Caveat: the texture baseline jumps to 0.89 in du2 (up-sampling 4.8×-downsampled reals blurs them), so du2 may add its own cue.
+  - Launching opus/high critics for E2 and E1b.

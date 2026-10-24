@@ -11,6 +11,10 @@
 
   # --no-clobber: safe for the official run, where data/processed/{crop512,fov512} already hold the pilot crops (outside experiments/):
   #   existing files are re-created beside themselves, compared pixel-wise and left untouched (abort if any differ); missing ones are written.
+  # du2 (Amendment 10, E1b): fov resize, resize back to the original size, plain centre crop -> data/processed/du2512/images
+  env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py --mode du2 \
+      --splits experiments/004-phase4-features/pilot/splits_pilot.csv \
+      --out-splits experiments/004-phase4-features/pilot/splits_pilot_du2.csv --report experiments/004-phase4-features/pilot/du2_prep_report.json
   # fov224 (H4 Amendment 6, whole-image arm for RIGID's 224 input: short side -> 224, center crop 224)
   env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py --size 224 \
       --out-splits experiments/004-phase4-features/splits_fov224.csv --report experiments/004-phase4-features/fov224_prep_report.json
@@ -96,8 +100,9 @@ def main():
     ap.add_argument("--out-splits", required=True)
     ap.add_argument("--out-dir", default=None, help="default data/processed/fov<size> (crop<size> with --mode crop)")
     ap.add_argument("--size", type=int, default=SIZE, help="output side in px (default 512; 224 for the fov224 arm)")
-    ap.add_argument("--mode", choices=["fov", "crop"], default="fov",
-                    help="fov: resize short side to --size then centre-crop (default); crop: plain centre crop (003's crops)")
+    ap.add_argument("--mode", choices=["fov", "crop", "du2"], default="fov",
+                    help="fov: resize short side to --size then centre-crop (default); crop: plain centre crop (003's crops); "
+                         "du2 (Amendment 10): fov resize, resize back up to the original size, then plain centre crop")
     ap.add_argument("--report", required=True)
     ap.add_argument("--no-clobber", action="store_true",
                     help="never overwrite an existing output file: re-create it as <sha>.chk.png, compare pixels with the existing "
@@ -110,7 +115,7 @@ def main():
     missing = [p for p in df.src_path if not os.path.exists(p)]
     keep = df[[os.path.exists(p) for p in df.src_path]].copy().reset_index(drop=True)
     size = a.size
-    out_dir = Path(a.out_dir).resolve() if a.out_dir else ROOT / "data" / "processed" / f"{a.mode if a.mode == 'crop' else 'fov'}{size}"
+    out_dir = Path(a.out_dir).resolve() if a.out_dir else ROOT / "data" / "processed" / f"{a.mode if a.mode in ('crop', 'du2') else 'fov'}{size}"
     (out_dir / "images").mkdir(parents=True, exist_ok=True)
     dst = [str(out_dir / "images" / f"{s}.png") for s in keep.sha256]
     with mp.Pool(a.workers) as pool:
@@ -123,6 +128,7 @@ def main():
     small = R[R.status == "skipped_small"]
     bad = R[R.status == "error"]
     rep = dict(mode=(f"fov (short side -> {size}, PIL BICUBIC antialiased, center crop {size})" if a.mode == "fov"
+                     else f"du2 (short side -> {size}, resize back up to the original size, PIL BICUBIC, plain centre crop {size})" if a.mode == "du2"
                      else f"crop (plain centre crop {size}, no resize)"), size=size, n_rows_in=len(df),
                n_missing_raw_dropped=len(missing), n_processed=len(keep),
                n_ok=int((R.status == "ok").sum()), n_short_side_lt_512=int(len(small)), n_error=int(len(bad)),

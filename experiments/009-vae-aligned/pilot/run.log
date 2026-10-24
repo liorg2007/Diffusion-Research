@@ -45,3 +45,47 @@ pip install accelerate
 04:24:04 PILOT D-008 VAE sdxl-vae: max|dpixel| x1=5.26e-03 x2=1.25e-03 uint8 mismatch 7.10e-04 -> FAIL
 04:24:04 PILOT D-008 VAE sdxl-vae: max|dpixel| x1=5.26e-03 x2=1.25e-03 uint8 mismatch 7.10e-04 -> FAIL
 D-008 ABORT: VAE CUDA vs CPU exceeds 1e-3
+04:30:01 PILOT === stage guard2
+04:34:28 PILOT guard2 sdxl-vae: GPU chain done; CPU chain (about 11 s per pass, 64 passes)
+04:53:20 PILOT D-008 downstream sdxl-vae: max|dlogit B0|=1.22e-01 (clean 1.48e-02) max rel dratio=5.40e-03 spearman=0.9989 -> FAIL
+04:53:20 PILOT bank = ['sd-vae-ft-mse']
+04:53:34 PILOT === stage vae
+04:53:34 PILOT bank: sdxl-vae dropped (D-008 pixel and downstream guards failed)
+04:53:34 PILOT bank = ['sd-vae-ft-mse']
+04:55:19 PILOT rt sd-vae-ft-mse/orig: 297 new round-trips (0 cached), 101s, batch 4
+05:05:00 PILOT r7 sd-vae-ft-mse/orig/clean: 718 rows, 581s, batch 4
+05:10:41 PILOT r7 sd-vae-ft-mse/orig/jpeg75_resize05: 718 rows, 341s, batch 4
+05:15:10 PILOT rt sd-vae-ft-mse/fov512: 297 new round-trips (0 cached), 269s, batch 4
+05:31:18 PILOT r7 sd-vae-ft-mse/fov512/clean: 718 rows, 968s, batch 4
+05:33:15 PILOT r7 sd-vae-ft-mse/fov512/jpeg75_resize05: 718 rows, 117s, batch 4
+05:33:17 PILOT === stage feat
+05:33:17 PILOT bank: sdxl-vae dropped (D-008 pixel and downstream guards failed)
+05:33:17 PILOT bank = ['sd-vae-ft-mse']
+05:33:22 PILOT feats orig/clean: 297 round-trips, 3s
+05:33:24 PILOT feats orig/jpeg75_resize05: 297 round-trips, 2s
+05:33:26 PILOT feats fov512/clean: 297 round-trips, 2s
+05:33:29 PILOT feats fov512/jpeg75_resize05: 297 round-trips, 2s
+05:33:30 PILOT === stage analyze
+05:33:30 PILOT bank: sdxl-vae dropped (D-008 pixel and downstream guards failed)
+05:33:30 PILOT bank = ['sd-vae-ft-mse']
+05:36:01 PILOT orig: LOGO dalle2 fitted (B C=10, C C=0.01, C_all C=0.01)
+05:37:49 PILOT orig: LOGO dalle3 fitted (B C=10, C C=0.01, C_all C=0.01)
+05:39:38 PILOT orig: LOGO firefly fitted (B C=10, C C=0.01, C_all C=0.01)
+05:41:35 PILOT orig: LOGO midjourney-v5 fitted (B C=10, C C=0.01, C_all C=0.01)
+05:43:26 PILOT orig: LOGO stable-diffusion-2 fitted (B C=10, C C=0.01, C_all C=0.01)
+05:45:20 PILOT orig: LOGO stable-diffusion-xl fitted (B C=10, C C=0.01, C_all C=0.01)
+05:46:05 PILOT orig: probes fitted in 755s
+05:46:18 PILOT orig: analysis done
+05:48:35 PILOT fov512: LOGO dalle2 fitted (B C=0.01, C C=0.001, C_all C=0.001)
+05:50:20 PILOT fov512: LOGO dalle3 fitted (B C=0.01, C C=0.01, C_all C=0.01)
+05:52:07 PILOT fov512: LOGO firefly fitted (B C=0.01, C C=0.01, C_all C=0.001)
+05:53:50 PILOT fov512: LOGO midjourney-v5 fitted (B C=0.01, C C=0.01, C_all C=0.001)
+05:55:36 PILOT fov512: LOGO stable-diffusion-2 fitted (B C=0.01, C C=0.01, C_all C=0.001)
+05:57:30 PILOT fov512: LOGO stable-diffusion-xl fitted (B C=0.01, C C=0.01, C_all C=0.001)
+05:58:21 PILOT fov512: probes fitted in 724s
+05:58:36 PILOT fov512: analysis done
+05:58:41 PILOT D-008 probe orig/clean: scaled dF=2.66e-05 dlogit A=5.43e-06 C_full=2.58e-05 -> ok
+05:58:45 PILOT D-008 probe orig/jpeg75_resize05: scaled dF=1.18e-05 dlogit A=5.63e-06 C_full=1.61e-05 -> ok
+05:58:48 PILOT D-008 probe fov512/clean: scaled dF=1.11e-05 dlogit A=1.53e-04 C_full=1.99e-05 -> ok
+05:58:52 PILOT D-008 probe fov512/jpeg75_resize05: scaled dF=1.00e-05 dlogit A=1.43e-04 C_full=1.17e-05 -> ok
+05:58:52 PILOT results.json / tables.md / scores_long.csv.gz written

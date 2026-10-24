@@ -50,8 +50,10 @@ def process_image(src, dst, size=512, mode="crop"):
     """Returns (status, info). status in {'ok','skipped_small','error'}.
     mode="crop" (default, D-009): center crop, NO resize. mode="fov" (D-013 `fov512`): resize the short side to
     `size` (bicubic, antialiased) then center-crop `size`x`size`; images with short side < size are NOT upscaled but
-    returned as 'skipped_small' (and counted by the caller). Both read the RAW file, EXIF-orient and strip metadata."""
-    if mode not in ("crop", "fov"):
+    returned as 'skipped_small' (and counted by the caller). Both read the RAW file, EXIF-orient and strip metadata.
+    mode="du2" (Amendment 10, E1b): fov_resize to the short side `size` (as "fov"), resize BACK to the original (w, h)
+    (bicubic), then the plain centre crop `size` (as "crop"): the zoom of "crop" with the resampling history of "fov"."""
+    if mode not in ("crop", "fov", "du2"):
         raise ValueError(f"unknown preprocessing mode {mode!r}")
     info = dict(orig_format=None, orig_jpeg_quality=None, orig_width=None, orig_height=None,
                 orig_bytes=None, has_quant_table=0)
@@ -68,6 +70,12 @@ def process_image(src, dst, size=512, mode="crop"):
         if mode == "fov":
             im = fov_resize(im, size)
             info["fov_resized_w"], info["fov_resized_h"] = im.size
+        elif mode == "du2":
+            w0, h0 = im.size
+            im = fov_resize(im, size)
+            info["fov_resized_w"], info["fov_resized_h"] = im.size
+            if im.size != (w0, h0):
+                im = im.resize((w0, h0), Image.BICUBIC)
         arr = np.asarray(center_crop(im, size))
         Image.fromarray(arr).save(dst, "PNG")  # fresh image: no EXIF / ICC / text chunks
         return "ok", info

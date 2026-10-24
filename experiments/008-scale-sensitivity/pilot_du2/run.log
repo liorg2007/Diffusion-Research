@@ -1,0 +1,127 @@
+05:00:34 E1 E1b start; rows scored 1563 of 2220
+05:00:58 E1 lap du2: 2022 rows in 22s
+05:01:17 E1b-B0 A0/full: n_train=459 C=0.1
+05:01:35 E1b-B0 A0/logo_dalle2: n_train=399 C=10
+05:01:51 E1b-B0 A0/logo_dalle3: n_train=399 C=10
+05:02:07 E1b-B0 A0/logo_firefly: n_train=399 C=10
+05:02:25 E1b-B0 A0/logo_midjourney-v5: n_train=399 C=10
+05:02:43 E1b-B0 A0/logo_stable-diffusion-2: n_train=399 C=0.1
+05:03:01 E1b-B0 A0/logo_stable-diffusion-xl: n_train=399 C=10
+05:03:05 E1 B0 orig: fixed-probe re-score == E1 cached A0 scores (max diff 0.0e+00)
+05:03:05 E1 B0 fov512: fixed-probe re-score == E1 cached A0 scores (max diff 0.0e+00)
+05:03:05 E1 communityforensics: CPU reference (32 du2 imgs x 2 conds)
+05:03:13 E1 cpuref communityforensics clean done
+05:03:16 E1 cpuref communityforensics jpeg75_resize05 done
+05:03:18 E1 communityforensics clean: D-008 du2 max|dlogit|=1.21e-04 (tol 0.001)
+05:03:20 E1 communityforensics clean: du2 132/1563
+05:03:22 E1 communityforensics clean: du2 232/1563
+05:03:25 E1 communityforensics clean: du2 332/1563
+05:03:27 E1 communityforensics clean: du2 432/1563
+05:03:29 E1 communityforensics clean: du2 532/1563
+05:03:31 E1 communityforensics clean: du2 632/1563
+05:03:33 E1 communityforensics clean: du2 732/1563
+05:03:35 E1 communityforensics clean: du2 832/1563
+05:03:37 E1 communityforensics clean: du2 932/1563
+05:03:39 E1 communityforensics clean: du2 1032/1563
+05:03:41 E1 communityforensics clean: du2 1132/1563
+05:03:43 E1 communityforensics clean: du2 1232/1563
+05:03:45 E1 communityforensics clean: du2 1332/1563
+05:03:47 E1 communityforensics clean: du2 1432/1563
+05:03:49 E1 communityforensics clean: du2 1532/1563
+05:03:50 E1 communityforensics clean: du2 1563/1563
+05:03:51 E1 communityforensics jpeg75_resize05: D-008 du2 max|dlogit|=1.01e-04 (tol 0.001)
+05:03:53 E1 communityforensics jpeg75_resize05: du2 132/1563
+05:03:55 E1 communityforensics jpeg75_resize05: du2 232/1563
+05:03:58 E1 communityforensics jpeg75_resize05: du2 332/1563
+05:04:00 E1 communityforensics jpeg75_resize05: du2 432/1563
+05:04:03 E1 communityforensics jpeg75_resize05: du2 532/1563
+05:04:05 E1 communityforensics jpeg75_resize05: du2 632/1563
+05:04:07 E1 communityforensics jpeg75_resize05: du2 732/1563
+05:04:10 E1 communityforensics jpeg75_resize05: du2 832/1563
+05:04:12 E1 communityforensics jpeg75_resize05: du2 932/1563
+05:04:14 E1 communityforensics jpeg75_resize05: du2 1032/1563
+05:04:17 E1 communityforensics jpeg75_resize05: du2 1132/1563
+05:04:19 E1 communityforensics jpeg75_resize05: du2 1232/1563
+05:04:21 E1 communityforensics jpeg75_resize05: du2 1332/1563
+05:04:23 E1 communityforensics jpeg75_resize05: du2 1432/1563
+05:04:25 E1 communityforensics jpeg75_resize05: du2 1532/1563
+05:04:26 E1 communityforensics jpeg75_resize05: du2 1563/1563
+05:04:26 E1 rine: CPU reference (32 du2 imgs x 2 conds)
+05:04:50 E1 cpuref rine clean done
+05:05:07 E1 cpuref rine jpeg75_resize05 done
+05:05:19 E1 rine clean: D-008 du2 max|dlogit|=1.56e-05 (tol 0.001)
+05:05:37 E1 rine clean: du2 132/1563
+05:05:56 E1 rine clean: du2 232/1563
+05:06:18 E1 rine clean: du2 332/1563
+05:06:36 E1 rine clean: du2 432/1563
+05:06:54 E1 rine clean: du2 532/1563
+05:07:12 E1 rine clean: du2 632/1563
+05:07:33 E1 rine clean: du2 732/1563
+05:07:51 E1 rine clean: du2 832/1563
+05:08:09 E1 rine clean: du2 932/1563
+05:08:27 E1 rine clean: du2 1032/1563
+05:08:45 E1 rine clean: du2 1132/1563
+05:09:04 E1 rine clean: du2 1232/1563
+05:09:22 E1 rine clean: du2 1332/1563
+05:09:40 E1 rine clean: du2 1432/1563
+05:09:57 E1 rine clean: du2 1532/1563
+05:10:04 E1 rine clean: du2 1563/1563
+05:10:09 E1 rine jpeg75_resize05: D-008 du2 max|dlogit|=7.63e-06 (tol 0.001)
+05:10:27 E1 rine jpeg75_resize05: du2 132/1563
+05:10:45 E1 rine jpeg75_resize05: du2 232/1563
+05:11:01 E1 rine jpeg75_resize05: du2 332/1563
+05:11:21 E1 rine jpeg75_resize05: du2 432/1563
+05:11:34 E1 rine jpeg75_resize05: du2 532/1563
+05:11:51 E1 rine jpeg75_resize05: du2 632/1563
+05:12:09 E1 rine jpeg75_resize05: du2 732/1563
+05:12:24 E1 rine jpeg75_resize05: du2 832/1563
+05:12:39 E1 rine jpeg75_resize05: du2 932/1563
+05:12:56 E1 rine jpeg75_resize05: du2 1032/1563
+05:13:13 E1 rine jpeg75_resize05: du2 1132/1563
+05:13:28 E1 rine jpeg75_resize05: du2 1232/1563
+05:13:47 E1 rine jpeg75_resize05: du2 1332/1563
+05:14:00 E1 rine jpeg75_resize05: du2 1432/1563
+05:14:15 E1 rine jpeg75_resize05: du2 1532/1563
+05:14:19 E1 rine jpeg75_resize05: du2 1563/1563
+05:14:19 E1 clipdet: CPU reference (32 du2 imgs x 2 conds)
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+05:14:39 E1 cpuref clipdet clean done
+05:14:52 E1 cpuref clipdet jpeg75_resize05 done
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+05:15:04 E1 clipdet clean: D-008 du2 max|dlogit|=1.87e-05 (tol 0.001)
+05:15:26 E1 clipdet clean: du2 132/1563
+05:15:47 E1 clipdet clean: du2 232/1563
+05:16:08 E1 clipdet clean: du2 332/1563
+05:16:32 E1 clipdet clean: du2 432/1563
+05:16:50 E1 clipdet clean: du2 532/1563
+05:17:08 E1 clipdet clean: du2 632/1563
+05:17:33 E1 clipdet clean: du2 732/1563
+05:17:51 E1 clipdet clean: du2 832/1563
+05:18:18 E1 clipdet clean: du2 932/1563
+05:18:40 E1 clipdet clean: du2 1032/1563
+05:19:02 E1 clipdet clean: du2 1132/1563
+05:19:21 E1 clipdet clean: du2 1232/1563
+05:19:42 E1 clipdet clean: du2 1332/1563
+05:20:00 E1 clipdet clean: du2 1432/1563
+05:20:22 E1 clipdet clean: du2 1532/1563
+05:20:32 E1 clipdet clean: du2 1563/1563
+05:20:36 E1 clipdet jpeg75_resize05: D-008 du2 max|dlogit|=2.80e-05 (tol 0.001)
+05:20:58 E1 clipdet jpeg75_resize05: du2 132/1563
+05:21:22 E1 clipdet jpeg75_resize05: du2 232/1563
+05:21:44 E1 clipdet jpeg75_resize05: du2 332/1563
+05:22:05 E1 clipdet jpeg75_resize05: du2 432/1563
+05:22:27 E1 clipdet jpeg75_resize05: du2 532/1563
+05:22:45 E1 clipdet jpeg75_resize05: du2 632/1563
+05:23:11 E1 clipdet jpeg75_resize05: du2 732/1563
+05:23:35 E1 clipdet jpeg75_resize05: du2 832/1563
+05:23:58 E1 clipdet jpeg75_resize05: du2 932/1563
+05:24:20 E1 clipdet jpeg75_resize05: du2 1032/1563
+05:24:42 E1 clipdet jpeg75_resize05: du2 1132/1563
+05:25:04 E1 clipdet jpeg75_resize05: du2 1232/1563
+05:25:25 E1 clipdet jpeg75_resize05: du2 1332/1563
+05:25:46 E1 clipdet jpeg75_resize05: du2 1432/1563
+05:26:05 E1 clipdet jpeg75_resize05: du2 1532/1563
+05:26:12 E1 clipdet jpeg75_resize05: du2 1563/1563
+05:26:33 E1 done in 1559s -> /home/zera/project/Diffusion-Research/experiments/008-scale-sensitivity/pilot_du2

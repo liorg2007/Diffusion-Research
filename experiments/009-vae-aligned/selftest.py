@@ -77,7 +77,12 @@ def test_rt_format_and_atomic():
 
 def test_guard_order():
     src = (HERE / "run.py").read_text()
-    assert 'order = ["timing", "guard", "vae", "feat", "analyze"]' in src
+    assert 'order = ["timing", "guard", "guard2", "vae", "feat", "analyze"]' in src
+    ok = lambda v: dict(ok=v)
+    assert R.bank_ok({"vae": {"a": ok(True)}}, "a")
+    assert not R.bank_ok({"vae": {"a": ok(False)}}, "a")
+    assert R.bank_ok({"vae": {"a": ok(False)}, "downstream": {"a": ok(True)}}, "a")
+    assert not R.bank_ok({"vae": {"a": ok(False)}, "downstream": {"a": ok(False)}}, "a")
     assert src.index("def vae_guard_ok") < src.index("def stage_vae")
     i = src.index("def stage_analyze")
     assert "vae_guard_ok()" in src[i:i + 300]

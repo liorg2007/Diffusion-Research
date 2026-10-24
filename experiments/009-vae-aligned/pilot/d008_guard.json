@@ -16,5 +16,68 @@
    "uint8_mismatch_frac_x1": 0.0007102886835734049,
    "ok": false
   }
+ },
+ "downstream": {
+  "sdxl-vae": {
+   "n": 32,
+   "pixel_guard": {
+    "n": 32,
+    "max_abs_dpixel_x1": 0.005263566970825195,
+    "max_abs_dpixel_x2": 0.0012486577033996582,
+    "tol": 0.001,
+    "uint8_mismatch_frac_x1": 0.0007102886835734049,
+    "ok": false
+   },
+   "max_abs_dpixel_uint8_x1": 2,
+   "uint8_mismatch_frac_x1": 0.0007102886835734049,
+   "uint8_mismatch_frac_x2": 0.04615561167399088,
+   "max_rel_dratio": 0.005403158531397993,
+   "spearman_ratio_gpu_vs_cpu": 0.9989002932551319,
+   "features_device": "cuda (both sets)",
+   "logit_tol": 0.001,
+   "max_abs_dlogit_B0_clean": 0.014793410236667803,
+   "max_scaled_dfeature_clean": 0.009565620683133602,
+   "max_abs_dlogit_B0_jpeg75_resize05": 0.12160977677618945,
+   "max_scaled_dfeature_jpeg75_resize05": 0.08621767163276672,
+   "max_abs_dlogit_B0": 0.12160977677618945,
+   "ok": false
+  }
+ },
+ "bank": [
+  "sd-vae-ft-mse"
+ ],
+ "probe": {
+  "ok": true,
+  "tol": 0.001,
+  "items": {
+   "orig/clean": {
+    "max_abs_feature_diff": 8.106231689453125e-05,
+    "max_scaled_feature_diff": 2.6613473892211914e-05,
+    "max_abs_dlogit_A": 5.4272404361455084e-06,
+    "max_abs_dlogit_C_full": 2.5786495563284717e-05,
+    "ok": true
+   },
+   "orig/jpeg75_resize05": {
+    "max_abs_feature_diff": 6.866455078125e-05,
+    "max_scaled_feature_diff": 1.1771505342039745e-05,
+    "max_abs_dlogit_A": 5.6281933261126404e-06,
+    "max_abs_dlogit_C_full": 1.614715928921484e-05,
+    "ok": true
+   },
+   "fov512/clean": {
+    "max_abs_feature_diff": 6.532669067382812e-05,
+    "max_scaled_feature_diff": 1.1104873010481242e-05,
+    "max_abs_dlogit_A": 0.00015302865199195992,
+    "max_abs_dlogit_C_full": 1.9946283702942935e-05,
+    "ok": true
+   },
+   "fov512/jpeg75_resize05": {
+    "max_abs_feature_diff": 9.822845458984375e-05,
+    "max_scaled_feature_diff": 1.0043156180472579e-05,
+    "max_abs_dlogit_A": 0.0001425213881400822,
+    "max_abs_dlogit_C_full": 1.1704664690803668e-05,
+    "ok": true
+   }
+  }
  }
 }

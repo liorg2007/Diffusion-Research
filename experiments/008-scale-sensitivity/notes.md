@@ -22,3 +22,10 @@ Deviations / judgment calls (to be restated in the final report):
 4. Pretrained detectors are scored only on calib+test rows.
 5. Per code_review.md / Amendment 7-8 clarifications: b0 transfer has within-arm rows only; the B0 fov512 reproduction vs 005/pilot_v2 is asserted (<= 1e-6); the 129-calib variant and b0_trained_* rows are flagged 'not pre-registered' in tables.md/results.json.
 6. E1 evaluates all detectors on the 60 test fakes per generator, so B0's AUROC will differ slightly from 005's tables (which use 120 fakes per generator).
+
+## E1b (Amendment 10): du2 arm, zoom vs resampling. PILOT, exploratory. Outputs: pilot_du2/
+- Crops: `fov_prep.py --mode du2` (new; default modes verified byte-identical to the existing fov512/crop512 PNGs on 20 rows; `lib/preprocess.process_image(mode="du2")`, test `lib/tests/test_du2.py`). Splits `004/pilot/splits_pilot_du2.csv`, report `du2_prep_report.json`. Features: 004 `run.py --splits pilot/splits_pilot_du2.csv --cache-subdir pilot_du2 --conditions clean jpeg75_resize05` (guard in cache/pilot_du2/d008_guard.json, log pilot/extract_du2.log).
+- Script `run_du2.py` (reuses run.py/E1 caches: orig = 007 scores, fov512 = E1 scores, B0 models from cache/full). D-008: du2 CUDA vs CPU on 007's 32-row subset for every detector x condition, abort > 1e-3; the orig/fov512 scores were guarded in E1 and not re-scored.
+- Run: `env/.venv/bin/python -I experiments/008-scale-sensitivity/run_du2.py > experiments/008-scale-sensitivity/pilot_du2/run.log 2>&1` (resumable).
+- Labels follow Amendment 10 (only rows E1 flagged scale-sensitive in that condition). Rows beyond it: b0_trained_du2, texture rows (descriptive).
+- Cross-scale FPR CIs: joint bootstrap over calib-native devices (10), test devices (25) and test fake images; rules `max` (calib max + eps) and `second` (second-highest + eps). No Clopper-Pearson here.

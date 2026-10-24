@@ -1,0 +1,65 @@
+{
+ "du2_pretrained_cuda_vs_cpu": {
+  "communityforensics/clean": {
+   "max_abs_dlogit": 0.00012063980102539062,
+   "n": 32,
+   "tol": 0.001,
+   "ok": true
+  },
+  "communityforensics/jpeg75_resize05": {
+   "max_abs_dlogit": 0.00010117888450622559,
+   "n": 32,
+   "tol": 0.001,
+   "ok": true
+  },
+  "rine/clean": {
+   "max_abs_dlogit": 1.558661460876465e-05,
+   "n": 32,
+   "tol": 0.001,
+   "ok": true
+  },
+  "rine/jpeg75_resize05": {
+   "max_abs_dlogit": 7.62939453125e-06,
+   "n": 32,
+   "tol": 0.001,
+   "ok": true
+  },
+  "clipdet/clean": {
+   "max_abs_dlogit": 1.8656253814697266e-05,
+   "n": 32,
+   "tol": 0.001,
+   "ok": true
+  },
+  "clipdet/jpeg75_resize05": {
+   "max_abs_dlogit": 2.8014183044433594e-05,
+   "n": 32,
+   "tol": 0.001,
+   "ok": true
+  }
+ },
+ "du2_features_004": {
+  "clean": {
+   "device": "cuda",
+   "feat_tol": 0.001,
+   "logit_tol": 0.001,
+   "max_abs_dlogit": 8.985645466452752e-05,
+   "max_abs_feature_diff": 0.00017452239990234375,
+   "max_scaled_feature_diff": 4.317956336308271e-05,
+   "n": 32,
+   "ok": true,
+   "primary_max_abs_diff": 0.00017452239990234375
+  },
+  "jpeg75_resize05": {
+   "device": "cuda",
+   "feat_tol": 0.001,
+   "logit_tol": 0.001,
+   "max_abs_dlogit": 3.935089085871368e-05,
+   "max_abs_feature_diff": 0.00012683868408203125,
+   "max_scaled_feature_diff": 5.1641749450936913e-05,
+   "n": 32,
+   "ok": true,
+   "primary_max_abs_diff": 0.00012683868408203125
+  }
+ },
+ "reused_without_rescoring": "orig = 007 scores (E1 re-score check, pilot/d008_guard.json); fov512 = E1 scores (E1 guard, pilot/d008_guard.json)"
+}

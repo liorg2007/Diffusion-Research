@@ -246,8 +246,23 @@ def source_groups(df):
 
 
 def vae_guard_ok():
-    g = jdump_existing(PILOT / "d008_guard.json").get("vae", {})
-    return len(g) == len(VAES) and all(v.get("ok") for v in g.values())
+    """Decided for every VAE (pixel result, and the downstream result when the pixel guard failed) and the bank is non-empty."""
+    g = jdump_existing(PILOT / "d008_guard.json")
+    for vn in CFG["vaes"]:
+        v = g.get("vae", {}).get(vn)
+        if v is None or (not v["ok"] and vn not in g.get("downstream", {})):
+            return False
+    return any(bank_ok(g, vn) for vn in CFG["vaes"])
+
+
+def set_bank():
+    """Restrict VAES (in place) to the guard-passed bank; done before the vae/feat/analyze stages."""
+    g = jdump_existing(PILOT / "d008_guard.json")
+    for vn in list(VAES):
+        if not bank_ok(g, vn):
+            log(f"bank: {vn} dropped (D-008 pixel and downstream guards failed)")
+            del VAES[vn]
+    log(f"bank = {list(VAES)}")
 
 
 def stage_vae():
@@ -299,9 +314,8 @@ def stage_vae():
 
 
 # ----------------------------------------------------------------------------- stage guard (VAE part of D-008)
-def stage_guard():
-    import torch
-    dev = get_dev()
+def guard_images():
+    """The fixed 32 guard images (16 test natives + 16 test fakes, seed 0, orig arm, clean)."""
     df = load_df("orig")
     r7 = rows7(df, False)
     rng = np.random.default_rng(SEED)
@@ -309,10 +323,22 @@ def stage_guard():
     shas = [r[i] for i in rng.choice(len(r), 16, replace=False)] + [f[i] for i in rng.choice(len(f), 16, replace=False)]
     sub = df.set_index("sha256", drop=False).loc[shas]
     with ThreadPoolExecutor(4) as pool:
-        arr = load_arr(sub, "clean", pool)
+        return load_arr(sub, "clean", pool)
+
+
+def stage_guard():
+    """Pixel-level D-008 for each VAE (CUDA vs CPU, 32 images). Resumable: a VAE already measured is skipped.
+    A VAE that fails the pixel guard is NOT an abort here: Amendment 8 clarification 2 -> stage guard2 (downstream guard);
+    sd-vae-ft-mse failing would abort."""
+    import torch
+    dev = get_dev()
+    arr = guard_images()
     g = jdump_existing(PILOT / "d008_guard.json")
-    g["vae"] = {}
+    g.setdefault("vae", {})
     for vn in VAES:
+        if vn in g["vae"]:
+            log(f"D-008 VAE {vn}: already measured, skipped")
+            continue
         vae = load_vae(vn, dev)
         b = Batcher()
         f1g = b(lambda a: recon_f(vae, a), arr)
@@ -330,8 +356,84 @@ def stage_guard():
         log(f"D-008 VAE {vn}: max|dpixel| x1={d1:.2e} x2={d2:.2e} uint8 mismatch {mism:.2e} -> {'ok' if g['vae'][vn]['ok'] else 'FAIL'}")
         jdump(PILOT / "d008_guard.json", g)
         del vc
-    if not all(v["ok"] for v in g["vae"].values()):
-        raise SystemExit("D-008 ABORT: VAE CUDA vs CPU exceeds 1e-3")
+    if not g["vae"]["sd-vae-ft-mse"]["ok"]:
+        raise SystemExit("D-008 ABORT: sd-vae-ft-mse CUDA vs CPU exceeds 1e-3")
+
+
+def stage_guard2():
+    """Amendment 8 clarification 2: for a VAE that failed the pixel guard (sdxl-vae), the D-008 criterion is applied downstream
+    on the same 32 guard images: B0 (005 A0) logits on 004 features of the GPU-made vs CPU-made round-trips (features computed
+    on the SAME device, CUDA, for both) must differ by <= 1e-3 (max over clean and jpeg75_resize05; clean-only also reported).
+    Also reported: max relative |d ratio| (#7, this VAE alone) and Spearman between GPU and CPU ratios.
+    Fail -> the bank is sd-vae-ft-mse only."""
+    import torch
+    from scipy.stats import spearmanr
+    from perturb import apply_condition
+    g = jdump_existing(PILOT / "d008_guard.json")
+    todo = [vn for vn, v in g.get("vae", {}).items() if not v["ok"]]
+    g.setdefault("downstream", {})
+    if not todo:
+        log("guard2: every VAE passed the pixel guard; nothing to do")
+        return
+    dev = get_dev()
+    arr = guard_images()
+    df = load_df("orig")
+    for vn in todo:
+        cf = CACHE / f"guard2_{vn}.npz"
+        if cf.exists():
+            z = np.load(cf)
+            q1g, q2g, q1c, q2c = z["q1g"], z["q2g"], z["q1c"], z["q2c"]
+        else:
+            vae = load_vae(vn, dev)
+            b = Batcher()
+            q1g = q8(b(lambda a: recon_f(vae, a), arr))
+            q2g = q8(b(lambda a: recon_f(vae, a), q1g))
+            del vae
+            torch.cuda.empty_cache()
+            log(f"guard2 {vn}: GPU chain done; CPU chain (about 11 s per pass, 64 passes)")
+            vc = load_vae(vn, torch.device("cpu"))
+            q1c = q8(np.concatenate([recon_f(vc, arr[i:i + 2]) for i in range(0, len(arr), 2)]))
+            q2c = q8(np.concatenate([recon_f(vc, q1c[i:i + 2]) for i in range(0, len(arr), 2)]))   # CPU's own x1
+            del vc
+            np.savez(str(cf) + ".tmp.npz", q1g=q1g, q2g=q2g, q1c=q1c, q2c=q2c)
+            os.replace(str(cf) + ".tmp.npz", cf)
+        x = arr.astype(np.float64) / 255
+        def ratio(q1, q2):
+            f1, f2 = q1.astype(np.float64) / 255, q2.astype(np.float64) / 255
+            e1 = np.sqrt(((x - f1) ** 2).reshape(len(x), -1).sum(1))
+            e2 = np.sqrt(((f1 - f2) ** 2).reshape(len(x), -1).sum(1))
+            return e1 / np.maximum(e2, 1e-12)
+        rg, rc = ratio(q1g, q2g), ratio(q1c, q2c)
+        # B0 logits on 004 features, both round-trip sets embedded on CUDA
+        bb = p4run.secondary_backbone()
+        b0 = p4run.b0_probe(df, P.cache_root("pilot"))
+        assert b0 is not None
+        out = dict(n=len(arr), pixel_guard=g["vae"][vn], max_abs_dpixel_uint8_x1=int(np.abs(q1g.astype(int) - q1c.astype(int)).max()),
+                   uint8_mismatch_frac_x1=float((q1g != q1c).mean()), uint8_mismatch_frac_x2=float((q2g != q2c).mean()),
+                   max_rel_dratio=float((np.abs(rg - rc) / rc).max()), spearman_ratio_gpu_vs_cpu=float(spearmanr(rg, rc)[0]),
+                   features_device="cuda (both sets)", logit_tol=TOL)
+        for c in CONDS:
+            mk = lambda q: [apply_condition(Image.fromarray(a), c, key="guard2", seed=SEED) for a in q]
+            F = [__import__("features").embed_images(bb, mk(q), 8, dev.type) for q in (q1g, q1c)]
+            if getattr(bb, "force_cpu", False):
+                raise SystemExit("accelerator forward fell back to CPU; aborting (D-010)")
+            h = F[0].shape[1] // 3
+            lg = [b0.decision_function(f[:, -h:]) for f in F]
+            out[f"max_abs_dlogit_B0_{c}"] = float(np.abs(lg[0] - lg[1]).max())
+            out[f"max_scaled_dfeature_{c}"] = float((np.abs(F[0] - F[1]) / np.maximum(1.0, np.abs(F[1]).max(0, keepdims=True))).max())
+        out["max_abs_dlogit_B0"] = max(out[f"max_abs_dlogit_B0_{c}"] for c in CONDS)
+        out["ok"] = bool(out["max_abs_dlogit_B0"] <= TOL)
+        g["downstream"][vn] = out
+        log(f"D-008 downstream {vn}: max|dlogit B0|={out['max_abs_dlogit_B0']:.2e} (clean {out['max_abs_dlogit_B0_clean']:.2e}) "
+            f"max rel dratio={out['max_rel_dratio']:.2e} spearman={out['spearman_ratio_gpu_vs_cpu']:.4f} -> {'ok' if out['ok'] else 'FAIL'}")
+    g["bank"] = [vn for vn in CFG["vaes"] if bank_ok(g, vn)]
+    jdump(PILOT / "d008_guard.json", g)
+    log(f"bank = {g['bank']}")
+
+
+def bank_ok(g, vn):
+    """A VAE is in the bank iff it passed the pixel guard, or (Amendment 8 clarification 2) the downstream guard."""
+    return bool(g.get("vae", {}).get(vn, {}).get("ok") or g.get("downstream", {}).get(vn, {}).get("ok"))
 
 
 def jdump_existing(p):
@@ -532,7 +634,7 @@ def stage_analyze():
         tr_nonnat = tr[pool[tr] != "vision_native"]
         Xrt = {c: load_rt_feats(arm, c, sha[tr]) for c in CONDS}
         n_al = len(Xrt["clean"])
-        assert n_al == 594, n_al
+        assert n_al == 297 * len(VAES), n_al
         grp = source_groups(df)       # CV group = source photo (device:vidx); fakes keep their sha256
         al_group = np.tile(grp[tr], len(VAES))     # a round-trip carries its source real's photo group
         b0 = df.b0_train.to_numpy()
@@ -815,8 +917,8 @@ def write_tables(res):
               f"{f3(ms['auroc'])} ({ms['n_pairs']}) | {t['texture_baseline_test_auroc_fake_lower']:.3f} |")
         w("\nQuintile strata of A (clean): " + json.dumps(R["six_texture_check"]["clean"]["A_test_quintile_strata"]["strata"]) + "\n")
         w(f"## #7 macro AUROC, arm {arm} (fake-score fixed: -ratio / -single error; n = {R['seven']['clean']['n']})\n")
-        w("| cond | ratio (min over VAEs) | single-pass (min) | texture baseline | ratio-single | ratio-texture | ratio SD-fam | ratio other | ratio sd-vae | ratio sdxl-vae |")
-        w("|---|---|---|---|---|---|---|---|---|---|")
+        w("| cond | ratio (min over VAEs) | single-pass (min) | texture baseline | ratio-single | ratio-texture | ratio SD-fam | ratio other | " + " | ".join("ratio " + vn for vn in VAES) + " |")
+        w("|---|---|---|---|---|---|---|---|" + "---|" * len(VAES))
         for c in CONDS:
             s = R["seven"][c]
             m = s["macro"]
@@ -824,7 +926,7 @@ def write_tables(res):
             w(f"| {c} | {ci(m['ratio_min_over_vaes'])} | {ci(m['single_pass_min_over_vaes'])} | {ci(m['texture_baseline'])} "
               f"(sign {s['texture_direction']['sign']:+.0f}) | {rs['delta']:+.3f} [{rs['ci_lo']:+.3f}, {rs['ci_hi']:+.3f}] | "
               f"{rt['delta']:+.3f} [{rt['ci_lo']:+.3f}, {rt['ci_hi']:+.3f}] | {f3(s['sd_family']['ratio_min_over_vaes']['value'])} | "
-              f"{f3(s['other_family']['ratio_min_over_vaes']['value'])} | {f3(m['ratio_sd-vae-ft-mse']['value'])} | {f3(m['ratio_sdxl-vae']['value'])} |")
+              f"{f3(s['other_family']['ratio_min_over_vaes']['value'])} | " + " | ".join(f3(m[f'ratio_{vn}']['value']) for vn in VAES) + " |")
         w("")
     w("## D-008\n```\n" + (PILOT / "d008_guard.json").read_text() + "\n```\n")
     (PILOT / "tables.md").write_text("\n".join(o))
@@ -832,14 +934,16 @@ def write_tables(res):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", default="all", choices=["timing", "vae", "guard", "feat", "analyze", "all"])
+    ap.add_argument("--stage", default="all", choices=["timing", "vae", "guard", "guard2", "feat", "analyze", "all"])
     a = ap.parse_args()
     PILOT.mkdir(exist_ok=True)
     CACHE.mkdir(exist_ok=True)
-    order = ["timing", "guard", "vae", "feat", "analyze"] if a.stage == "all" else [a.stage]
-    fns = dict(timing=stage_timing, vae=stage_vae, guard=stage_guard, feat=stage_feat, analyze=stage_analyze)
+    order = ["timing", "guard", "guard2", "vae", "feat", "analyze"] if a.stage == "all" else [a.stage]
+    fns = dict(timing=stage_timing, vae=stage_vae, guard=stage_guard, guard2=stage_guard2, feat=stage_feat, analyze=stage_analyze)
     for s in order:
         log(f"=== stage {s}")
+        if s in ("vae", "feat", "analyze") and vae_guard_ok():
+            set_bank()
         fns[s]()
 
 
