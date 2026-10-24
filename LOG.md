@@ -269,3 +269,7 @@
   - Kept: H4/zoom controls as hygiene; the Phase 5 targets are unchanged.
   - Pre-registered E4 (Amendment 11): VAE-trace detectability by feature family (B0, DINOv2 blocks, residual spectrum, both) on real vs own SD-VAE round-trip pairs, plus transfer.
   - Launched a diffusion-signals literature survey (sonnet/medium → new kb/papers entries + kb/_index_rows/diffusion-signals.md) and E4 (sonnet/high → experiments/011-vae-trace/pilot/).
+- 2026-10-24 12:30 — Owner allowed a bigger download budget on condition that unneeded files are deleted → D-015: working ceiling 20 GB cumulative; still ask for single items > 5 GB or gated/restrictive licences.
+  - New env/STORAGE.md ledger.
+  - Deleted the confounded du2 crops (587 MB) and features (81 MB). Disk: 783 GB free.
+  - Downloads are chosen after the diffusion-signals survey and E4.

@@ -104,3 +104,10 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - **Unchanged:** the Phase 5 acceptance targets in CLAUDE.md (phone-photo FPR, laundered AUROC, transfer attacks). They are still how a method is judged.
 - **Next:** a diffusion-specific literature pass (2024–2026), then new hypotheses (opus/high), and a first diagnostic, E4 (Amendment 11), on how detectable the SD-VAE decoder trace is.
 - **Constraint:** about 0.2 GB of the 9 GB download cap is left. Methods needing full diffusion UNet weights (2–5 GB) need the owner's approval for more download budget.
+
+**D-015 — Download budget raised, with mandatory clean-up (owner, 2026-10-24)**
+- The owner allowed increasing the download budget beyond D-007's 9 GB, on condition that unneeded files are deleted.
+- The owner gave no number. The lead's working ceiling is 20 GB of cumulative downloads (about 8.8 GB used so far).
+- **Still ask the owner first** for: a single item over 5 GB, any gated or restrictive licence (e.g. DINOv3's gated licence), anything paid, and installs outside the venv.
+- **Every large item** (> 100 MB) gets a row in `env/STORAGE.md`: purpose, size, keep/delete status. Items no experiment needs are deleted, provided their results and the code to regenerate them are committed. Downloads keep their `env/SOURCES.md` rows even after deletion.
+- **First clean-up (2026-10-24):** deleted the confounded E1b `du2` crops (data/processed/du2512, 587 MB) and features (004 cache pilot_du2, 81 MB). Results and code are committed (008/pilot_du2).
