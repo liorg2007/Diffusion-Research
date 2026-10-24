@@ -6,8 +6,8 @@ Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 
 | Item | Size | Source | Needed by | Status |
 |---|---|---|---|---|
 | env/.venv (+ env/.uv-cache, mostly hardlinks) | 6.9 GB | PyPI via uv.lock | everything | keep |
-| data/raw/vision | ~2.9 GB | VISION (CC BY-SA) | all pilots, official run | keep |
-| data/raw/synthbuster subset | ~0.3 GB | Synthbuster (NC) | all pilots, official run | keep |
+| data/raw/vision | 1.8 GB | VISION (CC BY-SA) | all pilots, official run | keep |
+| data/raw/synthbuster subset | 1.5 GB | Synthbuster (NC) | all pilots, official run | keep |
 | data/raw/raid | 159 MB | RAID subset (MIT) | E3 / idea #5, paused (D-014) | keep while paused (re-download costs budget) |
 | data/weights/laion-commonpool-vitl14 | 1.6 GB | open_clip (ClipDet backbone) | ClipDet scoring | keep |
 | data/weights/openai-clip-vitl14 | 890 MB | OpenAI CLIP (RINE/UnivFD backbone) | RINE scoring | keep |
