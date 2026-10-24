@@ -156,7 +156,7 @@ def extract_condition(df, bb, cond, cache, device, pool, spec, limit=None):
 def guard_subset(df, cond):
     """Fixed 32 images (16 real + 16 fake, seed 0, sorted shas). Eval conditions: same rule as 003's check_subset
     (in_scoring_set rows). Grid conditions: split == 'train' rows."""
-    s = df[df.split == "train"] if cond in P.GRID_CONDITIONS else df[df.in_scoring_set]
+    s = df[df.split == "train"] if cond in P.GRID_CONDITIONS + P.JM_CONDITIONS else df[df.in_scoring_set]
     r, f = sorted(s.sha256[s.label == 0]), sorted(s.sha256[s.label == 1])
     rng = np.random.default_rng(P.SEED)
     k = N_GUARD // 2
@@ -405,9 +405,9 @@ def main():
     dev = get_device(a.device).type
     log(f"device {dev}, {len(df)} rows from {splits.name}, cache {cache}")
     conds = a.conditions or P.ALL_CONDITIONS
-    unknown = [c for c in conds if c not in P.ALL_CONDITIONS]
+    unknown = [c for c in conds if c not in P.ALL_CONDITIONS + P.JM_CONDITIONS]
     if unknown:
-        raise SystemExit(f"unknown conditions {unknown}; choose from {P.ALL_CONDITIONS}")
+        raise SystemExit(f"unknown conditions {unknown}; choose from {P.ALL_CONDITIONS + P.JM_CONDITIONS}")
     if a.check_sizes:
         log("condition min sizes on a 512px crop:", check_condition_sizes(conds))
         check_image_sizes(df)

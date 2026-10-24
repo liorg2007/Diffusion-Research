@@ -13,6 +13,8 @@ the D-008 guard; its code is not changed. Parameters: config_official.json (+ co
 Outputs: <out>/{results.json, tables.md, scores_long.csv.gz, d008_guard.json, run.log}; score caches in cache/<...>/.
 """
 import argparse
+import copy
+import hashlib
 import importlib.util
 import json
 import os
@@ -141,19 +143,25 @@ def decide(m, Z):
     return out
 
 
-def fit_b0(df, X_clean, gens_all):
+def fit_b0(df, X_clean, gens_all, strict=False, X_fit=None):
     """B0 = 005 A0: standardise with the b0_train reals' clean stats, probe.fit_probe(seed 0, groups=sha, balanced).
     One LOGO model per MAIN generator present in training + 'full' (all b0_train rows) for generators with no training rows
-    (FLUX). -> dict(mu, sd, models {g or 'full': model}, which {generator: model key})"""
+    (FLUX). -> dict(mu, sd, models {g or 'full': model}, which {generator: model key})
+    X_fit: optional training matrix (B0-JM: the b0_train fakes' features under jm(85,95)); standardisation always uses X_clean.
+    strict (official run): a b0_train row without cached features is an ERROR, never silently dropped."""
     lab, gen = df.label.to_numpy(), df.generator.to_numpy()
-    b0 = np.where(df.b0_train.to_numpy() & np.isfinite(X_clean).all(1))[0]
+    Xtr = X_clean if X_fit is None else X_fit
+    b0 = np.where(df.b0_train.to_numpy() & np.isfinite(X_clean).all(1) & np.isfinite(Xtr).all(1))[0]
     if len(b0) < int(df.b0_train.sum()):
-        log(f"  B0: {int(df.b0_train.sum()) - len(b0)} b0_train rows without cached features dropped")
+        msg = f"B0: {int(df.b0_train.sum()) - len(b0)} of {int(df.b0_train.sum())} b0_train rows have no cached features"
+        if strict:
+            raise SystemExit("ABORT (official run): " + msg + ". Run the 004 extraction on the full data first.")
+        log("  " + msg + " -> dropped (allow-missing)")
     assert not set(gen[b0]) & set(TEST_ONLY), "a test-only generator is in B0's training rows"
     rtr = b0[lab[b0] == 0]
     mu = X_clean[rtr].mean(0).astype(np.float64)
     sd = np.maximum(X_clean[rtr].std(0).astype(np.float64), 1e-6)
-    Z = (X_clean - mu) / sd
+    Z = (Xtr - mu) / sd
     sha = df.sha256.to_numpy()
     trained = sorted(set(gen[b0[lab[b0] == 1]]))
     models, which = {}, {}
@@ -202,7 +210,7 @@ def analyse(C, n_boot):
     RS = {}
     for k, pn in POOLN.items():
         R = np.where(test & (lab == 0) & (pool == pn))[0]
-        RS[k] = h4.RealSet(R, dev, sha, n_boot, SEED)
+        RS[k] = h4.RealSet(R, dev, sha, n_boot, SEED, name=k)
     res = dict(plans=dict(n_real_test={k: int(len(v.R)) for k, v in RS.items()},
                           n_clusters={k: v.n_clusters for k, v in RS.items()},
                           n_fake_test={g: int((fm & (gen == g)).sum()) for g in present},
@@ -361,6 +369,32 @@ def analyse(C, n_boot):
                             e[f"tpr_{ffn}_{st}"] = float((SCa[S["fake_cond"]][Fm, vi, si] >= thr).mean())
                     op[f"{sg}/{pk}"] = e
             res["operating_point"][arm][fv] = op
+    # ---- B0-JM (pre-registered fix): train fakes JPEG q~U[85,95] w.p. 0.5; per-real-pool clean gap AUROC(VISION) - AUROC(RAISE)
+    res["b0_jm"] = {}
+    for arm in arms:
+        BJ = C["B0JM"].get(arm)
+        if not BJ or "clean" not in BJ:
+            continue
+        res["b0_jm"][arm] = {}
+        for ffn in ("with_firefly", "without_firefly"):
+            if ffn not in FS:
+                continue
+            m = {t: {pk: h4.macro_auroc(lambda g, Bd=Bd: Bd["clean"][g], RS[pk], FS[ffn])
+                     for pk in ("native", "raise", "WA", "FBH") if len(RS[pk].R)}
+                 for t, Bd in (("b0", C["B0"][arm]), ("b0_jm", BJ))}
+            o = dict(pools={pk: dict(b0=h4.vc(*m["b0"][pk]), b0_jm=h4.vc(*m["b0_jm"][pk]),
+                                     loss_b0_minus_jm=h4.dc(*m["b0"][pk], *m["b0_jm"][pk])) for pk in m["b0"]})
+            if "native" in m["b0"] and "raise" in m["b0"]:
+                gap = {t: (m[t]["native"][0] - m[t]["raise"][0], m[t]["native"][1] - m[t]["raise"][1]) for t in m}
+                loss = ((m["b0"]["native"][0] + m["b0"]["raise"][0] - m["b0_jm"]["native"][0] - m["b0_jm"]["raise"][0]) / 2,
+                        (m["b0"]["native"][1] + m["b0"]["raise"][1] - m["b0_jm"]["native"][1] - m["b0_jm"]["raise"][1]) / 2)
+                o["gap_vision_minus_raise"] = dict(b0=h4.vc(*gap["b0"]), b0_jm=h4.vc(*gap["b0_jm"]),
+                                                   jm_minus_b0=h4.dc(*gap["b0_jm"], *gap["b0"]), phase3_reference=0.086)
+                o["clean_loss_mean_of_two_pools"] = h4.vc(*loss)
+                o["success"] = dict(criterion="gap(B0-JM) <= 0.03 and clean loss (B0 - B0-JM, mean of VISION and RAISE) <= 0.01; point estimates",
+                                    gap_ok=bool(gap["b0_jm"][0] <= 0.03), loss_ok=bool(loss[0] <= 0.01),
+                                    met=bool(gap["b0_jm"][0] <= 0.03 and loss[0] <= 0.01))
+            res["b0_jm"][arm][ffn] = o
     # ---- cross-scale B0 (Amendment 6.6) and scale differences
     for (A, B), BX in C["B0X"].items():
         key = f"{A}->{B}"
@@ -435,6 +469,10 @@ def write_tables(res, meta, path):
          "(reals by device / RAISE image, fakes by image per generator); gaps are paired on the same resamples where the reals are "
          "the same, on the fakes only otherwise. RIGID: higher = fake, direction never flipped. Texture = |Laplacian| baseline with "
          "its direction set on calib reals vs train fakes.\n"]
+    L.append(f"Device: {meta['device']}. Disclosures: (1) RAISE has no camera id, so its reals are bootstrapped per image, which gives a narrower CI "
+             "than a camera-clustered one would; the gate's CI lower bound uses it. (2) The label thresholds use the SIGNED gap AUROC(M) - AUROC(ii): a "
+             "strongly negative gap (JPEG reals make RIGID worse) is labelled REFUTED by the literal pre-registration; read the sign in the gap column. "
+             "(3) Every RealSet has its own bootstrap stream (seeded by pool), the fakes' stream is shared.\n")
     for n in res["notes"]:
         L.append(f"NOTE: {n}\n")
     arms = list(res["cells"])
@@ -512,6 +550,22 @@ def write_tables(res, meta, path):
         for ffn, oo in o.items():
             for st, e in oo.items():
                 L.append(f"| {k} | {ffn} | ({st}) | {fv_ci(e['cross'])} | {fv_ci(e['within_test_arm'])} | {fv_ci(e['within_train_arm'])} | {fd_ci(e['cross_minus_within_test_arm'])} |")
+    L.append("\n## B0-JM (pre-registered fix): B0 trained with each train fake JPEG q~U[85,95] w.p. 0.5; clean AUROC per real pool\n")
+    L.append("Success (point estimates): gap AUROC(VISION) - AUROC(RAISE) <= 0.03 (Phase 3: 0.086) AND clean loss (B0 - B0-JM, mean of the two pools) <= 0.01.\n")
+    L.append("| arm | Firefly | pool | B0 | B0-JM | B0 - B0-JM |")
+    L.append("|---|---|---|---|---|---|")
+    for arm, oo in res["b0_jm"].items():
+        for ffn, o in oo.items():
+            for pk, e in o["pools"].items():
+                L.append(f"| {arm} | {ffn} | {pk} | {fv_ci(e['b0'])} | {fv_ci(e['b0_jm'])} | {fd_ci(e['loss_b0_minus_jm'])} |")
+    L.append("\n| arm | Firefly | gap VISION-RAISE, B0 | gap, B0-JM | JM - B0 | clean loss | criterion met |")
+    L.append("|---|---|---|---|---|---|---|")
+    for arm, oo in res["b0_jm"].items():
+        for ffn, o in oo.items():
+            if "gap_vision_minus_raise" in o:
+                g = o["gap_vision_minus_raise"]
+                L.append(f"| {arm} | {ffn} | {fd_ci({'delta': g['b0']['value'], 'ci': g['b0']['ci']})} | {fd_ci({'delta': g['b0_jm']['value'], 'ci': g['b0_jm']['ci']})} | "
+                         f"{fd_ci(g['jm_minus_b0'])} | {fd_ci({'delta': o['clean_loss_mean_of_two_pools']['value'], 'ci': o['clean_loss_mean_of_two_pools']['ci']})} | **{o['success']['met']}** |")
     L.append("\n## Per real pool, clean vs clean fakes (descriptive; RAISE row = setting (ii))\n")
     L.append("| arm | Firefly | pool | n_real | B0 | texture | " + " | ".join(f"RIGID({PRIMARY_FV}) s={s}" for s in SIGMAS) + " |")
     L.append("|---|---|---|---|---|---|" + "---|" * len(SIGMAS))
@@ -528,8 +582,109 @@ def write_tables(res, meta, path):
     for v, e in g["variants"].items():
         L.append(f"| {v} | {e['max_abs_feature_diff']:.2e} | {e['max_scaled_feature_diff']:.2e} | {e['max_abs_score_diff']:.2e} | {e['ok']} |")
     p = g["pipeline_vs_004_cache"]
-    L.append(f"\nPipeline vs 004 cache (unnoised pre-LN CLS vs primary[:, :768], same 32 images): max abs {p['max_abs_diff']:.2e}, scaled {p['max_scaled_diff']:.2e}, ok={p['ok']}")
+    L.append(f"\nPipeline vs 004 cache (unnoised pre-LN CLS vs primary[:, :768], same images; all arms and conditions): max abs {p['max_abs_diff']:.2e}, scaled {p['max_scaled_diff']:.2e}, ok={p['ok']}")
+    if g.get("entries"):
+        L.append("\n| arm | condition | n (RAISE) | scaled feat diff post / pre | max abs score diff post / pre | pipeline vs cache (scaled) |")
+        L.append("|---|---|---|---|---|---|")
+        for e in g["entries"]:
+            v = e["variants"]
+            L.append(f"| {e['arm']} | {e['cond']} | {e['n']} ({e['n_raise']}) | {v['post']['max_scaled_feature_diff']:.1e} / {v['pre']['max_scaled_feature_diff']:.1e} | "
+                     f"{v['post']['max_abs_score_diff']:.1e} / {v['pre']['max_abs_score_diff']:.1e} | {e['pipeline_vs_004_cache']['max_scaled_diff']:.1e} |")
     path.write_text("\n".join(L) + "\n")
+
+
+# ----------------------------------------------------------------------------- D-008 guard over every arm and condition
+def d008_guard_all(dfs, subdirs, arms, model, dev, p4, out_dir, raise_pool):
+    """CUDA vs CPU for RIGID's features (clean + noised, draw 0, all sigmas) on a fixed 32-image subset (16 reals: 8 VISION native
+    + 8 RAISE when present; 16 test fakes; seed 0) for EVERY arm and EVERY condition of that arm (clean, jpeg(90), jpeg75_resize05;
+    fov224: clean, jpeg(90)). Also: our unnoised pre-LN CLS equals the 004 cache's primary[:, :768] for the same condition.
+    Tolerance FEAT_TOL (scaled) as in the pilot; any failure aborts."""
+    cpu_model = copy.deepcopy(model).cpu().eval()
+    pairs = [(si, 0) for si in range(len(SIGMAS))]
+    entries, ok = [], True
+    for arm in arms:
+        df = dfs[arm]
+        te = df[df.split == "test"]
+        rng = np.random.default_rng(SEED)
+        r_n = sorted(te.sha256[(te.label == 0) & (te.pool == OC["pools"]["native"])])
+        r_r = sorted(te.sha256[(te.label == 0) & (te.pool == raise_pool)])
+        fk = sorted(te.sha256[te.label == 1])
+        k = H.CFG["d008"]["n"] // 2
+        kr = min(k // 2, len(r_r))
+        sub = [r_n[i] for i in rng.choice(len(r_n), min(k - kr, len(r_n)), replace=False)]
+        sub += [r_r[i] for i in rng.choice(len(r_r), kr, replace=False)] if kr else []
+        sub += [fk[i] for i in rng.choice(len(fk), min(k, len(fk)), replace=False)]
+        d = df.set_index("sha256", drop=False).loc[sub]
+        for cond in ARMC[arm]:
+            x = torch.stack([H.to_unit_tensor(p4.load_cond(p_, s_, cond)) for p_, s_ in zip(d.path, d.sha256)])
+            fa, na = H.chunk_feats(model, dev, x, sub, pairs)
+            ob, H.BATCH = H.BATCH, H.CFG["d008"]["cpu_batch"]
+            try:
+                fc, nc = H.chunk_feats(cpu_model, torch.device("cpu"), x, sub, pairs)
+            finally:
+                H.BATCH = ob
+            e = dict(arm=arm, cond=cond, n=len(sub), n_raise=kr, variants={})
+            for vi, v in enumerate(FVS):
+                A = np.concatenate([fa[:, vi]] + [na[p_][:, vi] for p_ in pairs])
+                Cc = np.concatenate([fc[:, vi]] + [nc[p_][:, vi] for p_ in pairs])
+                dd = np.abs(A - Cc)
+                scaled = float((dd / np.maximum(1.0, np.abs(Cc).max(0, keepdims=True))).max())
+                dsc = max(float(np.abs(H.cos_score(fa, na[p_])[:, vi] - H.cos_score(fc, nc[p_])[:, vi]).max()) for p_ in pairs)
+                e["variants"][v] = dict(max_abs_feature_diff=float(dd.max()), max_scaled_feature_diff=scaled, max_abs_score_diff=dsc,
+                                        ok=bool(scaled <= H.FEAT_TOL))
+                ok &= scaled <= H.FEAT_TOL
+            # pipeline identity vs the 004 cache for this arm/condition (pre-LN CLS = primary[:, :768])
+            try:
+                X = load_aligned_multi(d, cond, subdirs[arm])
+                dd = np.abs(fa[:, 1] - X[:, :H.HIDDEN])
+                sc = float((dd / np.maximum(1.0, np.abs(X[:, :H.HIDDEN]).max(0, keepdims=True))).max())
+                e["pipeline_vs_004_cache"] = dict(max_abs_diff=float(dd.max()), max_scaled_diff=sc, ok=bool(sc <= H.FEAT_TOL))
+                ok &= sc <= H.FEAT_TOL
+            except FileNotFoundError:
+                e["pipeline_vs_004_cache"] = dict(max_abs_diff=float("nan"), max_scaled_diff=float("nan"), ok=False, note="no 004 cache")
+                ok = False
+            log(f"D-008 {arm}/{cond}: " + ", ".join(f"{v}: scaled {q['max_scaled_feature_diff']:.1e} dscore {q['max_abs_score_diff']:.1e}"
+                                                    for v, q in e["variants"].items()) +
+                f" | pipeline vs 004 cache scaled {e['pipeline_vs_004_cache']['max_scaled_diff']:.1e}")
+            entries.append(e)
+            del x, fa, na, fc, nc
+            if dev.type == "cuda":
+                torch.cuda.empty_cache()
+    del cpu_model
+    agg = {v: dict(max_abs_feature_diff=max(e["variants"][v]["max_abs_feature_diff"] for e in entries),
+                   max_scaled_feature_diff=max(e["variants"][v]["max_scaled_feature_diff"] for e in entries),
+                   max_abs_score_diff=max(e["variants"][v]["max_abs_score_diff"] for e in entries),
+                   ok=all(e["variants"][v]["ok"] for e in entries)) for v in FVS}
+    pl = [e["pipeline_vs_004_cache"] for e in entries]
+    out = dict(n=entries[0]["n"], device=str(dev), feat_tol=H.FEAT_TOL, ok=bool(ok), variants=agg, entries=entries,
+               pipeline_vs_004_cache=dict(max_abs_diff=float(np.nanmax([q["max_abs_diff"] for q in pl])),
+                                          max_scaled_diff=float(np.nanmax([q["max_scaled_diff"] for q in pl])),
+                                          ok=all(q["ok"] for q in pl)))
+    (out_dir / "d008_guard.json").write_text(json.dumps(sanitize(out), indent=1))
+    if not ok:
+        raise SystemExit(f"D-008 ABORT: see {out_dir / 'd008_guard.json'}")
+    return out
+
+
+def cache_meta(arm, cond, kind):
+    """Everything that changes a cached RIGID score or Laplacian; checked on load (a mismatch is an error, never reused)."""
+    return json.dumps(dict(kind=kind, arm=arm, cond=cond, sigmas=SIGMAS, draws=DRAWS, feature_variants=FVS, spec=P.SPEC, input_size=224,
+                           noise_seed=H.CFG["rigid"]["noise_seed"], score=H.CFG["rigid"]["score"],
+                           rigid_cfg_sha256=hashlib.sha256(json.dumps(H.CFG["rigid"], sort_keys=True).encode()).hexdigest()[:16],
+                           laplacian="mean|4g-neighbours| of the grey [0,1] 224 input (lib/h4.laplacian_texture)"), sort_keys=True)
+
+
+def load_cached(cp, shas, meta):
+    """-> npz contents if the file lists exactly `shas`; None if absent or for other images; SystemExit if the settings differ."""
+    if not cp.exists():
+        return None
+    z = np.load(cp, allow_pickle=False)
+    if z["keys"].tolist() != shas:
+        return None
+    if "meta" not in z.files or str(z["meta"]) != meta:
+        raise SystemExit(f"STALE CACHE {cp}: it was written with different RIGID settings (sigma/draws/seed scheme/feature variants/"
+                         "config hash) or by an older version. Delete the file (or the cache directory) and re-run.")
+    return z
 
 
 # ----------------------------------------------------------------------------- main
@@ -542,12 +697,15 @@ def main():
     ap.add_argument("--allow-missing", action="store_true", help="skip absent arms/crops instead of aborting (implied by --dry-run)")
     ap.add_argument("--out", default=None, help="output dir (default official/ or the dry-run dir)")
     ap.add_argument("--device", default=None)
+    ap.add_argument("--batch", type=int, default=None, help="GPU batch size (default: config.json rigid.batch = 32); ~float-rounding effect only")
     ap.add_argument("--skip-guard", action="store_true", help="dry-run only: skip the D-008 guard (e.g. on a CPU-only box)")
     a = ap.parse_args()
     if a.skip_guard and not a.dry_run:
         raise SystemExit("--skip-guard is for --dry-run only: the D-008 guard is mandatory in the official run")
     if a.standin_raise and not a.dry_run:
         raise SystemExit("--standin-raise is a dry-run fixture only")
+    if a.batch:
+        H.BATCH = a.batch
     prof = "pilot" if a.dry_run else a.profile
     PR = OC["profiles"][prof]
     allow = a.allow_missing or a.dry_run
@@ -629,12 +787,13 @@ def main():
         raise SystemExit("facebook/dinov2-base not in data/hf_cache")
     bb = load_backbone(P.SPEC, input_size=224, layers=(-1,), use_cls=True, use_mean=False)
     model = bb.model.to(dev).eval()
-    H.args_subdir_for_check.update({"orig": subdirs["orig"][0]})
+    if not allow and dev.type != "cuda":
+        raise SystemExit(f"official run needs the accelerator (device={dev}): a CPU-vs-CPU D-008 guard would pass trivially")
     if a.skip_guard:
         guard = dict(n=0, device=str(dev), feat_tol=H.FEAT_TOL, ok=None, skipped="dry-run --skip-guard", variants={},
                      pipeline_vs_004_cache=dict(max_abs_diff=float("nan"), max_scaled_diff=float("nan"), ok=None))
     else:
-        guard = H.d008_guard(d0, model, dev, p4, out_dir)
+        guard = d008_guard_all(dfs, subdirs, arms, model, dev, p4, out_dir, raise_pool)
 
     # ---- scores + Laplacian
     core, derived, lap_rows = plan_rows(d0, active, raise_pool)
@@ -648,42 +807,70 @@ def main():
                 rows = np.where(core | (derived if cond == "clean" else False))[0]
                 shas = df.sha256.to_numpy()[rows].tolist()
                 cp = cache / f"{arm}__{P.safe(cond)}.npz"
-                if cp.exists() and np.load(cp, allow_pickle=False)["keys"].tolist() == shas:
-                    z = np.load(cp, allow_pickle=False)
+                meta_c = cache_meta(arm, cond, "rigid+laplacian")
+                z = load_cached(cp, shas, meta_c)
+                if z is not None:
                     SC[arm][cond][rows], LAP[arm][cond][rows] = z["scores"], z["lap"]
                     log(f"  {arm}/{cond}: loaded {len(rows)} rows from cache")
                 else:
                     t = time.time()
                     log(f"  {arm}/{cond}: scoring {len(rows)} images x {len(SIGMAS)} sigmas x {DRAWS} draws")
                     s, lp = score_condition(model, dev, p4, tp, df.path.to_numpy()[rows].tolist(), shas, cond)
-                    np.savez(cp, keys=np.array(shas, dtype=str), scores=s, lap=lp)
+                    np.savez(cp, keys=np.array(shas, dtype=str), scores=s, lap=lp, meta=np.array(meta_c))
                     SC[arm][cond][rows], LAP[arm][cond][rows] = s, lp
                     timings[f"{arm}/{cond}"] = time.time() - t
             lr = np.where(lap_rows)[0]
             shas = df.sha256.to_numpy()[lr].tolist()
             cp = cache / f"{arm}__clean__laponly_trainfakes.npz"
-            if cp.exists() and np.load(cp, allow_pickle=False)["keys"].tolist() == shas:
-                LAP[arm]["clean"][lr] = np.load(cp, allow_pickle=False)["lap"]
+            meta_l = cache_meta(arm, "clean", "laplacian-only train fakes")
+            z = load_cached(cp, shas, meta_l)
+            if z is not None:
+                LAP[arm]["clean"][lr] = z["lap"]
             else:
                 lp = lap_only(p4, tp, df.path.to_numpy()[lr].tolist(), shas, "clean")
-                np.savez(cp, keys=np.array(shas, dtype=str), lap=lp)
+                np.savez(cp, keys=np.array(shas, dtype=str), lap=lp, meta=np.array(meta_l))
                 LAP[arm]["clean"][lr] = lp
     del model; torch.cuda.empty_cache()
 
     # ---- B0 (+ cross-scale)
     gens_all = [g for g in MAIN + TEST_ONLY if (active & (lab == 1) & (gen == g) & (sp == "test")).any()]
-    FIT, XF, B0 = {}, {}, {}
+    FIT, FITJ, XF, B0, B0JM = {}, {}, {}, {}, {}
     for arm in arms:
         XF[arm] = {}
         for c in arm_conds[arm]:
             try:
                 XF[arm][c] = load_aligned_multi(dfs[arm], c, subdirs[arm])
             except FileNotFoundError as e:
+                if not allow:
+                    raise SystemExit(f"ABORT (official run): B0 features missing for arm {arm}, condition {c}: {e}")
                 log(f"  B0[{arm}] {c}: {e} -> skipped")
         if "clean" not in XF[arm]:
             raise SystemExit(f"no clean features for arm {arm}: run the 004 extraction first")
-        FIT[arm] = fit_b0(dfs[arm], XF[arm]["clean"], gens_all)
+        if not allow:       # every scored (test/calib) row must have features in every condition of the arm
+            for c, X in XF[arm].items():
+                need = np.where(core | (derived if c == "clean" else False))[0]
+                if np.isnan(X[need]).any():
+                    raise SystemExit(f"ABORT (official run): {int(np.isnan(X[need]).any(1).sum())} scored rows of arm {arm} have no "
+                                     f"cached 004 features for {c}")
+        FIT[arm] = fit_b0(dfs[arm], XF[arm]["clean"], gens_all, strict=not allow)
         B0[arm] = {c: apply_b0(FIT[arm], X, gens_all) for c, X in XF[arm].items()}
+        # B0-JM: b0_train fakes take their jm(85,95) features (JPEG q~U[85,95] w.p. 0.5, seeded per image); reals unchanged
+        JM = P.JM_CONDITIONS[0]
+        try:
+            XJ = load_aligned_multi(dfs[arm], JM, subdirs[arm])
+            Xfit = XF[arm]["clean"].copy()
+            fk_tr = np.where(dfs[arm].b0_train.to_numpy() & (lab == 1))[0]
+            if not allow and np.isnan(XJ[fk_tr]).any():
+                raise SystemExit(f"ABORT (official run): {int(np.isnan(XJ[fk_tr]).any(1).sum())} b0_train fakes of arm {arm} lack {JM} features")
+            ok_j = fk_tr[np.isfinite(XJ[fk_tr]).all(1)]
+            Xfit[ok_j] = XJ[ok_j]
+            Xfit[np.setdiff1d(fk_tr, ok_j)] = np.nan          # allow-missing: those rows drop out of training
+            FITJ[arm] = fit_b0(dfs[arm], XF[arm]["clean"], gens_all, strict=not allow, X_fit=Xfit)
+            B0JM[arm] = {c: apply_b0(FITJ[arm], X, gens_all) for c, X in XF[arm].items()}
+        except FileNotFoundError as e:
+            if not allow:
+                raise SystemExit(f"ABORT (official run): B0-JM features missing for arm {arm}: {e}. Extract {JM} with 004 (see notes.md)")
+            log(f"  B0-JM[{arm}]: {e} -> skipped")
         log(f"B0[{arm}]: models {sorted(FIT[arm]['models'])}, conditions {sorted(B0[arm])}")
     B0X = {}
     for A in arms:
@@ -691,7 +878,7 @@ def main():
             if A != B:
                 B0X[(A, B)] = {c: apply_b0(FIT[A], XF[B][c], gens_all) for c in XF[B] if c in XF[A]}
     C = dict(df=d0, lab=lab, gen=gen, pool=pool, sp=sp, active=active, raise_pool=raise_pool, arms=arms,
-             SC=SC, LAP=LAP, B0=B0, B0X=B0X)
+             SC=SC, LAP=LAP, B0=B0, B0X=B0X, B0JM=B0JM)
     res = analyse(C, n_boot)
     meta = dict(stamp=time.strftime("%Y-%m-%d %H:%M:%S"), kind=kind, banner=banner, dry_run=a.dry_run, standin_raise=a.standin_raise,
                 profile=prof, d008=guard, timings=timings, device=str(dev), subdirs=subdirs, label_arm=OC["label_arm"],

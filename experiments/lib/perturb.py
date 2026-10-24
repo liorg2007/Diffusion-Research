@@ -42,6 +42,17 @@ def social_sim(img, key="", seed=0):
     return jpeg(resize(img, f), q)
 
 
+JM_PROB = 0.5
+
+
+def jpeg_maybe(img, lo=85, hi=95, key="", seed=0):
+    """B0-JM augmentation (H4 pre-registration): with probability 0.5 JPEG at q ~ U[lo, hi] (rounded to an integer
+    quality), else unchanged. Both draws are seeded per image (key = sha256), so the feature cache is reproducible."""
+    rng = np.random.default_rng(seed_from_key(key, seed))
+    apply, q = bool(rng.random() < JM_PROB), float(rng.uniform(lo, hi))
+    return jpeg(img, round(q)) if apply else img.convert("RGB")
+
+
 def jpeg75_resize05(img):
     return jpeg(resize(img, 0.5), 75)
 
@@ -72,7 +83,7 @@ def screenshot_sim(img, key="", seed=0):
 
 def apply_condition(img, condition, key="", seed=0):
     """condition: 'clean' | 'jpeg75_resize05' | 'resize(f)' | 'jpeg(q)' | 'social_sim' | 'mavali_medium'
-    | 'screenshot_sim' | 'jr(q,f)' (= jpeg(resize(img, f), q); f=1.0: JPEG only)."""
+    | 'screenshot_sim' | 'jm(lo,hi)' (B0-JM, seeded per key) | 'jr(q,f)' (= jpeg(resize(img, f), q); f=1.0: JPEG only)."""
     img = img.convert("RGB")
     if condition == "clean":
         return img
@@ -84,6 +95,9 @@ def apply_condition(img, condition, key="", seed=0):
         return mavali_medium(img)
     if condition == "screenshot_sim":
         return screenshot_sim(img, key, seed)
+    m = re.fullmatch(r"jm\(\s*(\d+)\s*,\s*(\d+)\s*\)", condition)
+    if m:
+        return jpeg_maybe(img, int(m.group(1)), int(m.group(2)), key, seed)
     m = re.fullmatch(r"jr\(\s*(\d+)\s*,\s*([\d.]+)\s*\)", condition)
     if m:
         return jr(img, int(m.group(1)), float(m.group(2)))

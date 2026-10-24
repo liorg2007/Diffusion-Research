@@ -210,3 +210,11 @@
     - CommFor: fov512 threshold applied at orig → FPR 6.4% (within 1.7%).
   - Reading: the published detectors' AUROC moves by up to 0.23 with crop-vs-resize preprocessing, and thresholds don't survive a change of input scale. This bears directly on the phone-FPR target and on D-013.
   - Launching opus/high critic.
+- 2026-10-24 05:35 — Official H4 review fixes done (sonnet/high):
+  - B0-JM arm via a new additive condition jm(85,95) (existing conditions unchanged, lead checked the diff).
+  - Strict official mode: aborts on any missing cache, row or arm.
+  - RIGID caches keyed by config hash.
+  - D-008 guard covers all 8 arm×condition cells.
+  - fov_prep --no-clobber never overwrites existing crops; it re-creates beside them, compares, and aborts on any difference.
+  - GPU guard dry-run (stand-in RAISE) passed: max scaled feature diff 1.8e-5, |Δscore| 2.5e-6. Lib tests 60 passed.
+  - The official run is fully ready, waiting on grip.unina.it.

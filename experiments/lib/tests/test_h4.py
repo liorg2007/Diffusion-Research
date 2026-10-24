@@ -131,3 +131,34 @@ def test_fakeset_generator_stream_independent_of_other_generators():
     a = h4.FakeSet(gen, ["a", "b"], lab == 1, 50)
     b = h4.FakeSet(gen, ["b"], lab == 1, 50)
     assert np.array_equal(a.Wf["b"], b.Wf["b"]) and not np.array_equal(a.Wf["a"], a.Wf["b"])
+
+
+def test_jm_condition_seeded_fraction_and_rows_mask():
+    import sys
+    from pathlib import Path
+    import pandas as pd
+    from PIL import Image
+    import perturb
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "004-phase4-features"))
+    import p4features as P
+    rng = np.random.default_rng(0)
+    img = Image.fromarray(rng.integers(0, 255, (64, 64, 3), dtype=np.uint8))
+    applied = 0
+    for i in range(200):
+        a = perturb.apply_condition(img, "jm(85,95)", key=f"k{i}", seed=0)
+        b = perturb.apply_condition(img, "jm(85,95)", key=f"k{i}", seed=0)
+        assert np.array_equal(np.asarray(a), np.asarray(b)) and a.size == img.size
+        applied += not np.array_equal(np.asarray(a), np.asarray(img))
+    assert 70 < applied < 130                                   # ~50% of the images are compressed
+    df = pd.DataFrame(dict(split=["train", "train", "test", "calib"], label=[1, 0, 1, 0]))
+    assert P.rows_mask(df, "jm(85,95)").tolist() == [True, False, False, False]
+    assert "jm(85,95)" not in P.ALL_CONDITIONS and P.JM_CONDITIONS == ["jm(85,95)"]
+
+
+def test_realset_named_pools_get_independent_streams():
+    dev, sha, gen, lab, s = _toy()
+    R = np.where((lab == 0) & (dev == ""))[0]
+    a, b = h4.RealSet(R, dev, sha, 40, name="raise"), h4.RealSet(R, dev, sha, 40, name="native")
+    c = h4.RealSet(R, dev, sha, 40)
+    assert not np.array_equal(a.Wr, b.Wr) and np.array_equal(a.Wr, h4.RealSet(R, dev, sha, 40, name="raise").Wr)
+    assert np.array_equal(c.Wr, h4.RealSet(R, dev, sha, 40, name=None).Wr)

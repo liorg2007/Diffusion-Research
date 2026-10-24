@@ -30,6 +30,9 @@ EVAL_CONDITIONS = ["clean", "jpeg75_resize05", "social_sim", "resize(0.5)", "jpe
 HELD_OUT_CONDITIONS = ["mavali_medium", "screenshot_sim"]          # never used for fitting anything
 GRID_CONDITIONS = [f"jr({q},{f})" for q in (60, 75, 90) for f in (0.5, 0.75, 1.0)]   # split == 'train' only
 ALL_CONDITIONS = EVAL_CONDITIONS + GRID_CONDITIONS
+# B0-JM (H4 pre-registration): train FAKES JPEG-compressed at q ~ U[85,95] with probability 0.5, seeded per image. Not part of
+# the default 17-condition run: extract it explicitly (--conditions "jm(85,95)").
+JM_CONDITIONS = ["jm(85,95)"]
 
 
 def safe(cond):
@@ -54,6 +57,8 @@ def rows_mask(df, cond):
     """Which rows of splits.csv are extracted under `cond` (grid conditions: split == 'train' only)."""
     if cond in GRID_CONDITIONS:
         return (df.split == "train").to_numpy()
+    if cond in JM_CONDITIONS:
+        return ((df.split == "train") & (df.label == 1)).to_numpy()
     if cond in EVAL_CONDITIONS:
         return eval_mask(df)
     raise ValueError(f"unknown condition {cond!r}")

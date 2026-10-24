@@ -85,7 +85,10 @@ class FakeSet:
 class RealSet:
     """Reals R (row indices), resampled by cluster (device id; an empty id = its own cluster, e.g. a RAISE image)."""
 
-    def __init__(self, R, device, sha, n_boot, seed=0):
+    def __init__(self, R, device, sha, n_boot, seed=0, name=None):
+        """name: pool label. When given the stream is [seed, crc32(name)], so different pools get independent resamples
+        (contrasts that mix pools are then not accidentally correlated); None keeps the original single-seed stream."""
+        seed = seed if name is None else [seed, zlib.crc32(str(name).encode())]
         self.R = np.asarray(R, int)
         dev, sha = np.asarray(device), np.asarray(sha)
         clus = [dev[i] if dev[i] else f"img:{sha[i]}" for i in self.R]

@@ -9,6 +9,8 @@
   env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py \
       --out-splits experiments/004-phase4-features/splits_fov512.csv --report experiments/004-phase4-features/fov512_prep_report.json
 
+  # --no-clobber: safe for the official run, where data/processed/{crop512,fov512} already hold the pilot crops (outside experiments/):
+  #   existing files are re-created beside themselves, compared pixel-wise and left untouched (abort if any differ); missing ones are written.
   # fov224 (H4 Amendment 6, whole-image arm for RIGID's 224 input: short side -> 224, center crop 224)
   env/.venv/bin/python -I experiments/004-phase4-features/fov_prep.py --size 224 \
       --out-splits experiments/004-phase4-features/splits_fov224.csv --report experiments/004-phase4-features/fov224_prep_report.json
@@ -36,6 +38,7 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "experiments" / "lib"))
 os.chdir(ROOT)
 
+import numpy as np
 import pandas as pd
 from PIL import Image
 
@@ -57,12 +60,22 @@ def sha256_file(p):
 def _one(a):
     src, dst = a[:2]
     size, mode = (a[2], a[3]) if len(a) > 2 else (SIZE, "fov")
+    noclobber = bool(a[4]) if len(a) > 4 else False
+    existing = None
+    real_dst = dst
+    if noclobber and os.path.exists(dst):       # never overwrite: re-create next to it, compare pixels, delete
+        dst = dst[:-4] + ".chk.png"
     status, info = preprocess.process_image(src, dst, size, mode=mode)
     ok_shape = None
     if status == "ok":
         with Image.open(dst) as im:
             ok_shape = list(im.size) + [im.mode]
-    return dict(status=status, raw_sha=sha256_file(src), shape=ok_shape, **info)
+            if dst != real_dst:
+                with Image.open(real_dst) as old:
+                    existing = "equal" if (old.size == im.size and np.array_equal(np.asarray(old.convert("RGB")), np.asarray(im.convert("RGB")))) else "differ"
+        if dst != real_dst:
+            os.remove(dst)
+    return dict(status=status, raw_sha=sha256_file(src), shape=ok_shape, existing=existing, **info)
 
 
 def manifest_preflight(manifest=ROOT / "data" / "manifest_raw.csv", size=SIZE):
@@ -86,6 +99,9 @@ def main():
     ap.add_argument("--mode", choices=["fov", "crop"], default="fov",
                     help="fov: resize short side to --size then centre-crop (default); crop: plain centre crop (003's crops)")
     ap.add_argument("--report", required=True)
+    ap.add_argument("--no-clobber", action="store_true",
+                    help="never overwrite an existing output file: re-create it as <sha>.chk.png, compare pixels with the existing "
+                         "file, delete the copy, report n_existing_equal / n_existing_differ and ABORT if any differ. New files are written normally")
     ap.add_argument("--drop-small", action="store_true", help="drop (and report) rows with short side < 512 instead of aborting")
     ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args()
@@ -98,7 +114,7 @@ def main():
     (out_dir / "images").mkdir(parents=True, exist_ok=True)
     dst = [str(out_dir / "images" / f"{s}.png") for s in keep.sha256]
     with mp.Pool(a.workers) as pool:
-        res = pool.map(_one, [(sp, d, size, a.mode) for sp, d in zip(keep.src_path, dst)], chunksize=16)
+        res = pool.map(_one, [(sp, d, size, a.mode, a.no_clobber) for sp, d in zip(keep.src_path, dst)], chunksize=16)
     R = pd.DataFrame(res)
     R["sha256"] = keep.sha256.to_numpy()
     R["generator"] = keep.generator.to_numpy()
@@ -112,6 +128,8 @@ def main():
                n_ok=int((R.status == "ok").sum()), n_short_side_lt_512=int(len(small)), n_error=int(len(bad)),
                short_side_lt_512=[dict(sha256=r.sha256, generator=r.generator, pool=r.pool,
                                        size=[r.orig_width, r.orig_height]) for r in small.itertuples()],
+               no_clobber=dict(enabled=a.no_clobber, n_existing_equal=int((R.existing == "equal").sum()),
+                               n_existing_differ=int((R.existing == "differ").sum()), n_newly_written=int(((R.existing.isna()) & (R.status == "ok")).sum())),
                raw_sha_match=dict(n_match=int((R.raw_sha == R.sha256).sum()), n_total=len(R)),
                shape_ok_512_rgb=int(sum(s == [size, size, "RGB"] for s in R["shape"] if s is not None)),
                manifest_preflight=manifest_preflight(size=size), counts_pool_split=keep.groupby(["pool", "split"]).size()
@@ -124,6 +142,9 @@ def main():
         raise SystemExit(f"{len(bad)} images failed: {bad.sha256.tolist()[:3]} ...")
     if rep["raw_sha_match"]["n_match"] != len(R):
         raise SystemExit("raw sha256 mismatch: the raw files differ from the splits file")
+    if a.no_clobber and int((R.existing == "differ").sum()):
+        raise SystemExit(f"ABORT: {int((R.existing == 'differ').sum())} existing output files differ from the re-created ones "
+                         "(left untouched; see the report). Ask the owner before overwriting anything.")
     if len(small) and not a.drop_small:
         raise SystemExit(f"ABORT: {len(small)} images have short side < {size} (would need upscaling; see report). "
                          "Re-run with --drop-small to exclude them, or decide a policy.")
