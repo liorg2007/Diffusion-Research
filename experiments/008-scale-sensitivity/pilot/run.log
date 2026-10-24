@@ -1,14 +1,132 @@
-00:20:18 E1 start; rows scored 1563 of 2220
-00:20:44 E1 lap orig: 2022 rows in 23s
-00:21:08 E1 lap fov512: 2022 rows in 25s
-00:21:28 E1-B0 A0/full: n_train=459 C=10
-00:21:48 E1-B0 A0/logo_dalle2: n_train=399 C=10
-00:22:04 E1-B0 A0/logo_dalle3: n_train=399 C=1
-00:22:22 E1-B0 A0/logo_firefly: n_train=399 C=1
-00:22:42 E1-B0 A0/logo_midjourney-v5: n_train=399 C=10
-00:23:00 E1-B0 A0/logo_stable-diffusion-2: n_train=399 C=10
-00:23:21 E1-B0 A0/logo_stable-diffusion-xl: n_train=399 C=10
-00:23:21 E1 B0 orig: max|dscore| vs 005/pilot_v2 cache = 0.00e+00
-00:23:48 E1-B0 A0/full: n_train=459 C=0.01
-00:24:10 E1-B0 A0/logo_dalle2: n_train=399 C=0.001
-00:24:34 E1-B0 A0/logo_dalle3: n_train=399 C=0.01
+03:52:13 E1 start; rows scored 1563 of 2220
+03:52:15 E1 B0 orig: max|dscore| vs 005/pilot_v2 cache = 0.00e+00
+03:52:32 E1-B0 A0/full: n_train=459 C=0.01
+03:52:47 E1-B0 A0/logo_dalle2: n_train=399 C=0.001
+03:53:04 E1-B0 A0/logo_dalle3: n_train=399 C=0.01
+03:53:23 E1-B0 A0/logo_firefly: n_train=399 C=0.01
+03:53:44 E1-B0 A0/logo_midjourney-v5: n_train=399 C=0.01
+03:54:03 E1-B0 A0/logo_stable-diffusion-2: n_train=399 C=0.001
+03:54:24 E1-B0 A0/logo_stable-diffusion-xl: n_train=399 C=0.01
+03:54:24 E1 B0 fov512: max|dscore| vs 005/pilot_v2 cache = 0.00e+00
+03:54:25 E1 communityforensics: CPU reference (32 fov512 imgs x 2 conds)
+03:54:35 E1 cpuref communityforensics clean done in 6s
+03:54:39 E1 cpuref communityforensics jpeg75_resize05 done in 5s
+03:54:42 E1 communityforensics clean: orig re-score vs 007 stored: max|d|=1.78e-15
+03:54:42 E1 communityforensics clean: D-008 fov512 max|dlogit|=5.82e-05 (tol 0.001)
+03:54:45 E1 communityforensics clean: fov512 132/1563
+03:54:47 E1 communityforensics clean: fov512 232/1563
+03:54:50 E1 communityforensics clean: fov512 332/1563
+03:54:53 E1 communityforensics clean: fov512 432/1563
+03:54:55 E1 communityforensics clean: fov512 532/1563
+03:54:57 E1 communityforensics clean: fov512 632/1563
+03:55:01 E1 communityforensics clean: fov512 732/1563
+03:55:04 E1 communityforensics clean: fov512 832/1563
+03:55:09 E1 communityforensics clean: fov512 932/1563
+03:55:12 E1 communityforensics clean: fov512 1032/1563
+03:55:17 E1 communityforensics clean: fov512 1132/1563
+03:55:21 E1 communityforensics clean: fov512 1232/1563
+03:55:28 E1 communityforensics clean: fov512 1332/1563
+03:55:33 E1 communityforensics clean: fov512 1432/1563
+03:55:37 E1 communityforensics clean: fov512 1532/1563
+03:55:38 E1 communityforensics clean: fov512 1563/1563
+03:55:39 E1 communityforensics jpeg75_resize05: orig re-score vs 007 stored: max|d|=1.78e-15
+03:55:40 E1 communityforensics jpeg75_resize05: D-008 fov512 max|dlogit|=8.08e-05 (tol 0.001)
+03:55:45 E1 communityforensics jpeg75_resize05: fov512 132/1563
+03:55:50 E1 communityforensics jpeg75_resize05: fov512 232/1563
+03:55:56 E1 communityforensics jpeg75_resize05: fov512 332/1563
+03:56:01 E1 communityforensics jpeg75_resize05: fov512 432/1563
+03:56:06 E1 communityforensics jpeg75_resize05: fov512 532/1563
+03:56:29 E1 communityforensics jpeg75_resize05: fov512 632/1563
+03:56:34 E1 communityforensics jpeg75_resize05: fov512 732/1563
+03:56:41 E1 communityforensics jpeg75_resize05: fov512 832/1563
+03:56:47 E1 communityforensics jpeg75_resize05: fov512 932/1563
+03:56:53 E1 communityforensics jpeg75_resize05: fov512 1032/1563
+03:56:59 E1 communityforensics jpeg75_resize05: fov512 1132/1563
+03:57:24 E1 communityforensics jpeg75_resize05: fov512 1232/1563
+03:57:32 E1 communityforensics jpeg75_resize05: fov512 1332/1563
+03:57:39 E1 communityforensics jpeg75_resize05: fov512 1432/1563
+03:57:44 E1 communityforensics jpeg75_resize05: fov512 1532/1563
+03:57:46 E1 communityforensics jpeg75_resize05: fov512 1563/1563
+03:57:46 E1 rine: CPU reference (32 fov512 imgs x 2 conds)
+03:59:37 E1 cpuref rine clean done in 107s
+04:01:23 E1 cpuref rine jpeg75_resize05 done in 106s
+04:01:35 E1 rine clean: orig re-score vs 007 stored: max|d|=4.44e-16
+04:01:38 E1 rine clean: D-008 fov512 max|dlogit|=1.60e-05 (tol 0.001)
+04:01:45 E1 rine clean: fov512 132/1563
+04:01:54 E1 rine clean: fov512 232/1563
+04:02:03 E1 rine clean: fov512 332/1563
+04:02:09 E1 rine clean: fov512 432/1563
+04:02:17 E1 rine clean: fov512 532/1563
+04:02:23 E1 rine clean: fov512 632/1563
+04:02:30 E1 rine clean: fov512 732/1563
+04:02:34 E1 rine clean: fov512 832/1563
+04:02:39 E1 rine clean: fov512 932/1563
+04:02:46 E1 rine clean: fov512 1032/1563
+04:02:53 E1 rine clean: fov512 1132/1563
+04:03:01 E1 rine clean: fov512 1232/1563
+04:03:08 E1 rine clean: fov512 1332/1563
+04:03:16 E1 rine clean: fov512 1432/1563
+04:03:24 E1 rine clean: fov512 1532/1563
+04:03:26 E1 rine clean: fov512 1563/1563
+04:03:28 E1 rine jpeg75_resize05: orig re-score vs 007 stored: max|d|=4.44e-16
+04:03:31 E1 rine jpeg75_resize05: D-008 fov512 max|dlogit|=3.56e-05 (tol 0.001)
+04:03:40 E1 rine jpeg75_resize05: fov512 132/1563
+04:03:47 E1 rine jpeg75_resize05: fov512 232/1563
+04:03:54 E1 rine jpeg75_resize05: fov512 332/1563
+04:04:03 E1 rine jpeg75_resize05: fov512 432/1563
+04:04:11 E1 rine jpeg75_resize05: fov512 532/1563
+04:04:20 E1 rine jpeg75_resize05: fov512 632/1563
+04:04:28 E1 rine jpeg75_resize05: fov512 732/1563
+04:04:38 E1 rine jpeg75_resize05: fov512 832/1563
+04:04:46 E1 rine jpeg75_resize05: fov512 932/1563
+04:04:54 E1 rine jpeg75_resize05: fov512 1032/1563
+04:05:03 E1 rine jpeg75_resize05: fov512 1132/1563
+04:05:11 E1 rine jpeg75_resize05: fov512 1232/1563
+04:05:19 E1 rine jpeg75_resize05: fov512 1332/1563
+04:05:27 E1 rine jpeg75_resize05: fov512 1432/1563
+04:05:35 E1 rine jpeg75_resize05: fov512 1532/1563
+04:05:38 E1 rine jpeg75_resize05: fov512 1563/1563
+04:05:38 E1 clipdet: CPU reference (32 fov512 imgs x 2 conds)
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+04:07:29 E1 cpuref clipdet clean done in 106s
+04:08:56 E1 cpuref clipdet jpeg75_resize05 done in 86s
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+04:09:54 E1 clipdet clean: orig re-score vs 007 stored: max|d|=2.22e-16
+04:10:18 E1 clipdet clean: D-008 fov512 max|dlogit|=5.59e-05 (tol 0.001)
+04:11:48 E1 clipdet clean: fov512 132/1563
+04:12:59 E1 clipdet clean: fov512 232/1563
+04:13:57 E1 clipdet clean: fov512 332/1563
+04:27:18 E1 clipdet clean: fov512 432/1563
+04:27:46 E1 clipdet clean: fov512 532/1563
+04:28:18 E1 clipdet clean: fov512 632/1563
+04:28:34 E1 clipdet clean: fov512 732/1563
+04:28:50 E1 clipdet clean: fov512 832/1563
+04:29:05 E1 clipdet clean: fov512 932/1563
+04:29:21 E1 clipdet clean: fov512 1032/1563
+04:29:35 E1 clipdet clean: fov512 1132/1563
+04:29:48 E1 clipdet clean: fov512 1232/1563
+04:30:12 E1 clipdet clean: fov512 1332/1563
+04:32:14 E1 clipdet clean: fov512 1432/1563
+04:34:32 E1 clipdet clean: fov512 1532/1563
+04:34:40 E1 clipdet clean: fov512 1563/1563
+04:34:50 E1 clipdet jpeg75_resize05: orig re-score vs 007 stored: max|d|=8.33e-17
+04:34:57 E1 clipdet jpeg75_resize05: D-008 fov512 max|dlogit|=4.04e-05 (tol 0.001)
+04:35:23 E1 clipdet jpeg75_resize05: fov512 132/1563
+04:35:54 E1 clipdet jpeg75_resize05: fov512 232/1563
+04:36:23 E1 clipdet jpeg75_resize05: fov512 332/1563
+04:36:47 E1 clipdet jpeg75_resize05: fov512 432/1563
+04:37:16 E1 clipdet jpeg75_resize05: fov512 532/1563
+04:37:47 E1 clipdet jpeg75_resize05: fov512 632/1563
+04:38:13 E1 clipdet jpeg75_resize05: fov512 732/1563
+04:38:46 E1 clipdet jpeg75_resize05: fov512 832/1563
+04:39:18 E1 clipdet jpeg75_resize05: fov512 932/1563
+04:39:50 E1 clipdet jpeg75_resize05: fov512 1032/1563
+04:40:13 E1 clipdet jpeg75_resize05: fov512 1132/1563
+04:40:38 E1 clipdet jpeg75_resize05: fov512 1232/1563
+04:41:02 E1 clipdet jpeg75_resize05: fov512 1332/1563
+04:41:24 E1 clipdet jpeg75_resize05: fov512 1432/1563
+04:41:46 E1 clipdet jpeg75_resize05: fov512 1532/1563
+04:41:52 E1 clipdet jpeg75_resize05: fov512 1563/1563
+04:42:06 E1 done in 2994s -> /home/zera/project/Diffusion-Research/experiments/008-scale-sensitivity/pilot

@@ -200,3 +200,13 @@
     - Canonicalization costs 0.08–0.16 on clean images.
   - Reading: transfer attacks hurt even detectors outside the ensemble, and JPEG + resize does not undo them, consistent with Mavali.
   - Launching opus/high critic.
+- 2026-10-24 05:20 — E1 PILOT done (008-scale-sensitivity/pilot/; exploratory, pilot). 50 min GPU. D-008 ok: orig re-check vs 007 ~1e-15; fov512 CUDA vs CPU max |Δlogit| 5.8e-5.
+  - Scale-sensitive per Amendment 7 (|Δ| ≥ 0.03, CI excludes 0), Δ = AUROC(orig) − AUROC(fov512):
+    - clean: ClipDet −0.127 (0.780 vs 0.907). CommFor (+0.000), RINE (−0.000) and B0 (+0.010) are not sensitive.
+    - jpeg75_resize05: CommFor +0.062 (0.891 vs 0.828), RINE +0.228 (0.945 vs 0.717), ClipDet −0.217 (0.524 vs 0.742). B0 +0.001 is not sensitive.
+  - Texture baseline: orig 0.738–0.778 vs fov512 ~0.60.
+  - Cross-zoom 1%-FPR transfer, clean, test natives:
+    - B0 fixed probe (b0_trained_orig, extra): threshold set at orig, applied at fov512 → FPR 23.4% (within-arm 1.5%).
+    - CommFor: fov512 threshold applied at orig → FPR 6.4% (within 1.7%).
+  - Reading: the published detectors' AUROC moves by up to 0.23 with crop-vs-resize preprocessing, and thresholds don't survive a change of input scale. This bears directly on the phone-FPR target and on D-013.
+  - Launching opus/high critic.
