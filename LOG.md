@@ -320,3 +320,5 @@
   - Minor: Firefly files are JPEG q95 under .png names (kb/datasets/synthbuster.md says "all PNG").
   - notes.md corrected; KB idea updated.
 - 2026-10-24 19:31 — Timestamp correction: the two previous entries, stamped "19:30" (H-D2 pilot) and "20:10" (H-D2 critic), were written by the lead before 19:31. Those times were estimates, not clock readings. LOG order is still correct.
+- 2026-10-24 19:47 — grip.unina.it is BACK (watcher: HTTP 206 at 19:47; lead recheck 206 in 0.24 s). Started `env/bootstrap_data.py` in the background: RAISE 400, SD3.5/FLUX 300, latent-diffusion 300 and the B-Free weights, all pre-approved re-acquisitions under D-007. H-D1 is still running on the GPU.
+  - Plan once the download verifies: `--verify-only`, then SETUP_WSL step 6 (Phase 3 reproduction), then the official Phase 4 sequence (006/notes.md), after H-D1 frees the GPU.
