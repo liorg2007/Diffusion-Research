@@ -2,3 +2,234 @@
 10:12:54 fov512/communityforensics/clean: 1232/2047
 10:13:41 fov512/communityforensics/clean: 1332/2047
 10:14:24 fov512/communityforensics/clean: 1432/2047
+10:15:09 fov512/communityforensics/clean: 1532/2047
+10:15:55 fov512/communityforensics/clean: 1632/2047
+10:16:40 fov512/communityforensics/clean: 1732/2047
+10:17:23 fov512/communityforensics/clean: 1832/2047
+10:18:08 fov512/communityforensics/clean: 1932/2047
+10:18:34 fov512/communityforensics/clean: 2032/2047
+10:18:38 fov512/communityforensics/clean: 2047/2047
+10:20:24 cpuref fov512/communityforensics/jpeg75_resize05 105s
+10:20:39 fov512/communityforensics/jpeg75_resize05: D-008 max|dlogit|=8.49e-05 (n=32, tol 0.001)
+10:21:14 fov512/communityforensics/jpeg75_resize05: 132/1202
+10:21:47 fov512/communityforensics/jpeg75_resize05: 232/1202
+10:22:20 fov512/communityforensics/jpeg75_resize05: 332/1202
+10:22:56 fov512/communityforensics/jpeg75_resize05: 432/1202
+10:23:39 fov512/communityforensics/jpeg75_resize05: 532/1202
+10:24:18 fov512/communityforensics/jpeg75_resize05: 632/1202
+10:24:59 fov512/communityforensics/jpeg75_resize05: 732/1202
+10:25:39 fov512/communityforensics/jpeg75_resize05: 832/1202
+10:26:19 fov512/communityforensics/jpeg75_resize05: 932/1202
+10:27:01 fov512/communityforensics/jpeg75_resize05: 1032/1202
+10:27:44 fov512/communityforensics/jpeg75_resize05: 1132/1202
+10:28:16 fov512/communityforensics/jpeg75_resize05: 1202/1202
+10:30:06 cpuref fov512/communityforensics/screenshot_sim 109s
+10:30:21 fov512/communityforensics/screenshot_sim: D-008 max|dlogit|=3.62e-05 (n=32, tol 0.001)
+10:31:06 fov512/communityforensics/screenshot_sim: 132/358
+10:31:44 fov512/communityforensics/screenshot_sim: 232/358
+10:32:11 fov512/communityforensics/screenshot_sim: 332/358
+10:32:21 fov512/communityforensics/screenshot_sim: 358/358
+normalize RESNET
+10:35:33 cpuref fov512/bfree/clean 191s
+normalize RESNET
+10:36:04 fov512/bfree/clean: D-008 max|dlogit|=3.42e-05 (n=32, tol 0.001)
+10:36:41 fov512/bfree/clean: 132/2047
+10:37:22 fov512/bfree/clean: 232/2047
+10:38:08 fov512/bfree/clean: 332/2047
+10:38:42 fov512/bfree/clean: 432/2047
+10:39:24 fov512/bfree/clean: 532/2047
+10:39:55 fov512/bfree/clean: 632/2047
+10:40:29 fov512/bfree/clean: 732/2047
+10:41:02 fov512/bfree/clean: 832/2047
+10:41:28 fov512/bfree/clean: 932/2047
+10:42:06 fov512/bfree/clean: 1032/2047
+10:42:50 fov512/bfree/clean: 1132/2047
+10:43:20 fov512/bfree/clean: 1232/2047
+10:43:54 fov512/bfree/clean: 1332/2047
+10:44:29 fov512/bfree/clean: 1432/2047
+10:45:00 fov512/bfree/clean: 1532/2047
+10:45:35 fov512/bfree/clean: 1632/2047
+10:46:04 fov512/bfree/clean: 1732/2047
+10:46:39 fov512/bfree/clean: 1832/2047
+10:47:13 fov512/bfree/clean: 1932/2047
+10:47:55 fov512/bfree/clean: 2032/2047
+10:48:01 fov512/bfree/clean: 2047/2047
+normalize RESNET
+10:51:32 cpuref fov512/bfree/jpeg75_resize05 211s
+10:51:45 fov512/bfree/jpeg75_resize05: D-008 max|dlogit|=3.48e-05 (n=32, tol 0.001)
+10:52:25 fov512/bfree/jpeg75_resize05: 132/1202
+10:53:10 fov512/bfree/jpeg75_resize05: 232/1202
+10:53:45 fov512/bfree/jpeg75_resize05: 332/1202
+10:54:24 fov512/bfree/jpeg75_resize05: 432/1202
+10:54:57 fov512/bfree/jpeg75_resize05: 532/1202
+10:55:35 fov512/bfree/jpeg75_resize05: 632/1202
+10:56:07 fov512/bfree/jpeg75_resize05: 732/1202
+10:56:43 fov512/bfree/jpeg75_resize05: 832/1202
+10:57:10 fov512/bfree/jpeg75_resize05: 932/1202
+10:57:43 fov512/bfree/jpeg75_resize05: 1032/1202
+10:58:19 fov512/bfree/jpeg75_resize05: 1132/1202
+10:58:43 fov512/bfree/jpeg75_resize05: 1202/1202
+normalize RESNET
+11:07:56 cpuref fov512/bfree/screenshot_sim 552s
+11:08:11 fov512/bfree/screenshot_sim: D-008 max|dlogit|=9.16e-05 (n=32, tol 0.001)
+11:08:55 fov512/bfree/screenshot_sim: 132/358
+11:09:42 fov512/bfree/screenshot_sim: 232/358
+11:10:29 fov512/bfree/screenshot_sim: 332/358
+11:10:39 fov512/bfree/screenshot_sim: 358/358
+11:15:03 cpuref fov512/rine/clean 263s
+11:15:23 fov512/rine/clean: D-008 max|dlogit|=1.66e-05 (n=32, tol 0.001)
+11:16:04 fov512/rine/clean: 132/2047
+11:16:45 fov512/rine/clean: 232/2047
+11:17:29 fov512/rine/clean: 332/2047
+11:18:09 fov512/rine/clean: 432/2047
+11:18:52 fov512/rine/clean: 532/2047
+11:19:34 fov512/rine/clean: 632/2047
+11:20:14 fov512/rine/clean: 732/2047
+11:20:58 fov512/rine/clean: 832/2047
+11:21:41 fov512/rine/clean: 932/2047
+11:22:24 fov512/rine/clean: 1032/2047
+11:23:05 fov512/rine/clean: 1132/2047
+11:23:48 fov512/rine/clean: 1232/2047
+11:24:24 fov512/rine/clean: 1332/2047
+11:25:06 fov512/rine/clean: 1432/2047
+11:25:37 fov512/rine/clean: 1532/2047
+11:26:19 fov512/rine/clean: 1632/2047
+11:26:58 fov512/rine/clean: 1732/2047
+11:27:31 fov512/rine/clean: 1832/2047
+11:27:49 fov512/rine/clean: 1932/2047
+11:28:01 fov512/rine/clean: 2032/2047
+11:28:06 fov512/rine/clean: 2047/2047
+11:32:21 cpuref fov512/rine/jpeg75_resize05 255s
+11:32:37 fov512/rine/jpeg75_resize05: D-008 max|dlogit|=7.99e-06 (n=32, tol 0.001)
+11:33:10 fov512/rine/jpeg75_resize05: 132/1202
+11:33:43 fov512/rine/jpeg75_resize05: 232/1202
+11:34:29 fov512/rine/jpeg75_resize05: 332/1202
+11:35:11 fov512/rine/jpeg75_resize05: 432/1202
+11:35:48 fov512/rine/jpeg75_resize05: 532/1202
+11:36:24 fov512/rine/jpeg75_resize05: 632/1202
+11:36:49 fov512/rine/jpeg75_resize05: 732/1202
+11:36:57 fov512/rine/jpeg75_resize05: 832/1202
+11:37:25 fov512/rine/jpeg75_resize05: 932/1202
+11:37:51 fov512/rine/jpeg75_resize05: 1032/1202
+11:38:25 fov512/rine/jpeg75_resize05: 1132/1202
+11:38:47 fov512/rine/jpeg75_resize05: 1202/1202
+11:42:58 cpuref fov512/rine/screenshot_sim 250s
+11:43:06 fov512/rine/screenshot_sim: D-008 max|dlogit|=6.20e-06 (n=32, tol 0.001)
+11:43:34 fov512/rine/screenshot_sim: 132/358
+11:44:02 fov512/rine/screenshot_sim: 232/358
+11:44:37 fov512/rine/screenshot_sim: 332/358
+11:44:46 fov512/rine/screenshot_sim: 358/358
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+11:46:45 cpuref fov512/clipdet/clean 119s
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+11:46:59 fov512/clipdet/clean: D-008 max|dlogit|=2.49e-05 (n=32, tol 0.001)
+11:47:07 fov512/clipdet/clean: 132/2047
+11:47:14 fov512/clipdet/clean: 232/2047
+11:47:20 fov512/clipdet/clean: 332/2047
+11:47:24 fov512/clipdet/clean: 432/2047
+11:47:27 fov512/clipdet/clean: 532/2047
+11:47:29 fov512/clipdet/clean: 632/2047
+11:47:32 fov512/clipdet/clean: 732/2047
+11:47:34 fov512/clipdet/clean: 832/2047
+11:47:37 fov512/clipdet/clean: 932/2047
+11:47:39 fov512/clipdet/clean: 1032/2047
+11:47:42 fov512/clipdet/clean: 1132/2047
+11:47:44 fov512/clipdet/clean: 1232/2047
+11:47:47 fov512/clipdet/clean: 1332/2047
+11:47:49 fov512/clipdet/clean: 1432/2047
+11:47:52 fov512/clipdet/clean: 1532/2047
+11:47:54 fov512/clipdet/clean: 1632/2047
+11:47:59 fov512/clipdet/clean: 1732/2047
+11:48:01 fov512/clipdet/clean: 1832/2047
+11:48:04 fov512/clipdet/clean: 1932/2047
+11:48:06 fov512/clipdet/clean: 2032/2047
+11:48:06 fov512/clipdet/clean: 2047/2047
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+11:48:23 cpuref fov512/clipdet/jpeg75_resize05 16s
+11:48:24 fov512/clipdet/jpeg75_resize05: D-008 max|dlogit|=1.18e-04 (n=32, tol 0.001)
+11:48:27 fov512/clipdet/jpeg75_resize05: 132/1202
+11:48:31 fov512/clipdet/jpeg75_resize05: 232/1202
+11:48:34 fov512/clipdet/jpeg75_resize05: 332/1202
+11:48:36 fov512/clipdet/jpeg75_resize05: 432/1202
+11:48:39 fov512/clipdet/jpeg75_resize05: 532/1202
+11:48:41 fov512/clipdet/jpeg75_resize05: 632/1202
+11:48:44 fov512/clipdet/jpeg75_resize05: 732/1202
+11:48:46 fov512/clipdet/jpeg75_resize05: 832/1202
+11:48:49 fov512/clipdet/jpeg75_resize05: 932/1202
+11:48:52 fov512/clipdet/jpeg75_resize05: 1032/1202
+11:48:54 fov512/clipdet/jpeg75_resize05: 1132/1202
+11:48:56 fov512/clipdet/jpeg75_resize05: 1202/1202
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+11:49:14 cpuref fov512/clipdet/screenshot_sim 18s
+11:49:16 fov512/clipdet/screenshot_sim: D-008 max|dlogit|=2.69e-05 (n=32, tol 0.001)
+11:49:18 fov512/clipdet/screenshot_sim: 132/358
+11:49:21 fov512/clipdet/screenshot_sim: 232/358
+11:49:23 fov512/clipdet/screenshot_sim: 332/358
+11:49:24 fov512/clipdet/screenshot_sim: 358/358
+11:49:27 wrote scores_long_fov512.csv.gz rows=21642
+done fov512
+# RAISE descriptive group, arm fov512 (n=259 RAISE reals; thresholds fit on VISION clean reals; NOT in any verdict)
+
+| detector | cond | M0 | M1 | pooled@1% | wg_platform@1% | wg_platform_brand50@1% | pooled@5% | wg_platform@5% |
+|---|---|---|---|---|---|---|---|---|
+| B0 | clean | 37.5% [31.5,43.7] | 13.9% [9.9,18.7] | 1.2% [0.2,3.3] | 0.4% [0.0,2.1] | 0.4% [0.0,2.1] | 19.3% [14.7,24.6] | 15.8% [11.6,20.9] |
+| B0 | jpeg75_resize05 | 35.5% [29.7,41.7] | 10.8% [7.3,15.2] | 0.4% [0.0,2.1] | 0.4% [0.0,2.1] | 0.4% [0.0,2.1] | 17.4% [13.0,22.5] | 13.9% [9.9,18.7] |
+| B0_twinfree | clean | 20.5% [15.7,25.9] | 12.7% [8.9,17.4] | 1.2% [0.2,3.3] | 1.2% [0.2,3.3] | 0.8% [0.1,2.8] | 20.8% [16.1,26.3] | 18.9% [14.3,24.2] |
+| B0_twinfree | jpeg75_resize05 | 15.4% [11.3,20.4] | 9.3% [6.0,13.5] | 0.4% [0.0,2.1] | 0.4% [0.0,2.1] | 0.4% [0.0,2.1] | 16.2% [11.9,21.3] | 14.7% [10.6,19.6] |
+| bfree | clean | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] |
+| bfree | jpeg75_resize05 | 13.1% [9.3,17.9] | 10.8% [7.3,15.2] | 2.7% [1.1,5.5] | 0.4% [0.0,2.1] | 0.0% [0.0,1.4] | 13.9% [9.9,18.7] | 8.1% [5.1,12.1] |
+| clipdet | clean | 5.4% [3.0,8.9] | 0.0% [0.0,1.4] | 0.8% [0.1,2.8] | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] | 5.4% [3.0,8.9] | 4.6% [2.4,8.0] |
+| clipdet | jpeg75_resize05 | 12.0% [8.3,16.6] | 0.0% [0.0,1.4] | 1.9% [0.6,4.4] | 0.0% [0.0,1.4] | 0.0% [0.0,1.4] | 10.8% [7.3,15.2] | 6.2% [3.6,9.8] |
+| communityforensics | clean | 6.2% [3.6,9.8] | 42.1% [36.0,48.4] | 7.7% [4.8,11.7] | 7.3% [4.5,11.2] | 0.4% [0.0,2.1] | 48.6% [42.4,54.9] | 39.0% [33.0,45.2] |
+| communityforensics | jpeg75_resize05 | 0.8% [0.1,2.8] | 3.1% [1.3,6.0] | 0.8% [0.1,2.8] | 0.8% [0.1,2.8] | 0.0% [0.0,1.4] | 4.2% [2.1,7.5] | 2.7% [1.1,5.5] |
+| rine | clean | 5.0% [2.7,8.4] | 8.5% [5.4,12.6] | 2.3% [0.9,5.0] | 0.8% [0.1,2.8] | 0.0% [0.0,1.4] | 14.7% [10.6,19.6] | 4.6% [2.4,8.0] |
+| rine | jpeg75_resize05 | 25.1% [19.9,30.8] | 41.3% [35.3,47.6] | 14.3% [10.3,19.1] | 4.2% [2.1,7.5] | 1.9% [0.6,4.4] | 52.9% [46.6,59.1] | 23.9% [18.9,29.6] |
+# Summary OFFICIAL H2-v2, arm fov512
+
+## PRIMARY: platform-only groups, min-group 100
+| detector | LODO pooled FPR M1 / M2(pooled@1%) / wg@1% | worst-platform FPR (LOPO view) M1 / M2 / wg@1% | worst-group FPR M2 / wg | TPR clean M2 -> wg@1% | TPR jpeg M2 -> wg | clipped wg share @1% | verdict | problem real |
+|---|---|---|---|---|---|---|---|---|
+| B0 | 3.85% / 1.68% / 1.56% | 4.19% (native) / 1.68% (native) / 1.68% (native) | 1.68% / 1.68% | 22.21% -> 18.26% | 17.02% -> 14.30% | 0.00 | NOT_SUPPORTED (0 CI<0, 4 diff>=0) | True |
+| B0_twinfree | 3.69% / 1.79% / 1.79% | 4.19% (WA) / 1.96% (native) / 1.96% (native) | 1.96% / 1.96% | 22.08% -> 18.02% | 16.79% -> 14.98% | 0.00 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| bfree | 6.59% / 1.68% / 0.95% | 12.01% (jpeg75_resize05) / 3.63% (jpeg75_resize05) / 1.68% (jpeg75_resize05) | 3.63% / 1.68% | 52.73% -> 46.63% | 16.73% -> 10.19% | 0.00 | INCONCLUSIVE (0 CI<0, 2 diff>=0) | True |
+| clipdet | 0.06% / 2.63% / 1.79% | 0.28% (screenshot_sim) / 6.15% (jpeg75_resize05) / 4.19% (jpeg75_resize05) | 6.15% / 4.19% | 21.84% -> 15.90% | 18.71% -> 12.30% | 0.00 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| communityforensics | 5.87% / 1.51% / 1.28% | 8.66% (screenshot_sim) / 2.51% (screenshot_sim) / 1.96% (screenshot_sim) | 2.51% / 1.96% | 82.74% -> 82.14% | 16.37% -> 15.73% | 0.00 | INCONCLUSIVE (0 CI<0, 2 diff>=0) | True |
+| rine | 10.56% / 3.41% / 1.34% | 29.61% (jpeg75_resize05) / 6.70% (jpeg75_resize05) / 5.03% (native) | 6.70% / 5.03% | 34.24% -> 24.18% | 26.29% -> 14.65% | 0.00 | NOT_SUPPORTED (1 CI<0, 3 diff>=0) | True |
+
+## SENSITIVITY: grouping platform_brand, min-group 50
+| detector | LODO pooled FPR M1 / M2(pooled@1%) / wg@1% | worst-platform FPR (LOPO view) M1 / M2 / wg@1% | worst-group FPR M2 / wg | TPR clean M2 -> wg@1% | TPR jpeg M2 -> wg | clipped wg share @1% | verdict | problem real |
+|---|---|---|---|---|---|---|---|---|
+| B0 | 3.85% / 1.68% / 0.89% | 4.19% (native) / 1.68% (native) / 1.12% (native) | 5.22% / 3.48% | 22.21% -> 14.52% | 17.02% -> 11.39% | 0.57 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| B0_twinfree | 3.69% / 1.79% / 0.84% | 4.19% (WA) / 1.96% (native) / 1.12% (native) | 6.09% / 3.48% | 22.08% -> 12.63% | 16.79% -> 11.34% | 0.57 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| bfree | 6.59% / 1.68% / 0.22% | 12.01% (jpeg75_resize05) / 3.63% (jpeg75_resize05) / 0.56% (jpeg75_resize05) | 10.53% / 1.75% | 52.73% -> 39.16% | 16.73% -> 4.97% | 0.57 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| clipdet | 0.06% / 2.63% / 0.61% | 0.28% (screenshot_sim) / 6.15% (jpeg75_resize05) / 1.40% (jpeg75_resize05) | 19.30% / 5.26% | 21.84% -> 8.43% | 18.71% -> 4.92% | 0.57 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| communityforensics | 5.87% / 1.51% / 0.17% | 8.66% (screenshot_sim) / 2.51% (screenshot_sim) / 0.28% (native) | 7.02% / 0.87% | 82.74% -> 63.00% | 16.37% -> 7.03% | 0.57 | NOT_SUPPORTED (0 CI<0, 4 diff>=0) | True |
+| rine | 10.56% / 3.41% / 0.84% | 29.61% (jpeg75_resize05) / 6.70% (jpeg75_resize05) / 3.63% (native) | 14.04% / 14.04% | 34.24% -> 18.39% | 26.29% -> 10.64% | 0.57 | NOT_SUPPORTED (0 CI<0, 4 diff>=0) | True |
+
+## SENSITIVITY: grouping platform, min-group 50
+| detector | LODO pooled FPR M1 / M2(pooled@1%) / wg@1% | worst-platform FPR (LOPO view) M1 / M2 / wg@1% | worst-group FPR M2 / wg | TPR clean M2 -> wg@1% | TPR jpeg M2 -> wg | clipped wg share @1% | verdict | problem real |
+|---|---|---|---|---|---|---|---|---|
+| B0 | 3.85% / 1.68% / 1.56% | 4.19% (native) / 1.68% (native) / 1.68% (native) | 1.68% / 1.68% | 22.21% -> 18.26% | 17.02% -> 14.30% | 0.00 | NOT_SUPPORTED (0 CI<0, 4 diff>=0) | True |
+| B0_twinfree | 3.69% / 1.79% / 1.79% | 4.19% (WA) / 1.96% (native) / 1.96% (native) | 1.96% / 1.96% | 22.08% -> 18.02% | 16.79% -> 14.98% | 0.00 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| bfree | 6.59% / 1.68% / 0.95% | 12.01% (jpeg75_resize05) / 3.63% (jpeg75_resize05) / 1.68% (jpeg75_resize05) | 3.63% / 1.68% | 52.73% -> 46.63% | 16.73% -> 10.19% | 0.00 | INCONCLUSIVE (0 CI<0, 2 diff>=0) | True |
+| clipdet | 0.06% / 2.63% / 1.79% | 0.28% (screenshot_sim) / 6.15% (jpeg75_resize05) / 4.19% (jpeg75_resize05) | 6.15% / 4.19% | 21.84% -> 15.90% | 18.71% -> 12.30% | 0.00 | NOT_SUPPORTED (0 CI<0, 3 diff>=0) | True |
+| communityforensics | 5.87% / 1.51% / 1.28% | 8.66% (screenshot_sim) / 2.51% (screenshot_sim) / 1.96% (screenshot_sim) | 2.51% / 1.96% | 82.74% -> 82.14% | 16.37% -> 15.73% | 0.00 | INCONCLUSIVE (0 CI<0, 2 diff>=0) | True |
+| rine | 10.56% / 3.41% / 1.34% | 29.61% (jpeg75_resize05) / 6.70% (jpeg75_resize05) / 5.03% (native) | 6.70% / 5.03% | 34.24% -> 24.18% | 26.29% -> 14.65% | 0.00 | NOT_SUPPORTED (1 CI<0, 3 diff>=0) | True |
+
+## Verdict robustness (Amendment 13): primary verdict with Firefly out / each generator dropped
+| detector | full | dalle2 | dalle3 | firefly | flux | midjourney-v5 | sd3_large | stable-diffusion-2 | stable-diffusion-xl |
+|---|---|---|---|---|---|---|---|---|---|
+| B0 | NS | NS | NS | NS | NS | NS | NS | NS | NS |
+| B0_twinfree | NS | NS | NS | NS | NS | NS | NS | NS | NS |
+| bfree | INC | INC | INC | INC | INC | INC | INC | INC | INC |
+| clipdet | NS | NS | INC | INC | NS | NS | NS | INC | NS |
+| communityforensics | INC | INC | INC | INC | INC | INC | INC | INC | INC |
+| rine | NS | NS | NS | NS | NS | NS | NS | NS | NS |
+
+Sensitivity (brand-50) with Firefly out: B0: NOT_SUPPORTED; B0_twinfree: NOT_SUPPORTED; bfree: NOT_SUPPORTED; clipdet: NOT_SUPPORTED; communityforensics: NOT_SUPPORTED; rine: NOT_SUPPORTED
+Primary groups: FBH n=358; WA n=358; native n=358
+Sensitivity groups: FBH/Apple n=99; FBH/Huawei n=57; FBH/Samsung n=87; FBH/other n=115; WA/Apple n=99; WA/Huawei n=57; WA/Samsung n=87; WA/other n=115; native/Apple n=99; native/Huawei n=57; native/Samsung n=87; native/other n=115

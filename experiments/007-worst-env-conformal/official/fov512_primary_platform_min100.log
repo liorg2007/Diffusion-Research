@@ -1,0 +1,7 @@
+B0 {'platform': 'NOT_SUPPORTED'}
+B0_twinfree {'platform': 'NOT_SUPPORTED'}
+bfree {'platform': 'INCONCLUSIVE'}
+clipdet {'platform': 'NOT_SUPPORTED'}
+communityforensics {'platform': 'INCONCLUSIVE'}
+rine {'platform': 'NOT_SUPPORTED'}
+wrote /home/zera/project/Diffusion-Research/experiments/007-worst-env-conformal/official/fov512_primary_platform_min100/results_v2_scores_long_fov512.json /home/zera/project/Diffusion-Research/experiments/007-worst-env-conformal/official/fov512_primary_platform_min100/tables_v2_scores_long_fov512.md

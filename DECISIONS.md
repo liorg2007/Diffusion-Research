@@ -111,3 +111,13 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - **Still ask the owner first** for: a single item over 5 GB, any gated or restrictive licence (e.g. DINOv3's gated licence), anything paid, and installs outside the venv.
 - **Every large item** (> 100 MB) gets a row in `env/STORAGE.md`: purpose, size, keep/delete status. Items no experiment needs are deleted, provided their results and the code to regenerate them are committed. Downloads keep their `env/SOURCES.md` rows even after deletion.
 - **First clean-up (2026-10-24):** deleted the confounded E1b `du2` crops (data/processed/du2512, 587 MB) and features (004 cache pilot_du2, 81 MB). Results and code are committed (008/pilot_du2).
+
+**D-016 — Stop rule reached; owner instructs to continue (2026-10-25 20:19)**
+- Official Phase 4 failures under Amendment 13 counting (FAIL / REFUTED / NOT_SUPPORTED):
+  - H4 REFUTED (006/official);
+  - H1 FAIL in all 4 runs (005/official);
+  - H2-v2 NOT_SUPPORTED for its primary A0 (also for B0, A1 and A2; 007/official).
+- That is 3 failed hypotheses, which triggers CLAUDE.md's "stop after 3 failed hypotheses".
+- In the same session, the owner wrote: "So continue working, you got it! You are very good and keeping exploring the directions that may lead to the signals we are looking for."
+- Taken as an explicit owner override of the stop rule for continued exploration. The Phase 4 hypothesis tests are closed; their verdicts stand and go into the report.
+- Further work is exploratory, focused on the E5 lead (a laundering-surviving distribution difference in mid-level DINOv2 features). It is still pre-registered and critiqued, and every result is labelled exploratory until a confirmatory test on a new real-photo pipeline.

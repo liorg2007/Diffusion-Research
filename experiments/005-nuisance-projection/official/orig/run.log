@@ -1,0 +1,31 @@
+10:05:09 OFFICIAL rows 2919 pairs 99 b0_train reals 239
+10:06:04 OFFICIAL primary: k*=182 (centered 184); mean-shift energy frac 0.020
+/home/zera/project/Diffusion-Research/experiments/005-nuisance-projection/run.py:170: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  hist.append(dict(epoch=ep, loss=float(loss), inv=float(inv), var=float(var), cov=float(cov)))
+10:07:57 OFFICIAL A4/full: n_train=6740 C=0.0001
+10:09:29 OFFICIAL A4/logo_dalle2: n_train=6140 C=0.0001
+10:10:56 OFFICIAL A4/logo_dalle3: n_train=6140 C=0.0001
+10:12:18 OFFICIAL A4/logo_firefly: n_train=6140 C=0.0001
+10:13:45 OFFICIAL A4/logo_midjourney-v5: n_train=6140 C=0.0001
+10:15:14 OFFICIAL A4/logo_stable-diffusion-2: n_train=6140 C=0.0001
+10:16:41 OFFICIAL A4/logo_stable-diffusion-xl: n_train=6140 C=0.0001
+10:18:06 OFFICIAL A4/logo_sd3_large: n_train=5990 C=0.0001
+10:25:06 OFFICIAL secondary: k*=155 (centered 179); mean-shift energy frac 0.153
+10:26:02 OFFICIAL A1_sec/full: n_train=6740 C=1
+10:26:49 OFFICIAL A1_sec/logo_dalle2: n_train=6140 C=0.001
+10:27:43 OFFICIAL A1_sec/logo_dalle3: n_train=6140 C=0.1
+10:28:33 OFFICIAL A1_sec/logo_firefly: n_train=6140 C=0.1
+10:29:26 OFFICIAL A1_sec/logo_midjourney-v5: n_train=6140 C=0.1
+10:30:17 OFFICIAL A1_sec/logo_stable-diffusion-2: n_train=6140 C=1
+10:31:06 OFFICIAL A1_sec/logo_stable-diffusion-xl: n_train=6140 C=1
+10:31:50 OFFICIAL A1_sec/logo_sd3_large: n_train=5990 C=0.01
+10:32:43 OFFICIAL A2_sec/full: n_train=6740 C=0.1
+10:33:24 OFFICIAL A2_sec/logo_dalle2: n_train=6140 C=0.01
+10:34:04 OFFICIAL A2_sec/logo_dalle3: n_train=6140 C=0.1
+10:34:44 OFFICIAL A2_sec/logo_firefly: n_train=6140 C=0.1
+10:35:18 OFFICIAL A2_sec/logo_midjourney-v5: n_train=6140 C=1
+10:35:54 OFFICIAL A2_sec/logo_stable-diffusion-2: n_train=6140 C=1
+10:36:35 OFFICIAL A2_sec/logo_stable-diffusion-xl: n_train=6140 C=0.1
+10:37:15 OFFICIAL A2_sec/logo_sd3_large: n_train=5990 C=0.01
+10:41:05 OFFICIAL verdict FAIL | gain -0.0319 | A0 clean 0.9508

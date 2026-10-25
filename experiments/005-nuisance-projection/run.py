@@ -19,6 +19,8 @@ Options (all additive; the defaults reproduce the original pilot byte for byte, 
     --per-pool          LOGO tables per real pool (native / WA / FBH / RAISE when present), with CIs under --group-bootstrap
     --headroom-rule     Amendment 3: the +0.03 criterion applies only if A1 LOGO-macro AUROC at jpeg75_resize05 on the
                         primary reals is <= 0.96; otherwise verdict = UNINFORMATIVE_NO_HEADROOM
+    --twin-disjoint     Amendment 13 sensitivity: drop from TRAINING (all models, A0..A4) every fake whose RAISE caption-twin id
+                        (r<hex>t in the file name) equals a calib or test RAISE real. Reals, projector deltas, calib/test untouched.
     --primary-pools P   comma list of pool names forming the primary reals (default vision_native)
 """
 import argparse
@@ -53,6 +55,8 @@ PER_POOL = False
 HEADROOM = False
 PRIMARY_POOLS = ("vision_native",)
 HELDOUT = []
+TWIN_DISJOINT = False
+TWIN_DROP = None      # bool mask over df rows (set in main when TWIN_DISJOINT)
 ARM_FILTER = None
 HEADROOM_AUROC = 0.96
 POOLS = [("vision_native", "native"), ("vision_whatsapp", "WA"), ("vision_facebook_hq", "FBH"), ("raise", "RAISE")]
@@ -193,6 +197,8 @@ def run_arm(name, df, T, Zev, Zgrid, aug):
     for m in MODELS:
         g = None if m == "full" else m[5:]
         keep = b0idx if g is None else b0idx[gen[b0idx] != g]
+        if TWIN_DROP is not None:
+            keep = keep[~TWIN_DROP[keep]]
         Xtr = [Xev["clean"][keep]]
         ytr = [lab[keep]]
         if aug:
@@ -357,6 +363,15 @@ def drift(df, s_full_clean, fpr=0.05):
 NEWMODE = False       # any of the Amendment-3 options active -> extra keys in results.json / tables.md
 
 
+def twin_drop_mask(df):
+    """Train fakes whose RAISE caption-twin id (r<hex>t in the file name of src_path; fakes are named after the RAISE image
+    whose caption prompted them) is the id of a calib or test RAISE real (same regex as 006 critic_checks/c4)."""
+    import os, re
+    rid = np.array([(re.search(r"(r[0-9a-f]{8,}t)", os.path.basename(p)) or [None, ""])[1] for p in df.src_path])
+    ev = set(rid[(df.pool.to_numpy() == "raise") & df.split.isin(["calib", "test"]).to_numpy()]) - {""}
+    return (df.label.to_numpy() == 1) & (df.split.to_numpy() == "train") & np.isin(rid, list(ev))
+
+
 def check_cache_opts(opts):
     """A score cache is only valid for the option set that produced it. A cache without opts.json is the original
     default pilot cache."""
@@ -375,12 +390,19 @@ def check_cache_opts(opts):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True); CACHE.mkdir(parents=True, exist_ok=True)
-    check_cache_opts(dict(subdir=SUBDIR, splits=str(SPLITS), grouped_cv=GROUPED_CV, balanced=BALANCED,
-                          generators=list(GENS)))
+    opts = dict(subdir=SUBDIR, splits=str(SPLITS), grouped_cv=GROUPED_CV, balanced=BALANCED, generators=list(GENS))
+    if TWIN_DISJOINT:
+        opts["twin_disjoint"] = True
+    check_cache_opts(opts)
     want = lambda name: ARM_FILTER is None or name in ARM_FILTER
     need_sec = want("A1_sec") or want("A2_sec")
     df, D = load_data(("primary", "secondary") if need_sec else ("primary",))
     nat, wa, fb = pair_indices(df)
+    global TWIN_DROP
+    if TWIN_DISJOINT:
+        TWIN_DROP = twin_drop_mask(df)
+        log("twin-disjoint: dropping", int(TWIN_DROP.sum()), "train fakes",
+            {g: int(TWIN_DROP[df.generator.to_numpy() == g].sum()) for g in sorted(set(df.generator[TWIN_DROP]))})
     rtr = real_train_indices(df, nat)     # == nat in the pilot; + RAISE train reals in the official run
     log("rows", len(df), "pairs", len(nat), "b0_train reals", len(rtr))
     ARMS = {}          # name -> scores
@@ -447,7 +469,7 @@ def main():
         res["options"] = dict(subdir=SUBDIR, splits=str(SPLITS.relative_to(ROOT)) if SPLITS.is_relative_to(ROOT) else str(SPLITS),
                               grouped_cv=GROUPED_CV, balanced=BALANCED, group_bootstrap=GROUP_BOOT, per_pool=PER_POOL,
                               headroom_rule=HEADROOM, primary_pools=list(PRIMARY_POOLS), generators=list(GENS),
-                              heldout_generators=list(HELDOUT), arms=sorted(ARMS), n_boot=N_BOOT,
+                              heldout_generators=list(HELDOUT), twin_disjoint=TWIN_DISJOINT, arms=sorted(ARMS), n_boot=N_BOOT,
                               bootstrap=("cluster: reals by device (RAISE per image), fakes by image stratified per "
                                          "generator" if GROUP_BOOT else "image-level (original pilot bootstrap)"))
     for a, S in ARMS.items():
@@ -680,13 +702,14 @@ def parse(argv=None):
     ap.add_argument("--group-bootstrap", action="store_true")
     ap.add_argument("--per-pool", action="store_true")
     ap.add_argument("--headroom-rule", action="store_true")
+    ap.add_argument("--twin-disjoint", action="store_true")
     ap.add_argument("--primary-pools", default="vision_native")
     return ap.parse_args(argv)
 
 
 def configure(a):
     global OUT, CACHE, SPLITS, SUBDIR, LABEL, GROUPED_CV, BALANCED, GROUP_BOOT, PER_POOL, HEADROOM, PRIMARY_POOLS
-    global HELDOUT, ARM_FILTER, GENS, MODELS, NEWMODE
+    global HELDOUT, ARM_FILTER, GENS, MODELS, NEWMODE, TWIN_DISJOINT
     OUT, SPLITS = Path(a.out_dir).resolve(), Path(a.splits).resolve()
     CACHE = OUT / "cache"
     SUBDIR, LABEL = a.subdir, a.label
@@ -694,12 +717,13 @@ def configure(a):
                                                             a.headroom_rule)
     PRIMARY_POOLS = tuple(x for x in a.primary_pools.split(",") if x)
     HELDOUT = list(a.heldout_generators)
+    TWIN_DISJOINT = a.twin_disjoint
     ARM_FILTER = a.arms
     if a.generators:
         GENS = list(a.generators)
         MODELS = ["full"] + [f"logo_{g}" for g in GENS]
     NEWMODE = bool(GROUPED_CV or BALANCED or GROUP_BOOT or PER_POOL or HEADROOM or HELDOUT or ARM_FILTER
-                   or a.generators or LABEL != "PILOT" or PRIMARY_POOLS != ("vision_native",))
+                   or a.generators or LABEL != "PILOT" or PRIMARY_POOLS != ("vision_native",) or TWIN_DISJOINT)
 
 
 if __name__ == "__main__":

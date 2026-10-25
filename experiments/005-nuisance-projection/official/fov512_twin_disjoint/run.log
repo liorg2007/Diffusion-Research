@@ -1,0 +1,96 @@
+10:59:20 OFFICIAL twin-disjoint: dropping 217 train fakes {'dalle2': 37, 'dalle3': 36, 'firefly': 29, 'midjourney-v5': 34, 'sd3_large': 48, 'stable-diffusion-2': 17, 'stable-diffusion-xl': 16}
+10:59:20 OFFICIAL rows 2919 pairs 99 b0_train reals 239
+10:59:39 OFFICIAL primary: k*=186 (centered 189); mean-shift energy frac 0.024
+11:00:02 OFFICIAL A0/full: n_train=457 C=0.01
+11:00:28 OFFICIAL A0/logo_dalle2: n_train=434 C=0.01
+11:00:54 OFFICIAL A0/logo_dalle3: n_train=433 C=0.01
+11:01:22 OFFICIAL A0/logo_firefly: n_train=426 C=0.01
+11:01:50 OFFICIAL A0/logo_midjourney-v5: n_train=431 C=0.01
+11:02:19 OFFICIAL A0/logo_stable-diffusion-2: n_train=414 C=0.01
+11:02:50 OFFICIAL A0/logo_stable-diffusion-xl: n_train=413 C=0.01
+11:03:16 OFFICIAL A0/logo_sd3_large: n_train=430 C=0.01
+11:03:43 OFFICIAL A1/full: n_train=4570 C=0.001
+11:04:13 OFFICIAL A1/logo_dalle2: n_train=4340 C=0.001
+11:04:44 OFFICIAL A1/logo_dalle3: n_train=4330 C=0.001
+11:05:13 OFFICIAL A1/logo_firefly: n_train=4260 C=0.001
+11:05:42 OFFICIAL A1/logo_midjourney-v5: n_train=4310 C=0.01
+11:06:14 OFFICIAL A1/logo_stable-diffusion-2: n_train=4140 C=0.001
+11:06:45 OFFICIAL A1/logo_stable-diffusion-xl: n_train=4130 C=0.001
+11:07:15 OFFICIAL A1/logo_sd3_large: n_train=4300 C=0.001
+11:07:43 OFFICIAL A2/full: n_train=4570 C=0.001
+11:08:08 OFFICIAL A2/logo_dalle2: n_train=4340 C=0.001
+11:08:33 OFFICIAL A2/logo_dalle3: n_train=4330 C=0.001
+11:08:59 OFFICIAL A2/logo_firefly: n_train=4260 C=0.001
+11:09:24 OFFICIAL A2/logo_midjourney-v5: n_train=4310 C=0.001
+11:09:50 OFFICIAL A2/logo_stable-diffusion-2: n_train=4140 C=0.001
+11:10:14 OFFICIAL A2/logo_stable-diffusion-xl: n_train=4130 C=0.001
+11:10:38 OFFICIAL A2/logo_sd3_large: n_train=4300 C=0.001
+11:11:00 OFFICIAL A3/full: n_train=457 C=0.001
+11:11:22 OFFICIAL A3/logo_dalle2: n_train=434 C=0.01
+11:11:47 OFFICIAL A3/logo_dalle3: n_train=433 C=0.001
+11:12:12 OFFICIAL A3/logo_firefly: n_train=426 C=0.01
+11:12:36 OFFICIAL A3/logo_midjourney-v5: n_train=431 C=0.01
+11:13:01 OFFICIAL A3/logo_stable-diffusion-2: n_train=414 C=0.001
+11:13:29 OFFICIAL A3/logo_stable-diffusion-xl: n_train=413 C=0.01
+11:13:55 OFFICIAL A3/logo_sd3_large: n_train=430 C=0.01
+11:14:23 OFFICIAL A2_k16/full: n_train=4570 C=0.001
+11:14:50 OFFICIAL A2_k16/logo_dalle2: n_train=4340 C=0.001
+11:15:14 OFFICIAL A2_k16/logo_dalle3: n_train=4330 C=0.01
+11:15:42 OFFICIAL A2_k16/logo_firefly: n_train=4260 C=0.001
+11:16:07 OFFICIAL A2_k16/logo_midjourney-v5: n_train=4310 C=0.01
+11:16:37 OFFICIAL A2_k16/logo_stable-diffusion-2: n_train=4140 C=0.001
+11:17:06 OFFICIAL A2_k16/logo_stable-diffusion-xl: n_train=4130 C=0.001
+11:17:31 OFFICIAL A2_k16/logo_sd3_large: n_train=4300 C=0.001
+11:17:59 OFFICIAL A2_k64/full: n_train=4570 C=0.001
+11:18:25 OFFICIAL A2_k64/logo_dalle2: n_train=4340 C=0.001
+11:18:54 OFFICIAL A2_k64/logo_dalle3: n_train=4330 C=0.01
+11:19:21 OFFICIAL A2_k64/logo_firefly: n_train=4260 C=0.001
+11:19:46 OFFICIAL A2_k64/logo_midjourney-v5: n_train=4310 C=10
+11:20:15 OFFICIAL A2_k64/logo_stable-diffusion-2: n_train=4140 C=0.001
+11:20:45 OFFICIAL A2_k64/logo_stable-diffusion-xl: n_train=4130 C=0.01
+11:21:12 OFFICIAL A2_k64/logo_sd3_large: n_train=4300 C=0.001
+11:21:39 OFFICIAL A2_k256/full: n_train=4570 C=0.001
+11:22:00 OFFICIAL A2_k256/logo_dalle2: n_train=4340 C=0.001
+11:22:23 OFFICIAL A2_k256/logo_dalle3: n_train=4330 C=0.001
+11:22:50 OFFICIAL A2_k256/logo_firefly: n_train=4260 C=0.001
+11:23:16 OFFICIAL A2_k256/logo_midjourney-v5: n_train=4310 C=0.001
+11:23:41 OFFICIAL A2_k256/logo_stable-diffusion-2: n_train=4140 C=0.001
+11:24:08 OFFICIAL A2_k256/logo_stable-diffusion-xl: n_train=4130 C=0.001
+11:24:31 OFFICIAL A2_k256/logo_sd3_large: n_train=4300 C=0.001
+11:24:58 OFFICIAL A2c/full: n_train=4570 C=0.001
+11:25:21 OFFICIAL A2c/logo_dalle2: n_train=4340 C=0.001
+11:25:45 OFFICIAL A2c/logo_dalle3: n_train=4330 C=0.001
+11:26:11 OFFICIAL A2c/logo_firefly: n_train=4260 C=0.001
+11:26:38 OFFICIAL A2c/logo_midjourney-v5: n_train=4310 C=0.001
+11:27:00 OFFICIAL A2c/logo_stable-diffusion-2: n_train=4140 C=0.001
+11:27:23 OFFICIAL A2c/logo_stable-diffusion-xl: n_train=4130 C=0.001
+11:27:43 OFFICIAL A2c/logo_sd3_large: n_train=4300 C=0.001
+/home/zera/project/Diffusion-Research/experiments/005-nuisance-projection/run.py:170: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  hist.append(dict(epoch=ep, loss=float(loss), inv=float(inv), var=float(var), cov=float(cov)))
+11:28:57 OFFICIAL A4/full: n_train=4570 C=0.0001
+11:29:41 OFFICIAL A4/logo_dalle2: n_train=4340 C=0.0001
+11:30:41 OFFICIAL A4/logo_dalle3: n_train=4330 C=0.0001
+11:31:40 OFFICIAL A4/logo_firefly: n_train=4260 C=0.0001
+11:32:32 OFFICIAL A4/logo_midjourney-v5: n_train=4310 C=0.0001
+11:33:33 OFFICIAL A4/logo_stable-diffusion-2: n_train=4140 C=0.0001
+11:34:40 OFFICIAL A4/logo_stable-diffusion-xl: n_train=4130 C=0.0001
+11:35:45 OFFICIAL A4/logo_sd3_large: n_train=4300 C=0.0001
+11:39:02 OFFICIAL secondary: k*=134 (centered 180); mean-shift energy frac 0.274
+11:39:40 OFFICIAL A1_sec/full: n_train=4570 C=0.01
+11:40:15 OFFICIAL A1_sec/logo_dalle2: n_train=4340 C=1
+11:40:49 OFFICIAL A1_sec/logo_dalle3: n_train=4330 C=0.01
+11:41:24 OFFICIAL A1_sec/logo_firefly: n_train=4260 C=0.01
+11:41:59 OFFICIAL A1_sec/logo_midjourney-v5: n_train=4310 C=0.1
+11:42:33 OFFICIAL A1_sec/logo_stable-diffusion-2: n_train=4140 C=0.01
+11:43:04 OFFICIAL A1_sec/logo_stable-diffusion-xl: n_train=4130 C=0.001
+11:43:33 OFFICIAL A1_sec/logo_sd3_large: n_train=4300 C=0.01
+11:44:01 OFFICIAL A2_sec/full: n_train=4570 C=0.001
+11:44:24 OFFICIAL A2_sec/logo_dalle2: n_train=4340 C=0.01
+11:44:48 OFFICIAL A2_sec/logo_dalle3: n_train=4330 C=0.001
+11:45:10 OFFICIAL A2_sec/logo_firefly: n_train=4260 C=0.01
+11:45:32 OFFICIAL A2_sec/logo_midjourney-v5: n_train=4310 C=0.1
+11:45:59 OFFICIAL A2_sec/logo_stable-diffusion-2: n_train=4140 C=0.001
+11:46:23 OFFICIAL A2_sec/logo_stable-diffusion-xl: n_train=4130 C=0.001
+11:46:45 OFFICIAL A2_sec/logo_sd3_large: n_train=4300 C=0.001
+11:47:24 OFFICIAL verdict FAIL | gain -0.0161 | A0 clean 0.9248

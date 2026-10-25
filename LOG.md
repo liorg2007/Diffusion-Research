@@ -379,3 +379,8 @@
   - Caveat: one real source (RAISE, resized by B-Free) and 361 caption ids, so a diffusion signature cannot yet be separated from RAISE processing.
   - Follow-up design: a frozen block-8 linear detector tested on a NEW real pipeline, with falsifier twin AUROC < 0.85.
   - Official H1 agent was cut off by the API session limit mid-run (twin matching stage); resume after the limit resets.
+- 2026-10-25 20:19 — OFFICIAL H1: FAIL (all 4 runs; no fragility across drop-one-generator).
+  - orig: A1 headroom 0.927 (informative). A2-A1 gain -0.0149 LOGO-macro / -0.0319 FLUX. Clean loss -0.020 (fails). Drift reduction 67% (the only criterion met). A4 DRIFT-lite 0.815.
+  - fov512: gain +0.002 (fail). Twin-disjoint is worse in both arms.
+- 2026-10-25 20:19 — OFFICIAL H2-v2 A-arms (orig): A0 / A1 / A2 NOT_SUPPORTED. fov512 column done (007/official/summary_fov512.md).
+- 2026-10-25 20:19 — STOP RULE: 3 failed hypotheses (H4, H1, H2). Owner explicitly said to keep exploring, recorded as D-016. Phase 4 hypothesis tests closed; exploration continues on the E5 lead.

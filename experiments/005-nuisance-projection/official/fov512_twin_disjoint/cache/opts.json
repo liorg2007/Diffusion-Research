@@ -1,0 +1,16 @@
+{
+ "subdir": "fov512",
+ "splits": "/home/zera/project/Diffusion-Research/experiments/004-phase4-features/splits_fov512.csv",
+ "grouped_cv": true,
+ "balanced": true,
+ "generators": [
+  "dalle2",
+  "dalle3",
+  "firefly",
+  "midjourney-v5",
+  "stable-diffusion-2",
+  "stable-diffusion-xl",
+  "sd3_large"
+ ],
+ "twin_disjoint": true
+}
