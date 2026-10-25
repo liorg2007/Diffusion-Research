@@ -1,0 +1,76 @@
+OI raw: {'modes': {'RGB': 589, 'L': 11}, 'long_side': {1024: 594, 768: 4, 960: 1, 849: 1}, 'short_side_q': {0.0: 523.0, 0.5: 768.0, 1.0: 1024.0}, 'q_quantiles': {0.05: 74.8, 0.25: 90.0, 0.5: 94.0, 0.75: 98.0, 0.95: 99.1}, 'exif_frac': 0.0, 'with_make': 0.0}
+thrA 3.3502000000000005 OI test FPR jr 0.16 clean 0.12
+bpp: FP median 0.291 vs nonFP 0.319; MWU p=0.373; spearman(score)=0.029
+q: FP median 94.997 vs nonFP 94.021; MWU p=0.311; spearman(score)=0.064
+w: FP median 1024.000 vs nonFP 1024.000; MWU p=0.334; spearman(score)=-0.023
+h: FP median 768.000 vs nonFP 768.000; MWU p=0.688; spearman(score)=-0.130
+by mode (test):
+         n  fp  fpc
+mode              
+L       2   1    0
+RGB   198  31   24
+all L-mode OI images (any role):
+              image_id   role  clean  jpeg75_resize05
+62   4fa6f0a5f32109d5   test   0.10             3.80
+83   9a4c4f1a13414987  calib  -2.94            -1.08
+120  bfa37aa126e52114   test   1.66             1.38
+portrait vs landscape FPR: {'size': {False: 161, True: 39}, 'mean': {False: 0.14285714285714285, True: 0.23076923076923078}}
+exif present FPR: {'size': {False: 200}, 'mean': {False: 0.16}}
+OI FPR excluding L-mode: 0.15656565656565657 198
+score quantiles at jr: OI test {0.5: -0.72, 0.9: 5.44, 0.99: 8.88} | calib VISION {0.5: -6.06, 0.9: -1.46, 0.99: 0.86} | calib RAISE {0.5: -4.33, 0.9: -0.59, 0.99: 3.09}
+alt thr A pooled (pre-reg) {'thr': 3.3502000000000005, 'oi_fpr': 0.16, 'tpr_fakes': 0.5375939849624061}
+alt thr RAISE calib only {'thr': 1.4215000000000002, 'oi_fpr': 0.285, 'tpr_fakes': 0.7293233082706767}
+alt thr VISION calib only {'thr': 3.3502000000000005, 'oi_fpr': 0.16, 'tpr_fakes': 0.5375939849624061}
+alt thr max of per-source {'thr': 3.3502000000000005, 'oi_fpr': 0.16, 'tpr_fakes': 0.5375939849624061}
+alt thr B same-cond pooled {'thr': 2.5649000000000006, 'oi_fpr': 0.23, 'tpr_fakes': 0.6146616541353384}
+threshold that would give OI 10% FPR: {'thr': 5.436929999999999, 'tpr': 0.2857142857142857}
+FLUX AUROC VISION 0.8796
+FLUX AUROC RAISE 0.627
+FLUX AUROC OI 0.689
+RAISE held out: FPR jr 0.1912568306010929 clean 0.34972677595628415
+             image_id mode     w     h   bpp      q make soft  clean  jpeg75_resize05
+131  4529222d2eb82687  RGB   680  1024  1.11  98.83             5.84            11.54
+225  e48d013b0e0d8616  RGB  1024   757  0.10  78.96             3.91            10.22
+263  218f96ab9d032b63  RGB  1024   680  0.82  98.83             3.27             8.87
+252  d3d97a3e314e3256  RGB   695  1024  0.82  99.13             6.76             8.23
+274  9621c4e9fdde2a15  RGB  1024   680  0.80  98.83             7.94             7.46
+149  8ffd88cc86165f99  RGB  1024   770  0.80  98.83             6.39             7.36
+218  692ec0f4a2a16827  RGB  1024   665  0.31  84.96             5.26             7.19
+230  1ee7e0eb7a0cefd3  RGB   933  1024  1.13  99.13             6.09             7.12
+150  0e01455a8446331f  RGB  1024   683  0.62  98.83             6.19             7.10
+17   56c72398f260891e  RGB   685  1024  0.25  95.00            -0.29             7.04
+33   0ac91f1e26cca176  RGB  1024   598  0.85  98.83             4.38             6.62
+80   133b2a6ace8e9194  RGB  1024   682  0.51  98.83             5.37             6.61
+36   15286e30b1ac69f1  RGB  1024   576  0.21  84.96             1.19             6.43
+166  4e2362db70afe495  RGB  1024   684  0.16  90.96             2.64             6.40
+288  7ea6555ddc0ac8ab  RGB  1024   706  0.16  71.96             0.29             6.08
+226  c9e6ba1378e3c3fd  RGB  1024   681  0.90  98.83            -0.20             5.99
+159  50dcbf10ed88a574  RGB   683  1024  0.16  74.81             4.35             5.96
+88   d99d296c0c0b2cd7  RGB   683  1024  0.36  95.00             3.44             5.95
+193  2d546c6b8e0cefb2  RGB  1024   819  0.66  99.13             2.45             5.86
+281  3048d41cb7f55565  RGB  1024   768  0.92  99.13             6.68             5.57
+194  62fc37cf7a1118e3  RGB   814  1024  0.55  97.95             2.69             5.42
+78   3ed476ae1d2f1f45  RGB   705  1024  0.06  68.95             5.87             5.02
+219  b6fb83d9e81594cd  RGB  1015  1024  0.18  91.97            -0.83             4.83
+250  296b84193ba78ff4  RGB  1024   768  0.14  90.02             1.84             4.81
+171  4d0a7210bbd703da  RGB  1024   683  0.27  95.00             3.59             4.73
+72   ab54b2e75b2a19c0  RGB  1024   819  0.26  92.98             1.61             4.36
+160  91b3b35bd985ee36  RGB  1024   683  0.11  74.81             7.07             4.22
+41   7d2f4c02b8c06b4d  RGB  1024   768  0.22  74.81             3.41             3.81
+62   4fa6f0a5f32109d5    L  1024   768  0.18  92.98             0.10             3.80
+167  289f1f28a9a9dc28  RGB  1024   803  0.71  98.83             0.84             3.72
+7    2e8c730100cf8d36  RGB  1024  1024  0.21  90.02             1.40             3.71
+135  15d983fc5f9af257  RGB  1024  1024  0.22  90.02             3.78             3.41
+FPR by JPEG quality bin:
+            size  sum   mean
+qbin                       
+(0, 85]      47    8  0.170
+(85, 95]     79   10  0.127
+(95, 98]     30    1  0.033
+(98, 101]    44   13  0.295
+FPR by bpp tercile:
+                  size  sum   mean
+bppbin                           
+(0.0548, 0.214]    67   11  0.164
+(0.214, 0.438]     66    7  0.106
+(0.438, 1.389]     67   14  0.209

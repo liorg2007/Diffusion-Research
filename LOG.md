@@ -404,3 +404,7 @@
   - b8 - last +0.057 [+0.035, +0.079] (met). Learning curve 1 -> 2 sources +0.032 (met). orig and fov224 also KILL.
   - D-008 13/13 ok (1.2e-4). OWNER source pending (no photos).
   - Per Amendment 16 / D-016, the mid-level line is CLOSED; no further limit raise for it. Launching opus/high critic.
+- 2026-10-25 21:21 — E7 critic (opus/high): KILL correct, no bug. OI's FPR CI is wholly above 10%.
+  - Mechanism: OI scores shift toward fake; flagged photos are polished enthusiast shots (bokeh, telephoto, HDR). Grayscale, EXIF, JPEG quality and scale are ruled out (style reading from about 30 images, suggestive).
+  - Recommendation: write the Phase 5 findings report now; then owner photos (H3) as the acceptance test; do not reopen the mid-level line.
+  - Moving to Phase 5 (fable/high report).

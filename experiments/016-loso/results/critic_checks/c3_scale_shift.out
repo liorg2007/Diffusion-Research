@@ -1,0 +1,16 @@
+fake:dalle2                  n= 40 raw short side median   1024  fov512 scale factor 0.50
+fake:dalle3                  n= 40 raw short side median   1024  fov512 scale factor 0.50
+fake:firefly                 n= 40 raw short side median   1792  fov512 scale factor 0.29
+fake:flux                    n= 40 raw short side median   1024  fov512 scale factor 0.50
+fake:midjourney-v5           n= 40 raw short side median    896  fov512 scale factor 0.57
+fake:sd3_large               n= 40 raw short side median   1024  fov512 scale factor 0.50
+fake:stable-diffusion-2      n= 40 raw short side median    768  fov512 scale factor 0.67
+fake:stable-diffusion-xl     n= 40 raw short side median    896  fov512 scale factor 0.57
+openimages                   n= 40 raw short side median    768  fov512 scale factor 0.67
+raise                        n= 40 raw short side median    833  fov512 scale factor 0.61
+vision_facebook_hq           n= 40 raw short side median   1536  fov512 scale factor 0.33
+vision_native                n= 40 raw short side median   2448  fov512 scale factor 0.21
+vision_whatsapp              n= 40 raw short side median    960  fov512 scale factor 0.53
+OI held-out, jpeg75_resize05: median fake 3.61 | median OI real -0.72 | OI reals above the median fake: 0.155
+VISION held-out: median fake 1.97 | median held-out real -2.80
+RAISE held-out: median fake 2.40 | median held-out real 0.76

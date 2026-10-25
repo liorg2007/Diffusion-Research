@@ -1,0 +1,15 @@
+fov512/VISION/F_b8 {'n_calib': 153, 'macro_auroc': 0.9038, 'fprA': 0.0056, 'fprB': 0.0065, 'kA': 6, 'n': 1074, 'thrA': 3.1569}
+fov512/VISION/F_last {'n_calib': 153, 'macro_auroc': 0.8607, 'fprA': 0.0028, 'fprB': 0.0047, 'kA': 3, 'n': 1074, 'thrA': 2.0664}
+fov512/RAISE/F_b8 {'n_calib': 229, 'macro_auroc': 0.6768, 'fprA': 0.1913, 'fprB': 0.2678, 'kA': 35, 'n': 183, 'thrA': 2.8266}
+fov512/RAISE/F_last {'n_calib': 229, 'macro_auroc': 0.5847, 'fprA': 0.1038, 'fprB': 0.2842, 'kA': 19, 'n': 183, 'thrA': 2.3172}
+fov512/OI/F_b8 {'n_calib': 182, 'macro_auroc': 0.7718, 'fprA': 0.16, 'fprB': 0.23, 'kA': 32, 'n': 200, 'thrA': 3.3502}
+fov512/OI/F_last {'n_calib': 182, 'macro_auroc': 0.7739, 'fprA': 0.045, 'fprB': 0.045, 'kA': 9, 'n': 200, 'thrA': 1.328}
+orig/VISION/F_b8 {'n_calib': 153, 'macro_auroc': 0.8412, 'fprA': 0.0233, 'fprB': 0.0214, 'kA': 25, 'n': 1074, 'thrA': 2.4575}
+orig/VISION/F_last {'n_calib': 153, 'macro_auroc': 0.7862, 'fprA': 0.014, 'fprB': 0.0279, 'kA': 15, 'n': 1074, 'thrA': 1.8065}
+orig/RAISE/F_b8 {'n_calib': 229, 'macro_auroc': 0.6084, 'fprA': 0.3443, 'fprB': 0.2623, 'kA': 63, 'n': 183, 'thrA': 2.2333}
+orig/RAISE/F_last {'n_calib': 229, 'macro_auroc': 0.5777, 'fprA': 0.0601, 'fprB': 0.235, 'kA': 11, 'n': 183, 'thrA': 2.6726}
+orig/OI/F_b8 {'n_calib': 182, 'macro_auroc': 0.744, 'fprA': 0.35, 'fprB': 0.125, 'kA': 70, 'n': 200, 'thrA': 0.8494}
+orig/OI/F_last {'n_calib': 182, 'macro_auroc': 0.7264, 'fprA': 0.025, 'fprB': 0.025, 'kA': 5, 'n': 200, 'thrA': 1.5856}
+OI split {'train': 300, 'test': 200, 'calib': 100} unique sha True
+manifest dup sha: 0 dup author top: {'Peter': 2, 'insatiablemunch': 2, 'Mike McCune': 2, 'Michael Pereckas': 2, 'Christopher Michel': 2}
+authors with images in both OI train and test: 8 images in test from such authors: 8
