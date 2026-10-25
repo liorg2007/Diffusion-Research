@@ -29,3 +29,11 @@
   - *Phase-5 reach:* the only hypothesis in docs/06 with a plausible route to AUROC >= 0.95 after laundering (if gate 2 holds, the win-rate ceiling is ~0.98). FPR <= 1% plausible with fov512 calibration. RAID/white-box robustness: unknown and likely poor (fragile-recon-arxiv2026).
 
 - **Status:** proposed
+
+- **Pilot result (2026-10-25, UNINFORMATIVE by pre-registration, would be FAIL; experiments/012-self-ref/pilot/, critique.md):**
+  - The deployable score B (matched L0 on t and VAE(t)) is at chance: 0.533 clean / 0.496 laundered / 0.539 social in fov512, and 0.484 laundered in orig.
+  - Design flaw (critic): fov512 downsizes every fake, so none is still a decoder fixed point. In orig at clean the effect is real (B 0.704; SD-family 0.867), but laundering kills it in both arms.
+  - The mechanism is falsified under resampling. A blur matches it laundered, though at clean orig B beats blur by +0.368.
+  - Side result: E4's pooled pair-trained F2 probe (never saw a fake) reaches 0.892 clean / 0.665 laundered / 0.759 social on fov512 unseen generators. It is not a "smooth = fake" axis (a blur-trained version transfers inverted), but it is also not decoder-specific (DALL-E 2 0.92). Candidate generator-free baseline.
+- **Status (updated):** closed for laundered inputs
+

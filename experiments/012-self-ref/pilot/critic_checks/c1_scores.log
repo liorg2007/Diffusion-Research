@@ -1,0 +1,30 @@
+fov512 clean macro B rec 0.533 A 0.795 F2p 0.892
+   A: native med 9.478 frac+ 1.00 | fakes med dalle2=5.01 dalle3=7.31 firefl=7.34 midjou=7.02 stable=6.67 stable=5.03 | frac+ 1.00 1.00 1.00 1.00 1.00 0.97
+   B: native med 0.549 frac+ 0.98 | fakes med dalle2=0.56 dalle3=0.54 firefl=0.65 midjou=0.39 stable=0.90 stable=0.39 | frac+ 0.96 1.00 1.00 0.94 0.97 0.98
+   blurB: native med 0.835 frac+ 0.99 | fakes med dalle2=0.96 dalle3=1.11 firefl=1.03 midjou=1.03 stable=1.19 stable=0.82 | frac+ 0.99 1.00 1.00 1.00 1.00 1.00
+   cors {'A~blurA': 0.55, 'A~texture': -0.22, 'B~blurB': 0.68, 'B~texture': -0.63, 'F2p~texture': -0.08, 'A~F2p': 0.58, 'B~F2p': 0.17, 'A~pixL2': 0.23, 'blurA~texture': -0.08}
+fov512 jpeg75_resize05 macro B rec 0.496 A 0.434 F2p 0.665
+   A: native med 3.204 frac+ 0.97 | fakes med dalle2=2.75 dalle3=4.37 firefl=4.52 midjou=3.70 stable=4.90 stable=3.07 | frac+ 0.94 1.00 0.98 0.99 0.97 0.95
+   B: native med 0.447 frac+ 0.95 | fakes med dalle2=0.42 dalle3=0.50 firefl=0.48 midjou=0.41 stable=0.84 stable=0.44 | frac+ 0.93 0.97 0.99 0.97 0.99 0.98
+   blurB: native med 0.688 frac+ 0.99 | fakes med dalle2=0.54 dalle3=0.51 firefl=0.68 midjou=0.57 stable=0.62 stable=0.46 | frac+ 0.97 0.98 1.00 0.99 0.98 0.97
+   cors {'A~blurA': 0.19, 'A~texture': -0.42, 'B~blurB': 0.32, 'B~texture': -0.59, 'F2p~texture': -0.4, 'A~F2p': 0.26, 'B~F2p': 0.34, 'A~pixL2': 0.42, 'blurA~texture': -0.07}
+fov512 social_sim macro B rec 0.539 A 0.575 F2p 0.759
+   A: native med 4.841 frac+ 0.99 | fakes med dalle2=3.52 dalle3=5.00 firefl=5.01 midjou=3.75 stable=4.99 stable=3.42 | frac+ 0.95 1.00 1.00 1.00 0.97 0.97
+   B: native med 0.444 frac+ 0.96 | fakes med dalle2=0.43 dalle3=0.43 firefl=0.39 midjou=0.35 stable=0.72 stable=0.33 | frac+ 0.95 0.97 0.96 0.88 0.97 0.96
+   blurB: native med 0.486 frac+ 0.97 | fakes med dalle2=0.47 dalle3=0.64 firefl=0.44 midjou=0.58 stable=0.53 stable=0.42 | frac+ 1.00 0.99 0.95 0.99 0.94 0.97
+   cors {'A~blurA': 0.34, 'A~texture': -0.3, 'B~blurB': 0.45, 'B~texture': -0.53, 'F2p~texture': -0.32, 'A~F2p': 0.48, 'B~F2p': 0.31, 'A~pixL2': 0.28, 'blurA~texture': -0.1}
+orig clean macro B rec 0.704 A 0.851 F2p 0.776
+   A: native med 3.889 frac+ 0.97 | fakes med dalle2=2.52 dalle3=2.13 firefl=0.83 midjou=0.17 stable=-0.15 stable=1.78 | frac+ 0.93 0.94 0.73 0.55 0.47 0.87
+   B: native med 1.508 frac+ 0.98 | fakes med dalle2=1.70 dalle3=1.49 firefl=1.37 midjou=-0.03 stable=0.18 stable=0.74 | frac+ 0.98 0.99 0.98 0.47 0.63 0.87
+   blurB: native med 1.928 frac+ 0.97 | fakes med dalle2=2.17 dalle3=3.86 firefl=2.79 midjou=3.16 stable=3.13 stable=2.18 | frac+ 0.99 1.00 0.98 1.00 1.00 0.98
+   cors {'A~blurA': 0.47, 'A~texture': 0.05, 'B~blurB': 0.19, 'B~texture': -0.08, 'F2p~texture': 0.03, 'A~F2p': 0.5, 'B~F2p': 0.38, 'A~pixL2': 0.21, 'blurA~texture': 0.1}
+orig jpeg75_resize05 macro B rec 0.484 A 0.521 F2p 0.643
+   A: native med 2.764 frac+ 0.99 | fakes med dalle2=2.29 dalle3=2.70 firefl=2.02 midjou=2.64 stable=3.78 stable=2.72 | frac+ 0.97 1.00 0.98 1.00 1.00 1.00
+   B: native med 1.265 frac+ 0.92 | fakes med dalle2=1.42 dalle3=1.40 firefl=0.97 midjou=1.21 stable=2.17 stable=1.22 | frac+ 0.97 0.98 0.92 0.95 0.97 0.93
+   blurB: native med 2.171 frac+ 0.96 | fakes med dalle2=1.82 dalle3=2.01 firefl=1.85 midjou=2.14 stable=2.20 stable=1.85 | frac+ 0.97 1.00 0.99 0.99 0.96 0.95
+   cors {'A~blurA': 0.23, 'A~texture': -0.41, 'B~blurB': 0.33, 'B~texture': -0.48, 'F2p~texture': -0.29, 'A~F2p': 0.24, 'B~F2p': 0.25, 'A~pixL2': 0.43, 'blurA~texture': 0.08}
+orig social_sim macro B rec 0.588 A 0.684 F2p 0.783
+   A: native med 3.099 frac+ 0.99 | fakes med dalle2=2.76 dalle3=2.16 firefl=2.17 midjou=1.78 stable=2.19 stable=2.31 | frac+ 0.98 0.99 0.97 0.93 0.95 0.98
+   B: native med 1.341 frac+ 0.91 | fakes med dalle2=1.59 dalle3=1.33 firefl=0.84 midjou=0.70 stable=1.34 stable=0.85 | frac+ 0.99 0.97 0.88 0.93 0.93 0.88
+   blurB: native med 1.642 frac+ 0.94 | fakes med dalle2=1.60 dalle3=2.70 firefl=1.61 midjou=2.27 stable=2.30 stable=1.57 | frac+ 0.93 1.00 0.93 0.99 0.98 0.94
+   cors {'A~blurA': 0.34, 'A~texture': -0.11, 'B~blurB': 0.41, 'B~texture': -0.31, 'F2p~texture': -0.02, 'A~F2p': 0.31, 'B~F2p': 0.2, 'A~pixL2': 0.18, 'blurA~texture': 0.16}

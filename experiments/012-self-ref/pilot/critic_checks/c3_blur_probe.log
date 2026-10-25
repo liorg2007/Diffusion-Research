@@ -1,0 +1,4 @@
+sanity max|dphi| (20 train reals, CPU vs 012 cache) = 6.20e-05  (9s)
+sigma 0.867: blur-trained probe macro {'clean': 0.401, 'jpeg75_resize05': 0.434, 'social_sim': 0.431}; cos 0.01; rho vs F2p -0.04 (69s)
+sigma 2.476: blur-trained probe macro {'clean': 0.388, 'jpeg75_resize05': 0.431, 'social_sim': 0.423}; cos 0.11; rho vs F2p -0.06 (126s)
+F2p reference {'clean': 0.892, 'jpeg75_resize05': 0.665, 'social_sim': 0.759}

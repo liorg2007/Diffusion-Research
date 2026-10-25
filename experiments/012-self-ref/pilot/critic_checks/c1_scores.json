@@ -1,0 +1,1008 @@
+{
+ "fov512": {
+  "clean": {
+   "A": {
+    "macro_recomputed": 0.7954337368094352,
+    "native_median_shift": 9.478175719795995,
+    "native_iqr": [
+     7.531682291699167,
+     11.996395613616887
+    ],
+    "native_frac_pos": 1.0,
+    "fake_median_shift": {
+     "dalle2": 5.014931234033122,
+     "dalle3": 7.310093468927468,
+     "firefly": 7.338336269722209,
+     "midjourney-v5": 7.01790631494118,
+     "stable-diffusion-2": 6.671174921676977,
+     "stable-diffusion-xl": 5.034619489720067
+    },
+    "fake_frac_pos": {
+     "dalle2": 1.0,
+     "dalle3": 1.0,
+     "firefly": 1.0,
+     "midjourney-v5": 1.0,
+     "stable-diffusion-2": 1.0,
+     "stable-diffusion-xl": 0.975
+    },
+    "train_real_median_shift": 9.656436199043933
+   },
+   "B": {
+    "macro_recomputed": 0.5334807572936064,
+    "native_median_shift": 0.5489433402506573,
+    "native_iqr": [
+     0.30907027386272257,
+     1.2063234254029427
+    ],
+    "native_frac_pos": 0.9776536312849162,
+    "fake_median_shift": {
+     "dalle2": 0.5629911525304571,
+     "dalle3": 0.5448375566515529,
+     "firefly": 0.6525316196109272,
+     "midjourney-v5": 0.3891242529544431,
+     "stable-diffusion-2": 0.9012438578409285,
+     "stable-diffusion-xl": 0.3933635815302563
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9583333333333334,
+     "dalle3": 1.0,
+     "firefly": 1.0,
+     "midjourney-v5": 0.9416666666666667,
+     "stable-diffusion-2": 0.975,
+     "stable-diffusion-xl": 0.9833333333333333
+    },
+    "train_real_median_shift": 0.6219993664067249
+   },
+   "Bu": {
+    "macro_recomputed": 0.5574875853507139,
+    "native_median_shift": 0.3236723607623539,
+    "native_iqr": [
+     0.13087252369103908,
+     0.7100775475108262
+    ],
+    "native_frac_pos": 0.8659217877094972,
+    "fake_median_shift": {
+     "dalle2": 0.43625977787535125,
+     "dalle3": 0.2946745341803386,
+     "firefly": 0.3957694962448768,
+     "midjourney-v5": 0.20641018780669584,
+     "stable-diffusion-2": 0.34786041049855676,
+     "stable-diffusion-xl": 0.22051564430479395
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9083333333333333,
+     "dalle3": 0.9,
+     "firefly": 0.9166666666666666,
+     "midjourney-v5": 0.7916666666666666,
+     "stable-diffusion-2": 0.8166666666666667,
+     "stable-diffusion-xl": 0.7916666666666666
+    },
+    "train_real_median_shift": 0.3837273261184776
+   },
+   "blurA": {
+    "macro_recomputed": 0.8377676908752326,
+    "native_median_shift": 10.765821683704988,
+    "native_iqr": [
+     8.299435982796451,
+     13.28647182021922
+    ],
+    "native_frac_pos": 1.0,
+    "fake_median_shift": {
+     "dalle2": 4.601048612495083,
+     "dalle3": 5.631655597875525,
+     "firefly": 7.898698932477259,
+     "midjourney-v5": 6.534735076057592,
+     "stable-diffusion-2": 6.2445623248506426,
+     "stable-diffusion-xl": 4.3920147861593355
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9833333333333333,
+     "dalle3": 1.0,
+     "firefly": 0.9916666666666667,
+     "midjourney-v5": 0.9916666666666667,
+     "stable-diffusion-2": 0.9416666666666667,
+     "stable-diffusion-xl": 0.8666666666666667
+    }
+   },
+   "blurB": {
+    "macro_recomputed": 0.4328483860955928,
+    "native_median_shift": 0.8348371112358915,
+    "native_iqr": [
+     0.5417177896163381,
+     1.3226845788139037
+    ],
+    "native_frac_pos": 0.9888268156424581,
+    "fake_median_shift": {
+     "dalle2": 0.9589391975831465,
+     "dalle3": 1.1061644525774037,
+     "firefly": 1.0335554498521722,
+     "midjourney-v5": 1.0307132233509997,
+     "stable-diffusion-2": 1.188447707013215,
+     "stable-diffusion-xl": 0.8180986837758073
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9916666666666667,
+     "dalle3": 1.0,
+     "firefly": 1.0,
+     "midjourney-v5": 1.0,
+     "stable-diffusion-2": 1.0,
+     "stable-diffusion-xl": 1.0
+    }
+   },
+   "F2p": {
+    "macro_recomputed": 0.8921205772811919,
+    "native_median_shift": -5.2412014637825965,
+    "native_iqr": [
+     -8.15555553562167,
+     -2.0788175570343856
+    ],
+    "native_frac_pos": 0.10893854748603352,
+    "fake_median_shift": {
+     "dalle2": 2.209214428786765,
+     "dalle3": 2.3391039629657406,
+     "firefly": -0.10314971820142685,
+     "midjourney-v5": 0.610467408162491,
+     "stable-diffusion-2": 2.669728159583083,
+     "stable-diffusion-xl": 6.523351856814272
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.8,
+     "dalle3": 0.7,
+     "firefly": 0.5,
+     "midjourney-v5": 0.5666666666666667,
+     "stable-diffusion-2": 0.7333333333333333,
+     "stable-diffusion-xl": 0.9333333333333333
+    },
+    "train_real_median_shift": -4.82965131689103
+   },
+   "spearman_natives_plus_fakes": {
+    "A~blurA": 0.5466563267156809,
+    "A~texture": -0.21713824748166657,
+    "B~blurB": 0.677051890141415,
+    "B~texture": -0.6327505670248709,
+    "F2p~texture": -0.08057968333451485,
+    "A~F2p": 0.5826138967778347,
+    "B~F2p": 0.17300972200075176,
+    "A~pixL2": 0.22577133767138513,
+    "blurA~texture": -0.07500710087739464
+   }
+  },
+  "jpeg75_resize05": {
+   "A": {
+    "macro_recomputed": 0.4337833643699565,
+    "native_median_shift": 3.2044745366308724,
+    "native_iqr": [
+     2.1797848697438003,
+     4.839046050779139
+    ],
+    "native_frac_pos": 0.9692737430167597,
+    "fake_median_shift": {
+     "dalle2": 2.7524723669749114,
+     "dalle3": 4.3718733074605485,
+     "firefly": 4.524606094132922,
+     "midjourney-v5": 3.6951196679547325,
+     "stable-diffusion-2": 4.89714842900508,
+     "stable-diffusion-xl": 3.066038371207967
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9416666666666667,
+     "dalle3": 1.0,
+     "firefly": 0.9833333333333333,
+     "midjourney-v5": 0.9916666666666667,
+     "stable-diffusion-2": 0.9666666666666667,
+     "stable-diffusion-xl": 0.95
+    },
+    "train_real_median_shift": 3.534879872429049
+   },
+   "B": {
+    "macro_recomputed": 0.4964113904407201,
+    "native_median_shift": 0.44697570782708246,
+    "native_iqr": [
+     0.2807017075505658,
+     0.814606164590601
+    ],
+    "native_frac_pos": 0.946927374301676,
+    "fake_median_shift": {
+     "dalle2": 0.41781048889079464,
+     "dalle3": 0.4990459572109468,
+     "firefly": 0.484589493501086,
+     "midjourney-v5": 0.41294957592181375,
+     "stable-diffusion-2": 0.838825871226818,
+     "stable-diffusion-xl": 0.4380377153563175
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9333333333333333,
+     "dalle3": 0.9666666666666667,
+     "firefly": 0.9916666666666667,
+     "midjourney-v5": 0.9666666666666667,
+     "stable-diffusion-2": 0.9916666666666667,
+     "stable-diffusion-xl": 0.9833333333333333
+    },
+    "train_real_median_shift": 0.5565561851434117
+   },
+   "Bu": {
+    "macro_recomputed": 0.4964113904407201,
+    "native_median_shift": 0.44697570782708246,
+    "native_iqr": [
+     0.2807017075505658,
+     0.814606164590601
+    ],
+    "native_frac_pos": 0.946927374301676,
+    "fake_median_shift": {
+     "dalle2": 0.41781048889079464,
+     "dalle3": 0.4990459572109468,
+     "firefly": 0.484589493501086,
+     "midjourney-v5": 0.41294957592181375,
+     "stable-diffusion-2": 0.838825871226818,
+     "stable-diffusion-xl": 0.4380377153563175
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9333333333333333,
+     "dalle3": 0.9666666666666667,
+     "firefly": 0.9916666666666667,
+     "midjourney-v5": 0.9666666666666667,
+     "stable-diffusion-2": 0.9916666666666667,
+     "stable-diffusion-xl": 0.9833333333333333
+    },
+    "train_real_median_shift": 0.5565561851434117
+   },
+   "blurA": {
+    "macro_recomputed": 0.6315448479205463,
+    "native_median_shift": 4.007428467466838,
+    "native_iqr": [
+     2.451033127283334,
+     5.860524976546471
+    ],
+    "native_frac_pos": 0.9608938547486033,
+    "fake_median_shift": {
+     "dalle2": 1.170756516088261,
+     "dalle3": 2.0154461655036107,
+     "firefly": 4.029856737856992,
+     "midjourney-v5": 3.567155242258039,
+     "stable-diffusion-2": 4.108365069978505,
+     "stable-diffusion-xl": 3.327875709090266
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.75,
+     "dalle3": 0.775,
+     "firefly": 0.9666666666666667,
+     "midjourney-v5": 0.9416666666666667,
+     "stable-diffusion-2": 0.8916666666666667,
+     "stable-diffusion-xl": 0.9
+    }
+   },
+   "blurB": {
+    "macro_recomputed": 0.6277312228429547,
+    "native_median_shift": 0.6878636278519914,
+    "native_iqr": [
+     0.4899197067846166,
+     0.9136427493031793
+    ],
+    "native_frac_pos": 0.994413407821229,
+    "fake_median_shift": {
+     "dalle2": 0.5378107147541542,
+     "dalle3": 0.50555950765182,
+     "firefly": 0.6807481721349097,
+     "midjourney-v5": 0.5656867324282817,
+     "stable-diffusion-2": 0.6242851840057897,
+     "stable-diffusion-xl": 0.4625576442427797
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.975,
+     "dalle3": 0.9833333333333333,
+     "firefly": 1.0,
+     "midjourney-v5": 0.9916666666666667,
+     "stable-diffusion-2": 0.9833333333333333,
+     "stable-diffusion-xl": 0.9666666666666667
+    }
+   },
+   "F2p": {
+    "macro_recomputed": 0.6648898199875853,
+    "native_median_shift": 1.9007174687556483,
+    "native_iqr": [
+     -0.9071392809977324,
+     4.223998783220029
+    ],
+    "native_frac_pos": 0.6703910614525139,
+    "fake_median_shift": {
+     "dalle2": 4.57171612235548,
+     "dalle3": 4.891312477092994,
+     "firefly": 2.2043669287858787,
+     "midjourney-v5": 3.6881506159898167,
+     "stable-diffusion-2": 3.379920325260099,
+     "stable-diffusion-xl": 5.969109074947729
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9,
+     "dalle3": 0.8583333333333333,
+     "firefly": 0.7083333333333334,
+     "midjourney-v5": 0.85,
+     "stable-diffusion-2": 0.8166666666666667,
+     "stable-diffusion-xl": 0.9583333333333334
+    },
+    "train_real_median_shift": 1.808060313808759
+   },
+   "spearman_natives_plus_fakes": {
+    "A~blurA": 0.19014433325078217,
+    "A~texture": -0.42166543345952584,
+    "B~blurB": 0.31962888462823746,
+    "B~texture": -0.5890717426250727,
+    "F2p~texture": -0.4014994924578344,
+    "A~F2p": 0.25736177054862064,
+    "B~F2p": 0.33965637869674237,
+    "A~pixL2": 0.41957610418960795,
+    "blurA~texture": -0.07450232947047104
+   }
+  },
+  "social_sim": {
+   "A": {
+    "macro_recomputed": 0.5749689633767846,
+    "native_median_shift": 4.840730038867246,
+    "native_iqr": [
+     3.2787625727501024,
+     6.926673337793627
+    ],
+    "native_frac_pos": 0.9916201117318436,
+    "fake_median_shift": {
+     "dalle2": 3.5234967193705273,
+     "dalle3": 5.002726031831303,
+     "firefly": 5.013161073734365,
+     "midjourney-v5": 3.7519357233497774,
+     "stable-diffusion-2": 4.991896332897053,
+     "stable-diffusion-xl": 3.4238496778121226
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.95,
+     "dalle3": 1.0,
+     "firefly": 1.0,
+     "midjourney-v5": 1.0,
+     "stable-diffusion-2": 0.975,
+     "stable-diffusion-xl": 0.975
+    },
+    "train_real_median_shift": 5.082416306644197
+   },
+   "B": {
+    "macro_recomputed": 0.5385552451893235,
+    "native_median_shift": 0.4442005695418846,
+    "native_iqr": [
+     0.22008431919224797,
+     0.8935887099360396
+    ],
+    "native_frac_pos": 0.9553072625698324,
+    "fake_median_shift": {
+     "dalle2": 0.4332668341532415,
+     "dalle3": 0.43482689762935256,
+     "firefly": 0.39074245367748106,
+     "midjourney-v5": 0.3537402669547882,
+     "stable-diffusion-2": 0.7150014858048719,
+     "stable-diffusion-xl": 0.3316498106636375
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.95,
+     "dalle3": 0.975,
+     "firefly": 0.9583333333333334,
+     "midjourney-v5": 0.875,
+     "stable-diffusion-2": 0.9666666666666667,
+     "stable-diffusion-xl": 0.9583333333333334
+    },
+    "train_real_median_shift": 0.4588713477161947
+   },
+   "Bu": {
+    "macro_recomputed": 0.5378801986343885,
+    "native_median_shift": 0.3565147482385961,
+    "native_iqr": [
+     0.16763029083550837,
+     0.7167068770977544
+    ],
+    "native_frac_pos": 0.9189944134078212,
+    "fake_median_shift": {
+     "dalle2": 0.39377677813336165,
+     "dalle3": 0.31096436507248004,
+     "firefly": 0.3717205495262276,
+     "midjourney-v5": 0.2534362726442636,
+     "stable-diffusion-2": 0.5353000288562447,
+     "stable-diffusion-xl": 0.28321473290329285
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9166666666666666,
+     "dalle3": 0.925,
+     "firefly": 0.9333333333333333,
+     "midjourney-v5": 0.825,
+     "stable-diffusion-2": 0.95,
+     "stable-diffusion-xl": 0.9
+    },
+    "train_real_median_shift": 0.368697499351504
+   },
+   "blurA": {
+    "macro_recomputed": 0.6875349162011174,
+    "native_median_shift": 5.197372267077073,
+    "native_iqr": [
+     3.141873599596096,
+     7.010750746475375
+    ],
+    "native_frac_pos": 0.9581005586592178,
+    "fake_median_shift": {
+     "dalle2": 2.129523207686905,
+     "dalle3": 2.4804606098255477,
+     "firefly": 4.253879532916034,
+     "midjourney-v5": 3.2413074078518713,
+     "stable-diffusion-2": 4.199342107647228,
+     "stable-diffusion-xl": 2.6185911668796744
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.875,
+     "dalle3": 0.875,
+     "firefly": 0.9833333333333333,
+     "midjourney-v5": 0.9333333333333333,
+     "stable-diffusion-2": 0.85,
+     "stable-diffusion-xl": 0.8583333333333333
+    }
+   },
+   "blurB": {
+    "macro_recomputed": 0.47128336436995655,
+    "native_median_shift": 0.4862249373511023,
+    "native_iqr": [
+     0.25691031333994674,
+     0.7616291837678639
+    ],
+    "native_frac_pos": 0.9720670391061452,
+    "fake_median_shift": {
+     "dalle2": 0.4734718419559337,
+     "dalle3": 0.6410835845774474,
+     "firefly": 0.44208609655868686,
+     "midjourney-v5": 0.5751464419810186,
+     "stable-diffusion-2": 0.5279864442042279,
+     "stable-diffusion-xl": 0.4152653621323704
+    },
+    "fake_frac_pos": {
+     "dalle2": 1.0,
+     "dalle3": 0.9916666666666667,
+     "firefly": 0.95,
+     "midjourney-v5": 0.9916666666666667,
+     "stable-diffusion-2": 0.9416666666666667,
+     "stable-diffusion-xl": 0.975
+    }
+   },
+   "F2p": {
+    "macro_recomputed": 0.7586863749224085,
+    "native_median_shift": -0.5126745808980644,
+    "native_iqr": [
+     -4.2237425844646435,
+     2.3883201282485684
+    ],
+    "native_frac_pos": 0.4581005586592179,
+    "fake_median_shift": {
+     "dalle2": 4.1198573808058985,
+     "dalle3": 4.528820867060661,
+     "firefly": 1.4327175902055158,
+     "midjourney-v5": 3.603172593854922,
+     "stable-diffusion-2": 3.858792439601417,
+     "stable-diffusion-xl": 6.408201272212698
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.8666666666666667,
+     "dalle3": 0.775,
+     "firefly": 0.65,
+     "midjourney-v5": 0.7583333333333333,
+     "stable-diffusion-2": 0.7666666666666667,
+     "stable-diffusion-xl": 0.9083333333333333
+    },
+    "train_real_median_shift": -0.8824703400794153
+   },
+   "spearman_natives_plus_fakes": {
+    "A~blurA": 0.33861210201589625,
+    "A~texture": -0.29500223765705913,
+    "B~blurB": 0.4529776984482396,
+    "B~texture": -0.5337210361541671,
+    "F2p~texture": -0.3163800036208093,
+    "A~F2p": 0.4779443273299319,
+    "B~F2p": 0.3060085054197597,
+    "A~pixL2": 0.27952050251035293,
+    "blurA~texture": -0.10366525204068773
+   }
+  }
+ },
+ "orig": {
+  "clean": {
+   "A": {
+    "macro_recomputed": 0.8505276225946617,
+    "native_median_shift": 3.8892566367424006,
+    "native_iqr": [
+     2.5064693787428443,
+     5.264347897962043
+    ],
+    "native_frac_pos": 0.9748603351955307,
+    "fake_median_shift": {
+     "dalle2": 2.518956352926003,
+     "dalle3": 2.130967731706602,
+     "firefly": 0.8273830032673501,
+     "midjourney-v5": 0.16557602964713108,
+     "stable-diffusion-2": -0.14613838966835865,
+     "stable-diffusion-xl": 1.777728733058149
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9333333333333333,
+     "dalle3": 0.9416666666666667,
+     "firefly": 0.7333333333333333,
+     "midjourney-v5": 0.55,
+     "stable-diffusion-2": 0.4666666666666667,
+     "stable-diffusion-xl": 0.8666666666666667
+    },
+    "train_real_median_shift": 4.107486298322942
+   },
+   "B": {
+    "macro_recomputed": 0.704349006828057,
+    "native_median_shift": 1.507578419649121,
+    "native_iqr": [
+     0.9926523511128887,
+     2.2190774920102525
+    ],
+    "native_frac_pos": 0.9776536312849162,
+    "fake_median_shift": {
+     "dalle2": 1.6952089725056343,
+     "dalle3": 1.4939063723261485,
+     "firefly": 1.3682081672734645,
+     "midjourney-v5": -0.033213107345003504,
+     "stable-diffusion-2": 0.1794469723299571,
+     "stable-diffusion-xl": 0.7430035747810342
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9833333333333333,
+     "dalle3": 0.9916666666666667,
+     "firefly": 0.9833333333333333,
+     "midjourney-v5": 0.4666666666666667,
+     "stable-diffusion-2": 0.6333333333333333,
+     "stable-diffusion-xl": 0.8666666666666667
+    },
+    "train_real_median_shift": 1.9604158816816468
+   },
+   "Bu": {
+    "macro_recomputed": 0.6707363438857853,
+    "native_median_shift": 1.2430548174697966,
+    "native_iqr": [
+     0.49811144549936887,
+     2.0833907023982583
+    ],
+    "native_frac_pos": 0.8798882681564246,
+    "fake_median_shift": {
+     "dalle2": 1.2575880525947367,
+     "dalle3": 1.0141610738245896,
+     "firefly": 0.9098086743230684,
+     "midjourney-v5": 0.019845648381454348,
+     "stable-diffusion-2": 0.1320048979368638,
+     "stable-diffusion-xl": 0.5312295680988761
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9416666666666667,
+     "dalle3": 0.875,
+     "firefly": 0.85,
+     "midjourney-v5": 0.5166666666666667,
+     "stable-diffusion-2": 0.5916666666666667,
+     "stable-diffusion-xl": 0.8333333333333334
+    },
+    "train_real_median_shift": 1.4877686590989048
+   },
+   "blurA": {
+    "macro_recomputed": 0.8167869335816262,
+    "native_median_shift": 5.153812137021644,
+    "native_iqr": [
+     3.3813477141792636,
+     6.580877822216728
+    ],
+    "native_frac_pos": 0.9720670391061452,
+    "fake_median_shift": {
+     "dalle2": 2.1107315557482504,
+     "dalle3": 2.105109652406566,
+     "firefly": 0.9429036324687414,
+     "midjourney-v5": 2.6325081785521336,
+     "stable-diffusion-2": 1.0929589180303907,
+     "stable-diffusion-xl": 1.6872387130869262
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9333333333333333,
+     "dalle3": 0.95,
+     "firefly": 0.7083333333333334,
+     "midjourney-v5": 0.9,
+     "stable-diffusion-2": 0.7416666666666667,
+     "stable-diffusion-xl": 0.8666666666666667
+    }
+   },
+   "blurB": {
+    "macro_recomputed": 0.33672408441961516,
+    "native_median_shift": 1.928269509728203,
+    "native_iqr": [
+     1.0930645082176178,
+     3.1682579577447534
+    ],
+    "native_frac_pos": 0.9692737430167597,
+    "fake_median_shift": {
+     "dalle2": 2.172693022781316,
+     "dalle3": 3.856336036388752,
+     "firefly": 2.7883497771938544,
+     "midjourney-v5": 3.157254386102704,
+     "stable-diffusion-2": 3.1280096222875002,
+     "stable-diffusion-xl": 2.176266399806096
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9916666666666667,
+     "dalle3": 1.0,
+     "firefly": 0.9833333333333333,
+     "midjourney-v5": 1.0,
+     "stable-diffusion-2": 1.0,
+     "stable-diffusion-xl": 0.9833333333333333
+    }
+   },
+   "F2p": {
+    "macro_recomputed": 0.7760280881440099,
+    "native_median_shift": -2.3122067344914132,
+    "native_iqr": [
+     -4.3429035849074795,
+     -0.11045719687959038
+    ],
+    "native_frac_pos": 0.2430167597765363,
+    "fake_median_shift": {
+     "dalle2": -1.7995954335128126,
+     "dalle3": 0.4523813269935265,
+     "firefly": 2.0468018388173137,
+     "midjourney-v5": 0.7867598970507175,
+     "stable-diffusion-2": 3.012294209824673,
+     "stable-diffusion-xl": 2.450307900468106
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.21666666666666667,
+     "dalle3": 0.5833333333333334,
+     "firefly": 0.775,
+     "midjourney-v5": 0.6166666666666667,
+     "stable-diffusion-2": 0.8416666666666667,
+     "stable-diffusion-xl": 0.825
+    },
+    "train_real_median_shift": -2.157504561468604
+   },
+   "spearman_natives_plus_fakes": {
+    "A~blurA": 0.4650213363506648,
+    "A~texture": 0.05023567517874232,
+    "B~blurB": 0.18982889303007822,
+    "B~texture": -0.0804216183760625,
+    "F2p~texture": 0.02680623544181237,
+    "A~F2p": 0.5036075493743811,
+    "B~F2p": 0.38012091226940276,
+    "A~pixL2": 0.20851605832356535,
+    "blurA~texture": 0.10026655369187458
+   }
+  },
+  "jpeg75_resize05": {
+   "A": {
+    "macro_recomputed": 0.5214773432650528,
+    "native_median_shift": 2.763591512638429,
+    "native_iqr": [
+     1.9455667809278734,
+     3.6987887174368335
+    ],
+    "native_frac_pos": 0.9888268156424581,
+    "fake_median_shift": {
+     "dalle2": 2.2884921178567135,
+     "dalle3": 2.7040826958611985,
+     "firefly": 2.021375056897983,
+     "midjourney-v5": 2.644071190267167,
+     "stable-diffusion-2": 3.7795523614779976,
+     "stable-diffusion-xl": 2.71911104397325
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9666666666666667,
+     "dalle3": 1.0,
+     "firefly": 0.9833333333333333,
+     "midjourney-v5": 1.0,
+     "stable-diffusion-2": 1.0,
+     "stable-diffusion-xl": 1.0
+    },
+    "train_real_median_shift": 3.1282589307242654
+   },
+   "B": {
+    "macro_recomputed": 0.4839967411545625,
+    "native_median_shift": 1.2647923400928331,
+    "native_iqr": [
+     0.6082329207183685,
+     2.033704580707121
+    ],
+    "native_frac_pos": 0.9189944134078212,
+    "fake_median_shift": {
+     "dalle2": 1.4241134165716858,
+     "dalle3": 1.395103035746451,
+     "firefly": 0.9670658521381409,
+     "midjourney-v5": 1.208824554239953,
+     "stable-diffusion-2": 2.168152248353187,
+     "stable-diffusion-xl": 1.219933110938686
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9666666666666667,
+     "dalle3": 0.9833333333333333,
+     "firefly": 0.9166666666666666,
+     "midjourney-v5": 0.95,
+     "stable-diffusion-2": 0.975,
+     "stable-diffusion-xl": 0.925
+    },
+    "train_real_median_shift": 1.5604731324989345
+   },
+   "Bu": {
+    "macro_recomputed": 0.4839967411545625,
+    "native_median_shift": 1.2647923400928331,
+    "native_iqr": [
+     0.6082329207183685,
+     2.033704580707121
+    ],
+    "native_frac_pos": 0.9189944134078212,
+    "fake_median_shift": {
+     "dalle2": 1.4241134165716858,
+     "dalle3": 1.395103035746451,
+     "firefly": 0.9670658521381409,
+     "midjourney-v5": 1.208824554239953,
+     "stable-diffusion-2": 2.168152248353187,
+     "stable-diffusion-xl": 1.219933110938686
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9666666666666667,
+     "dalle3": 0.9833333333333333,
+     "firefly": 0.9166666666666666,
+     "midjourney-v5": 0.95,
+     "stable-diffusion-2": 0.975,
+     "stable-diffusion-xl": 0.925
+    },
+    "train_real_median_shift": 1.5604731324989345
+   },
+   "blurA": {
+    "macro_recomputed": 0.725616852886406,
+    "native_median_shift": 3.9598466811978836,
+    "native_iqr": [
+     2.783076474713601,
+     4.999785047508189
+    ],
+    "native_frac_pos": 0.9860335195530726,
+    "fake_median_shift": {
+     "dalle2": 0.976461937496711,
+     "dalle3": 2.0872295594968975,
+     "firefly": 2.9294372962395823,
+     "midjourney-v5": 2.4398466502064613,
+     "stable-diffusion-2": 3.016805441419364,
+     "stable-diffusion-xl": 3.2742321206822296
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.775,
+     "dalle3": 0.9166666666666666,
+     "firefly": 0.975,
+     "midjourney-v5": 0.95,
+     "stable-diffusion-2": 0.9083333333333333,
+     "stable-diffusion-xl": 0.9666666666666667
+    }
+   },
+   "blurB": {
+    "macro_recomputed": 0.5314633767846059,
+    "native_median_shift": 2.170895034816846,
+    "native_iqr": [
+     1.2876639644958736,
+     2.9199987583212343
+    ],
+    "native_frac_pos": 0.9581005586592178,
+    "fake_median_shift": {
+     "dalle2": 1.8195304246295265,
+     "dalle3": 2.0053176128952774,
+     "firefly": 1.8471962956805523,
+     "midjourney-v5": 2.1414577820512926,
+     "stable-diffusion-2": 2.204231654546002,
+     "stable-diffusion-xl": 1.8513442693806998
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9666666666666667,
+     "dalle3": 1.0,
+     "firefly": 0.9916666666666667,
+     "midjourney-v5": 0.9916666666666667,
+     "stable-diffusion-2": 0.9583333333333334,
+     "stable-diffusion-xl": 0.95
+    }
+   },
+   "F2p": {
+    "macro_recomputed": 0.6425977653631284,
+    "native_median_shift": -0.2801764415972729,
+    "native_iqr": [
+     -1.970893359346797,
+     1.3544242965848665
+    ],
+    "native_frac_pos": 0.44692737430167595,
+    "fake_median_shift": {
+     "dalle2": 0.7071462467506439,
+     "dalle3": 0.9351466824079152,
+     "firefly": 1.0236954121364361,
+     "midjourney-v5": 0.5935343399443389,
+     "stable-diffusion-2": 1.3438014899029636,
+     "stable-diffusion-xl": 1.931042525090676
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.6416666666666667,
+     "dalle3": 0.6583333333333333,
+     "firefly": 0.65,
+     "midjourney-v5": 0.5916666666666667,
+     "stable-diffusion-2": 0.625,
+     "stable-diffusion-xl": 0.7416666666666667
+    },
+    "train_real_median_shift": -1.3823777093271423
+   },
+   "spearman_natives_plus_fakes": {
+    "A~blurA": 0.2283612618545666,
+    "A~texture": -0.4141901516085878,
+    "B~blurB": 0.3281489891695138,
+    "B~texture": -0.4800816862769408,
+    "F2p~texture": -0.2928346949221534,
+    "A~F2p": 0.23978474792315116,
+    "B~F2p": 0.24863926890976595,
+    "A~pixL2": 0.42849439333745043,
+    "blurA~texture": 0.07527139820899022
+   }
+  },
+  "social_sim": {
+   "A": {
+    "macro_recomputed": 0.6842954686530106,
+    "native_median_shift": 3.098636089618056,
+    "native_iqr": [
+     2.2337872946795896,
+     4.054352881860121
+    ],
+    "native_frac_pos": 0.9860335195530726,
+    "fake_median_shift": {
+     "dalle2": 2.759831718835092,
+     "dalle3": 2.1562130842350147,
+     "firefly": 2.168079759433493,
+     "midjourney-v5": 1.7824470594055757,
+     "stable-diffusion-2": 2.186289927897844,
+     "stable-diffusion-xl": 2.3064821795134973
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9833333333333333,
+     "dalle3": 0.9916666666666667,
+     "firefly": 0.975,
+     "midjourney-v5": 0.9333333333333333,
+     "stable-diffusion-2": 0.95,
+     "stable-diffusion-xl": 0.9833333333333333
+    },
+    "train_real_median_shift": 3.41330322157211
+   },
+   "B": {
+    "macro_recomputed": 0.5884466170080694,
+    "native_median_shift": 1.341108042518725,
+    "native_iqr": [
+     0.8318030288774382,
+     2.0869055278042112
+    ],
+    "native_frac_pos": 0.9134078212290503,
+    "fake_median_shift": {
+     "dalle2": 1.5884446791518865,
+     "dalle3": 1.3319181678012948,
+     "firefly": 0.8435163205476872,
+     "midjourney-v5": 0.7009559609403617,
+     "stable-diffusion-2": 1.3428255671656133,
+     "stable-diffusion-xl": 0.848435409685995
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9916666666666667,
+     "dalle3": 0.9666666666666667,
+     "firefly": 0.875,
+     "midjourney-v5": 0.9333333333333333,
+     "stable-diffusion-2": 0.9333333333333333,
+     "stable-diffusion-xl": 0.875
+    },
+    "train_real_median_shift": 1.519027638691616
+   },
+   "Bu": {
+    "macro_recomputed": 0.5871081626319056,
+    "native_median_shift": 1.2560682155345564,
+    "native_iqr": [
+     0.5982484310834977,
+     2.0154497323903255
+    ],
+    "native_frac_pos": 0.8770949720670391,
+    "fake_median_shift": {
+     "dalle2": 1.3706412338531326,
+     "dalle3": 1.2082046144267464,
+     "firefly": 0.7183600578201226,
+     "midjourney-v5": 0.7005351965658075,
+     "stable-diffusion-2": 1.07551215075165,
+     "stable-diffusion-xl": 0.6309203028585508
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.975,
+     "dalle3": 0.9416666666666667,
+     "firefly": 0.8416666666666667,
+     "midjourney-v5": 0.85,
+     "stable-diffusion-2": 0.9,
+     "stable-diffusion-xl": 0.8083333333333333
+    },
+    "train_real_median_shift": 1.3772453884419988
+   },
+   "blurA": {
+    "macro_recomputed": 0.80943513345748,
+    "native_median_shift": 4.286655865305798,
+    "native_iqr": [
+     3.0209170893748336,
+     5.413486515855332
+    ],
+    "native_frac_pos": 0.9832402234636871,
+    "fake_median_shift": {
+     "dalle2": 0.6641553714385346,
+     "dalle3": 2.13369602163881,
+     "firefly": 2.600912659318997,
+     "midjourney-v5": 2.1767159461095718,
+     "stable-diffusion-2": 1.9376052562722577,
+     "stable-diffusion-xl": 2.140456284942531
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.7083333333333334,
+     "dalle3": 0.8916666666666667,
+     "firefly": 0.925,
+     "midjourney-v5": 0.9416666666666667,
+     "stable-diffusion-2": 0.8583333333333333,
+     "stable-diffusion-xl": 0.9333333333333333
+    }
+   },
+   "blurB": {
+    "macro_recomputed": 0.43873758535071383,
+    "native_median_shift": 1.6421536709297104,
+    "native_iqr": [
+     0.8596065149876635,
+     2.58639240641071
+    ],
+    "native_frac_pos": 0.9385474860335196,
+    "fake_median_shift": {
+     "dalle2": 1.5985175291532054,
+     "dalle3": 2.6998290007240238,
+     "firefly": 1.614680121225912,
+     "midjourney-v5": 2.266597125729904,
+     "stable-diffusion-2": 2.2961609965350975,
+     "stable-diffusion-xl": 1.5704076804147769
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.9333333333333333,
+     "dalle3": 1.0,
+     "firefly": 0.9333333333333333,
+     "midjourney-v5": 0.9916666666666667,
+     "stable-diffusion-2": 0.9833333333333333,
+     "stable-diffusion-xl": 0.9416666666666667
+    }
+   },
+   "F2p": {
+    "macro_recomputed": 0.7831044382371198,
+    "native_median_shift": -1.0906151683184833,
+    "native_iqr": [
+     -2.7562470957711467,
+     0.9597791453539898
+    ],
+    "native_frac_pos": 0.3435754189944134,
+    "fake_median_shift": {
+     "dalle2": 0.9006560196928445,
+     "dalle3": 1.1701318998658996,
+     "firefly": 1.520876814814334,
+     "midjourney-v5": 1.5321805052883286,
+     "stable-diffusion-2": 3.2526671803684755,
+     "stable-diffusion-xl": 3.646147480446426
+    },
+    "fake_frac_pos": {
+     "dalle2": 0.6666666666666666,
+     "dalle3": 0.7333333333333333,
+     "firefly": 0.7583333333333333,
+     "midjourney-v5": 0.75,
+     "stable-diffusion-2": 0.8666666666666667,
+     "stable-diffusion-xl": 0.9
+    },
+    "train_real_median_shift": -1.4403346407527309
+   },
+   "spearman_natives_plus_fakes": {
+    "A~blurA": 0.3380898295678787,
+    "A~texture": -0.11159420072589664,
+    "B~blurB": 0.407033806354927,
+    "B~texture": -0.3139878019276233,
+    "F2p~texture": -0.022849754869756888,
+    "A~F2p": 0.3092520125442903,
+    "B~F2p": 0.19940802608760555,
+    "A~pixL2": 0.18036772676022075,
+    "blurA~texture": 0.16403927457772766
+   }
+  }
+ }
+}

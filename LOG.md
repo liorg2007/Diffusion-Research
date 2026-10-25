@@ -335,3 +335,9 @@
   - Side number: E4's pooled pair-trained F2 probe (never saw a fake) reaches 0.892 clean / 0.665 laundered / 0.759 social_sim on 6 unseen generators (fov512).
   - D-008 ok (max |Δscore| 6.6e-5). The self-reference / idempotence route is closed for laundered images. Launching opus/high critic.
   - Starting SETUP_WSL step 6 GPU scoring.
+- 2026-10-25 08:12 — H-D1 critic (opus/high, 012/pilot/critique.md): no bug; label follows the rules, but substantively FAIL (only a gate made it UNINFORMATIVE).
+  - fov512 removes the fakes' decoder fixed-point property (a design flaw: no mechanism gate on fakes). In orig, clean B 0.704 (SD-family 0.867), but laundered 0.484 in both arms.
+  - Three fixed-point/reconstruction scores have now failed on laundered inputs, so stop spending pilots on them.
+  - Pooled F2 pair-trained probe adopted as a candidate generator-free baseline (0.892 / 0.665 / 0.759 fov512). Not a blur axis, not decoder-specific.
+  - Process rules for future pre-registrations: a mechanism gate on fakes per arm; a miss of ≥ 0.10 below the fail line = FAIL regardless of gates; commit code before full runs.
+  - KB updated.
