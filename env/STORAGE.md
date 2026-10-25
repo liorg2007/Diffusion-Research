@@ -20,5 +20,7 @@ Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 
 | experiments/009-vae-aligned/cache | 262 MB | derived | E4 reuses train round-trips | keep until E4 is critiqued |
 | third_party | 263 MB | author GitHub clones | scorers | keep |
 
+| data/raw/openimages | 186 MB | Open Images V7 val, CC BY 2.0 | E7 | keep until E7 critiqued |
+
 Deleted:
 - 2026-10-24: data/processed/du2512 (587 MB) and 004 cache pilot_du2 (81 MB), the confounded E1b arm. Results are committed in experiments/008-scale-sensitivity/pilot_du2/.

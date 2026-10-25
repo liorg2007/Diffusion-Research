@@ -398,3 +398,4 @@
   - fov512: 0.953 / FLUX 0.913; cross-source 0.826 / 0.700.
   - Deviation: official splits are not twin-consistent, so caption families were assigned whole by majority (dropped 258 fakes, 79 RAISE reals).
   - Launching opus/high critic.
+- 2026-10-25 20:56 — Open Images V7 validation subset downloaded (haiku): 600 CC BY 2.0 photos, 178 MB, short side median 768. Manifest sha256 verified. CVDF copies are re-encoded and resized. Cumulative downloads about 9.9 GB of the 20 GB ceiling (D-015). SOURCES, STORAGE and KB updated.

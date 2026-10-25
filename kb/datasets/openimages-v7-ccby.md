@@ -7,3 +7,5 @@
 - **Download procedure:** subsets by ID list (`$SPLIT/$IMAGE_ID` lines) with `downloader.py`, or FiftyOne zoo, or CVDF archives. Filter the ID list to License == CC BY before downloading.
 - **Known issues:** per-image licence heterogeneity; mixed JPEG qualities and prior platform processing (Flickr resizing); Open Images/OpenImages-derived data may be in generators' training sets (LAION overlap) - possible leakage.
 - **Used in our experiments?** no (candidate)
+
+- **Update (2026-10-25):** in the validation-split metadata CSV (2018_04), all 41,620 rows carry License https://creativecommons.org/licenses/by/2.0/, so no per-image filtering was needed for that split. The CVDF bucket copies are re-encoded and resized (short side ≤ 1024; 0/600 match OriginalMD5), so treat them as resized web photos.
