@@ -1,0 +1,77 @@
+18:56:24 HD1 start stage=all dry=False
+18:56:24 HD1 D-008 VAE pixel guard reused from 009: max|dpixel| x1=9.19e-05 x2=2.84e-05 (ok)
+18:57:14 HD1 feat fov512/clean: chunk 0 (96/2134) 44s batch 4
+19:00:50 HD1 feat fov512/clean: chunk 5 (576/2134) 261s batch 4
+19:04:30 HD1 feat fov512/clean: chunk 10 (1056/2134) 480s batch 4
+19:08:06 HD1 feat fov512/clean: chunk 15 (1536/2134) 696s batch 4
+19:11:42 HD1 feat fov512/clean: chunk 20 (2016/2134) 912s batch 4
+19:12:36 HD1 feat fov512/clean: 2134 new rows, 966s
+19:12:55 HD1 feat fov512/jpeg75_resize05: chunk 0 (96/2134) 19s batch 4
+19:14:26 HD1 feat fov512/jpeg75_resize05: chunk 5 (576/2134) 110s batch 4
+19:15:58 HD1 feat fov512/jpeg75_resize05: chunk 10 (1056/2134) 202s batch 4
+19:17:30 HD1 feat fov512/jpeg75_resize05: chunk 15 (1536/2134) 295s batch 4
+19:19:01 HD1 feat fov512/jpeg75_resize05: chunk 20 (2016/2134) 385s batch 4
+19:19:24 HD1 feat fov512/jpeg75_resize05: 2134 new rows, 408s
+19:19:58 HD1 feat fov512/social_sim: chunk 0 (96/2134) 34s batch 4
+19:22:51 HD1 feat fov512/social_sim: chunk 5 (576/2134) 207s batch 4
+19:25:12 HD1 feat fov512/social_sim: chunk 10 (1056/2134) 348s batch 4
+19:27:34 HD1 feat fov512/social_sim: chunk 15 (1536/2134) 490s batch 4
+19:29:58 HD1 feat fov512/social_sim: chunk 20 (2016/2134) 634s batch 4
+19:30:32 HD1 feat fov512/social_sim: 2134 new rows, 668s
+19:31:10 HD1 feat orig/clean: chunk 0 (96/2134) 39s batch 4
+19:34:14 HD1 feat orig/clean: chunk 5 (576/2134) 222s batch 4
+19:37:14 HD1 feat orig/clean: chunk 10 (1056/2134) 402s batch 4
+19:40:17 HD1 feat orig/clean: chunk 15 (1536/2134) 586s batch 4
+19:43:17 HD1 feat orig/clean: chunk 20 (2016/2134) 766s batch 4
+19:44:01 HD1 feat orig/clean: 2134 new rows, 809s
+19:44:14 HD1 feat orig/jpeg75_resize05: chunk 0 (96/2134) 13s batch 4
+19:45:09 HD1 feat orig/jpeg75_resize05: chunk 5 (576/2134) 68s batch 4
+19:46:08 HD1 feat orig/jpeg75_resize05: chunk 10 (1056/2134) 127s batch 4
+19:47:06 HD1 feat orig/jpeg75_resize05: chunk 15 (1536/2134) 185s batch 4
+19:48:02 HD1 feat orig/jpeg75_resize05: chunk 20 (2016/2134) 241s batch 4
+19:48:17 HD1 feat orig/jpeg75_resize05: 2134 new rows, 256s
+19:48:45 HD1 feat orig/social_sim: chunk 0 (96/2134) 27s batch 4
+19:51:00 HD1 feat orig/social_sim: chunk 5 (576/2134) 163s batch 4
+19:53:12 HD1 feat orig/social_sim: chunk 10 (1056/2134) 295s batch 4
+19:55:28 HD1 feat orig/social_sim: chunk 15 (1536/2134) 431s batch 4
+19:57:44 HD1 feat orig/social_sim: chunk 20 (2016/2134) 566s batch 4
+19:58:16 HD1 feat orig/social_sim: 2134 new rows, 598s
+19:59:28 HD1 vv fov512: chunk 0 (96/655) 72s
+20:00:36 HD1 vv fov512: chunk 1 (192/655) 140s
+20:01:43 HD1 vv fov512: chunk 2 (288/655) 208s
+20:02:51 HD1 vv fov512: chunk 3 (384/655) 276s
+20:04:01 HD1 vv fov512: chunk 4 (480/655) 345s
+20:05:09 HD1 vv fov512: chunk 5 (576/655) 413s
+20:06:05 HD1 vv fov512: chunk 6 (655/655) 469s
+20:07:15 HD1 vv orig: chunk 0 (96/655) 539s
+20:08:22 HD1 vv orig: chunk 1 (192/655) 607s
+20:09:30 HD1 vv orig: chunk 2 (288/655) 675s
+20:10:38 HD1 vv orig: chunk 3 (384/655) 742s
+20:11:46 HD1 vv orig: chunk 4 (480/655) 810s
+20:12:53 HD1 vv orig: chunk 5 (576/655) 878s
+20:13:48 HD1 vv orig: chunk 6 (655/655) 933s
+20:13:49 HD1 fov512: refit-vs-011 transfer check {'primary/clean': {'refit': 0.8921205772811919, 'e4_results_json': 0.8921205772811919, 'abs_diff': 0.0}, 'primary/jpeg75_resize05': {'refit': 0.6648898199875853, 'e4_results_json': 0.6648898199875853, 'abs_diff': 0.0}, 'matched/jpeg75_resize05': {'refit': 0.6255237430167598, 'e4_results_json': 0.6255237430167598, 'abs_diff': 0.0}}
+20:13:52 HD1 orig: refit-vs-011 transfer check {'primary/clean': {'refit': 0.7760280881440099, 'e4_results_json': 0.7760280881440099, 'abs_diff': 0.0}, 'primary/jpeg75_resize05': {'refit': 0.6425977653631284, 'e4_results_json': 0.6425977653631284, 'abs_diff': 0.0}, 'matched/jpeg75_resize05': {'refit': 0.4941030415890751, 'e4_results_json': 0.4941030415890751, 'abs_diff': 0.0}}
+20:14:57 HD1 blur sigma fov512/clean: A target 10.160 -> sigma 2.476 (ok); B target 1.070 -> sigma 0.867 (ok)
+20:15:13 HD1 blur feat fov512/clean: done (1078 rows)
+20:16:09 HD1 blur sigma fov512/jpeg75_resize05: A target 3.903 -> sigma 2.120 (ok); B target 0.721 -> sigma 1.381 (ok)
+20:16:27 HD1 blur feat fov512/jpeg75_resize05: done (1078 rows)
+20:17:40 HD1 blur sigma fov512/social_sim: A target 5.874 -> sigma 2.162 (ok); B target 0.739 -> sigma 0.966 (ok)
+20:18:03 HD1 blur feat fov512/social_sim: done (1078 rows)
+20:19:04 HD1 blur sigma orig/clean: A target 4.255 -> sigma 1.520 (ok); B target 2.586 -> sigma 1.149 (ok)
+20:19:21 HD1 blur feat orig/clean: done (1078 rows)
+20:20:15 HD1 blur sigma orig/jpeg75_resize05: A target 3.448 -> sigma 1.580 (ok); B target 1.938 -> sigma 1.259 (ok)
+20:20:30 HD1 blur feat orig/jpeg75_resize05: done (1078 rows)
+20:21:33 HD1 blur sigma orig/social_sim: A target 3.469 -> sigma 1.499 (ok); B target 1.882 -> sigma 1.114 (ok)
+20:21:57 HD1 blur feat orig/social_sim: done (1078 rows)
+20:22:37 HD1 D-008 fov512/clean: max|dscore|=6.02e-05 scaled dF=3.25e-05 -> ok
+20:23:20 HD1 D-008 fov512/jpeg75_resize05: max|dscore|=5.17e-05 scaled dF=2.19e-05 -> ok
+20:24:00 HD1 D-008 fov512/social_sim: max|dscore|=4.24e-05 scaled dF=1.61e-05 -> ok
+20:24:08 HD1 D-008 fov512/vv: max|dscore|=3.32e-05 -> ok
+20:24:48 HD1 D-008 orig/clean: max|dscore|=7.28e-05 scaled dF=1.90e-05 -> ok
+20:25:27 HD1 D-008 orig/jpeg75_resize05: max|dscore|=1.13e-04 scaled dF=1.65e-05 -> ok
+20:26:11 HD1 D-008 orig/social_sim: max|dscore|=7.92e-05 scaled dF=2.13e-05 -> ok
+20:26:16 HD1 D-008 orig/vv: max|dscore|=6.60e-05 -> ok
+20:26:28 HD1 fov512: computed label = UNINFORMATIVE; NOT DIFFUSION-SPECIFIC
+20:26:38 HD1 orig: computed label = UNINFORMATIVE; NOT DIFFUSION-SPECIFIC
+20:26:39 HD1 analysis done in 5414s; computed label (fov512) = UNINFORMATIVE; NOT DIFFUSION-SPECIFIC

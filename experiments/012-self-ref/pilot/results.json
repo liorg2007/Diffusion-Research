@@ -1,0 +1,5251 @@
+{
+ "label": "PILOT",
+ "config": {
+  "PILOT": true,
+  "experiment": "H-D1 PILOT self-ref-trace-contrast (kb/ideas/self-ref-trace-contrast.md as committed in ca58d61) + docs/04-phase4-plan.md Amendment 12; pilot under D-014, does not count toward the stop rule",
+  "seed": 0,
+  "n_boot": 2000,
+  "vae": {
+   "name": "sd-vae-ft-mse",
+   "repo": "stabilityai/sd-vae-ft-mse",
+   "revision": "31f26fdeee1355a5c34592e401dd41e45d25a493",
+   "io": "009's recon_f/q8 (uint8 -> [-1,1] -> encode -> latent_dist.mode() -> decode -> (y+1)/2 clamp -> rint uint8; fp32, TF32 off; GPU batch <= 4, grouped by image size)"
+  },
+  "arms": {
+   "fov512": "experiments/004-phase4-features/pilot/splits_pilot_fov512.csv",
+   "orig": "experiments/004-phase4-features/pilot/splits_pilot.csv"
+  },
+  "label_arm": "fov512",
+  "conditions": [
+   "clean",
+   "jpeg75_resize05",
+   "social_sim"
+  ],
+  "rows": {
+   "train_reals": "297 train-split reals (99 native, 99 WA, 99 FBH; 10 devices): probes, orientation, blur sigma",
+   "calib_natives": "43 calib-split natives (same 10 devices as train, other photos): alternative threshold calibration + texture sign",
+   "test_reals": "1,074 test-split reals (358 per pool, 25 devices disjoint from train)",
+   "fakes": "720 Synthbuster fakes (6 generators x 120); all 720 are scored (011 convention); only the train-split fakes (360) set the texture sign",
+   "vv": "second round-trip VAE(VAE(x)) at clean for the 297 train reals and the 358 test natives"
+  },
+  "observed_image": "t = apply_condition(raw crop, cond) (004 load_cond), then center-cropped to a multiple of 8 per side (t'; identical for 512 and 256, <= 3 px for social_sim). Every quantity below uses t'. VAE(t') is the raw uint8 output (no JPEG/PNG re-save) for both classes in both arms.",
+  "phi": "DINOv2-base blocks 4/8/12 CLS+mean (004 secondary, 4608-d, 224 center crop, batch 20, TF32 off)",
+  "L0": {
+   "definition": "perturb.jpeg75_resize05 (resize x0.5 bicubic, JPEG q75), applied to BOTH t' and VAE(t') (after the VAE)",
+   "primary_rule": "min: if the L0 output is shorter than 224 on a side (observed image already 256^2 -> 128^2, or social_sim < 448), bicubic-resize it back to the pre-L0 size (Amendment 9 precedent); otherwise leave it at half size (literal 011 pipeline for clean 512 inputs)",
+   "sensitivity_rule": "uniform: always bicubic back to the pre-L0 size (Amendment 9 canonicalization applied uniformly). Reported as 'Bu'; does not affect the label."
+  },
+  "scores": {
+   "A": "shift = d_p(phi(VAE t')) - d_p(phi(t')); d_p = decision function of E4's PRIMARY F2 probe (fit on CLEAN train pairs, refit here with the same code and verified against 011/results.json); fake-score = -shift",
+   "B": "shift = d_m(phi(L0 VAE t')) - d_m(phi(L0 t')); d_m = E4's MATCHED F2 probe (fit on jpeg75_resize05 train pairs); fake-score = -shift; THE LABEL SCORE",
+   "Bu": "B with the uniform L0 rule (sensitivity)",
+   "A2": "logistic probe (grouped CV, balanced, 011/009 e2.fit) on Delta vectors, positives Delta1 = phi(VAE x) - phi(x), negatives Delta2 = phi(VAE VAE x) - phi(VAE x), 297 train reals each, clean, raw (no L0); score = -decision(phi(VAE t') - phi(t'))",
+   "A2L": "same with L0 on all four images (descriptive extension of A2; the idea file does not say whether A2 uses L0)",
+   "orientation": "fixed on train pairs: round-trip = class 1, a real photo shifts positively; fake-score = -shift. Never flipped on test."
+  },
+  "baselines": {
+   "pooled_F2": "d_p(phi(t')) (and d_m(phi(t')) as 'F2m'), single-image, fake-score = +decision (011 transfer convention); 011 reference values (0.892/0.665 fov512, 0.776/0.643 orig at clean/laundered) are checked against the refit",
+   "texture": "mean |4-neighbour Laplacian| of the gray 224 center crop of t' (009 lap224); sign set per condition on calib natives vs train-split fakes (009 convention, Amendment 6), never flipped",
+   "pixel_L2": "-RMS(t' - VAE(t')) over all pixels in [0,1], fake-score = -RMS (AEROBLADE premise, fixed a priori, L2 instead of LPIPS); the flipped orientation is reported descriptively",
+   "B0_LOGO": "005 pilot A0 LOGO-macro AUROC quoted from 005/pilot/results.json (reference only; arm of that file is the 005 splits)"
+  },
+  "blur_control": {
+   "definition": "the same score with VAE(t') replaced by GaussianBlur(t', sigma)",
+   "sigma": "chosen per (arm, condition, score A or B) on the 297 TRAIN reals observed in that condition so that the mean shift of the blur equals the mean shift of the VAE round-trip (grid below, log-linear interpolation between the bracketing grid points; out-of-range flagged)",
+   "grid": [
+    0.25,
+    0.3125,
+    0.390625,
+    0.48828125,
+    0.6103515625,
+    0.762939453125,
+    0.95367431640625,
+    1.1920928955078125,
+    1.4901161193847656,
+    1.862645149230957,
+    2.3283064365386963,
+    2.9103830456733704,
+    3.637978807091713,
+    4.547473508864641
+   ],
+   "rule": "diffusion-specific only if laundered AUROC(B) - AUROC(blur B) >= 0.05 with the paired-bootstrap CI lower bound > 0; else the label is 'not diffusion-specific' whatever the AUROC",
+   "test_rows": "358 test natives + 720 fakes"
+  },
+  "gates": {
+   "1_saturation": "test natives, clean, w = primary F2: median(w.Delta2) <= 0.5 * median(w.Delta1), Delta1 = phi(VAE x) - phi(x), Delta2 = phi(VAE VAE x) - phi(VAE x); else UNINFORMATIVE",
+   "2_content_cancellation": "Spearman(w.phi(t'), w.phi(VAE t')) >= 0.8 on the 358 test natives; evaluated for the label score B (w matched, L0 features) in EVERY condition and for A; the gate passes iff B passes in every condition",
+   "3_orientation": "fixed on train pairs (above); recorded: fraction of train reals with positive shift, A2 in-sample AUROC",
+   "4_d008": "|dlogit| <= 1e-3 on 32 fixed images (16 test natives + 16 fakes) for every score, GPU vs CPU DINOv2 features of the stored VAE outputs; VAE pixel guard reused from 009 (same weights revision and recon function)",
+   "5_validity_A6_A8": "B clean AUROC CI lower bound > 0.5 AND B clean AUROC > texture clean AUROC (Amendments 6/8 reading)"
+  },
+  "pass_fail": {
+   "pass": [
+    "B laundered macro >= 0.80, CI lo >= 0.75, and >= pooled F2 (primary, laundered) + 0.10",
+    "B clean macro >= 0.90",
+    "B social_sim macro >= 0.80",
+    "non-SD group (dalle2, dalle3, firefly, midjourney-v5) macro laundered >= 0.75",
+    "B beats texture and pixel-L2 by >= 0.10 (point) in every condition",
+    "FPR <= 2.0% at the 1% threshold, on the test natives, WA and FBH copies, in every condition"
+   ],
+   "fail": "B laundered < 0.70 or <= pooled F2 + 0.03",
+   "between": "INCONCLUSIVE",
+   "label_arm": "fov512 (orig reported with the same rules)"
+  },
+  "fpr_rule": {
+   "primary": "cross-fit over DEVICES: the 25 test devices are split into two halves (seeded, balanced); the threshold is calibrated on the natives of one half (lib/metrics.threshold_for_fpr at 1%) and applied to the natives, WA and FBH copies of the OTHER half's devices; pooled over both folds. Calibrated per condition.",
+   "alternative": "threshold from the 43 calib-split natives, applied to all test natives / WA / FBH (calib devices are train devices, so this is held-out photos, not held-out devices)"
+  },
+  "bootstrap": "e2.Plan: test natives by device, fakes by image stratified per generator, 2000 replicates, one plan for all scores (paired); per-pool plans use the same seed (identical device draws)",
+  "output_dir": "pilot/{results.json,tables.md,scores_long.csv.gz,d008_guard.json,run.log}; caches in cache/ (git-ignored)"
+ },
+ "dry": false,
+ "n_boot": 2000,
+ "arms": {
+  "fov512": {
+   "n_train_reals": 297,
+   "n_test_reals": 1074,
+   "n_test_natives": 358,
+   "n_calib_natives": 43,
+   "n_fakes": 720,
+   "n_test_devices": 25,
+   "sigma": {
+    "clean": {
+     "vae_mean_shift_A": 10.159951970261796,
+     "vae_mean_shift_B": 1.0703297298189336,
+     "sigma_A": 2.4758974639311044,
+     "status_A": "ok",
+     "sigma_B": 0.8666004999906503,
+     "status_B": "ok"
+    },
+    "jpeg75_resize05": {
+     "vae_mean_shift_A": 3.9025181474617754,
+     "vae_mean_shift_B": 0.7206480345324864,
+     "sigma_A": 2.119527733059306,
+     "status_A": "ok",
+     "sigma_B": 1.3805701224090932,
+     "status_B": "ok"
+    },
+    "social_sim": {
+     "vae_mean_shift_A": 5.873719948769229,
+     "vae_mean_shift_B": 0.7386527589112107,
+     "sigma_A": 2.1618255459379347,
+     "status_A": "ok",
+     "sigma_B": 0.9658336600113588,
+     "status_B": "ok"
+    }
+   },
+   "scores": {
+    "A": {
+     "clean": {
+      "macro": {
+       "value": 0.7954337368094352,
+       "ci_lo": 0.7555630234713375,
+       "ci_hi": 0.8364891387345899
+      },
+      "sd_family": {
+       "value": 0.8305167597765364,
+       "ci_lo": 0.7891329999178444,
+       "ci_hi": 0.8683619813859167
+      },
+      "other": {
+       "value": 0.7778922253258845,
+       "ci_lo": 0.7338769434999014,
+       "ci_hi": 0.8210088951310861
+      },
+      "per_generator": {
+       "dalle2": 0.8753258845437616,
+       "dalle3": 0.7387569832402234,
+       "firefly": 0.7219506517690876,
+       "midjourney-v5": 0.7755353817504655,
+       "stable-diffusion-2": 0.7781424581005587,
+       "stable-diffusion-xl": 0.882891061452514
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7954337368094352,
+        "ci_lo": 0.7555630234713375,
+        "ci_hi": 0.8364891387345899
+       },
+       "vision_whatsapp": {
+        "value": 0.7311762880198635,
+        "ci_lo": 0.6876586423013036,
+        "ci_hi": 0.7755073927360459
+       },
+       "vision_facebook_hq": {
+        "value": 0.7209923960273121,
+        "ci_lo": 0.676110364726001,
+        "ci_hi": 0.7654568745690551
+       }
+      },
+      "macro_flipped_orientation": 0.2045662631905648
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4337833643699565,
+       "ci_lo": 0.3823586863749224,
+       "ci_hi": 0.4895190293296089
+      },
+      "sd_family": {
+       "value": 0.4285148975791434,
+       "ci_lo": 0.3748578048245956,
+       "ci_hi": 0.48995691023362103
+      },
+      "other": {
+       "value": 0.43641759776536315,
+       "ci_lo": 0.3800039280726257,
+       "ci_hi": 0.4950514973122907
+      },
+      "per_generator": {
+       "dalle2": 0.5939478584729981,
+       "dalle3": 0.35034916201117317,
+       "firefly": 0.34217877094972066,
+       "midjourney-v5": 0.45919459962756054,
+       "stable-diffusion-2": 0.32364990689013035,
+       "stable-diffusion-xl": 0.5333798882681564
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4337833643699565,
+        "ci_lo": 0.3823586863749224,
+        "ci_hi": 0.4895190293296089
+       },
+       "vision_whatsapp": {
+        "value": 0.45060521415270016,
+        "ci_lo": 0.40046331055313783,
+        "ci_hi": 0.5070177349568922
+       },
+       "vision_facebook_hq": {
+        "value": 0.4360063625077591,
+        "ci_lo": 0.38739678454173376,
+        "ci_hi": 0.4876005780571072
+       }
+      },
+      "macro_flipped_orientation": 0.5662166356300435
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.5749689633767846,
+       "ci_lo": 0.5309190625780829,
+       "ci_hi": 0.6183951831528195
+      },
+      "sd_family": {
+       "value": 0.5812267225325884,
+       "ci_lo": 0.5297003769769856,
+       "ci_hi": 0.6320131332262012
+      },
+      "other": {
+       "value": 0.5718400837988826,
+       "ci_lo": 0.5252712673611111,
+       "ci_hi": 0.6172212959322463
+      },
+      "per_generator": {
+       "dalle2": 0.6618016759776536,
+       "dalle3": 0.49844040968342646,
+       "firefly": 0.4902467411545624,
+       "midjourney-v5": 0.6368715083798883,
+       "stable-diffusion-2": 0.5138035381750465,
+       "stable-diffusion-xl": 0.6486499068901304
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5749689633767846,
+        "ci_lo": 0.5309190625780829,
+        "ci_hi": 0.6183951831528195
+       },
+       "vision_whatsapp": {
+        "value": 0.5829570142768467,
+        "ci_lo": 0.5452828144142916,
+        "ci_hi": 0.6191851916511483
+       },
+       "vision_facebook_hq": {
+        "value": 0.5897656734947238,
+        "ci_lo": 0.5449619397540539,
+        "ci_hi": 0.6366672182437743
+       }
+      },
+      "macro_flipped_orientation": 0.4250310366232154
+     }
+    },
+    "B": {
+     "clean": {
+      "macro": {
+       "value": 0.5334807572936064,
+       "ci_lo": 0.456355606889924,
+       "ci_hi": 0.6133329884214214
+      },
+      "sd_family": {
+       "value": 0.5116620111731843,
+       "ci_lo": 0.43560330165870614,
+       "ci_hi": 0.5929083029433064
+      },
+      "other": {
+       "value": 0.5443901303538174,
+       "ci_lo": 0.4661120436082326,
+       "ci_hi": 0.6256139216571458
+      },
+      "per_generator": {
+       "dalle2": 0.5257914338919926,
+       "dalle3": 0.5328212290502793,
+       "firefly": 0.4657355679702048,
+       "midjourney-v5": 0.6532122905027933,
+       "stable-diffusion-2": 0.39029329608938546,
+       "stable-diffusion-xl": 0.6330307262569832
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5334807572936064,
+        "ci_lo": 0.456355606889924,
+        "ci_hi": 0.6133329884214214
+       },
+       "vision_whatsapp": {
+        "value": 0.5450574177529485,
+        "ci_lo": 0.47092177962704324,
+        "ci_hi": 0.6210623254189943
+       },
+       "vision_facebook_hq": {
+        "value": 0.545538485412787,
+        "ci_lo": 0.47222364866371047,
+        "ci_hi": 0.6226500574703574
+       }
+      },
+      "macro_flipped_orientation": 0.46651924270639356
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4964113904407201,
+       "ci_lo": 0.4305628143882319,
+       "ci_hi": 0.569182998446872
+      },
+      "sd_family": {
+       "value": 0.42626862197392923,
+       "ci_lo": 0.35737102445144725,
+       "ci_hi": 0.49870318972659483
+      },
+      "other": {
+       "value": 0.5314827746741154,
+       "ci_lo": 0.4645641233099385,
+       "ci_hi": 0.6026172530265863
+      },
+      "per_generator": {
+       "dalle2": 0.5494646182495344,
+       "dalle3": 0.5074022346368715,
+       "firefly": 0.4921322160148976,
+       "midjourney-v5": 0.5769320297951583,
+       "stable-diffusion-2": 0.3111964618249534,
+       "stable-diffusion-xl": 0.541340782122905
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4964113904407201,
+        "ci_lo": 0.4305628143882319,
+        "ci_hi": 0.569182998446872
+       },
+       "vision_whatsapp": {
+        "value": 0.5015518311607696,
+        "ci_lo": 0.4334723956712314,
+        "ci_hi": 0.5784139742231639
+       },
+       "vision_facebook_hq": {
+        "value": 0.49417287399130966,
+        "ci_lo": 0.42248081623954775,
+        "ci_hi": 0.5717914869809533
+       }
+      },
+      "macro_flipped_orientation": 0.5035886095592799
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.5385552451893235,
+       "ci_lo": 0.47485539707813246,
+       "ci_hi": 0.6096195943094874
+      },
+      "sd_family": {
+       "value": 0.5104399441340782,
+       "ci_lo": 0.4441059332063159,
+       "ci_hi": 0.5825736856767948
+      },
+      "other": {
+       "value": 0.552612895716946,
+       "ci_lo": 0.486140549678203,
+       "ci_hi": 0.6258644499413236
+      },
+      "per_generator": {
+       "dalle2": 0.5218808193668529,
+       "dalle3": 0.5361033519553072,
+       "firefly": 0.54487895716946,
+       "midjourney-v5": 0.6075884543761638,
+       "stable-diffusion-2": 0.39150372439478587,
+       "stable-diffusion-xl": 0.6293761638733706
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5385552451893235,
+        "ci_lo": 0.47485539707813246,
+        "ci_hi": 0.6096195943094874
+       },
+       "vision_whatsapp": {
+        "value": 0.5531308193668529,
+        "ci_lo": 0.4941484358835092,
+        "ci_hi": 0.6144826377899104
+       },
+       "vision_facebook_hq": {
+        "value": 0.5529058038485412,
+        "ci_lo": 0.4905308428824773,
+        "ci_hi": 0.615923468281174
+       }
+      },
+      "macro_flipped_orientation": 0.4614447548106765
+     }
+    },
+    "Bu": {
+     "clean": {
+      "macro": {
+       "value": 0.5574875853507139,
+       "ci_lo": 0.4988011951425389,
+       "ci_hi": 0.6229968956856485
+      },
+      "sd_family": {
+       "value": 0.5867900372439478,
+       "ci_lo": 0.5217783386983852,
+       "ci_hi": 0.6526907276995305
+      },
+      "other": {
+       "value": 0.5428363594040968,
+       "ci_lo": 0.48053280067014537,
+       "ci_hi": 0.6087320130662316
+      },
+      "per_generator": {
+       "dalle2": 0.46671322160148976,
+       "dalle3": 0.5759310986964619,
+       "firefly": 0.48601024208566107,
+       "midjourney-v5": 0.6426908752327747,
+       "stable-diffusion-2": 0.5365223463687151,
+       "stable-diffusion-xl": 0.6370577281191806
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5574875853507139,
+        "ci_lo": 0.4988011951425389,
+        "ci_hi": 0.6229968956856485
+       },
+       "vision_whatsapp": {
+        "value": 0.5699526691495965,
+        "ci_lo": 0.513689525462963,
+        "ci_hi": 0.631738050900062
+       },
+       "vision_facebook_hq": {
+        "value": 0.5778747672253258,
+        "ci_lo": 0.5235469480598878,
+        "ci_hi": 0.6370553790018832
+       }
+      },
+      "macro_flipped_orientation": 0.44251241464928615
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4964113904407201,
+       "ci_lo": 0.4305628143882319,
+       "ci_hi": 0.569182998446872
+      },
+      "sd_family": {
+       "value": 0.42626862197392923,
+       "ci_lo": 0.35737102445144725,
+       "ci_hi": 0.49870318972659483
+      },
+      "other": {
+       "value": 0.5314827746741154,
+       "ci_lo": 0.4645641233099385,
+       "ci_hi": 0.6026172530265863
+      },
+      "per_generator": {
+       "dalle2": 0.5494646182495344,
+       "dalle3": 0.5074022346368715,
+       "firefly": 0.4921322160148976,
+       "midjourney-v5": 0.5769320297951583,
+       "stable-diffusion-2": 0.3111964618249534,
+       "stable-diffusion-xl": 0.541340782122905
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4964113904407201,
+        "ci_lo": 0.4305628143882319,
+        "ci_hi": 0.569182998446872
+       },
+       "vision_whatsapp": {
+        "value": 0.5015518311607696,
+        "ci_lo": 0.4334723956712314,
+        "ci_hi": 0.5784139742231639
+       },
+       "vision_facebook_hq": {
+        "value": 0.49417287399130966,
+        "ci_lo": 0.42248081623954775,
+        "ci_hi": 0.5717914869809533
+       }
+      },
+      "macro_flipped_orientation": 0.5035886095592799
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.5378801986343885,
+       "ci_lo": 0.4808295623530189,
+       "ci_hi": 0.6025909117509363
+      },
+      "sd_family": {
+       "value": 0.5134078212290503,
+       "ci_lo": 0.4513544787079255,
+       "ci_hi": 0.5795661019016721
+      },
+      "other": {
+       "value": 0.5501163873370577,
+       "ci_lo": 0.48923827854471585,
+       "ci_hi": 0.6167371006766857
+      },
+      "per_generator": {
+       "dalle2": 0.4919925512104283,
+       "dalle3": 0.5722067039106146,
+       "firefly": 0.5114059590316573,
+       "midjourney-v5": 0.6248603351955307,
+       "stable-diffusion-2": 0.4255586592178771,
+       "stable-diffusion-xl": 0.6012569832402235
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5378801986343885,
+        "ci_lo": 0.4808295623530189,
+        "ci_hi": 0.6025909117509363
+       },
+       "vision_whatsapp": {
+        "value": 0.5452513966480447,
+        "ci_lo": 0.4886242782459426,
+        "ci_hi": 0.6052867972238091
+       },
+       "vision_facebook_hq": {
+        "value": 0.5369335816263191,
+        "ci_lo": 0.4823524016217288,
+        "ci_hi": 0.5956474274778055
+       }
+      },
+      "macro_flipped_orientation": 0.4621198013656115
+     }
+    },
+    "A2": {
+     "clean": {
+      "macro": {
+       "value": 0.672280415890751,
+       "ci_lo": 0.6217012891750187,
+       "ci_hi": 0.7272052986412856
+      },
+      "sd_family": {
+       "value": 0.644774208566108,
+       "ci_lo": 0.5838415982003129,
+       "ci_hi": 0.7071058878376204
+      },
+      "other": {
+       "value": 0.6860335195530727,
+       "ci_lo": 0.6350159617495112,
+       "ci_hi": 0.7409427587034314
+      },
+      "per_generator": {
+       "dalle2": 0.8145251396648044,
+       "dalle3": 0.6872905027932961,
+       "firefly": 0.5024906890130354,
+       "midjourney-v5": 0.7398277467411546,
+       "stable-diffusion-2": 0.6332867783985102,
+       "stable-diffusion-xl": 0.6562616387337058
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.672280415890751,
+        "ci_lo": 0.6217012891750187,
+        "ci_hi": 0.7272052986412856
+       },
+       "vision_whatsapp": {
+        "value": 0.6016371818746121,
+        "ci_lo": 0.5464829888934837,
+        "ci_hi": 0.6619784847957288
+       },
+       "vision_facebook_hq": {
+        "value": 0.6529562383612663,
+        "ci_lo": 0.602988436403848,
+        "ci_hi": 0.7084138340268353
+       }
+      },
+      "macro_flipped_orientation": 0.32771958410924895
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4569134078212291,
+       "ci_lo": 0.40205196035395585,
+       "ci_hi": 0.5186705748184128
+      },
+      "sd_family": {
+       "value": 0.4154795158286778,
+       "ci_lo": 0.3577898732145415,
+       "ci_hi": 0.4823521336056253
+      },
+      "other": {
+       "value": 0.4776303538175047,
+       "ci_lo": 0.41966838599533407,
+       "ci_hi": 0.5408216951553348
+      },
+      "per_generator": {
+       "dalle2": 0.6274441340782123,
+       "dalle3": 0.4572858472998138,
+       "firefly": 0.3270018621973929,
+       "midjourney-v5": 0.49878957169459964,
+       "stable-diffusion-2": 0.3234171322160149,
+       "stable-diffusion-xl": 0.5075418994413408
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4569134078212291,
+        "ci_lo": 0.40205196035395585,
+        "ci_hi": 0.5186705748184128
+       },
+       "vision_whatsapp": {
+        "value": 0.46265518311607695,
+        "ci_lo": 0.40707919188392305,
+        "ci_hi": 0.5255589009280419
+       },
+       "vision_facebook_hq": {
+        "value": 0.4545468653010552,
+        "ci_lo": 0.4017765210544311,
+        "ci_hi": 0.5133200253155777
+       }
+      },
+      "macro_flipped_orientation": 0.5430865921787709
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.5591092489137183,
+       "ci_lo": 0.5138395442667808,
+       "ci_hi": 0.607468002308241
+      },
+      "sd_family": {
+       "value": 0.5342295158286778,
+       "ci_lo": 0.47853887470339423,
+       "ci_hi": 0.5911393746648881
+      },
+      "other": {
+       "value": 0.5715491154562384,
+       "ci_lo": 0.5232214333747155,
+       "ci_hi": 0.6214872754143518
+      },
+      "per_generator": {
+       "dalle2": 0.6518156424581005,
+       "dalle3": 0.5564013035381751,
+       "firefly": 0.42409217877094973,
+       "midjourney-v5": 0.6538873370577282,
+       "stable-diffusion-2": 0.4818901303538175,
+       "stable-diffusion-xl": 0.5865689013035382
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5591092489137183,
+        "ci_lo": 0.5138395442667808,
+        "ci_hi": 0.607468002308241
+       },
+       "vision_whatsapp": {
+        "value": 0.5569638423339541,
+        "ci_lo": 0.5149470489907942,
+        "ci_hi": 0.6000406843139146
+       },
+       "vision_facebook_hq": {
+        "value": 0.5693202979515829,
+        "ci_lo": 0.5227214392701524,
+        "ci_hi": 0.6186316212549576
+       }
+      },
+      "macro_flipped_orientation": 0.44089075108628173
+     }
+    },
+    "A2L": {
+     "clean": {
+      "macro": {
+       "value": 0.6154795158286779,
+       "ci_lo": 0.5553066806331471,
+       "ci_hi": 0.6799196582157624
+      },
+      "sd_family": {
+       "value": 0.5942155493482308,
+       "ci_lo": 0.5255008225395339,
+       "ci_hi": 0.6644383066890537
+      },
+      "other": {
+       "value": 0.6261114990689014,
+       "ci_lo": 0.5658124844501045,
+       "ci_hi": 0.6896074449145855
+      },
+      "per_generator": {
+       "dalle2": 0.5835195530726257,
+       "dalle3": 0.6878724394785848,
+       "firefly": 0.4629655493482309,
+       "midjourney-v5": 0.7700884543761639,
+       "stable-diffusion-2": 0.5457402234636871,
+       "stable-diffusion-xl": 0.6426908752327747
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6154795158286779,
+        "ci_lo": 0.5553066806331471,
+        "ci_hi": 0.6799196582157624
+       },
+       "vision_whatsapp": {
+        "value": 0.6273316263190565,
+        "ci_lo": 0.5717977955076814,
+        "ci_hi": 0.6878554086038285
+       },
+       "vision_facebook_hq": {
+        "value": 0.6350519863438858,
+        "ci_lo": 0.5783032691377566,
+        "ci_hi": 0.6953311649196339
+       }
+      },
+      "macro_flipped_orientation": 0.3845204841713221
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4808271260086903,
+       "ci_lo": 0.41155174508451114,
+       "ci_hi": 0.5544179255759043
+      },
+      "sd_family": {
+       "value": 0.38833798882681564,
+       "ci_lo": 0.3201130793484989,
+       "ci_hi": 0.46200077516842425
+      },
+      "other": {
+       "value": 0.5270716945996277,
+       "ci_lo": 0.455672847078742,
+       "ci_hi": 0.6018054004243476
+      },
+      "per_generator": {
+       "dalle2": 0.5630586592178771,
+       "dalle3": 0.5329841713221601,
+       "firefly": 0.4116852886405959,
+       "midjourney-v5": 0.6005586592178771,
+       "stable-diffusion-2": 0.29946461824953446,
+       "stable-diffusion-xl": 0.4772113594040968
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4808271260086903,
+        "ci_lo": 0.41155174508451114,
+        "ci_hi": 0.5544179255759043
+       },
+       "vision_whatsapp": {
+        "value": 0.4861499068901303,
+        "ci_lo": 0.42124780953474134,
+        "ci_hi": 0.5559866045156733
+       },
+       "vision_facebook_hq": {
+        "value": 0.476586747361887,
+        "ci_lo": 0.40775219365743803,
+        "ci_hi": 0.5489048008092124
+       }
+      },
+      "macro_flipped_orientation": 0.5191728739913097
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.5188198324022346,
+       "ci_lo": 0.46257316173425567,
+       "ci_hi": 0.5822796369011857
+      },
+      "sd_family": {
+       "value": 0.46190642458100556,
+       "ci_lo": 0.4009691084590467,
+       "ci_hi": 0.5298508646628575
+      },
+      "other": {
+       "value": 0.5472765363128491,
+       "ci_lo": 0.4893677460538533,
+       "ci_hi": 0.613282438596352
+      },
+      "per_generator": {
+       "dalle2": 0.5108007448789572,
+       "dalle3": 0.6277234636871508,
+       "firefly": 0.43452048417132216,
+       "midjourney-v5": 0.6160614525139665,
+       "stable-diffusion-2": 0.3654562383612663,
+       "stable-diffusion-xl": 0.5583566108007448
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5188198324022346,
+        "ci_lo": 0.46257316173425567,
+        "ci_hi": 0.5822796369011857
+       },
+       "vision_whatsapp": {
+        "value": 0.5430982309124768,
+        "ci_lo": 0.48602841612503866,
+        "ci_hi": 0.5997930869867122
+       },
+       "vision_facebook_hq": {
+        "value": 0.5304391682184978,
+        "ci_lo": 0.47303925270708325,
+        "ci_hi": 0.5887038381623905
+       }
+      },
+      "macro_flipped_orientation": 0.4811801675977654
+     }
+    },
+    "F2p": {
+     "clean": {
+      "macro": {
+       "value": 0.8921205772811919,
+       "ci_lo": 0.8643101168913822,
+       "ci_hi": 0.9157217499211223
+      },
+      "sd_family": {
+       "value": 0.9269785847299814,
+       "ci_lo": 0.9004649223921778,
+       "ci_hi": 0.9484448279079505
+      },
+      "other": {
+       "value": 0.874691573556797,
+       "ci_lo": 0.8415724649666495,
+       "ci_hi": 0.904209772180964
+      },
+      "per_generator": {
+       "dalle2": 0.922229981378026,
+       "dalle3": 0.9003724394785847,
+       "firefly": 0.8235335195530726,
+       "midjourney-v5": 0.8526303538175046,
+       "stable-diffusion-2": 0.8778398510242086,
+       "stable-diffusion-xl": 0.9761173184357542
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.8921205772811919,
+        "ci_lo": 0.8643101168913822,
+        "ci_hi": 0.9157217499211223
+       },
+       "vision_whatsapp": {
+        "value": 0.8726955307262569,
+        "ci_lo": 0.84415051454658,
+        "ci_hi": 0.898439250402871
+       },
+       "vision_facebook_hq": {
+        "value": 0.8649906890130353,
+        "ci_lo": 0.8326201153240622,
+        "ci_hi": 0.8925833527312229
+       }
+      },
+      "macro_flipped_orientation": 0.10787942271880813
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.6648898199875853,
+       "ci_lo": 0.6152113764044943,
+       "ci_hi": 0.7167174255020866
+      },
+      "sd_family": {
+       "value": 0.7067271880819367,
+       "ci_lo": 0.6510738092273856,
+       "ci_hi": 0.7595166165351934
+      },
+      "other": {
+       "value": 0.6439711359404097,
+       "ci_lo": 0.5896514152977576,
+       "ci_hi": 0.6978239985177636
+      },
+      "per_generator": {
+       "dalle2": 0.7099627560521415,
+       "dalle3": 0.7003258845437617,
+       "firefly": 0.5243016759776536,
+       "midjourney-v5": 0.6412942271880819,
+       "stable-diffusion-2": 0.6294925512104284,
+       "stable-diffusion-xl": 0.783961824953445
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6648898199875853,
+        "ci_lo": 0.6152113764044943,
+        "ci_hi": 0.7167174255020866
+       },
+       "vision_whatsapp": {
+        "value": 0.6731649596523899,
+        "ci_lo": 0.6242065737811978,
+        "ci_hi": 0.7226594377334268
+       },
+       "vision_facebook_hq": {
+        "value": 0.6708488516449411,
+        "ci_lo": 0.6219823547316654,
+        "ci_hi": 0.7203033977556645
+       }
+      },
+      "macro_flipped_orientation": 0.33511018001241466
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.7586863749224085,
+       "ci_lo": 0.713762150060859,
+       "ci_hi": 0.8007682420035052
+      },
+      "sd_family": {
+       "value": 0.8001513035381751,
+       "ci_lo": 0.7547636772853185,
+       "ci_hi": 0.8410292317909832
+      },
+      "other": {
+       "value": 0.7379539106145252,
+       "ci_lo": 0.6892639947735013,
+       "ci_hi": 0.7858364466945996
+      },
+      "per_generator": {
+       "dalle2": 0.7889199255121043,
+       "dalle3": 0.7684590316573556,
+       "firefly": 0.6626163873370577,
+       "midjourney-v5": 0.7318202979515829,
+       "stable-diffusion-2": 0.7277234636871508,
+       "stable-diffusion-xl": 0.8725791433891993
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7586863749224085,
+        "ci_lo": 0.713762150060859,
+        "ci_hi": 0.8007682420035052
+       },
+       "vision_whatsapp": {
+        "value": 0.7717799503414029,
+        "ci_lo": 0.7335791900102632,
+        "ci_hi": 0.8083211756924992
+       },
+       "vision_facebook_hq": {
+        "value": 0.7680245189323402,
+        "ci_lo": 0.7296538126197579,
+        "ci_hi": 0.8052403506034124
+       }
+      },
+      "macro_flipped_orientation": 0.24131362507759146
+     }
+    },
+    "F2m": {
+     "clean": {
+      "macro": {
+       "value": 0.5876745810055867,
+       "ci_lo": 0.5171183914115763,
+       "ci_hi": 0.6589089848077226
+      },
+      "sd_family": {
+       "value": 0.7319832402234636,
+       "ci_lo": 0.6645544681013431,
+       "ci_hi": 0.7987131999021557
+      },
+      "other": {
+       "value": 0.515520251396648,
+       "ci_lo": 0.44161020671809625,
+       "ci_hi": 0.5909581476003999
+      },
+      "per_generator": {
+       "dalle2": 0.3756983240223464,
+       "dalle3": 0.43212290502793294,
+       "firefly": 0.6271648044692737,
+       "midjourney-v5": 0.6270949720670391,
+       "stable-diffusion-2": 0.6689245810055866,
+       "stable-diffusion-xl": 0.7950418994413407
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5876745810055867,
+        "ci_lo": 0.5171183914115763,
+        "ci_hi": 0.6589089848077226
+       },
+       "vision_whatsapp": {
+        "value": 0.6384621353196772,
+        "ci_lo": 0.5743110207383528,
+        "ci_hi": 0.699847436217078
+       },
+       "vision_facebook_hq": {
+        "value": 0.5993327126008691,
+        "ci_lo": 0.5343363631981743,
+        "ci_hi": 0.662220648559049
+       }
+      },
+      "macro_flipped_orientation": 0.41232541899441333
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.6255237430167598,
+       "ci_lo": 0.5753447855750488,
+       "ci_hi": 0.6771143546846039
+      },
+      "sd_family": {
+       "value": 0.7324022346368715,
+       "ci_lo": 0.6770228823923936,
+       "ci_hi": 0.7836830335143659
+      },
+      "other": {
+       "value": 0.572084497206704,
+       "ci_lo": 0.5151526230269268,
+       "ci_hi": 0.6306201425443774
+      },
+      "per_generator": {
+       "dalle2": 0.4307728119180633,
+       "dalle3": 0.5841247672253259,
+       "firefly": 0.5377793296089386,
+       "midjourney-v5": 0.7356610800744879,
+       "stable-diffusion-2": 0.6323789571694599,
+       "stable-diffusion-xl": 0.8324255121042831
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6255237430167598,
+        "ci_lo": 0.5753447855750488,
+        "ci_hi": 0.6771143546846039
+       },
+       "vision_whatsapp": {
+        "value": 0.632320763500931,
+        "ci_lo": 0.582424526991211,
+        "ci_hi": 0.6825332220929802
+       },
+       "vision_facebook_hq": {
+        "value": 0.6281346989447548,
+        "ci_lo": 0.5786776245727477,
+        "ci_hi": 0.678293026475022
+       }
+      },
+      "macro_flipped_orientation": 0.37447625698324016
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.6450186219739292,
+       "ci_lo": 0.5845236263087964,
+       "ci_hi": 0.7011253543929027
+      },
+      "sd_family": {
+       "value": 0.8018272811918064,
+       "ci_lo": 0.745596873060211,
+       "ci_hi": 0.8527402638524176
+      },
+      "other": {
+       "value": 0.5666142923649906,
+       "ci_lo": 0.5010494001253469,
+       "ci_hi": 0.6305683726542259
+      },
+      "per_generator": {
+       "dalle2": 0.4131750465549348,
+       "dalle3": 0.535707635009311,
+       "firefly": 0.6124068901303538,
+       "midjourney-v5": 0.7051675977653631,
+       "stable-diffusion-2": 0.7517458100558659,
+       "stable-diffusion-xl": 0.8519087523277468
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6450186219739292,
+        "ci_lo": 0.5845236263087964,
+        "ci_hi": 0.7011253543929027
+       },
+       "vision_whatsapp": {
+        "value": 0.6616969273743016,
+        "ci_lo": 0.6032812980917205,
+        "ci_hi": 0.7144842101179393
+       },
+       "vision_facebook_hq": {
+        "value": 0.639195375543141,
+        "ci_lo": 0.5817127819515214,
+        "ci_hi": 0.6924489546517557
+       }
+      },
+      "macro_flipped_orientation": 0.35498137802607077
+     }
+    },
+    "texture": {
+     "clean": {
+      "macro": {
+       "value": 0.6063431098696462,
+       "ci_lo": 0.5227250586854459,
+       "ci_hi": 0.6780818114674503
+      },
+      "sd_family": {
+       "value": 0.6303189013035382,
+       "ci_lo": 0.5423857870254453,
+       "ci_hi": 0.7060205783510475
+      },
+      "other": {
+       "value": 0.5943552141527002,
+       "ci_lo": 0.5131051233770613,
+       "ci_hi": 0.6674576528220544
+      },
+      "per_generator": {
+       "dalle2": 0.515828677839851,
+       "dalle3": 0.7288640595903165,
+       "firefly": 0.5397113594040969,
+       "midjourney-v5": 0.5930167597765363,
+       "stable-diffusion-2": 0.7063314711359404,
+       "stable-diffusion-xl": 0.554306331471136
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6063431098696462,
+        "ci_lo": 0.5227250586854459,
+        "ci_hi": 0.6780818114674503
+       },
+       "vision_whatsapp": {
+        "value": 0.5941922718808194,
+        "ci_lo": 0.5147164879369827,
+        "ci_hi": 0.6664158438293848
+       },
+       "vision_facebook_hq": {
+        "value": 0.6086902545003103,
+        "ci_lo": 0.5290883188487981,
+        "ci_hi": 0.678491914449661
+       }
+      },
+      "macro_flipped_orientation": 0.39365689013035376
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.6206432340161391,
+       "ci_lo": 0.5450000297798586,
+       "ci_hi": 0.6903751539239291
+      },
+      "sd_family": {
+       "value": 0.6339967411545624,
+       "ci_lo": 0.557359939046041,
+       "ci_hi": 0.7028773028065975
+      },
+      "other": {
+       "value": 0.6139664804469274,
+       "ci_lo": 0.5366901991400415,
+       "ci_hi": 0.6860866538443631
+      },
+      "per_generator": {
+       "dalle2": 0.5525139664804469,
+       "dalle3": 0.7271648044692738,
+       "firefly": 0.598207635009311,
+       "midjourney-v5": 0.5779795158286778,
+       "stable-diffusion-2": 0.7063314711359404,
+       "stable-diffusion-xl": 0.5616620111731844
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6206432340161391,
+        "ci_lo": 0.5450000297798586,
+        "ci_hi": 0.6903751539239291
+       },
+       "vision_whatsapp": {
+        "value": 0.6205656424581004,
+        "ci_lo": 0.5448489108166545,
+        "ci_hi": 0.6903881344784896
+       },
+       "vision_facebook_hq": {
+        "value": 0.6219273743016759,
+        "ci_lo": 0.547527254034761,
+        "ci_hi": 0.6909640978025378
+       }
+      },
+      "macro_flipped_orientation": 0.3793567659838609
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.6008535071384233,
+       "ci_lo": 0.5188569793606457,
+       "ci_hi": 0.672269136235955
+      },
+      "sd_family": {
+       "value": 0.614548417132216,
+       "ci_lo": 0.5313500364934707,
+       "ci_hi": 0.6872680231873822
+      },
+      "other": {
+       "value": 0.594006052141527,
+       "ci_lo": 0.5109118356956377,
+       "ci_hi": 0.6674376726042529
+      },
+      "per_generator": {
+       "dalle2": 0.5119413407821229,
+       "dalle3": 0.7212756052141527,
+       "firefly": 0.5603119180633147,
+       "midjourney-v5": 0.5824953445065177,
+       "stable-diffusion-2": 0.6958566108007449,
+       "stable-diffusion-xl": 0.5332402234636872
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6008535071384233,
+        "ci_lo": 0.5188569793606457,
+        "ci_hi": 0.672269136235955
+       },
+       "vision_whatsapp": {
+        "value": 0.6013927684667908,
+        "ci_lo": 0.5212785994288169,
+        "ci_hi": 0.6723689903400573
+       },
+       "vision_facebook_hq": {
+        "value": 0.6082363438857853,
+        "ci_lo": 0.529193825873305,
+        "ci_hi": 0.6782528496526319
+       }
+      },
+      "macro_flipped_orientation": 0.39914649286157666
+     }
+    },
+    "pixL2": {
+     "clean": {
+      "macro": {
+       "value": 0.39575186219739295,
+       "ci_lo": 0.31079718787877214,
+       "ci_hi": 0.4931644452813871
+      },
+      "sd_family": {
+       "value": 0.39426210428305397,
+       "ci_lo": 0.3093635604021172,
+       "ci_hi": 0.4900347083682453
+      },
+      "other": {
+       "value": 0.39649674115456235,
+       "ci_lo": 0.30963903428603073,
+       "ci_hi": 0.49580043382706446
+      },
+      "per_generator": {
+       "dalle2": 0.4239990689013035,
+       "dalle3": 0.34047951582867786,
+       "firefly": 0.3776070763500931,
+       "midjourney-v5": 0.44390130353817503,
+       "stable-diffusion-2": 0.3032588454376164,
+       "stable-diffusion-xl": 0.4852653631284916
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.39575186219739295,
+        "ci_lo": 0.31079718787877214,
+        "ci_hi": 0.4931644452813871
+       },
+       "vision_whatsapp": {
+        "value": 0.3972261018001242,
+        "ci_lo": 0.3120954931235846,
+        "ci_hi": 0.4933591821997921
+       },
+       "vision_facebook_hq": {
+        "value": 0.39142225325884544,
+        "ci_lo": 0.3071953080781654,
+        "ci_hi": 0.48698435405053514
+       }
+      },
+      "macro_flipped_orientation": 0.604248137802607
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.3761910304158907,
+       "ci_lo": 0.3015620070003267,
+       "ci_hi": 0.4558287701122522
+      },
+      "sd_family": {
+       "value": 0.37124068901303536,
+       "ci_lo": 0.2977730736059813,
+       "ci_hi": 0.44980042016806715
+      },
+      "other": {
+       "value": 0.3786662011173184,
+       "ci_lo": 0.30129721271149285,
+       "ci_hi": 0.4597325595173434
+      },
+      "per_generator": {
+       "dalle2": 0.42022811918063313,
+       "dalle3": 0.29553072625698323,
+       "firefly": 0.3760707635009311,
+       "midjourney-v5": 0.42283519553072624,
+       "stable-diffusion-2": 0.2996973929236499,
+       "stable-diffusion-xl": 0.44278398510242084
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.3761910304158907,
+        "ci_lo": 0.3015620070003267,
+        "ci_hi": 0.4558287701122522
+       },
+       "vision_whatsapp": {
+        "value": 0.37590006207324644,
+        "ci_lo": 0.30101307590959114,
+        "ci_hi": 0.4554652570290603
+       },
+       "vision_facebook_hq": {
+        "value": 0.3747672253258845,
+        "ci_lo": 0.30058815962550295,
+        "ci_hi": 0.4536373395972846
+       }
+      },
+      "macro_flipped_orientation": 0.6238089695841094
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.39732697082557417,
+       "ci_lo": 0.3141506185807656,
+       "ci_hi": 0.490882600448117
+      },
+      "sd_family": {
+       "value": 0.38936219739292366,
+       "ci_lo": 0.3076738334850835,
+       "ci_hi": 0.4801475742804084
+      },
+      "other": {
+       "value": 0.40130935754189945,
+       "ci_lo": 0.31634107858959315,
+       "ci_hi": 0.49667773094200623
+      },
+      "per_generator": {
+       "dalle2": 0.43559124767225327,
+       "dalle3": 0.33603351955307265,
+       "firefly": 0.3881983240223464,
+       "midjourney-v5": 0.4454143389199255,
+       "stable-diffusion-2": 0.2991387337057728,
+       "stable-diffusion-xl": 0.4795856610800745
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.39732697082557417,
+        "ci_lo": 0.3141506185807656,
+        "ci_hi": 0.490882600448117
+       },
+       "vision_whatsapp": {
+        "value": 0.3960311918063315,
+        "ci_lo": 0.3140335323063812,
+        "ci_hi": 0.4889563584977752
+       },
+       "vision_facebook_hq": {
+        "value": 0.39127094972067034,
+        "ci_lo": 0.30948350846838274,
+        "ci_hi": 0.4833035204951679
+       }
+      },
+      "macro_flipped_orientation": 0.6026730291744258
+     }
+    },
+    "blurA": {
+     "clean": {
+      "macro": {
+       "value": 0.8377676908752326,
+       "ci_lo": 0.8011441526413614,
+       "ci_hi": 0.8711460278555867
+      },
+      "sd_family": {
+       "value": 0.8487546554934823,
+       "ci_lo": 0.8102017685103959,
+       "ci_hi": 0.8834544622249324
+      },
+      "other": {
+       "value": 0.8322742085661079,
+       "ci_lo": 0.7917679582057281,
+       "ci_hi": 0.8680981603992571
+      },
+      "per_generator": {
+       "dalle2": 0.9174813780260708,
+       "dalle3": 0.8560055865921787,
+       "firefly": 0.7381517690875232,
+       "midjourney-v5": 0.8174581005586592,
+       "stable-diffusion-2": 0.7777700186219739,
+       "stable-diffusion-xl": 0.9197392923649906
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.8377676908752326,
+        "ci_lo": 0.8011441526413614,
+        "ci_hi": 0.8711460278555867
+       }
+      },
+      "macro_flipped_orientation": 0.16223230912476738
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.6315448479205463,
+       "ci_lo": 0.5728949743617695,
+       "ci_hi": 0.6861276416991379
+      },
+      "sd_family": {
+       "value": 0.5527932960893854,
+       "ci_lo": 0.4878351661069613,
+       "ci_hi": 0.615330744611625
+      },
+      "other": {
+       "value": 0.6709206238361267,
+       "ci_lo": 0.6108131296459312,
+       "ci_hi": 0.7264033562098022
+      },
+      "per_generator": {
+       "dalle2": 0.8136405959031657,
+       "dalle3": 0.7445763500931099,
+       "firefly": 0.5254888268156425,
+       "midjourney-v5": 0.5999767225325885,
+       "stable-diffusion-2": 0.5087290502793296,
+       "stable-diffusion-xl": 0.5968575418994413
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6315448479205463,
+        "ci_lo": 0.5728949743617695,
+        "ci_hi": 0.6861276416991379
+       }
+      },
+      "macro_flipped_orientation": 0.3684551520794537
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.6875349162011174,
+       "ci_lo": 0.6349602202484482,
+       "ci_hi": 0.7344025414058424
+      },
+      "sd_family": {
+       "value": 0.6652351024208566,
+       "ci_lo": 0.6074490719853007,
+       "ci_hi": 0.7163298122065728
+      },
+      "other": {
+       "value": 0.6986848230912477,
+       "ci_lo": 0.6420730303894412,
+       "ci_hi": 0.7485453928595714
+      },
+      "per_generator": {
+       "dalle2": 0.765316573556797,
+       "dalle3": 0.7523975791433892,
+       "firefly": 0.5930633147113594,
+       "midjourney-v5": 0.683961824953445,
+       "stable-diffusion-2": 0.6004422718808193,
+       "stable-diffusion-xl": 0.7300279329608939
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6875349162011174,
+        "ci_lo": 0.6349602202484482,
+        "ci_hi": 0.7344025414058424
+       }
+      },
+      "macro_flipped_orientation": 0.3124650837988826
+     }
+    },
+    "blurB": {
+     "clean": {
+      "macro": {
+       "value": 0.4328483860955928,
+       "ci_lo": 0.34783550432999794,
+       "ci_hi": 0.5305568270735525
+      },
+      "sd_family": {
+       "value": 0.449231843575419,
+       "ci_lo": 0.36467291527717843,
+       "ci_hi": 0.5422916666666667
+      },
+      "other": {
+       "value": 0.4246566573556797,
+       "ci_lo": 0.33643154176187196,
+       "ci_hi": 0.5263799894856378
+      },
+      "per_generator": {
+       "dalle2": 0.4694599627560521,
+       "dalle3": 0.3730446927374302,
+       "firefly": 0.43144785847299816,
+       "midjourney-v5": 0.42467411545623834,
+       "stable-diffusion-2": 0.35649441340782123,
+       "stable-diffusion-xl": 0.5419692737430167
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4328483860955928,
+        "ci_lo": 0.34783550432999794,
+        "ci_hi": 0.5305568270735525
+       }
+      },
+      "macro_flipped_orientation": 0.5671516139044073
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.6277312228429547,
+       "ci_lo": 0.5725673342541436,
+       "ci_hi": 0.6819176390786277
+      },
+      "sd_family": {
+       "value": 0.627513966480447,
+       "ci_lo": 0.5680047480672786,
+       "ci_hi": 0.6834401846569177
+      },
+      "other": {
+       "value": 0.6278398510242086,
+       "ci_lo": 0.5709836403049348,
+       "ci_hi": 0.6827758708530197
+      },
+      "per_generator": {
+       "dalle2": 0.6527932960893855,
+       "dalle3": 0.7002793296089386,
+       "firefly": 0.5259078212290503,
+       "midjourney-v5": 0.6323789571694599,
+       "stable-diffusion-2": 0.5456703910614525,
+       "stable-diffusion-xl": 0.7093575418994413
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6277312228429547,
+        "ci_lo": 0.5725673342541436,
+        "ci_hi": 0.6819176390786277
+       }
+      },
+      "macro_flipped_orientation": 0.3722687771570453
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.47128336436995655,
+       "ci_lo": 0.4172762460498547,
+       "ci_hi": 0.5264135082687962
+      },
+      "sd_family": {
+       "value": 0.494413407821229,
+       "ci_lo": 0.43352729202009443,
+       "ci_hi": 0.5564818982763927
+      },
+      "other": {
+       "value": 0.4597183426443203,
+       "ci_lo": 0.40329800387976006,
+       "ci_hi": 0.5172470615958756
+      },
+      "per_generator": {
+       "dalle2": 0.49038640595903166,
+       "dalle3": 0.42022811918063313,
+       "firefly": 0.5036312849162011,
+       "midjourney-v5": 0.42462756052141526,
+       "stable-diffusion-2": 0.44799813780260705,
+       "stable-diffusion-xl": 0.540828677839851
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.47128336436995655,
+        "ci_lo": 0.4172762460498547,
+        "ci_hi": 0.5264135082687962
+       }
+      },
+      "macro_flipped_orientation": 0.5287166356300435
+     }
+    }
+   },
+   "gates": {},
+   "gate_detail": {
+    "gate1": {
+     "median_w_delta1": 9.478175719795997,
+     "median_w_delta2": -0.27569575802893825,
+     "ratio": -0.029087428443969825,
+     "frac_delta1_pos": 1.0,
+     "frac_delta2_pos": 0.39106145251396646,
+     "passed": true
+    },
+    "gate2": {
+     "clean": {
+      "A": 0.688271007193746,
+      "B": 0.6713711768145113,
+      "B_all_test_reals": 0.6706864381463719,
+      "B_passed": false,
+      "A_passed": false
+     },
+     "jpeg75_resize05": {
+      "A": 0.8285047885729665,
+      "B": 0.7850637741908361,
+      "B_all_test_reals": 0.7775908608710801,
+      "B_passed": false,
+      "A_passed": true
+     },
+     "social_sim": {
+      "A": 0.7767149436142704,
+      "B": 0.8619788339543346,
+      "B_all_test_reals": 0.8783492824270019,
+      "B_passed": true,
+      "A_passed": false
+     },
+     "passed": false
+    },
+    "gate5": {
+     "B_clean": {
+      "value": 0.5334807572936064,
+      "ci_lo": 0.456355606889924,
+      "ci_hi": 0.6133329884214214
+     },
+     "texture_clean": {
+      "value": 0.6063431098696462,
+      "ci_lo": 0.5227250586854459,
+      "ci_hi": 0.6780818114674503
+     },
+     "passed": false
+    }
+   },
+   "fpr": {
+    "A": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.0223463687150838,
+       "vision_facebook_hq": 0.0446927374301676
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 8,
+       "vision_facebook_hq": 16
+      },
+      "tpr": 0.13333333333333333,
+      "thr": [
+       -3.7971666296350404,
+       -3.779801875877777
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 3,
+       "vision_facebook_hq": 3
+      },
+      "tpr": 0.018055555555555554,
+      "thr": [
+       0.5067345241941795,
+       1.083671265351254
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.036312849162011177
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 13
+      },
+      "tpr": 0.018055555555555554,
+      "thr": [
+       0.025782583887683733,
+       -0.3407444545600686
+      ]
+     }
+    },
+    "B": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 3,
+       "vision_facebook_hq": 1
+      },
+      "tpr": 0.00625,
+      "thr": [
+       0.16157209694310118,
+       0.07585012936422893
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 3,
+       "vision_facebook_hq": 3
+      },
+      "tpr": 0.003472222222222222,
+      "thr": [
+       0.12379843320553709,
+       0.15255419491779978
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0223463687150838,
+       "vision_whatsapp": 0.013966480446927373,
+       "vision_facebook_hq": 0.01675977653631285
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 8,
+       "vision_whatsapp": 5,
+       "vision_facebook_hq": 6
+      },
+      "tpr": 0.025,
+      "thr": [
+       0.06762190391922697,
+       0.15486110727213512
+      ]
+     }
+    },
+    "Bu": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 2
+      },
+      "tpr": 0.022916666666666665,
+      "thr": [
+       0.1883565654261439,
+       0.27197052798805027
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 3,
+       "vision_facebook_hq": 3
+      },
+      "tpr": 0.003472222222222222,
+      "thr": [
+       0.12379843320553709,
+       0.15255419491779978
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 3,
+       "vision_facebook_hq": 1
+      },
+      "tpr": 0.009027777777777777,
+      "thr": [
+       0.2305058829510618,
+       0.23596625928797524
+      ]
+     }
+    },
+    "A2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.019553072625698324,
+       "vision_facebook_hq": 0.0223463687150838
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 7,
+       "vision_facebook_hq": 8
+      },
+      "tpr": 0.06944444444444445,
+      "thr": [
+       0.2304041502935488,
+       -0.02300595118347978
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 1,
+       "vision_facebook_hq": 2
+      },
+      "tpr": 0.013888888888888888,
+      "thr": [
+       0.7094779931712846,
+       0.9051333525344953
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.013966480446927373
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 5,
+       "vision_whatsapp": 1,
+       "vision_facebook_hq": 5
+      },
+      "tpr": 0.018055555555555554,
+      "thr": [
+       0.5339268655514238,
+       0.6593472805825734
+      ]
+     }
+    },
+    "A2L": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.00558659217877095,
+       "vision_whatsapp": 0.013966480446927373,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 2,
+       "vision_whatsapp": 5,
+       "vision_facebook_hq": 2
+      },
+      "tpr": 0.02638888888888889,
+      "thr": [
+       0.8779385192887043,
+       0.679400730898109
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.019553072625698324,
+       "vision_whatsapp": 0.0223463687150838,
+       "vision_facebook_hq": 0.019553072625698324
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 7,
+       "vision_whatsapp": 8,
+       "vision_facebook_hq": 7
+      },
+      "tpr": 0.013194444444444444,
+      "thr": [
+       0.24555414456230254,
+       0.7084738281644848
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.019553072625698324
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 5,
+       "vision_whatsapp": 2,
+       "vision_facebook_hq": 7
+      },
+      "tpr": 0.008333333333333333,
+      "thr": [
+       0.9066536343425465,
+       1.4230562190339178
+      ]
+     }
+    },
+    "F2p": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.01675977653631285
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 6
+      },
+      "tpr": 0.3236111111111111,
+      "thr": [
+       4.025329643827868,
+       4.450982497576337
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.0111731843575419
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 3,
+       "vision_facebook_hq": 4
+      },
+      "tpr": 0.03333333333333333,
+      "thr": [
+       10.60189121452663,
+       12.275202957332596
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.0111731843575419
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 4
+      },
+      "tpr": 0.07291666666666667,
+      "thr": [
+       9.101644640374897,
+       12.085957803437942
+      ]
+     }
+    },
+    "texture": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.027932960893854747,
+       "vision_whatsapp": 0.027932960893854747,
+       "vision_facebook_hq": 0.027932960893854747
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 10,
+       "vision_whatsapp": 10,
+       "vision_facebook_hq": 10
+      },
+      "tpr": 0.007638888888888889,
+      "thr": [
+       0.29996159672737127,
+       0.20623296499252322
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.0223463687150838,
+       "vision_whatsapp": 0.0223463687150838,
+       "vision_facebook_hq": 0.019553072625698324
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 8,
+       "vision_whatsapp": 8,
+       "vision_facebook_hq": 7
+      },
+      "tpr": 0.009027777777777777,
+      "thr": [
+       0.2846184968948365,
+       0.2133353799581528
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.027932960893854747,
+       "vision_facebook_hq": 0.0223463687150838
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 9,
+       "vision_whatsapp": 10,
+       "vision_facebook_hq": 8
+      },
+      "tpr": 0.010416666666666666,
+      "thr": [
+       0.25628736615180975,
+       0.1909819841384888
+      ]
+     }
+    },
+    "pixL2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 2,
+       "vision_facebook_hq": 3
+      },
+      "tpr": 0.0,
+      "thr": [
+       -0.006946671288460492,
+       -0.0058953315019607535
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.027932960893854747,
+       "vision_whatsapp": 0.025139664804469275,
+       "vision_facebook_hq": 0.027932960893854747
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 10,
+       "vision_whatsapp": 9,
+       "vision_facebook_hq": 10
+      },
+      "tpr": 0.0,
+      "thr": [
+       -0.00829135440289974,
+       -0.004157297778874635
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 5,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 2
+      },
+      "tpr": 0.0,
+      "thr": [
+       -0.006214737426489591,
+       -0.004770349245518445
+      ]
+     }
+    },
+    "blurB": {}
+   },
+   "fpr_calib": {
+    "A": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0335195530726257,
+       "vision_whatsapp": 0.05307262569832402,
+       "vision_facebook_hq": 0.0782122905027933
+      },
+      "tpr": 0.22083333333333333,
+      "thr": -4.557061528223055
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.009722222222222222,
+      "thr": 1.5117925411290758
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.025139664804469275
+      },
+      "tpr": 0.016666666666666666,
+      "thr": -0.10306887677827345
+     }
+    },
+    "B": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.030726256983240222,
+       "vision_whatsapp": 0.030726256983240222,
+       "vision_facebook_hq": 0.0111731843575419
+      },
+      "tpr": 0.027777777777777776,
+      "thr": -0.012263920753495748
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.01675977653631285,
+       "vision_facebook_hq": 0.01675977653631285
+      },
+      "tpr": 0.009722222222222222,
+      "thr": 0.10142566973296342
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.011111111111111112,
+      "thr": 0.2106472877060616
+     }
+    },
+    "Bu": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.00558659217877095,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.002777777777777778,
+      "thr": 0.343549825923201
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.01675977653631285,
+       "vision_facebook_hq": 0.01675977653631285
+      },
+      "tpr": 0.009722222222222222,
+      "thr": 0.10142566973296342
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "tpr": 0.011111111111111112,
+      "thr": 0.2106472877060616
+     }
+    },
+    "A2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "tpr": 0.05138888888888889,
+      "thr": 0.17311558875920693
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.027932960893854747,
+       "vision_facebook_hq": 0.013966480446927373
+      },
+      "tpr": 0.02638888888888889,
+      "thr": 0.5978181806556493
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.027932960893854747,
+       "vision_whatsapp": 0.030726256983240222,
+       "vision_facebook_hq": 0.04748603351955307
+      },
+      "tpr": 0.05694444444444444,
+      "thr": 0.26924483036390084
+     }
+    },
+    "A2L": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.030726256983240222,
+       "vision_whatsapp": 0.0335195530726257,
+       "vision_facebook_hq": 0.025139664804469275
+      },
+      "tpr": 0.04861111111111111,
+      "thr": 0.3341496727677188
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "tpr": 0.006944444444444444,
+      "thr": 0.810389953912292
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.01675977653631285
+      },
+      "tpr": 0.004166666666666667,
+      "thr": 1.391967061608775
+     }
+    },
+    "F2p": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.061452513966480445,
+       "vision_whatsapp": 0.0670391061452514,
+       "vision_facebook_hq": 0.09776536312849161
+      },
+      "tpr": 0.6083333333333333,
+      "thr": 1.1602781404337967
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.019553072625698324,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.0111731843575419
+      },
+      "tpr": 0.06111111111111111,
+      "thr": 10.141820690840799
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.019553072625698324,
+       "vision_whatsapp": 0.01675977653631285,
+       "vision_facebook_hq": 0.025139664804469275
+      },
+      "tpr": 0.18194444444444444,
+      "thr": 7.934014825226269
+     }
+    },
+    "texture": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.001388888888888889,
+      "thr": 0.30473595857620245
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.00558659217877095,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "tpr": 0.002777777777777778,
+      "thr": 0.27412420511245733
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0,
+       "vision_whatsapp": 0.0,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.0,
+      "thr": 0.2754248976707459
+     }
+    },
+    "pixL2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0,
+       "vision_whatsapp": 0.0,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.0,
+      "thr": -0.005730418022722005
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.01675977653631285,
+       "vision_whatsapp": 0.013966480446927373,
+       "vision_facebook_hq": 0.01675977653631285
+      },
+      "tpr": 0.0,
+      "thr": -0.007739702705293893
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "tpr": 0.0,
+      "thr": -0.005473454482853412
+     }
+    },
+    "blurB": {}
+   },
+   "orientation": {
+    "clean": {
+     "A_frac_train_reals_positive": 1.0,
+     "A_mean_shift": 10.159951970261796,
+     "B_frac_train_reals_positive": 0.9932659932659933,
+     "B_mean_shift": 1.0703297298189336
+    },
+    "jpeg75_resize05": {
+     "A_frac_train_reals_positive": 0.9562289562289562,
+     "A_mean_shift": 3.9025181474617754,
+     "B_frac_train_reals_positive": 0.9696969696969697,
+     "B_mean_shift": 0.7206480345324864
+    },
+    "social_sim": {
+     "A_frac_train_reals_positive": 0.9831649831649831,
+     "A_mean_shift": 5.873719948769229,
+     "B_frac_train_reals_positive": 0.9225589225589226,
+     "B_mean_shift": 0.7386527589112107
+    },
+    "A2_train_in_sample_auroc_delta1_vs_delta2": 1.0,
+    "note": "shift>0 for a real photo (round-trip = class 1); fake-score = -shift; fixed, never flipped on test"
+   },
+   "checks": {
+    "texture_sign": {
+     "clean": {
+      "sign": 1,
+      "auroc_plus_sign_calib_natives_vs_train_fakes": 0.5609173126614987
+     },
+     "jpeg75_resize05": {
+      "sign": 1,
+      "auroc_plus_sign_calib_natives_vs_train_fakes": 0.5737080103359173
+     },
+     "social_sim": {
+      "sign": 1,
+      "auroc_plus_sign_calib_natives_vs_train_fakes": 0.5556201550387597
+     }
+    },
+    "phi_t_vs_004_cache_max_abs_diff": {
+     "clean": 0.00013256072998046875,
+     "jpeg75_resize05": 6.401538848876953e-05,
+     "social_sim": 1.6689300537109375e-05
+    }
+   },
+   "deltas": {
+    "clean": {
+     "B-texture": {
+      "delta": -0.07286235257603979,
+      "ci_lo": -0.21817923746360499,
+      "ci_hi": 0.08872333280588515
+     },
+     "B-pixL2": {
+      "delta": 0.1377288950962135,
+      "ci_lo": 0.10758209325396813,
+      "ci_hi": 0.16991412195697642
+     },
+     "B-F2p": {
+      "delta": -0.35863981998758543,
+      "ci_lo": -0.42661028185133465,
+      "ci_hi": -0.2852023111703627
+     },
+     "B-F2m": {
+      "delta": -0.05419382371198023,
+      "ci_lo": -0.1336053576452834,
+      "ci_hi": 0.02063058181919936
+     },
+     "B-A": {
+      "delta": -0.26195297951582874,
+      "ci_lo": -0.3275601523142018,
+      "ci_hi": -0.1940471756672874
+     },
+     "B-blurB": {
+      "delta": 0.10063237119801366,
+      "ci_lo": 0.06253469096933939,
+      "ci_hi": 0.13813213728228724
+     },
+     "B-Bu": {
+      "delta": -0.02400682805710741,
+      "ci_lo": -0.05684650111480126,
+      "ci_hi": 0.008826728021309503
+     }
+    },
+    "jpeg75_resize05": {
+     "B-texture": {
+      "delta": -0.124231843575419,
+      "ci_lo": -0.2575502496939445,
+      "ci_hi": 0.024228798783650668
+     },
+     "B-pixL2": {
+      "delta": 0.12022036002482939,
+      "ci_lo": 0.09045058852218726,
+      "ci_hi": 0.15044995599961428
+     },
+     "B-F2p": {
+      "delta": -0.16847842954686526,
+      "ci_lo": -0.22072751214079658,
+      "ci_hi": -0.11156472706485912
+     },
+     "B-F2m": {
+      "delta": -0.12911235257603976,
+      "ci_lo": -0.18245441495965242,
+      "ci_hi": -0.07427275828171646
+     },
+     "B-A": {
+      "delta": 0.06262802607076356,
+      "ci_lo": 0.01721579570272142,
+      "ci_hi": 0.10673632143654231
+     },
+     "B-blurB": {
+      "delta": -0.1313198324022346,
+      "ci_lo": -0.16992172951582876,
+      "ci_hi": -0.09303494274559775
+     },
+     "B-Bu": {
+      "delta": 0.0,
+      "ci_lo": 0.0,
+      "ci_hi": 0.0
+     }
+    },
+    "social_sim": {
+     "B-texture": {
+      "delta": -0.06229826194909982,
+      "ci_lo": -0.19603877387466082,
+      "ci_hi": 0.088920783287859
+     },
+     "B-pixL2": {
+      "delta": 0.14122827436374935,
+      "ci_lo": 0.10851484472534334,
+      "ci_hi": 0.17517689011090193
+     },
+     "B-F2p": {
+      "delta": -0.22013112973308502,
+      "ci_lo": -0.27382196617008064,
+      "ci_hi": -0.1590228738169467
+     },
+     "B-F2m": {
+      "delta": -0.10646337678460571,
+      "ci_lo": -0.1706204070601263,
+      "ci_hi": -0.03936804060467174
+     },
+     "B-A": {
+      "delta": -0.036413718187461086,
+      "ci_lo": -0.09557114793482936,
+      "ci_hi": 0.030594147186027827
+     },
+     "B-blurB": {
+      "delta": 0.06727188081936697,
+      "ci_lo": 0.020166192581876817,
+      "ci_hi": 0.1178828710205993
+     },
+     "B-Bu": {
+      "delta": 0.0006750465549349993,
+      "ci_lo": -0.02079127709238561,
+      "ci_hi": 0.022663694757426096
+     }
+    },
+    "A_vs_blurA": {
+     "clean": {
+      "delta": -0.04233395406579743,
+      "ci_lo": -0.08372869981325864,
+      "ci_hi": -0.0013252748537561014
+     },
+     "jpeg75_resize05": {
+      "delta": -0.1977614835505898,
+      "ci_lo": -0.2540756805687396,
+      "ci_hi": -0.13620994984213694
+     },
+     "social_sim": {
+      "delta": -0.1125659528243328,
+      "ci_lo": -0.1598791684250321,
+      "ci_hi": -0.06428390035428616
+     }
+    }
+   },
+   "summary": {
+    "gates": {
+     "g1_saturation": true,
+     "g2_content_cancellation": false,
+     "g3_orientation": true,
+     "g5_validity": false
+    },
+    "B": {
+     "clean": {
+      "value": 0.5334807572936064,
+      "ci_lo": 0.456355606889924,
+      "ci_hi": 0.6133329884214214
+     },
+     "jpeg75_resize05": {
+      "value": 0.4964113904407201,
+      "ci_lo": 0.4305628143882319,
+      "ci_hi": 0.569182998446872
+     },
+     "social_sim": {
+      "value": 0.5385552451893235,
+      "ci_lo": 0.47485539707813246,
+      "ci_hi": 0.6096195943094874
+     }
+    },
+    "f2_laun": 0.6648898199875853,
+    "nonsd_laun": 0.5314827746741154,
+    "d_tex": {
+     "clean": -0.07286235257603979,
+     "jpeg75_resize05": -0.124231843575419,
+     "social_sim": -0.06229826194909982
+    },
+    "d_pix": {
+     "clean": 0.1377288950962135,
+     "jpeg75_resize05": 0.12022036002482939,
+     "social_sim": 0.14122827436374935
+    },
+    "fpr_max": 0.0223463687150838,
+    "blur": {
+     "delta": -0.1313198324022346,
+     "ci_lo": -0.16992172951582876,
+     "ci_hi": -0.09303494274559775
+    }
+   },
+   "decision": {
+    "base": "UNINFORMATIVE",
+    "label": "UNINFORMATIVE; NOT DIFFUSION-SPECIFIC",
+    "criteria": null,
+    "blur_beaten": false,
+    "gates": {
+     "g1_saturation": true,
+     "g2_content_cancellation": false,
+     "g3_orientation": true,
+     "g5_validity": false
+    }
+   }
+  },
+  "orig": {
+   "n_train_reals": 297,
+   "n_test_reals": 1074,
+   "n_test_natives": 358,
+   "n_calib_natives": 43,
+   "n_fakes": 720,
+   "n_test_devices": 25,
+   "sigma": {
+    "clean": {
+     "vae_mean_shift_A": 4.254867999426865,
+     "vae_mean_shift_B": 2.5857388028680846,
+     "sigma_A": 1.5197360979169199,
+     "status_A": "ok",
+     "sigma_B": 1.1493589858275,
+     "status_B": "ok"
+    },
+    "jpeg75_resize05": {
+     "vae_mean_shift_A": 3.4483816412083037,
+     "vae_mean_shift_B": 1.9377795375679288,
+     "sigma_A": 1.5795743379386753,
+     "status_A": "ok",
+     "sigma_B": 1.2587978662189976,
+     "status_B": "ok"
+    },
+    "social_sim": {
+     "vae_mean_shift_A": 3.4692238368371853,
+     "vae_mean_shift_B": 1.882056370988819,
+     "sigma_A": 1.499151736131207,
+     "status_A": "ok",
+     "sigma_B": 1.1136765255825378,
+     "status_B": "ok"
+    }
+   },
+   "scores": {
+    "A": {
+     "clean": {
+      "macro": {
+       "value": 0.8505276225946617,
+       "ci_lo": 0.8063451194959363,
+       "ci_hi": 0.8965288962807344
+      },
+      "sd_family": {
+       "value": 0.9029678770949721,
+       "ci_lo": 0.8632935267857144,
+       "ci_hi": 0.9410687824573136
+      },
+      "other": {
+       "value": 0.8243074953445065,
+       "ci_lo": 0.7746977559013392,
+       "ci_hi": 0.8751015406162465
+      },
+      "per_generator": {
+       "dalle2": 0.679562383612663,
+       "dalle3": 0.7784217877094972,
+       "firefly": 0.8782355679702049,
+       "midjourney-v5": 0.9610102420856611,
+       "stable-diffusion-2": 0.9675279329608939,
+       "stable-diffusion-xl": 0.8384078212290503
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.8505276225946617,
+        "ci_lo": 0.8063451194959363,
+        "ci_hi": 0.8965288962807344
+       },
+       "vision_whatsapp": {
+        "value": 0.8714152700186221,
+        "ci_lo": 0.8434732574032232,
+        "ci_hi": 0.900064279552603
+       },
+       "vision_facebook_hq": {
+        "value": 0.7764742396027312,
+        "ci_lo": 0.7347552961414004,
+        "ci_hi": 0.815611725306165
+       }
+      },
+      "macro_flipped_orientation": 0.14947237740533825
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.5214773432650528,
+       "ci_lo": 0.4634983103595401,
+       "ci_hi": 0.5785538293550586
+      },
+      "sd_family": {
+       "value": 0.4183542830540037,
+       "ci_lo": 0.3578400152772996,
+       "ci_hi": 0.4810022586499389
+      },
+      "other": {
+       "value": 0.5730388733705774,
+       "ci_lo": 0.5134690152074597,
+       "ci_hi": 0.6338081159547152
+      },
+      "per_generator": {
+       "dalle2": 0.6079608938547486,
+       "dalle3": 0.4929469273743017,
+       "firefly": 0.654352886405959,
+       "midjourney-v5": 0.5368947858472998,
+       "stable-diffusion-2": 0.32667597765363127,
+       "stable-diffusion-xl": 0.5100325884543762
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5214773432650528,
+        "ci_lo": 0.4634983103595401,
+        "ci_hi": 0.5785538293550586
+       },
+       "vision_whatsapp": {
+        "value": 0.585036468032278,
+        "ci_lo": 0.5326282938087125,
+        "ci_hi": 0.6378990515355738
+       },
+       "vision_facebook_hq": {
+        "value": 0.5666899441340782,
+        "ci_lo": 0.5110100365143421,
+        "ci_hi": 0.6219029415097049
+       }
+      },
+      "macro_flipped_orientation": 0.4785226567349472
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.6842954686530106,
+       "ci_lo": 0.625085983441659,
+       "ci_hi": 0.7394247292843691
+      },
+      "sd_family": {
+       "value": 0.6876862197392923,
+       "ci_lo": 0.6237124644996888,
+       "ci_hi": 0.7506396521561662
+      },
+      "other": {
+       "value": 0.6826000931098697,
+       "ci_lo": 0.6225398979061184,
+       "ci_hi": 0.7383057342728757
+      },
+      "per_generator": {
+       "dalle2": 0.554306331471136,
+       "dalle3": 0.6931098696461825,
+       "firefly": 0.7216014897579144,
+       "midjourney-v5": 0.7613826815642458,
+       "stable-diffusion-2": 0.6922486033519553,
+       "stable-diffusion-xl": 0.6831238361266294
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6842954686530106,
+        "ci_lo": 0.625085983441659,
+        "ci_hi": 0.7394247292843691
+       },
+       "vision_whatsapp": {
+        "value": 0.7030842644320298,
+        "ci_lo": 0.6575480733585074,
+        "ci_hi": 0.749157360095639
+       },
+       "vision_facebook_hq": {
+        "value": 0.5800279329608938,
+        "ci_lo": 0.5320147736016543,
+        "ci_hi": 0.6254854933936745
+       }
+      },
+      "macro_flipped_orientation": 0.3157045313469894
+     }
+    },
+    "B": {
+     "clean": {
+      "macro": {
+       "value": 0.704349006828057,
+       "ci_lo": 0.662546259117008,
+       "ci_hi": 0.7474727106819179
+      },
+      "sd_family": {
+       "value": 0.8672835195530726,
+       "ci_lo": 0.8295262455922089,
+       "ci_hi": 0.9037877325615227
+      },
+      "other": {
+       "value": 0.6228817504655493,
+       "ci_lo": 0.5723191387910798,
+       "ci_hi": 0.6727452439309056
+      },
+      "per_generator": {
+       "dalle2": 0.4594972067039106,
+       "dalle3": 0.5141294227188082,
+       "firefly": 0.563780260707635,
+       "midjourney-v5": 0.9541201117318435,
+       "stable-diffusion-2": 0.930377094972067,
+       "stable-diffusion-xl": 0.8041899441340782
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.704349006828057,
+        "ci_lo": 0.662546259117008,
+        "ci_hi": 0.7474727106819179
+       },
+       "vision_whatsapp": {
+        "value": 0.7565836436995655,
+        "ci_lo": 0.7152256536925755,
+        "ci_hi": 0.7998304848152092
+       },
+       "vision_facebook_hq": {
+        "value": 0.7033054003724395,
+        "ci_lo": 0.6601326831943205,
+        "ci_hi": 0.7470584952240235
+       }
+      },
+      "macro_flipped_orientation": 0.295650993171943
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4839967411545625,
+       "ci_lo": 0.43181248167977104,
+       "ci_hi": 0.5431231262571091
+      },
+      "sd_family": {
+       "value": 0.42744413407821236,
+       "ci_lo": 0.36920321132596684,
+       "ci_hi": 0.4892606877138537
+      },
+      "other": {
+       "value": 0.5122730446927375,
+       "ci_lo": 0.45765642458650047,
+       "ci_hi": 0.5737786939806303
+      },
+      "per_generator": {
+       "dalle2": 0.4615223463687151,
+       "dalle3": 0.46131284916201115,
+       "firefly": 0.5968575418994413,
+       "midjourney-v5": 0.5293994413407821,
+       "stable-diffusion-2": 0.31308193668528866,
+       "stable-diffusion-xl": 0.541806331471136
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4839967411545625,
+        "ci_lo": 0.43181248167977104,
+        "ci_hi": 0.5431231262571091
+       },
+       "vision_whatsapp": {
+        "value": 0.5261561142147735,
+        "ci_lo": 0.4703713974047605,
+        "ci_hi": 0.5847939283794562
+       },
+       "vision_facebook_hq": {
+        "value": 0.5416821849782744,
+        "ci_lo": 0.48765764494694414,
+        "ci_hi": 0.5966066322362277
+       }
+      },
+      "macro_flipped_orientation": 0.5160032588454375
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.5884466170080694,
+       "ci_lo": 0.5359764146414023,
+       "ci_hi": 0.6419067440185152
+      },
+      "sd_family": {
+       "value": 0.6188896648044693,
+       "ci_lo": 0.5594760178376906,
+       "ci_hi": 0.6770139010465297
+      },
+      "other": {
+       "value": 0.5732250931098696,
+       "ci_lo": 0.5195345136011358,
+       "ci_hi": 0.6275261146125116
+      },
+      "per_generator": {
+       "dalle2": 0.4509310986964618,
+       "dalle3": 0.5139897579143389,
+       "firefly": 0.6376629422718808,
+       "midjourney-v5": 0.690316573556797,
+       "stable-diffusion-2": 0.5293063314711359,
+       "stable-diffusion-xl": 0.7084729981378026
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5884466170080694,
+        "ci_lo": 0.5359764146414023,
+        "ci_hi": 0.6419067440185152
+       },
+       "vision_whatsapp": {
+        "value": 0.6120189323401615,
+        "ci_lo": 0.5581170943188952,
+        "ci_hi": 0.669623381824797
+       },
+       "vision_facebook_hq": {
+        "value": 0.5588531967721911,
+        "ci_lo": 0.5017203082995056,
+        "ci_hi": 0.6145619333630585
+       }
+      },
+      "macro_flipped_orientation": 0.41155338299193056
+     }
+    },
+    "Bu": {
+     "clean": {
+      "macro": {
+       "value": 0.6707363438857853,
+       "ci_lo": 0.6263498285382063,
+       "ci_hi": 0.7178152006172839
+      },
+      "sd_family": {
+       "value": 0.7653398510242087,
+       "ci_lo": 0.7166057965839492,
+       "ci_hi": 0.8137957364386198
+      },
+      "other": {
+       "value": 0.6234345903165736,
+       "ci_lo": 0.5758310600828729,
+       "ci_hi": 0.6733835200746965
+      },
+      "per_generator": {
+       "dalle2": 0.47062383612662945,
+       "dalle3": 0.5743016759776536,
+       "firefly": 0.6171554934823091,
+       "midjourney-v5": 0.831657355679702,
+       "stable-diffusion-2": 0.8212988826815643,
+       "stable-diffusion-xl": 0.7093808193668529
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6707363438857853,
+        "ci_lo": 0.6263498285382063,
+        "ci_hi": 0.7178152006172839
+       },
+       "vision_whatsapp": {
+        "value": 0.7569134078212291,
+        "ci_lo": 0.7169569016292947,
+        "ci_hi": 0.795255513895373
+       },
+       "vision_facebook_hq": {
+        "value": 0.6937112042209806,
+        "ci_lo": 0.6493009467081031,
+        "ci_hi": 0.7391696949495428
+       }
+      },
+      "macro_flipped_orientation": 0.3292636561142147
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4839967411545625,
+       "ci_lo": 0.43181248167977104,
+       "ci_hi": 0.5431231262571091
+      },
+      "sd_family": {
+       "value": 0.42744413407821236,
+       "ci_lo": 0.36920321132596684,
+       "ci_hi": 0.4892606877138537
+      },
+      "other": {
+       "value": 0.5122730446927375,
+       "ci_lo": 0.45765642458650047,
+       "ci_hi": 0.5737786939806303
+      },
+      "per_generator": {
+       "dalle2": 0.4615223463687151,
+       "dalle3": 0.46131284916201115,
+       "firefly": 0.5968575418994413,
+       "midjourney-v5": 0.5293994413407821,
+       "stable-diffusion-2": 0.31308193668528866,
+       "stable-diffusion-xl": 0.541806331471136
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4839967411545625,
+        "ci_lo": 0.43181248167977104,
+        "ci_hi": 0.5431231262571091
+       },
+       "vision_whatsapp": {
+        "value": 0.5261561142147735,
+        "ci_lo": 0.4703713974047605,
+        "ci_hi": 0.5847939283794562
+       },
+       "vision_facebook_hq": {
+        "value": 0.5416821849782744,
+        "ci_lo": 0.48765764494694414,
+        "ci_hi": 0.5966066322362277
+       }
+      },
+      "macro_flipped_orientation": 0.5160032588454375
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.5871081626319056,
+       "ci_lo": 0.5335139699048718,
+       "ci_hi": 0.6413020870319959
+      },
+      "sd_family": {
+       "value": 0.626897113594041,
+       "ci_lo": 0.5696553037317674,
+       "ci_hi": 0.6833345004668534
+      },
+      "other": {
+       "value": 0.567213687150838,
+       "ci_lo": 0.511875514044072,
+       "ci_hi": 0.6227772260475518
+      },
+      "per_generator": {
+       "dalle2": 0.4478119180633147,
+       "dalle3": 0.5251629422718809,
+       "firefly": 0.6341945996275605,
+       "midjourney-v5": 0.661685288640596,
+       "stable-diffusion-2": 0.5707169459962756,
+       "stable-diffusion-xl": 0.6830772811918063
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5871081626319056,
+        "ci_lo": 0.5335139699048718,
+        "ci_hi": 0.6413020870319959
+       },
+       "vision_whatsapp": {
+        "value": 0.6181797020484171,
+        "ci_lo": 0.5687380755709281,
+        "ci_hi": 0.6704209362856357
+       },
+       "vision_facebook_hq": {
+        "value": 0.5547796399751708,
+        "ci_lo": 0.4981815949903071,
+        "ci_hi": 0.6108141677847845
+       }
+      },
+      "macro_flipped_orientation": 0.4128918373680944
+     }
+    },
+    "A2": {
+     "clean": {
+      "macro": {
+       "value": 0.7961475791433892,
+       "ci_lo": 0.7520256542067514,
+       "ci_hi": 0.8430277279592426
+      },
+      "sd_family": {
+       "value": 0.8897113594040968,
+       "ci_lo": 0.8569801425047852,
+       "ci_hi": 0.9226367321851255
+      },
+      "other": {
+       "value": 0.7493656890130354,
+       "ci_lo": 0.6974356374494242,
+       "ci_hi": 0.804747606454736
+      },
+      "per_generator": {
+       "dalle2": 0.6500465549348231,
+       "dalle3": 0.7604283054003724,
+       "firefly": 0.5873603351955308,
+       "midjourney-v5": 0.9996275605214152,
+       "stable-diffusion-2": 0.9997672253258846,
+       "stable-diffusion-xl": 0.7796554934823091
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7961475791433892,
+        "ci_lo": 0.7520256542067514,
+        "ci_hi": 0.8430277279592426
+       },
+       "vision_whatsapp": {
+        "value": 0.7983899751707014,
+        "ci_lo": 0.7666811061393306,
+        "ci_hi": 0.8302213180978761
+       },
+       "vision_facebook_hq": {
+        "value": 0.7802568280571074,
+        "ci_lo": 0.7484158889780674,
+        "ci_hi": 0.8121046941762937
+       }
+      },
+      "macro_flipped_orientation": 0.20385242085661082
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.5480563314711359,
+       "ci_lo": 0.4993870117087309,
+       "ci_hi": 0.5991567013738203
+      },
+      "sd_family": {
+       "value": 0.4901070763500931,
+       "ci_lo": 0.432144409281068,
+       "ci_hi": 0.54896583086214
+      },
+      "other": {
+       "value": 0.5770309590316574,
+       "ci_lo": 0.5254993957182321,
+       "ci_hi": 0.630817898886574
+      },
+      "per_generator": {
+       "dalle2": 0.49462290502793294,
+       "dalle3": 0.5901769087523278,
+       "firefly": 0.6011638733705773,
+       "midjourney-v5": 0.6221601489757914,
+       "stable-diffusion-2": 0.40302607076350094,
+       "stable-diffusion-xl": 0.5771880819366852
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5480563314711359,
+        "ci_lo": 0.4993870117087309,
+        "ci_hi": 0.5991567013738203
+       },
+       "vision_whatsapp": {
+        "value": 0.6020057417752948,
+        "ci_lo": 0.5547702697621568,
+        "ci_hi": 0.6464221480270577
+       },
+       "vision_facebook_hq": {
+        "value": 0.5891139044072005,
+        "ci_lo": 0.5435992146394305,
+        "ci_hi": 0.6365295986608027
+       }
+      },
+      "macro_flipped_orientation": 0.45194366852886414
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.6483744568590937,
+       "ci_lo": 0.6082423680426596,
+       "ci_hi": 0.6898610414482037
+      },
+      "sd_family": {
+       "value": 0.7446112662942271,
+       "ci_lo": 0.6979904878618114,
+       "ci_hi": 0.7867559338557627
+      },
+      "other": {
+       "value": 0.600256052141527,
+       "ci_lo": 0.5552770987257263,
+       "ci_hi": 0.6443574929971989
+      },
+      "per_generator": {
+       "dalle2": 0.4779795158286778,
+       "dalle3": 0.6501396648044693,
+       "firefly": 0.42763035381750464,
+       "midjourney-v5": 0.8452746741154562,
+       "stable-diffusion-2": 0.8198789571694599,
+       "stable-diffusion-xl": 0.6693435754189944
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6483744568590937,
+        "ci_lo": 0.6082423680426596,
+        "ci_hi": 0.6898610414482037
+       },
+       "vision_whatsapp": {
+        "value": 0.65348774053383,
+        "ci_lo": 0.6160319947384711,
+        "ci_hi": 0.690435681414286
+       },
+       "vision_facebook_hq": {
+        "value": 0.6188159528243328,
+        "ci_lo": 0.578638715340264,
+        "ci_hi": 0.6609436900340451
+       }
+      },
+      "macro_flipped_orientation": 0.3516255431409063
+     }
+    },
+    "A2L": {
+     "clean": {
+      "macro": {
+       "value": 0.7317388268156425,
+       "ci_lo": 0.6860136367163253,
+       "ci_hi": 0.7771801762371616
+      },
+      "sd_family": {
+       "value": 0.906145251396648,
+       "ci_lo": 0.8727293661878159,
+       "ci_hi": 0.9371298687072595
+      },
+      "other": {
+       "value": 0.6445356145251396,
+       "ci_lo": 0.5889897236169306,
+       "ci_hi": 0.700089561535366
+      },
+      "per_generator": {
+       "dalle2": 0.4677374301675978,
+       "dalle3": 0.5831238361266294,
+       "firefly": 0.5447160148975791,
+       "midjourney-v5": 0.9825651769087523,
+       "stable-diffusion-2": 0.9817970204841713,
+       "stable-diffusion-xl": 0.8304934823091248
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7317388268156425,
+        "ci_lo": 0.6860136367163253,
+        "ci_hi": 0.7771801762371616
+       },
+       "vision_whatsapp": {
+        "value": 0.7829686530105523,
+        "ci_lo": 0.7514849254623938,
+        "ci_hi": 0.8130517880543486
+       },
+       "vision_facebook_hq": {
+        "value": 0.7260901613904407,
+        "ci_lo": 0.6882879290720278,
+        "ci_hi": 0.7645577297267405
+       }
+      },
+      "macro_flipped_orientation": 0.2682611731843575
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.497233860955928,
+       "ci_lo": 0.4462450170511418,
+       "ci_hi": 0.5502889602542927
+      },
+      "sd_family": {
+       "value": 0.40574953445065176,
+       "ci_lo": 0.35143590452358786,
+       "ci_hi": 0.4623359261845645
+      },
+      "other": {
+       "value": 0.542976024208566,
+       "ci_lo": 0.4892686635321672,
+       "ci_hi": 0.598229857901424
+      },
+      "per_generator": {
+       "dalle2": 0.4584729981378026,
+       "dalle3": 0.5323091247672254,
+       "firefly": 0.5714851024208566,
+       "midjourney-v5": 0.6096368715083799,
+       "stable-diffusion-2": 0.3019553072625698,
+       "stable-diffusion-xl": 0.5095437616387337
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.497233860955928,
+        "ci_lo": 0.4462450170511418,
+        "ci_hi": 0.5502889602542927
+       },
+       "vision_whatsapp": {
+        "value": 0.5218575418994413,
+        "ci_lo": 0.47047702449035167,
+        "ci_hi": 0.5775003214894443
+       },
+       "vision_facebook_hq": {
+        "value": 0.5466635630043452,
+        "ci_lo": 0.4876321584526008,
+        "ci_hi": 0.6048271626431444
+       }
+      },
+      "macro_flipped_orientation": 0.5027661390440721
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.6045856610800745,
+       "ci_lo": 0.5455299149632101,
+       "ci_hi": 0.6596691011014914
+      },
+      "sd_family": {
+       "value": 0.6587406890130354,
+       "ci_lo": 0.5944033511772304,
+       "ci_hi": 0.7188792600373483
+      },
+      "other": {
+       "value": 0.5775081471135941,
+       "ci_lo": 0.5180534933241253,
+       "ci_hi": 0.633901244855484
+      },
+      "per_generator": {
+       "dalle2": 0.43172718808193666,
+       "dalle3": 0.54262104283054,
+       "firefly": 0.525768156424581,
+       "midjourney-v5": 0.8099162011173184,
+       "stable-diffusion-2": 0.6194832402234637,
+       "stable-diffusion-xl": 0.6979981378026071
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6045856610800745,
+        "ci_lo": 0.5455299149632101,
+        "ci_hi": 0.6596691011014914
+       },
+       "vision_whatsapp": {
+        "value": 0.6361731843575419,
+        "ci_lo": 0.5885691996887079,
+        "ci_hi": 0.6858475016767271
+       },
+       "vision_facebook_hq": {
+        "value": 0.584427374301676,
+        "ci_lo": 0.5279872603955397,
+        "ci_hi": 0.6364036045855739
+       }
+      },
+      "macro_flipped_orientation": 0.3954143389199255
+     }
+    },
+    "F2p": {
+     "clean": {
+      "macro": {
+       "value": 0.7760280881440099,
+       "ci_lo": 0.7151891144795972,
+       "ci_hi": 0.8368418070676985
+      },
+      "sd_family": {
+       "value": 0.8744180633147114,
+       "ci_lo": 0.8251377250338338,
+       "ci_hi": 0.9189023085541774
+      },
+      "other": {
+       "value": 0.7268331005586592,
+       "ci_lo": 0.656912292003904,
+       "ci_hi": 0.7965624288699898
+      },
+      "per_generator": {
+       "dalle2": 0.5540735567970205,
+       "dalle3": 0.7644785847299814,
+       "firefly": 0.8459729981378026,
+       "midjourney-v5": 0.7428072625698324,
+       "stable-diffusion-2": 0.8754422718808194,
+       "stable-diffusion-xl": 0.8733938547486033
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7760280881440099,
+        "ci_lo": 0.7151891144795972,
+        "ci_hi": 0.8368418070676985
+       },
+       "vision_whatsapp": {
+        "value": 0.7513462135319678,
+        "ci_lo": 0.6974168800434513,
+        "ci_hi": 0.7999754295448618
+       },
+       "vision_facebook_hq": {
+        "value": 0.6444793606455618,
+        "ci_lo": 0.5963216547035481,
+        "ci_hi": 0.6916399966575105
+       }
+      },
+      "macro_flipped_orientation": 0.22397191185599008
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.6425977653631284,
+       "ci_lo": 0.5782123378615713,
+       "ci_hi": 0.7073186822467085
+      },
+      "sd_family": {
+       "value": 0.6965083798882681,
+       "ci_lo": 0.6295036902290914,
+       "ci_hi": 0.7621939258097604
+      },
+      "other": {
+       "value": 0.6156424581005586,
+       "ci_lo": 0.5464512244661096,
+       "ci_hi": 0.6847853254298025
+      },
+      "per_generator": {
+       "dalle2": 0.6098230912476722,
+       "dalle3": 0.6235335195530727,
+       "firefly": 0.633403165735568,
+       "midjourney-v5": 0.5958100558659218,
+       "stable-diffusion-2": 0.6648277467411545,
+       "stable-diffusion-xl": 0.7281890130353817
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6425977653631284,
+        "ci_lo": 0.5782123378615713,
+        "ci_hi": 0.7073186822467085
+       },
+       "vision_whatsapp": {
+        "value": 0.6882099627560522,
+        "ci_lo": 0.6348155315196089,
+        "ci_hi": 0.7389006259479026
+       },
+       "vision_facebook_hq": {
+        "value": 0.6678693358162632,
+        "ci_lo": 0.6109428476921547,
+        "ci_hi": 0.725420502207577
+       }
+      },
+      "macro_flipped_orientation": 0.3574022346368716
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.7831044382371198,
+       "ci_lo": 0.7291901354262851,
+       "ci_hi": 0.8297457581460207
+      },
+      "sd_family": {
+       "value": 0.8665851955307262,
+       "ci_lo": 0.8220797047301598,
+       "ci_hi": 0.9049401981475877
+      },
+      "other": {
+       "value": 0.7413640595903166,
+       "ci_lo": 0.6812276798077989,
+       "ci_hi": 0.7948414152129267
+      },
+      "per_generator": {
+       "dalle2": 0.7120344506517691,
+       "dalle3": 0.7425512104283054,
+       "firefly": 0.7598929236499069,
+       "midjourney-v5": 0.7509776536312849,
+       "stable-diffusion-2": 0.8618016759776537,
+       "stable-diffusion-xl": 0.8713687150837989
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7831044382371198,
+        "ci_lo": 0.7291901354262851,
+        "ci_hi": 0.8297457581460207
+       },
+       "vision_whatsapp": {
+        "value": 0.7752715704531346,
+        "ci_lo": 0.7233432657224685,
+        "ci_hi": 0.8214352963707312
+       },
+       "vision_facebook_hq": {
+        "value": 0.7127832091868406,
+        "ci_lo": 0.6630687855809723,
+        "ci_hi": 0.7608032050076556
+       }
+      },
+      "macro_flipped_orientation": 0.21689556176288016
+     }
+    },
+    "F2m": {
+     "clean": {
+      "macro": {
+       "value": 0.32352576039726877,
+       "ci_lo": 0.2775083644568939,
+       "ci_hi": 0.3738383143313979
+      },
+      "sd_family": {
+       "value": 0.43709264432029793,
+       "ci_lo": 0.3765690048132847,
+       "ci_hi": 0.5048536918258923
+      },
+      "other": {
+       "value": 0.2667423184357542,
+       "ci_lo": 0.22372155112044817,
+       "ci_hi": 0.3144625549463974
+      },
+      "per_generator": {
+       "dalle2": 0.14327281191806332,
+       "dalle3": 0.17257914338919925,
+       "firefly": 0.5505586592178771,
+       "midjourney-v5": 0.2005586592178771,
+       "stable-diffusion-2": 0.4152467411545624,
+       "stable-diffusion-xl": 0.4589385474860335
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.32352576039726877,
+        "ci_lo": 0.2775083644568939,
+        "ci_hi": 0.3738383143313979
+       },
+       "vision_whatsapp": {
+        "value": 0.554457635009311,
+        "ci_lo": 0.4973969021190102,
+        "ci_hi": 0.6123046888207464
+       },
+       "vision_facebook_hq": {
+        "value": 0.3684163563004345,
+        "ci_lo": 0.3219938238946749,
+        "ci_hi": 0.41609932111191733
+       }
+      },
+      "macro_flipped_orientation": 0.6764742396027312
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.4941030415890751,
+       "ci_lo": 0.43790033364369957,
+       "ci_hi": 0.5530968506570147
+      },
+      "sd_family": {
+       "value": 0.6492085661080075,
+       "ci_lo": 0.5864412736779795,
+       "ci_hi": 0.7130232326217395
+      },
+      "other": {
+       "value": 0.41655027932960886,
+       "ci_lo": 0.3583096559613176,
+       "ci_hi": 0.478511130848923
+      },
+      "per_generator": {
+       "dalle2": 0.30412011173184356,
+       "dalle3": 0.33496275605214154,
+       "firefly": 0.5481378026070763,
+       "midjourney-v5": 0.4789804469273743,
+       "stable-diffusion-2": 0.5467178770949721,
+       "stable-diffusion-xl": 0.7516992551210429
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4941030415890751,
+        "ci_lo": 0.43790033364369957,
+        "ci_hi": 0.5530968506570147
+       },
+       "vision_whatsapp": {
+        "value": 0.5903864059590317,
+        "ci_lo": 0.531449545435524,
+        "ci_hi": 0.6437138529438494
+       },
+       "vision_facebook_hq": {
+        "value": 0.5490107076350094,
+        "ci_lo": 0.4979941111774329,
+        "ci_hi": 0.5985872738370009
+       }
+      },
+      "macro_flipped_orientation": 0.505896958410925
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.4366076970825574,
+       "ci_lo": 0.3907118055555556,
+       "ci_hi": 0.4838723602705358
+      },
+      "sd_family": {
+       "value": 0.5983240223463687,
+       "ci_lo": 0.5422781880776656,
+       "ci_hi": 0.6564840323276707
+      },
+      "other": {
+       "value": 0.35574953445065177,
+       "ci_lo": 0.3116432512358757,
+       "ci_hi": 0.40457860899685405
+      },
+      "per_generator": {
+       "dalle2": 0.2618482309124767,
+       "dalle3": 0.22925977653631285,
+       "firefly": 0.6046554934823091,
+       "midjourney-v5": 0.3272346368715084,
+       "stable-diffusion-2": 0.5369180633147114,
+       "stable-diffusion-xl": 0.6597299813780261
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.4366076970825574,
+        "ci_lo": 0.3907118055555556,
+        "ci_hi": 0.4838723602705358
+       },
+       "vision_whatsapp": {
+        "value": 0.5761871508379889,
+        "ci_lo": 0.520577031522877,
+        "ci_hi": 0.6283270639633005
+       },
+       "vision_facebook_hq": {
+        "value": 0.4603662321539417,
+        "ci_lo": 0.40927030123100505,
+        "ci_hi": 0.5127869854534199
+       }
+      },
+      "macro_flipped_orientation": 0.5633923029174426
+     }
+    },
+    "texture": {
+     "clean": {
+      "macro": {
+       "value": 0.7722842954686531,
+       "ci_lo": 0.7178765539564634,
+       "ci_hi": 0.8203163904450667
+      },
+      "sd_family": {
+       "value": 0.8288058659217876,
+       "ci_lo": 0.7696763859493501,
+       "ci_hi": 0.8769968662952646
+      },
+      "other": {
+       "value": 0.7440235102420857,
+       "ci_lo": 0.6884171378164148,
+       "ci_hi": 0.7954152650567332
+      },
+      "per_generator": {
+       "dalle2": 0.730377094972067,
+       "dalle3": 0.8814478584729981,
+       "firefly": 0.5604748603351956,
+       "midjourney-v5": 0.8037942271880819,
+       "stable-diffusion-2": 0.8770251396648044,
+       "stable-diffusion-xl": 0.7805865921787709
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7722842954686531,
+        "ci_lo": 0.7178765539564634,
+        "ci_hi": 0.8203163904450667
+       },
+       "vision_whatsapp": {
+        "value": 0.57028243327126,
+        "ci_lo": 0.49818792273414503,
+        "ci_hi": 0.6359452375425565
+       },
+       "vision_facebook_hq": {
+        "value": 0.7578406269397889,
+        "ci_lo": 0.708089500739002,
+        "ci_hi": 0.8022514898983937
+       }
+      },
+      "macro_flipped_orientation": 0.22771570453134693
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.6885862818125389,
+       "ci_lo": 0.6091119484696812,
+       "ci_hi": 0.7594543992155822
+      },
+      "sd_family": {
+       "value": 0.7244413407821229,
+       "ci_lo": 0.6436867687909129,
+       "ci_hi": 0.7944640331748576
+      },
+      "other": {
+       "value": 0.6706587523277467,
+       "ci_lo": 0.5902293420654544,
+       "ci_hi": 0.7424028682307401
+      },
+      "per_generator": {
+       "dalle2": 0.6154329608938548,
+       "dalle3": 0.791294227188082,
+       "firefly": 0.5885474860335196,
+       "midjourney-v5": 0.6873603351955307,
+       "stable-diffusion-2": 0.7835195530726257,
+       "stable-diffusion-xl": 0.6653631284916202
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.6885862818125389,
+        "ci_lo": 0.6091119484696812,
+        "ci_hi": 0.7594543992155822
+       },
+       "vision_whatsapp": {
+        "value": 0.579050279329609,
+        "ci_lo": 0.5037993314394777,
+        "ci_hi": 0.6481479814030131
+       },
+       "vision_facebook_hq": {
+        "value": 0.6344157355679702,
+        "ci_lo": 0.5619608209077557,
+        "ci_hi": 0.7004641371830058
+       }
+      },
+      "macro_flipped_orientation": 0.3114137181874611
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.7319871198013658,
+       "ci_lo": 0.6681320294771383,
+       "ci_hi": 0.7872478223745638
+      },
+      "sd_family": {
+       "value": 0.7817271880819368,
+       "ci_lo": 0.710964521889088,
+       "ci_hi": 0.8391487268518518
+      },
+      "other": {
+       "value": 0.7071170856610801,
+       "ci_lo": 0.6438281445068664,
+       "ci_hi": 0.765358503711463
+      },
+      "per_generator": {
+       "dalle2": 0.6440875232774674,
+       "dalle3": 0.8537243947858473,
+       "firefly": 0.5735567970204841,
+       "midjourney-v5": 0.7570996275605214,
+       "stable-diffusion-2": 0.8397811918063315,
+       "stable-diffusion-xl": 0.7236731843575419
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.7319871198013658,
+        "ci_lo": 0.6681320294771383,
+        "ci_hi": 0.7872478223745638
+       },
+       "vision_whatsapp": {
+        "value": 0.5766371818746121,
+        "ci_lo": 0.5037015980003112,
+        "ci_hi": 0.6427127100840336
+       },
+       "vision_facebook_hq": {
+        "value": 0.6904329608938548,
+        "ci_lo": 0.6326263340236604,
+        "ci_hi": 0.7428460720285729
+       }
+      },
+      "macro_flipped_orientation": 0.26801288019863423
+     }
+    },
+    "pixL2": {
+     "clean": {
+      "macro": {
+       "value": 0.3237430167597765,
+       "ci_lo": 0.2479948148952318,
+       "ci_hi": 0.4092312286025521
+      },
+      "sd_family": {
+       "value": 0.3270135009310987,
+       "ci_lo": 0.2393831575916784,
+       "ci_hi": 0.42612371488982
+      },
+      "other": {
+       "value": 0.32210777467411544,
+       "ci_lo": 0.24978611268600304,
+       "ci_hi": 0.40083384473653666
+      },
+      "per_generator": {
+       "dalle2": 0.2964851024208566,
+       "dalle3": 0.16315176908752327,
+       "firefly": 0.4,
+       "midjourney-v5": 0.4287942271880819,
+       "stable-diffusion-2": 0.3624068901303538,
+       "stable-diffusion-xl": 0.2916201117318436
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.3237430167597765,
+        "ci_lo": 0.2479948148952318,
+        "ci_hi": 0.4092312286025521
+       },
+       "vision_whatsapp": {
+        "value": 0.5010707635009312,
+        "ci_lo": 0.419517951098731,
+        "ci_hi": 0.5906172531512603
+       },
+       "vision_facebook_hq": {
+        "value": 0.3671360955927995,
+        "ci_lo": 0.2905403980338256,
+        "ci_hi": 0.45005939230022846
+       }
+      },
+      "macro_flipped_orientation": 0.6762569832402234
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.31262026691495964,
+       "ci_lo": 0.2351685744271814,
+       "ci_hi": 0.3994266898921545
+      },
+      "sd_family": {
+       "value": 0.28691806331471137,
+       "ci_lo": 0.2112578125,
+       "ci_hi": 0.3742655961449675
+      },
+      "other": {
+       "value": 0.3254713687150838,
+       "ci_lo": 0.24706931380530167,
+       "ci_hi": 0.41380424024699897
+      },
+      "per_generator": {
+       "dalle2": 0.3465782122905028,
+       "dalle3": 0.23589385474860336,
+       "firefly": 0.39848696461824956,
+       "midjourney-v5": 0.32092644320297953,
+       "stable-diffusion-2": 0.2268389199255121,
+       "stable-diffusion-xl": 0.3469972067039106
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.31262026691495964,
+        "ci_lo": 0.2351685744271814,
+        "ci_hi": 0.3994266898921545
+       },
+       "vision_whatsapp": {
+        "value": 0.4161002482929857,
+        "ci_lo": 0.3413024291047664,
+        "ci_hi": 0.4971931157158799
+       },
+       "vision_facebook_hq": {
+        "value": 0.36493637492240844,
+        "ci_lo": 0.29000495604815013,
+        "ci_hi": 0.4475192577030812
+       }
+      },
+      "macro_flipped_orientation": 0.6873797330850404
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.2936258535071385,
+       "ci_lo": 0.22017640817901238,
+       "ci_hi": 0.37813846523246164
+      },
+      "sd_family": {
+       "value": 0.26861033519553074,
+       "ci_lo": 0.1927697945521699,
+       "ci_hi": 0.3569599713590709
+      },
+      "other": {
+       "value": 0.3061336126629423,
+       "ci_lo": 0.23171683256278208,
+       "ci_hi": 0.3888954042574815
+      },
+      "per_generator": {
+       "dalle2": 0.32939944134078214,
+       "dalle3": 0.2013268156424581,
+       "firefly": 0.39350558659217877,
+       "midjourney-v5": 0.3003026070763501,
+       "stable-diffusion-2": 0.2055167597765363,
+       "stable-diffusion-xl": 0.33170391061452514
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.2936258535071385,
+        "ci_lo": 0.22017640817901238,
+        "ci_hi": 0.37813846523246164
+       },
+       "vision_whatsapp": {
+        "value": 0.4302141527001862,
+        "ci_lo": 0.35038176348915706,
+        "ci_hi": 0.5183807958758029
+       },
+       "vision_facebook_hq": {
+        "value": 0.3417520173805089,
+        "ci_lo": 0.26703214185825547,
+        "ci_hi": 0.4249621741154562
+       }
+      },
+      "macro_flipped_orientation": 0.7063741464928615
+     }
+    },
+    "blurA": {
+     "clean": {
+      "macro": {
+       "value": 0.8167869335816262,
+       "ci_lo": 0.7687081231895303,
+       "ci_hi": 0.8597630217830438
+      },
+      "sd_family": {
+       "value": 0.840165270018622,
+       "ci_lo": 0.792313786935387,
+       "ci_hi": 0.8835111301656134
+      },
+      "other": {
+       "value": 0.8050977653631285,
+       "ci_lo": 0.7535999211878388,
+       "ci_hi": 0.8508205614395821
+      },
+      "per_generator": {
+       "dalle2": 0.8173184357541899,
+       "dalle3": 0.8005819366852887,
+       "firefly": 0.8637337057728119,
+       "midjourney-v5": 0.7387569832402234,
+       "stable-diffusion-2": 0.8529562383612663,
+       "stable-diffusion-xl": 0.8273743016759777
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.8167869335816262,
+        "ci_lo": 0.7687081231895303,
+        "ci_hi": 0.8597630217830438
+       }
+      },
+      "macro_flipped_orientation": 0.18321306641837376
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.725616852886406,
+       "ci_lo": 0.6801247932830262,
+       "ci_hi": 0.7702411211699165
+      },
+      "sd_family": {
+       "value": 0.6256750465549348,
+       "ci_lo": 0.5710934574508901,
+       "ci_hi": 0.6832483076563959
+      },
+      "other": {
+       "value": 0.7755877560521416,
+       "ci_lo": 0.729745014742396,
+       "ci_hi": 0.8191080228435136
+      },
+      "per_generator": {
+       "dalle2": 0.8902001862197393,
+       "dalle3": 0.8057029795158287,
+       "firefly": 0.663780260707635,
+       "midjourney-v5": 0.7426675977653632,
+       "stable-diffusion-2": 0.6241387337057728,
+       "stable-diffusion-xl": 0.6272113594040968
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.725616852886406,
+        "ci_lo": 0.6801247932830262,
+        "ci_hi": 0.7702411211699165
+       }
+      },
+      "macro_flipped_orientation": 0.274383147113594
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.80943513345748,
+       "ci_lo": 0.7708584625874518,
+       "ci_hi": 0.8443533332598483
+      },
+      "sd_family": {
+       "value": 0.8032355679702048,
+       "ci_lo": 0.7567961475791434,
+       "ci_hi": 0.8439111964618249
+      },
+      "other": {
+       "value": 0.8125349162011174,
+       "ci_lo": 0.7741137597449737,
+       "ci_hi": 0.8485712826797386
+      },
+      "per_generator": {
+       "dalle2": 0.9212290502793297,
+       "dalle3": 0.8136173184357542,
+       "firefly": 0.7235335195530727,
+       "midjourney-v5": 0.7917597765363128,
+       "stable-diffusion-2": 0.8071461824953445,
+       "stable-diffusion-xl": 0.7993249534450652
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.80943513345748,
+        "ci_lo": 0.7708584625874518,
+        "ci_hi": 0.8443533332598483
+       }
+      },
+      "macro_flipped_orientation": 0.19056486654252003
+     }
+    },
+    "blurB": {
+     "clean": {
+      "macro": {
+       "value": 0.33672408441961516,
+       "ci_lo": 0.2659331957187347,
+       "ci_hi": 0.4150963606416348
+      },
+      "sd_family": {
+       "value": 0.3641527001862197,
+       "ci_lo": 0.2842610585901027,
+       "ci_hi": 0.44947134986361365
+      },
+      "other": {
+       "value": 0.32300977653631285,
+       "ci_lo": 0.25583025807123677,
+       "ci_hi": 0.398856767384736
+      },
+      "per_generator": {
+       "dalle2": 0.46568901303538174,
+       "dalle3": 0.18414804469273743,
+       "firefly": 0.3555633147113594,
+       "midjourney-v5": 0.2866387337057728,
+       "stable-diffusion-2": 0.27185754189944134,
+       "stable-diffusion-xl": 0.4564478584729981
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.33672408441961516,
+        "ci_lo": 0.2659331957187347,
+        "ci_hi": 0.4150963606416348
+       }
+      },
+      "macro_flipped_orientation": 0.6632759155803849
+     },
+     "jpeg75_resize05": {
+      "macro": {
+       "value": 0.5314633767846059,
+       "ci_lo": 0.46390116440289514,
+       "ci_hi": 0.6060563054790631
+      },
+      "sd_family": {
+       "value": 0.5408519553072626,
+       "ci_lo": 0.47188391033982946,
+       "ci_hi": 0.6204785361219697
+      },
+      "other": {
+       "value": 0.5267690875232774,
+       "ci_lo": 0.45626883550509784,
+       "ci_hi": 0.6037757490636704
+      },
+      "per_generator": {
+       "dalle2": 0.5656424581005587,
+       "dalle3": 0.5005586592178771,
+       "firefly": 0.5611731843575419,
+       "midjourney-v5": 0.4797020484171322,
+       "stable-diffusion-2": 0.4883612662942272,
+       "stable-diffusion-xl": 0.5933426443202979
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.5314633767846059,
+        "ci_lo": 0.46390116440289514,
+        "ci_hi": 0.6060563054790631
+       }
+      },
+      "macro_flipped_orientation": 0.46853662321539413
+     },
+     "social_sim": {
+      "macro": {
+       "value": 0.43873758535071383,
+       "ci_lo": 0.37638249203774976,
+       "ci_hi": 0.5064405839866775
+      },
+      "sd_family": {
+       "value": 0.4642108938547486,
+       "ci_lo": 0.3961067145784868,
+       "ci_hi": 0.5398032307166133
+      },
+      "other": {
+       "value": 0.42600093109869647,
+       "ci_lo": 0.36225555945692883,
+       "ci_hi": 0.4923051975119263
+      },
+      "per_generator": {
+       "dalle2": 0.5363361266294228,
+       "dalle3": 0.2878026070763501,
+       "firefly": 0.5185055865921788,
+       "midjourney-v5": 0.36135940409683426,
+       "stable-diffusion-2": 0.3760009310986965,
+       "stable-diffusion-xl": 0.5524208566108008
+      },
+      "per_pool": {
+       "vision_native": {
+        "value": 0.43873758535071383,
+        "ci_lo": 0.37638249203774976,
+        "ci_hi": 0.5064405839866775
+       }
+      },
+      "macro_flipped_orientation": 0.5612624146492862
+     }
+    }
+   },
+   "gates": {},
+   "gate_detail": {
+    "gate1": {
+     "median_w_delta1": 3.8892566367424006,
+     "median_w_delta2": -0.5470366997343876,
+     "ratio": -0.14065327923244983,
+     "frac_delta1_pos": 0.9748603351955307,
+     "frac_delta2_pos": 0.15083798882681565,
+     "passed": true
+    },
+    "gate2": {
+     "clean": {
+      "A": 0.7585202363418407,
+      "B": 0.9360766014751553,
+      "B_all_test_reals": 0.8883369276298888,
+      "B_passed": true,
+      "A_passed": false
+     },
+     "jpeg75_resize05": {
+      "A": 0.7826591896309418,
+      "B": 0.8706742029844414,
+      "B_all_test_reals": 0.863362667074031,
+      "B_passed": true,
+      "A_passed": false
+     },
+     "social_sim": {
+      "A": 0.8309020500561065,
+      "B": 0.9398532167726181,
+      "B_all_test_reals": 0.9193159073244911,
+      "B_passed": true,
+      "A_passed": true
+     },
+     "passed": true
+    },
+    "gate5": {
+     "B_clean": {
+      "value": 0.704349006828057,
+      "ci_lo": 0.662546259117008,
+      "ci_hi": 0.7474727106819179
+     },
+     "texture_clean": {
+      "value": 0.7722842954686531,
+      "ci_lo": 0.7178765539564634,
+      "ci_hi": 0.8203163904450667
+     },
+     "passed": false
+    }
+   },
+   "fpr": {
+    "A": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.00558659217877095,
+       "vision_whatsapp": 0.0,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 2,
+       "vision_whatsapp": 0,
+       "vision_facebook_hq": 1
+      },
+      "tpr": 0.09375,
+      "thr": [
+       0.9662527131530255,
+       0.4832891623253684
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.0223463687150838,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 8,
+       "vision_facebook_hq": 1
+      },
+      "tpr": 0.008333333333333333,
+      "thr": [
+       -0.2069312952310378,
+       0.5376541349367415
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.0,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 5,
+       "vision_whatsapp": 0,
+       "vision_facebook_hq": 1
+      },
+      "tpr": 0.02361111111111111,
+      "thr": [
+       -0.14485390596128142,
+       0.7358521877940957
+      ]
+     }
+    },
+    "B": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 5,
+       "vision_whatsapp": 1,
+       "vision_facebook_hq": 1
+      },
+      "tpr": 0.12708333333333333,
+      "thr": [
+       0.3465034004019723,
+       0.05357835881294904
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 1,
+       "vision_facebook_hq": 0
+      },
+      "tpr": 0.002777777777777778,
+      "thr": [
+       0.8749628645821846,
+       0.8876073142730373
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 2,
+       "vision_facebook_hq": 1
+      },
+      "tpr": 0.0020833333333333333,
+      "thr": [
+       1.1718797051608962,
+       0.8373691646925384
+      ]
+     }
+    },
+    "Bu": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0223463687150838,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.013966480446927373
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 8,
+       "vision_whatsapp": 1,
+       "vision_facebook_hq": 5
+      },
+      "tpr": 0.034722222222222224,
+      "thr": [
+       1.4840157432982621,
+       0.59040324760473
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 1,
+       "vision_facebook_hq": 0
+      },
+      "tpr": 0.002777777777777778,
+      "thr": [
+       0.8749628645821846,
+       0.8876073142730373
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 5,
+       "vision_whatsapp": 2,
+       "vision_facebook_hq": 3
+      },
+      "tpr": 0.00625,
+      "thr": [
+       1.1718797051608962,
+       0.8373691646925384
+      ]
+     }
+    },
+    "A2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.013966480446927373
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 5,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 5
+      },
+      "tpr": 0.3576388888888889,
+      "thr": [
+       0.047656522495678345,
+       -0.603822316559885
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.01675977653631285,
+       "vision_whatsapp": 0.019553072625698324,
+       "vision_facebook_hq": 0.013966480446927373
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 6,
+       "vision_whatsapp": 7,
+       "vision_facebook_hq": 5
+      },
+      "tpr": 0.01597222222222222,
+      "thr": [
+       -1.0658669265478975,
+       0.06691499193531245
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.019553072625698324
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 3,
+       "vision_facebook_hq": 7
+      },
+      "tpr": 0.12291666666666666,
+      "thr": [
+       -1.013970903025496,
+       -0.21237407803090175
+      ]
+     }
+    },
+    "A2L": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.0,
+       "vision_facebook_hq": 0.0
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 0,
+       "vision_facebook_hq": 0
+      },
+      "tpr": 0.09722222222222222,
+      "thr": [
+       2.4398667882557605,
+       3.0482808775864907
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.0
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 2,
+       "vision_facebook_hq": 0
+      },
+      "tpr": 0.0,
+      "thr": [
+       1.376503561967512,
+       2.9913951766676714
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.0,
+       "vision_facebook_hq": 0.0
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 0,
+       "vision_facebook_hq": 0
+      },
+      "tpr": 0.0,
+      "thr": [
+       3.5099894358070154,
+       3.226979665582731
+      ]
+     }
+    },
+    "F2p": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.00558659217877095,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 2,
+       "vision_whatsapp": 2,
+       "vision_facebook_hq": 3
+      },
+      "tpr": 0.06041666666666667,
+      "thr": [
+       6.835979201787769,
+       6.257967190609634
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.027932960893854747,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.027932960893854747
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 10,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 10
+      },
+      "tpr": 0.022222222222222223,
+      "thr": [
+       5.197894107052031,
+       7.566938618340615
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.027932960893854747,
+       "vision_whatsapp": 0.036312849162011177,
+       "vision_facebook_hq": 0.0446927374301676
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 10,
+       "vision_whatsapp": 13,
+       "vision_facebook_hq": 16
+      },
+      "tpr": 0.17847222222222223,
+      "thr": [
+       3.9579584716423493,
+       5.185176669881338
+      ]
+     }
+    },
+    "texture": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.13966480446927373,
+       "vision_facebook_hq": 0.030726256983240222
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 50,
+       "vision_facebook_hq": 11
+      },
+      "tpr": 0.06597222222222222,
+      "thr": [
+       0.17858470976352694,
+       0.1658798009157181
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.01675977653631285,
+       "vision_facebook_hq": 0.0111731843575419
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 6,
+       "vision_facebook_hq": 4
+      },
+      "tpr": 0.00625,
+      "thr": [
+       0.28787937760353094,
+       0.24824137985706332
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.08100558659217877,
+       "vision_facebook_hq": 0.027932960893854747
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 3,
+       "vision_whatsapp": 29,
+       "vision_facebook_hq": 10
+      },
+      "tpr": 0.02361111111111111,
+      "thr": [
+       0.17945061624050143,
+       0.17552827298641208
+      ]
+     }
+    },
+    "pixL2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.0446927374301676
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 9,
+       "vision_whatsapp": 2,
+       "vision_facebook_hq": 16
+      },
+      "tpr": 0.004861111111111111,
+      "thr": [
+       -0.007495166733860969,
+       -0.005939162801951169
+      ]
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.0111731843575419,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 4,
+       "vision_whatsapp": 4,
+       "vision_facebook_hq": 3
+      },
+      "tpr": 0.001388888888888889,
+      "thr": [
+       -0.004178513772785663,
+       -0.00382754229940474
+      ]
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0223463687150838,
+       "vision_whatsapp": 0.01675977653631285,
+       "vision_facebook_hq": 0.030726256983240222
+      },
+      "n": {
+       "vision_native": 358,
+       "vision_whatsapp": 358,
+       "vision_facebook_hq": 358
+      },
+      "fp": {
+       "vision_native": 8,
+       "vision_whatsapp": 6,
+       "vision_facebook_hq": 11
+      },
+      "tpr": 0.003472222222222222,
+      "thr": [
+       -0.00665358081459999,
+       -0.005786252208054065
+      ]
+     }
+    },
+    "blurB": {}
+   },
+   "fpr_calib": {
+    "A": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.09497206703910614,
+       "vision_whatsapp": 0.04748603351955307,
+       "vision_facebook_hq": 0.17039106145251395
+      },
+      "tpr": 0.5958333333333333,
+      "thr": -1.5573568687141457
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.002777777777777778,
+      "thr": 1.1076661866130688
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.019553072625698324,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.013966480446927373
+      },
+      "tpr": 0.03888888888888889,
+      "thr": -0.1701594440204308
+     }
+    },
+    "B": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.019553072625698324,
+       "vision_facebook_hq": 0.027932960893854747
+      },
+      "tpr": 0.24722222222222223,
+      "thr": -0.1746456701532457
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "tpr": 0.008333333333333333,
+      "thr": 0.6972401849976156
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.0223463687150838,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "tpr": 0.009722222222222222,
+      "thr": 0.6672311466972841
+     }
+    },
+    "Bu": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.08379888268156424,
+       "vision_whatsapp": 0.0223463687150838,
+       "vision_facebook_hq": 0.055865921787709494
+      },
+      "tpr": 0.17083333333333334,
+      "thr": 0.19910979928888042
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "tpr": 0.008333333333333333,
+      "thr": 0.6972401849976156
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.027932960893854747,
+       "vision_whatsapp": 0.013966480446927373,
+       "vision_facebook_hq": 0.013966480446927373
+      },
+      "tpr": 0.018055555555555554,
+      "thr": 0.6672311466972841
+     }
+    },
+    "A2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.027932960893854747,
+       "vision_whatsapp": 0.01675977653631285,
+       "vision_facebook_hq": 0.025139664804469275
+      },
+      "tpr": 0.37916666666666665,
+      "thr": -0.8884220335959541
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.00558659217877095,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "tpr": 0.006944444444444444,
+      "thr": -0.08849916295115695
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.01675977653631285,
+       "vision_facebook_hq": 0.025139664804469275
+      },
+      "tpr": 0.14444444444444443,
+      "thr": -0.8719988106073611
+     }
+    },
+    "A2L": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.04189944134078212,
+       "vision_whatsapp": 0.013966480446927373,
+       "vision_facebook_hq": 0.036312849162011177
+      },
+      "tpr": 0.375,
+      "thr": -0.5176751425173237
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "tpr": 0.0,
+      "thr": 2.4527928757731887
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.013966480446927373,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.002777777777777778,
+      "thr": 2.0244843107396493
+     }
+    },
+    "F2p": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.0223463687150838,
+       "vision_whatsapp": 0.036312849162011177,
+       "vision_facebook_hq": 0.04189944134078212
+      },
+      "tpr": 0.17916666666666667,
+      "thr": 4.431254062596742
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.008379888268156424,
+       "vision_facebook_hq": 0.0223463687150838
+      },
+      "tpr": 0.029166666666666667,
+      "thr": 5.772824629140737
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.030726256983240222,
+       "vision_whatsapp": 0.05307262569832402,
+       "vision_facebook_hq": 0.05027932960893855
+      },
+      "tpr": 0.23472222222222222,
+      "thr": 3.9735435673436217
+     }
+    },
+    "texture": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.09776536312849161,
+       "vision_facebook_hq": 0.008379888268156424
+      },
+      "tpr": 0.029166666666666667,
+      "thr": 0.21118201315402987
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.002793296089385475,
+       "vision_facebook_hq": 0.0
+      },
+      "tpr": 0.001388888888888889,
+      "thr": 0.3098194897174836
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.002793296089385475,
+       "vision_whatsapp": 0.027932960893854747,
+       "vision_facebook_hq": 0.002793296089385475
+      },
+      "tpr": 0.004166666666666667,
+      "thr": 0.24736836552619937
+     }
+    },
+    "pixL2": {
+     "clean": {
+      "fpr": {
+       "vision_native": 0.025139664804469275,
+       "vision_whatsapp": 0.0111731843575419,
+       "vision_facebook_hq": 0.04748603351955307
+      },
+      "tpr": 0.006944444444444444,
+      "thr": -0.007381963543593883
+     },
+     "jpeg75_resize05": {
+      "fpr": {
+       "vision_native": 0.00558659217877095,
+       "vision_whatsapp": 0.00558659217877095,
+       "vision_facebook_hq": 0.00558659217877095
+      },
+      "tpr": 0.001388888888888889,
+      "thr": -0.0036183428019285198
+     },
+     "social_sim": {
+      "fpr": {
+       "vision_native": 0.008379888268156424,
+       "vision_whatsapp": 0.013966480446927373,
+       "vision_facebook_hq": 0.019553072625698324
+      },
+      "tpr": 0.002777777777777778,
+      "thr": -0.0058161704801023
+     }
+    },
+    "blurB": {}
+   },
+   "orientation": {
+    "clean": {
+     "A_frac_train_reals_positive": 0.9966329966329966,
+     "A_mean_shift": 4.254867999426865,
+     "B_frac_train_reals_positive": 1.0,
+     "B_mean_shift": 2.5857388028680846
+    },
+    "jpeg75_resize05": {
+     "A_frac_train_reals_positive": 0.9932659932659933,
+     "A_mean_shift": 3.4483816412083037,
+     "B_frac_train_reals_positive": 0.9797979797979798,
+     "B_mean_shift": 1.9377795375679288
+    },
+    "social_sim": {
+     "A_frac_train_reals_positive": 0.9932659932659933,
+     "A_mean_shift": 3.4692238368371853,
+     "B_frac_train_reals_positive": 0.9595959595959596,
+     "B_mean_shift": 1.882056370988819
+    },
+    "A2_train_in_sample_auroc_delta1_vs_delta2": 1.0,
+    "note": "shift>0 for a real photo (round-trip = class 1); fake-score = -shift; fixed, never flipped on test"
+   },
+   "checks": {
+    "texture_sign": {
+     "clean": {
+      "sign": 1,
+      "auroc_plus_sign_calib_natives_vs_train_fakes": 0.7602713178294573
+     },
+     "jpeg75_resize05": {
+      "sign": 1,
+      "auroc_plus_sign_calib_natives_vs_train_fakes": 0.664405684754522
+     },
+     "social_sim": {
+      "sign": 1,
+      "auroc_plus_sign_calib_natives_vs_train_fakes": 0.7245478036175711
+     }
+    },
+    "phi_t_vs_004_cache_max_abs_diff": {
+     "clean": 4.673004150390625e-05,
+     "jpeg75_resize05": 0.000102996826171875,
+     "social_sim": 2.288818359375e-05
+    }
+   },
+   "deltas": {
+    "clean": {
+     "B-texture": {
+      "delta": -0.06793528864059606,
+      "ci_lo": -0.1459068958940213,
+      "ci_hi": 0.022126121165412238
+     },
+     "B-pixL2": {
+      "delta": 0.3806059900682805,
+      "ci_lo": 0.3152769048727498,
+      "ci_hi": 0.44288619197285445
+     },
+     "B-F2p": {
+      "delta": -0.07167908131595291,
+      "ci_lo": -0.12123240789730769,
+      "ci_hi": -0.018289663087457202
+     },
+     "B-F2m": {
+      "delta": 0.38082324643078824,
+      "ci_lo": 0.32579957830393075,
+      "ci_hi": 0.43781719624535087
+     },
+     "B-A": {
+      "delta": -0.14617861576660474,
+      "ci_lo": -0.18398750789030272,
+      "ci_hi": -0.11124363425925937
+     },
+     "B-blurB": {
+      "delta": 0.36762492240844186,
+      "ci_lo": 0.3056673732512396,
+      "ci_hi": 0.43386105453393337
+     },
+     "B-Bu": {
+      "delta": 0.03361266294227172,
+      "ci_lo": 0.0054252261868953985,
+      "ci_hi": 0.06029461318978234
+     }
+    },
+    "jpeg75_resize05": {
+     "B-texture": {
+      "delta": -0.2045895406579764,
+      "ci_lo": -0.31756218442381556,
+      "ci_hi": -0.07688939482986415
+     },
+     "B-pixL2": {
+      "delta": 0.17137647423960284,
+      "ci_lo": 0.11311003583596624,
+      "ci_hi": 0.22856307416666227
+     },
+     "B-F2p": {
+      "delta": -0.15860102420856592,
+      "ci_lo": -0.209680552722156,
+      "ci_hi": -0.10452794476092561
+     },
+     "B-F2m": {
+      "delta": -0.010106300434512605,
+      "ci_lo": -0.060169500548757526,
+      "ci_hi": 0.04073397985954953
+     },
+     "B-A": {
+      "delta": -0.03748060211049031,
+      "ci_lo": -0.07710468093824169,
+      "ci_hi": 0.003687857050846415
+     },
+     "B-blurB": {
+      "delta": -0.047466635630043386,
+      "ci_lo": -0.11158279912853349,
+      "ci_hi": 0.013977497063645974
+     },
+     "B-Bu": {
+      "delta": 0.0,
+      "ci_lo": 0.0,
+      "ci_hi": 0.0
+     }
+    },
+    "social_sim": {
+     "B-texture": {
+      "delta": -0.14354050279329633,
+      "ci_lo": -0.2423811966181903,
+      "ci_hi": -0.03219749116990198
+     },
+     "B-pixL2": {
+      "delta": 0.29482076350093095,
+      "ci_lo": 0.24415414701202248,
+      "ci_hi": 0.3418105414345402
+     },
+     "B-F2p": {
+      "delta": -0.1946578212290504,
+      "ci_lo": -0.2517592894605054,
+      "ci_hi": -0.13496711115740787
+     },
+     "B-F2m": {
+      "delta": 0.15183891992551202,
+      "ci_lo": 0.08581298189588432,
+      "ci_hi": 0.21407593935220273
+     },
+     "B-A": {
+      "delta": -0.09584885164494117,
+      "ci_lo": -0.14180790293645543,
+      "ci_hi": -0.044786963680229705
+     },
+     "B-blurB": {
+      "delta": 0.1497090316573556,
+      "ci_lo": 0.09618413885062467,
+      "ci_hi": 0.20010027834605396
+     },
+     "B-Bu": {
+      "delta": 0.0013384543761638668,
+      "ci_lo": -0.02076508934037344,
+      "ci_hi": 0.02459131699921745
+     }
+    },
+    "A_vs_blurA": {
+     "clean": {
+      "delta": 0.03374068901303551,
+      "ci_lo": -0.013870265298468987,
+      "ci_hi": 0.07748448890510833
+     },
+     "jpeg75_resize05": {
+      "delta": -0.2041395096213532,
+      "ci_lo": -0.2594364763252572,
+      "ci_hi": -0.15143681533646336
+     },
+     "social_sim": {
+      "delta": -0.12513966480446936,
+      "ci_lo": -0.17760586609937393,
+      "ci_hi": -0.0752798145561764
+     }
+    }
+   },
+   "summary": {
+    "gates": {
+     "g1_saturation": true,
+     "g2_content_cancellation": true,
+     "g3_orientation": true,
+     "g5_validity": false
+    },
+    "B": {
+     "clean": {
+      "value": 0.704349006828057,
+      "ci_lo": 0.662546259117008,
+      "ci_hi": 0.7474727106819179
+     },
+     "jpeg75_resize05": {
+      "value": 0.4839967411545625,
+      "ci_lo": 0.43181248167977104,
+      "ci_hi": 0.5431231262571091
+     },
+     "social_sim": {
+      "value": 0.5884466170080694,
+      "ci_lo": 0.5359764146414023,
+      "ci_hi": 0.6419067440185152
+     }
+    },
+    "f2_laun": 0.6425977653631284,
+    "nonsd_laun": 0.5122730446927375,
+    "d_tex": {
+     "clean": -0.06793528864059606,
+     "jpeg75_resize05": -0.2045895406579764,
+     "social_sim": -0.14354050279329633
+    },
+    "d_pix": {
+     "clean": 0.3806059900682805,
+     "jpeg75_resize05": 0.17137647423960284,
+     "social_sim": 0.29482076350093095
+    },
+    "fpr_max": 0.013966480446927373,
+    "blur": {
+     "delta": -0.047466635630043386,
+     "ci_lo": -0.11158279912853349,
+     "ci_hi": 0.013977497063645974
+    }
+   },
+   "decision": {
+    "base": "UNINFORMATIVE",
+    "label": "UNINFORMATIVE; NOT DIFFUSION-SPECIFIC",
+    "criteria": null,
+    "blur_beaten": false,
+    "gates": {
+     "g1_saturation": true,
+     "g2_content_cancellation": true,
+     "g3_orientation": true,
+     "g5_validity": false
+    }
+   }
+  }
+ },
+ "d008": {
+  "vae": {
+   "sd-vae-ft-mse": {
+    "n": 32,
+    "max_abs_dpixel_x1": 9.194016456604004e-05,
+    "max_abs_dpixel_x2": 2.8371810913085938e-05,
+    "tol": 0.001,
+    "uint8_mismatch_frac_x1": 8.769830067952474e-05,
+    "ok": true,
+    "reused_from": "experiments/009-vae-aligned/pilot/d008_guard.json (same weights revision, same recon_f/q8; not re-run)",
+    "revision": "31f26fdeee1355a5c34592e401dd41e45d25a493"
+   }
+  },
+  "probe": {
+   "tol": 0.001,
+   "items": {
+    "fov512/clean": {
+     "A": 3.3697084443673475e-05,
+     "B": 4.240210231709618e-06,
+     "Bu": 4.3366329838256945e-06,
+     "A2": 8.384466810174018e-06,
+     "A2L": 2.2693468979539944e-05,
+     "F2p": 4.379527700137942e-05,
+     "F2m": 5.874839341446503e-06,
+     "blurA": 6.0224339755166056e-05,
+     "blurB": 4.504912013314488e-06,
+     "max_scaled_feature_diff": 3.2472980819875374e-05,
+     "n_images": 32,
+     "n_blur_rows": 32,
+     "max_abs_dscore": 6.0224339755166056e-05,
+     "ok": true
+    },
+    "fov512/jpeg75_resize05": {
+     "A": 2.8093971619291835e-05,
+     "B": 3.9035640684303985e-06,
+     "Bu": 3.9035640684303985e-06,
+     "A2": 7.380988582494918e-06,
+     "A2L": 2.837905678498842e-05,
+     "F2p": 3.461484768152445e-05,
+     "F2m": 4.193169163668742e-06,
+     "blurA": 5.165881811119988e-05,
+     "blurB": 5.478664692359914e-06,
+     "max_scaled_feature_diff": 2.1887095499550924e-05,
+     "n_images": 32,
+     "n_blur_rows": 32,
+     "max_abs_dscore": 5.165881811119988e-05,
+     "ok": true
+    },
+    "fov512/social_sim": {
+     "A": 2.2056649102708548e-05,
+     "B": 6.0973674180786475e-06,
+     "Bu": 5.607109892613593e-06,
+     "A2": 5.525569652942153e-06,
+     "A2L": 3.331090470481968e-05,
+     "F2p": 3.768562034878187e-05,
+     "F2m": 6.382842026475544e-06,
+     "blurA": 4.242289314504433e-05,
+     "blurB": 4.946532180527541e-06,
+     "max_scaled_feature_diff": 1.6101515939226374e-05,
+     "n_images": 32,
+     "n_blur_rows": 32,
+     "max_abs_dscore": 4.242289314504433e-05,
+     "ok": true
+    },
+    "fov512/vv": {
+     "n_images": 16,
+     "gate1_delta2": 3.320355073732628e-05,
+     "a2_delta2": 6.545095621257602e-06,
+     "a2l_delta2": 3.2567256140758616e-05,
+     "max_abs_dscore": 3.320355073732628e-05,
+     "ok": true
+    },
+    "orig/clean": {
+     "A": 1.9396073291932936e-05,
+     "B": 2.8086494886281343e-05,
+     "Bu": 3.193897788866806e-05,
+     "A2": 3.304889045141479e-05,
+     "A2L": 7.279946053762032e-05,
+     "F2p": 2.140849653464727e-05,
+     "F2m": 2.9887924313243275e-05,
+     "blurA": 2.768130170194283e-05,
+     "blurB": 1.2627519232921713e-05,
+     "max_scaled_feature_diff": 1.8994756828760728e-05,
+     "n_images": 32,
+     "n_blur_rows": 32,
+     "max_abs_dscore": 7.279946053762032e-05,
+     "ok": true
+    },
+    "orig/jpeg75_resize05": {
+     "A": 1.8542973030388765e-05,
+     "B": 4.170446506090997e-05,
+     "Bu": 4.170446506090997e-05,
+     "A2": 2.116149200670492e-05,
+     "A2L": 0.00011261336341839012,
+     "F2p": 2.0355797238025275e-05,
+     "F2m": 2.53041654638686e-05,
+     "blurA": 2.2743024992166738e-05,
+     "blurB": 1.6404002324943434e-05,
+     "max_scaled_feature_diff": 1.6497097021783702e-05,
+     "n_images": 32,
+     "n_blur_rows": 32,
+     "max_abs_dscore": 0.00011261336341839012,
+     "ok": true
+    },
+    "orig/social_sim": {
+     "A": 2.151655436866129e-05,
+     "B": 3.224937646706394e-05,
+     "Bu": 3.224937646706394e-05,
+     "A2": 2.7109735487140796e-05,
+     "A2L": 7.916673462382562e-05,
+     "F2p": 2.2833776800901262e-05,
+     "F2m": 3.1343781632831025e-05,
+     "blurA": 2.3391637876457594e-05,
+     "blurB": 1.5616023369080523e-05,
+     "max_scaled_feature_diff": 2.126749859598931e-05,
+     "n_images": 32,
+     "n_blur_rows": 32,
+     "max_abs_dscore": 7.916673462382562e-05,
+     "ok": true
+    },
+    "orig/vv": {
+     "n_images": 16,
+     "gate1_delta2": 2.47934713972775e-05,
+     "a2_delta2": 5.039466105216661e-05,
+     "a2l_delta2": 6.597779488259903e-05,
+     "max_abs_dscore": 6.597779488259903e-05,
+     "ok": true
+    }
+   },
+   "ok": true
+  }
+ },
+ "label_arm": "fov512",
+ "computed_label": "UNINFORMATIVE; NOT DIFFUSION-SPECIFIC",
+ "probe_checks": {
+  "fov512": {
+   "primary/clean": {
+    "refit": 0.8921205772811919,
+    "e4_results_json": 0.8921205772811919,
+    "abs_diff": 0.0
+   },
+   "primary/jpeg75_resize05": {
+    "refit": 0.6648898199875853,
+    "e4_results_json": 0.6648898199875853,
+    "abs_diff": 0.0
+   },
+   "matched/jpeg75_resize05": {
+    "refit": 0.6255237430167598,
+    "e4_results_json": 0.6255237430167598,
+    "abs_diff": 0.0
+   }
+  },
+  "orig": {
+   "primary/clean": {
+    "refit": 0.7760280881440099,
+    "e4_results_json": 0.7760280881440099,
+    "abs_diff": 0.0
+   },
+   "primary/jpeg75_resize05": {
+    "refit": 0.6425977653631284,
+    "e4_results_json": 0.6425977653631284,
+    "abs_diff": 0.0
+   },
+   "matched/jpeg75_resize05": {
+    "refit": 0.4941030415890751,
+    "e4_results_json": 0.4941030415890751,
+    "abs_diff": 0.0
+   }
+  }
+ },
+ "b0_logo_reference": {
+  "clean": {
+   "auroc": 0.9917287399130975,
+   "ap": 0.9812745670723017,
+   "tpr_at_1fpr": 0.861111111111111
+  },
+  "jpeg75_resize05": {
+   "auroc": 0.985249844816884,
+   "ap": 0.9648236220585923,
+   "tpr_at_1fpr": 0.7777777777777778
+  },
+  "social_sim": {
+   "auroc": 0.991286468032278,
+   "ap": 0.9803254967899114,
+   "tpr_at_1fpr": 0.8597222222222222
+  },
+  "source": "experiments/005-nuisance-projection/pilot/results.json arms.A0[cond].macro (LOGO-macro, 005 pilot splits)"
+ },
+ "stage_times_s": {
+  "feat": 3711.1056039333344,
+  "vv": 932.8331520557404,
+  "probes": 4.769941806793213,
+  "blur": 483.59620547294617,
+  "guard": 259.6088182926178
+ },
+ "runtime_s_analyze_process": 5413.104490995407
+}

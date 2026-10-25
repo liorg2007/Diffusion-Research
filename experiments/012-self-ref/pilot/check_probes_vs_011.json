@@ -1,0 +1,36 @@
+{
+ "fov512": {
+  "primary/clean": {
+   "refit": 0.8921205772811919,
+   "e4_results_json": 0.8921205772811919,
+   "abs_diff": 0.0
+  },
+  "primary/jpeg75_resize05": {
+   "refit": 0.6648898199875853,
+   "e4_results_json": 0.6648898199875853,
+   "abs_diff": 0.0
+  },
+  "matched/jpeg75_resize05": {
+   "refit": 0.6255237430167598,
+   "e4_results_json": 0.6255237430167598,
+   "abs_diff": 0.0
+  }
+ },
+ "orig": {
+  "primary/clean": {
+   "refit": 0.7760280881440099,
+   "e4_results_json": 0.7760280881440099,
+   "abs_diff": 0.0
+  },
+  "primary/jpeg75_resize05": {
+   "refit": 0.6425977653631284,
+   "e4_results_json": 0.6425977653631284,
+   "abs_diff": 0.0
+  },
+  "matched/jpeg75_resize05": {
+   "refit": 0.4941030415890751,
+   "e4_results_json": 0.4941030415890751,
+   "abs_diff": 0.0
+  }
+ }
+}

@@ -328,3 +328,10 @@
   - crop512 / fov512 / fov224: 2919 rows each; 2220 existing crops pixel-equal, 699 newly written (RAISE, SD3.5, FLUX, …); raw sha 2919/2919.
   - The existing crops were also made on this PC (pilot), so Mac crop-pixel parity is tested only through the step-6 metric match (±0.005).
 - 2026-10-24 19:56 — Timestamp correction: the entries stamped "20:00" (bootstrap verified) and "20:10" (official crops) were written at about 19:53 and 19:56. Lead entries now take their time from `date`, never from estimates.
+- 2026-10-25 08:02 — H-D1 PILOT done (run finished 2026-10-24 20:26; the agent was then cut off by the weekly API limit; the lead read the outputs from 012-self-ref/pilot/).
+  - Label (fov512): UNINFORMATIVE; NOT DIFFUSION-SPECIFIC.
+  - Score B (deployable, matched L0) macro AUROC 0.533 clean / 0.496 jpeg75_resize05 / 0.539 social_sim.
+  - The blur control is equal or better (blurB 0.628 laundered). Score A (no L0) 0.795 clean but 0.434 laundered.
+  - Side number: E4's pooled pair-trained F2 probe (never saw a fake) reaches 0.892 clean / 0.665 laundered / 0.759 social_sim on 6 unseen generators (fov512).
+  - D-008 ok (max |Δscore| 6.6e-5). The self-reference / idempotence route is closed for laundered images. Launching opus/high critic.
+  - Starting SETUP_WSL step 6 GPU scoring.
