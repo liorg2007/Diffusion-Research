@@ -496,3 +496,35 @@ So `du2` has the zoom (field of view) of `orig` and the downsampling history of 
    - Under this rule H4 (REFUTED) = 1 of 3.
 4. **Gate robustness.** Every gate decision is reported with Firefly in and out, and with each generator dropped in turn. A label that flips when any single generator is dropped is reported as "fragile" next to the label.
 5. **H2:** RAISE is added as a descriptive group (not used for the verdict).
+
+## Amendment 14 (2026-10-25 09:59, before any result): E5, the statistical field of real vs diffusion images (experiments/014-statistical-field)
+**Why** (owner request, D-014). Every detector assumes that diffusion images come from a different distribution than real photos. E5 challenges this directly: which image statistics differ, whether the difference survives content, zoom and format control, and whether laundering makes the two populations statistically indistinguishable. If it does, the result is a measured limit for every detector. E5 is exploratory and does not count toward the stop rule.
+
+**Data.** The official splits (`003/splits.csv`):
+- Reals: VISION natives, VISION WA/FBH copies and RAISE.
+- Fakes: 6 Synthbuster generators, plus SD3.5 and FLUX.
+- Arms: `orig` and `fov512` crops.
+- Conditions: `clean`, `jpeg75_resize05` and `social_sim`, applied identically to both classes.
+
+**Statistic battery** (per image, computed on the gray or RGB crop; fixed here):
+- S1, power spectrum: slope α of the radially averaged log power, fitted between 1/64 and 1/4 cycles/px, plus the fit residual.
+- S2, wavelet marginals: variance and kurtosis of Haar/db2 detail coefficients at levels 1–4 (H, V, D).
+- S3, noise-level function: the median-absolute-deviation noise of a high-pass residual in 8 intensity bins, giving its slope and intercept vs intensity.
+- S4, cross-colour residual correlation: correlation of the R−G and B−G high-pass residuals, and the 2×2 phase energy of the green residual (traces of camera colour processing).
+- S5, local statistics: patch entropy, and the mean and std of local contrast.
+- Reference spaces: DINOv2-base features (B0 primary, and blocks 4/8/12) from the 004 caches.
+
+**Tests** (per space × arm × condition):
+1. Per-statistic effect size (Cliff's δ) for reals vs each generator, with bootstrap CIs (clusters: devices / images).
+2. Multivariate two-sample tests.
+   - MMD with an RBF kernel (median heuristic) and a permutation p-value (1,000 permutations).
+   - A classifier two-sample test (C2ST): logistic regression, device- and generator-held-out, reported as AUROC.
+3. **Content-controlled test** (caption twins): RAISE real vs its own twin fakes, a paired comparison per statistic (sign test) and a paired C2ST.
+
+**Pre-registered predictions** (each can be confirmed or refuted):
+- **P1 (the assumption):** clean, content-controlled pairs are separable in the statistic battery: twin C2ST AUROC ≥ 0.75.
+- **P2 (laundering closes the gap):** at `jpeg75_resize05`, both the statistic battery and the DINOv2 C2ST drop below 0.70, and MMD is not significant at α = 0.01 after Holm correction over generators.
+- **P3 (where the difference lives):** in clean images the largest effect sizes are in fine-scale statistics (S2 level 1, S3, S4). Laundering suppresses those most, while S1 and S5 are least affected.
+- **P4 (shortcut check):** removing zoom (fov512) and format (comparing against WA/RAISE, which match the fakes' scale) reduces the battery's C2ST by ≥ 0.05 compared with VISION natives in `orig`.
+
+Reporting: an "atlas" of effect sizes (statistic × generator × condition) plus the multivariate tests. No method claim is made from E5.
