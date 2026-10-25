@@ -408,3 +408,6 @@
   - Mechanism: OI scores shift toward fake; flagged photos are polished enthusiast shots (bokeh, telephoto, HDR). Grayscale, EXIF, JPEG quality and scale are ruled out (style reading from about 30 images, suggestive).
   - Recommendation: write the Phase 5 findings report now; then owner photos (H3) as the acceptance test; do not reopen the mid-level line.
   - Moving to Phase 5 (fable/high report).
+- 2026-10-25 21:28 — Phase 5 report written (fable/high, docs/03-final-report.md). Lead checked the derived n=368 (two-sided 95% CP, 0 errors) and the key numbers against their sources.
+  - Bottom line: no Phase 5 target met; the central obstacle is unseen real sources (E7).
+  - Housekeeping: KB statuses for H1/H2/H4 set to their official outcomes; new kb/ideas/midlayer-laundered-probe.md (negative); README status rewritten; STORAGE total corrected to ~9.9 GB.

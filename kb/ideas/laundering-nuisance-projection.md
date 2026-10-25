@@ -29,3 +29,5 @@
   - Cost: projection and probe are seconds on CPU once features are cached; feature cache ~1-2 h on MPS (estimate from measured ResNet-50 141 img/s and ~15x the FLOPs for ViT-L; confirm with a 50-image pilot).
 
 - **Status:** proposed
+- **Official result:** OFFICIAL FAIL (2026-10-25; experiments/005-nuisance-projection/official/, critique.md): A1 headroom 0.927; A2-A1 at jpeg75_resize05 -0.015 LOGO-macro / -0.032 FLUX; clean loss -0.020; fails in all 4 runs (orig, fov512, twin-disjoint) and in every drop-one subset. Deleting laundering directions also deletes fake signal.
+- **Status (final):** official-fail

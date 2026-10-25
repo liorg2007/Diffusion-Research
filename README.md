@@ -5,36 +5,24 @@
 
 **Acceptance targets for a full-scale validation:** FPR ≤ 1% on fresh phone photos; AUROC ≥ 0.95 after social-media laundering; evaluation against transfer attacks.
 
-## Current status — 2026-10-24: Phase 4 pilots done; official run blocked by a data server outage
+## Current status — 2026-10-25: Phase 5 report written (`docs/03-final-report.md`)
 | Phase | State |
 |---|---|
-| 0 Setup | ✅ Mac (D-001…D-004). GPU PC: WSL Ubuntu 22.04, uv-managed Python 3.12.15 (D-012), torch 2.8.0+cu128, RTX 4060 Ti |
-| 1 Survey | ✅ done; headline numbers re-checked against PDFs (`kb/verification-pass-2026-10-24.md`, 17/17) |
-| 2 Gaps & hypotheses | ✅ done. Phase 4 plan in `docs/04-phase4-plan.md` (Amendments 1–10 + clarifications) |
-| 3 Data & baselines | ✅ done on the Mac. ⏸ GPU-PC reproduction (SETUP_WSL step 6) waits for grip.unina.it |
-| 4 Hypothesis tests | 🟡 PILOTS done on VISION + 6 Synthbuster (+ a RAID subset), each with an opus/high critic. None counts toward the stop rule. Official H4/H1/H2 code is ready and reviewed |
-| 5 Final report | ⏸ not started |
+| 0 Setup | ✅ Mac + GPU PC (D-012); Phase 3 reproduced on GPU (max \|ΔAUROC\| 0.0019) |
+| 1 Survey | ✅ 47 papers in `kb/`; headline numbers PDF-checked |
+| 2 Hypotheses | ✅ `docs/02-hypotheses.md`; diffusion-specific set `docs/06-diffusion-hypotheses.md` (D-014) |
+| 3 Data & baselines | ✅ |
+| 4 Hypothesis tests | ✅ Official: H4 REFUTED, H1 FAIL, H2-v2 NOT_SUPPORTED, so the stop rule was hit. Owner override D-016; exploratory E1–E7 |
+| 5 Final report | ✅ `docs/03-final-report.md`: findings and a recommended (not validated) method |
 
-### Blocker
-- grip.unina.it (RAISE reals, SD3.5/FLUX fakes, B-Free weights) has been unreachable since 2026-10-23 ~09:40. There is no other official host.
-- When it returns, run `env/.venv/bin/python -I env/bootstrap_data.py`, then SETUP_WSL step 6, then the official sequence in `experiments/006-format-shortcut/notes.md`.
+### Bottom line
+- None of the three Phase 5 targets is met.
+- The real-vs-diffusion difference survives laundering (E5). But every detector partly learns what its training real-photo sources look like, so unseen real pipelines (polished photos) get 16–19% FPR (E7). This is the central obstacle.
+- Details, numbers and sources are in `docs/03-final-report.md`.
 
-### Pilot findings (pilot data only; summary in `docs/05-phase4-pilot-synthesis.md`)
-| Pilot | Label | Main reading (critic) |
-|---|---|---|
-| H1 nuisance projection (005) | uninformative | no headroom: baseline already 0.988 |
-| H2 worst-env threshold (007) | uninformative | ~43 reals per device; plain real-photo calibration already ~1% across VISION devices |
-| H4 drift format shortcut (006) | uninformative | RIGID-style score is below chance (0.29) and tracks texture |
-| E1 zoom sensitivity (008) | exploratory | published detectors move up to 0.23 AUROC with crop vs resize-first; FPR inflates ≥5× when the input scale changes |
-| E1b zoom vs resampling (008/pilot_du2) | confounded | du2 adds differential blur; only "orig-trained B0 is zoom-fragile" survives |
-| E2 #6 aligned-VAE probe (009) | inconclusive | 0.82 clean / 0.78 laundered on 6 unseen generators without seeing any, but not via the VAE trace |
-| E2 #7 VAE ratio (009) | fail | loses to a texture baseline; dropped |
-| E3 #5 RAID canonicalization (010) | uninformative | B0 fails the gate on RAID (0.64); JPEG+resize cancels attacks at equal clean cost |
-
-### Owner decisions pending
-1. D-013: make `fov512` primary for our probes, or keep it as an extra arm. E1/E1b evidence favours primary.
-2. ~250 photos from a 2021+ phone (H3), the main FPR ≤ 1% test.
-3. Over the 9 GB cap (≈8.8 GB used): a larger backbone (DINOv2-L / DINOv3), and/or ~0.9 GB of RAID originals for a proper idea-#5 test.
+### Open items for the owner
+1. 150–250 photos from a 2021+ phone, plus WhatsApp copies, in `data/raw/owner_phone/` (git-ignored): the acceptance test for any detector (H3).
+2. D-013: whether fov512 is primary. The report recommends fov512.
 
 ## Hardware (verified 2026-10-21)
 Intel Core i9-9880H (8C), 32 GB RAM, AMD Radeon Pro 5500M 4 GB (Metal 3), macOS 15.6. **Not Apple Silicon.**

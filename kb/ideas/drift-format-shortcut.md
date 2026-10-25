@@ -34,3 +34,5 @@
   - Consistent with RIGID's AUC 0.439 on a 20-generator mix (manifold-bias-iclr2025, Table 1).
   - Official-run changes: plan Amendment 6.
 - **Status:** pilot done (uninformative); official run pending RAISE data
+- **Official result:** OFFICIAL REFUTED (2026-10-25; experiments/006-format-shortcut/official/, critique.md): RIGID-style AUROC(ii) 0.619 passes the validity gate; gap M-(ii) -0.042, so no JPEG-real/PNG-fake shortcut. Gate pass is Firefly-dependent. B0-JM fix not met; the VISION-RAISE gap is mostly caption-twin leakage.
+- **Status (final):** official-refuted

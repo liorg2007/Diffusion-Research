@@ -1,7 +1,7 @@
 # Storage ledger (D-015)
 
 Large items on the GPU PC (> 100 MB), why each is kept, and when it can be deleted. Provenance for downloads is in `env/SOURCES.md`.
-Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 8.8 GB, against the 20 GB working ceiling (D-015).
+Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 9.9 GB (incl. VAEs, RAID subset, Open Images subset), against the 20 GB working ceiling (D-015).
 
 | Item | Size | Source | Needed by | Status |
 |---|---|---|---|---|

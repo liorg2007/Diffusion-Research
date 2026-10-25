@@ -27,3 +27,5 @@
   - Cost: seconds on CPU once scores exist.
 
 - **Status:** proposed
+- **Official result:** OFFICIAL NOT_SUPPORTED (2026-10-25; experiments/007-worst-env-conformal/official/, critique.md): the worst-platform threshold does not beat pooled conformal for A0/A1/A2/B0/CommFor/RINE/B-Free (ClipDet SUPPORTED). B0 calibrated FPR 1.28% pooled, 2.51% worst platform. The tail is ONE phone (Microsoft Lumia 640), not a platform. alpha=0.5% is a built-in tie (disclosed).
+- **Status (final):** official-not-supported
