@@ -1,0 +1,494 @@
+{
+ "mode": "fov (short side -> 224, PIL BICUBIC antialiased, center crop 224)",
+ "size": 224,
+ "n_rows_in": 1100,
+ "n_missing_raw_dropped": 0,
+ "n_processed": 1100,
+ "n_ok": 1060,
+ "n_short_side_lt_512": 40,
+ "n_error": 0,
+ "short_side_lt_512": [
+  {
+   "sha256": "d3aca44d1eb8c3903a90051ff86d9978c56bb4544edcc4f9c2de9e2f3f66dea9",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    210,
+    210
+   ]
+  },
+  {
+   "sha256": "2c7b23e8e0502f2f1736eb32a8601d3dcbe783bd3e315cd8e7ebb24f8a0b0b58",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    150,
+    150
+   ]
+  },
+  {
+   "sha256": "4e3ece83dd8ae347f12a2916a5f38005f6aed45f32ddc081f1bb67bb41c10f70",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    150,
+    70
+   ]
+  },
+  {
+   "sha256": "e3c5f90aa5b18ec71ec874909c1b6b19d6093a042474c560e7e6a610dc4d809b",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    203,
+    160
+   ]
+  },
+  {
+   "sha256": "79aca556f0ef31d704651aa5de0db46ce6a12e958af4ed44b3fe74590346c03c",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    220,
+    173
+   ]
+  },
+  {
+   "sha256": "c6ec8c7443caecdd323e1f7c9c236ebdc65b77779584cec44156b63fb10d34f4",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    220,
+    219
+   ]
+  },
+  {
+   "sha256": "1fcf9f082dd9612ac3c590a66f198695eb7ec57fb9373202a3490f1000d6ec38",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    150,
+    150
+   ]
+  },
+  {
+   "sha256": "c1ae21d99cd603d311b188714a7858a77354986e361baf4cd64d9220e4e8ef85",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    270,
+    210
+   ]
+  },
+  {
+   "sha256": "ec2689b85726184d8a0d437ee6c7c822ca82af58aa2f3ed3934ee61f857edeab",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    300,
+    200
+   ]
+  },
+  {
+   "sha256": "c672a505e4ff830de2e41e2c23c76e83e70f65809462cfba3a4248f84425f18a",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    100,
+    100
+   ]
+  },
+  {
+   "sha256": "d0e54b77ab254b3eb5aa4d33b8defb6e8e6150b296aa109a70c9fcec2fc1d922",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    300,
+    200
+   ]
+  },
+  {
+   "sha256": "bf355e35ef3e93693d06c18b07e35bd744576dafe45743e2700433da18d74cbf",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    111,
+    167
+   ]
+  },
+  {
+   "sha256": "04a79b43a377e080e1f81010ab9dee2bfce82cf73ce0b923ace2b18bee7114a3",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    100,
+    160
+   ]
+  },
+  {
+   "sha256": "5107ac75a0da9a24f304e8467955e95d97b1948350ceaa0e06780ef8bd7ee364",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    180,
+    180
+   ]
+  },
+  {
+   "sha256": "4133d3411a893e84868d64c74c95fed55b5c89b77a0bc3391d1ce8cb42391d88",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    150,
+    150
+   ]
+  },
+  {
+   "sha256": "898ff1709347ed0a08dd00146036743680ecf711529dd5dec826fd36c8fd6332",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    93,
+    150
+   ]
+  },
+  {
+   "sha256": "5da4d29db9e14fd781bbe755fc108c9e2785fe4bc047348db577c504105d7029",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    200,
+    300
+   ]
+  },
+  {
+   "sha256": "43ae2d09e3afec3da05b7f53545cb025548eae331e5c5b1160a9e5492ca0884f",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    160,
+    160
+   ]
+  },
+  {
+   "sha256": "6f8042b5c3c21872bd7fabddeb7c8fde7300c0e5bd4a1a3b07f095861d98afdd",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    288,
+    174
+   ]
+  },
+  {
+   "sha256": "83c27c3cf796260b3a543f1c60ddae2b8d1dd6060a8ff3d29be8674dd290d7c1",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    112,
+    168
+   ]
+  },
+  {
+   "sha256": "e81a15efc0edcc4f52c74be6c72c918032dfa8e9b2874a58aa7cbd85e03e7d06",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    240,
+    160
+   ]
+  },
+  {
+   "sha256": "958d4d661a70ba3691a0f20faf0eb53c975d885146fd900b2324d2b3c2d1d40e",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    110,
+    110
+   ]
+  },
+  {
+   "sha256": "aa146249f5e41848762235e636cd6b51e200796438f8d3cc9842c1c80e608af8",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    401,
+    73
+   ]
+  },
+  {
+   "sha256": "a5ce3fa2dd50af4e64fa32adc9968caace74172c4235b893b397a3e83c708b05",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    144,
+    102
+   ]
+  },
+  {
+   "sha256": "a1fcdcc9c48fc2d0fdd6aae80882569c855464ef1911577e359717e72a3f5f31",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    159,
+    160
+   ]
+  },
+  {
+   "sha256": "e8b8f75992bff34d361d8807dca4b2f2f7f78a6680644afaf86b382159820749",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    210,
+    210
+   ]
+  },
+  {
+   "sha256": "5420ea7eb0d08a12dd9de612199a12a676db6e2f65888cbffc74e911a5b3067f",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    107,
+    160
+   ]
+  },
+  {
+   "sha256": "fc096e24ed27602fc75d4fc5b72a0c99cc8379d7bb1e21e4482a08d69b48245b",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    125,
+    95
+   ]
+  },
+  {
+   "sha256": "11d597b38b817d8a05ab994b9c18801a9337cadf39c232a1465d405586075974",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    200,
+    300
+   ]
+  },
+  {
+   "sha256": "5fbd5ba0296bec93cf6b800bb37da6b743c3926bd7e3c2a8585c1ae0d99d2699",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    170,
+    170
+   ]
+  },
+  {
+   "sha256": "3aa9f826aacaddd45749dc2ddc99d6340b595226fafeaba8275ad34aaff9b93a",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    183,
+    239
+   ]
+  },
+  {
+   "sha256": "e60d8c2345ffa7f3d4b688ea39b51867563c4f9302c899436c23aedac74517b3",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    300,
+    156
+   ]
+  },
+  {
+   "sha256": "8790df664f8f574f83da06eb5d2b0e2532fd1bd175162c2e690159bd884dde48",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    300,
+    153
+   ]
+  },
+  {
+   "sha256": "45036d4eb9e8d56f1b500426f5ae8392cd459e404f87a50a9f77b76be510e367",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    107,
+    160
+   ]
+  },
+  {
+   "sha256": "f02e528ed2857c37f41c2bf4489e0bd22ca2393ce7174f4390b78381fc93ba22",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    143,
+    104
+   ]
+  },
+  {
+   "sha256": "7aeae5e5f61f0bea0fa0bf96714e1f168b8c3fa2a8615a7defb7bc5d8f313ae0",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    110,
+    80
+   ]
+  },
+  {
+   "sha256": "c0e06c38166fa9f150b2ca31b2721405af183fdbde59dcec3cee6078d2bec861",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    95,
+    130
+   ]
+  },
+  {
+   "sha256": "98866468aab5d2f1c2f118487538771fc553386c1b01c030a84a81fd76bbdd95",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    160,
+    240
+   ]
+  },
+  {
+   "sha256": "f472c36c80e7144ba6d2498ffc2e09b0e640fd59f2161c30217c4de3e0f6e5b1",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    140,
+    140
+   ]
+  },
+  {
+   "sha256": "558186ffec863658165a4778bd94f029cc7a838aec52023ef0b44d8c9f1a599e",
+   "generator": "real",
+   "pool": "d3_real",
+   "size": [
+    240,
+    160
+   ]
+  }
+ ],
+ "no_clobber": {
+  "enabled": true,
+  "n_existing_equal": 0,
+  "n_existing_differ": 0,
+  "n_newly_written": 1060
+ },
+ "raw_sha_match": {
+  "n_match": 1100,
+  "n_total": 1100
+ },
+ "shape_ok_512_rgb": 1060,
+ "manifest_preflight": {
+  "n_manifest_rows_excl_latent_diffusion": 2920,
+  "n_short_side_lt_512": 0,
+  "short_side_lt_512_by_generator": {},
+  "min_short_side": 576,
+  "by_generator": [
+   {
+    "generator": "dalle2",
+    "count": 120,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "dalle3",
+    "count": 120,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "firefly",
+    "count": 120,
+    "min": 1536,
+    "median": 1792.0
+   },
+   {
+    "generator": "flux",
+    "count": 150,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "midjourney-v5",
+    "count": 120,
+    "min": 896,
+    "median": 896.0
+   },
+   {
+    "generator": "real",
+    "count": 1900,
+    "min": 718,
+    "median": 1152.0
+   },
+   {
+    "generator": "sd3_large",
+    "count": 150,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "stable-diffusion-2",
+    "count": 120,
+    "min": 576,
+    "median": 768.0
+   },
+   {
+    "generator": "stable-diffusion-xl",
+    "count": 120,
+    "min": 576,
+    "median": 832.0
+   }
+  ]
+ },
+ "counts_pool_split": [
+  {
+   "pool": "d3_real",
+   "split": "calib",
+   "n": 20
+  },
+  {
+   "pool": "d3_real",
+   "split": "test",
+   "n": 20
+  },
+  {
+   "pool": "d3_real",
+   "split": "train",
+   "n": 60
+  },
+  {
+   "pool": "fake_d3",
+   "split": "calib",
+   "n": 80
+  },
+  {
+   "pool": "fake_d3",
+   "split": "test",
+   "n": 80
+  },
+  {
+   "pool": "fake_d3",
+   "split": "train",
+   "n": 240
+  },
+  {
+   "pool": "openimages",
+   "split": "calib",
+   "n": 100
+  },
+  {
+   "pool": "openimages",
+   "split": "test",
+   "n": 200
+  },
+  {
+   "pool": "openimages",
+   "split": "train",
+   "n": 300
+  }
+ ],
+ "out_dir": "data/processed/fov224",
+ "seconds": 2.8448739051818848
+}

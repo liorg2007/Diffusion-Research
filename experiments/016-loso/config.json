@@ -1,0 +1,40 @@
+{
+ "experiment": "016-loso (E7, Amendment 16 of docs/04-phase4-plan.md; exploratory under D-016)",
+ "seed": 0,
+ "n_boot": 1000,
+ "primary_arm": "fov512",
+ "arms": {
+  "fov512": {"base_splits": "experiments/004-phase4-features/splits_fov512.csv", "cache004": "fov512", "prep_mode": "fov", "prep_size": 512,
+             "sources": ["VISION", "RAISE", "OI"], "conditions": ["clean", "jpeg75_resize05", "social_sim", "screenshot_sim", "mavali_medium"],
+             "t_aug": ["clean", "jpeg75_resize05", "social_sim"], "launder_cond": "jpeg75_resize05", "role": "primary"},
+  "orig":   {"base_splits": "experiments/003-baselines-eval/splits.csv", "cache004": "feats", "prep_mode": "crop", "prep_size": 512,
+             "sources": ["VISION", "RAISE", "OI"], "conditions": ["clean", "jpeg75_resize05", "social_sim", "screenshot_sim", "mavali_medium"],
+             "t_aug": ["clean", "jpeg75_resize05", "social_sim"], "launder_cond": "jpeg75_resize05", "role": "reported"},
+  "fov224": {"base_splits": "experiments/004-phase4-features/splits_fov224.csv", "cache004": "fov224", "prep_mode": "fov", "prep_size": 224,
+             "sources": ["VISION", "RAISE", "OI", "D3"], "conditions": ["clean", "jpeg(75)", "jpeg(90)"],
+             "t_aug": ["clean", "jpeg(75)", "jpeg(90)"], "launder_cond": "jpeg(75)", "role": "secondary-descriptive",
+             "note": "resize-based launderings (jpeg75_resize05, social_sim, screenshot_sim, mavali_medium) leave < 224 px on a 224 crop and cannot go through the 224 center-crop backbone (features.Backbone.to_tensor raises); only JPEG-only conditions are feasible"}
+ },
+ "features": {"F_b8": [1536, 3072], "F_last": [3072, 4608]},
+ "feature_layout": "004 secondary = [blk4 CLS|blk4 mean|blk8 CLS|blk8 mean|blk12 CLS|blk12 mean], H=768; block 12 == B0 primary",
+ "train_generators": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl", "sd3_large"],
+ "d3_generators": ["d3_gen_0", "d3_gen_1", "d3_gen_2", "d3_gen_3"],
+ "test_only_generator": "flux",
+ "sources": {
+  "VISION": {"train_pools": ["vision_native"], "eval_pools": ["vision_native", "vision_whatsapp", "vision_facebook_hq"], "cluster": "device"},
+  "RAISE": {"train_pools": ["raise"], "eval_pools": ["raise"], "cluster": "caption family"},
+  "OI": {"train_pools": ["openimages"], "eval_pools": ["openimages"], "cluster": "image"},
+  "D3": {"train_pools": ["d3_real"], "eval_pools": ["d3_real"], "cluster": "id (family)"}
+ },
+ "oi_split": {"seed": 0, "n_train": 300, "n_calib": 100, "n_test": 200, "by": "image, permutation of sorted image_id"},
+ "d3_split": {"seed": 0, "frac": [0.6, 0.2, 0.2], "by": "id (real + its 4 fakes together), permutation of sorted ids"},
+ "owner": {"dir": "data/raw/owner_phone", "min_images": 150},
+ "fpr_target": 0.01,
+ "thresholds": {"pass_auroc": 0.85, "pass_fpr": 0.05, "kill_auroc": 0.75, "kill_fpr": 0.10, "b8_minus_last": 0.03},
+ "label_rule": "PASS: every held-out source AUROC >= 0.85 and FPR <= 5% AND mean(F_b8 - F_last) >= 0.03 with CI lo > 0 AND mean AUROC(2 train sources) - mean AUROC(1 train source) > 0 with CI lo > 0. KILL: any held-out source AUROC < 0.75 or FPR > 10%. Else INCONCLUSIVE. All at jpeg75_resize05, F_b8, T-aug, fov512.",
+ "fpr_threshold_readings": {"A": "threshold = 1% FPR on the training sources' calib reals' CLEAN scores (E6/D-009 convention), applied at jpeg75_resize05 (headline)",
+                           "B": "threshold = 1% FPR on the training sources' calib reals scored under the SAME condition (laundered calibration; sensitivity)"},
+ "calib": "calib-role reals of the training sources; VISION calib = natives + WA + FBH (E6 convention)",
+ "bootstrap": "1,000 replicates, one global plan per arm: test-role clusters drawn with replacement within kind: families (caption id for RAISE reals and all fakes; id for D3), devices (VISION), images (OI); weights shared by all methods and sources (paired differences)",
+ "train": "lib/probe.fit_probe, balanced, StratifiedGroupKFold groups: device (VISION) / family id / image; T-aug copies share their source's group. Natives only as VISION train reals (E6). No subsampling of sources."
+}

@@ -1,0 +1,42 @@
+{
+ "mode": "crop (plain centre crop 512, no resize)",
+ "size": 512,
+ "n_rows_in": 600,
+ "n_missing_raw_dropped": 0,
+ "n_processed": 600,
+ "n_ok": 600,
+ "n_short_side_lt_512": 0,
+ "n_error": 0,
+ "short_side_lt_512": [],
+ "no_clobber": {
+  "enabled": true,
+  "n_existing_equal": 0,
+  "n_existing_differ": 0,
+  "n_newly_written": 600
+ },
+ "raw_sha_match": {
+  "n_match": 600,
+  "n_total": 600
+ },
+ "shape_ok_512_rgb": 600,
+ "counts_pool_split": [
+  {
+   "pool": "openimages",
+   "split": "calib",
+   "n": 100
+  },
+  {
+   "pool": "openimages",
+   "split": "test",
+   "n": 200
+  },
+  {
+   "pool": "openimages",
+   "split": "train",
+   "n": 300
+  }
+ ],
+ "out_dir": "data/processed/crop512",
+ "seconds": 7.574436187744141
+}
+wrote /home/zera/project/Diffusion-Research/experiments/016-loso/_prep/out_orig.csv 600 rows

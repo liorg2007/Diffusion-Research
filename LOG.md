@@ -399,3 +399,8 @@
   - Deviation: official splits are not twin-consistent, so caption families were assigned whole by majority (dropped 258 fakes, 79 RAISE reals).
   - Launching opus/high critic.
 - 2026-10-25 20:56 — Open Images V7 validation subset downloaded (haiku): 600 CC BY 2.0 photos, 178 MB, short side median 768. Manifest sha256 verified. CVDF copies are re-encoded and resized. Cumulative downloads about 9.9 GB of the 20 GB ceiling (D-015). SOURCES, STORAGE and KB updated.
+- 2026-10-25 21:17 — E7 leave-one-real-source-out done (016-loso/results/; ~11 min). Label: KILL (primary fov512; holds in 10 drop-one subsets and under both threshold readings).
+  - Held-out jpeg75_resize05, F_b8: VISION 0.917 / FPR 0.6%; RAISE 0.689 / 19.1%; OI 0.809 / 16.0%. The kill is triggered by RAISE (AUROC and FPR) and by OI (FPR) independently.
+  - b8 - last +0.057 [+0.035, +0.079] (met). Learning curve 1 -> 2 sources +0.032 (met). orig and fov224 also KILL.
+  - D-008 13/13 ok (1.2e-4). OWNER source pending (no photos).
+  - Per Amendment 16 / D-016, the mid-level line is CLOSED; no further limit raise for it. Launching opus/high critic.

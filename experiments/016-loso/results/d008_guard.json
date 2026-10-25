@@ -1,0 +1,145 @@
+{
+ "fov224/clean": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 2.813415131619479e-05,
+  "max_abs_dlogit_b8": 2.3654823687380144e-05,
+  "max_abs_feature_diff": 0.00011873245239257812,
+  "max_scaled_feature_diff": 2.0296227376093157e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov224/jpeg(75)": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 2.9445109845482875e-05,
+  "max_abs_dlogit_b8": 1.4921588321392676e-05,
+  "max_abs_feature_diff": 9.012222290039062e-05,
+  "max_scaled_feature_diff": 1.284510926780058e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov224/jpeg(90)": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 3.6722699299218675e-05,
+  "max_abs_dlogit_b8": 1.2780436527748407e-05,
+  "max_abs_feature_diff": 0.00011521577835083008,
+  "max_scaled_feature_diff": 1.94833137356909e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/clean": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.2323327859498079e-05,
+  "max_abs_dlogit_b8": 0.00011984383229890483,
+  "max_abs_feature_diff": 0.00010848045349121094,
+  "max_scaled_feature_diff": 1.8364007701165974e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/jpeg75_resize05": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 2.119798917821214e-05,
+  "max_abs_dlogit_b8": 0.00010858784304090818,
+  "max_abs_feature_diff": 8.20159912109375e-05,
+  "max_scaled_feature_diff": 1.4817785995546728e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/mavali_medium": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.6552240866829493e-05,
+  "max_abs_dlogit_b8": 5.0191533437882185e-05,
+  "max_abs_feature_diff": 5.9604644775390625e-05,
+  "max_scaled_feature_diff": 1.134051399276359e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/screenshot_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 7.903610353743318e-06,
+  "max_abs_dlogit_b8": 5.524506232923443e-05,
+  "max_abs_feature_diff": 0.00014775991439819336,
+  "max_scaled_feature_diff": 2.61614713963354e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/social_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.2541407638844149e-05,
+  "max_abs_dlogit_b8": 0.00012137133562717395,
+  "max_abs_feature_diff": 0.000148773193359375,
+  "max_scaled_feature_diff": 2.2487187379738316e-05,
+  "n": 32,
+  "ok": true
+ },
+ "orig/clean": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.1690987307133582e-05,
+  "max_abs_dlogit_b8": 5.9775453532529e-05,
+  "max_abs_feature_diff": 0.00010895729064941406,
+  "max_scaled_feature_diff": 1.5979065210558474e-05,
+  "n": 32,
+  "ok": true
+ },
+ "orig/jpeg75_resize05": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.3315237741728936e-05,
+  "max_abs_dlogit_b8": 3.804697991149908e-05,
+  "max_abs_feature_diff": 0.0001125335693359375,
+  "max_scaled_feature_diff": 1.5358851669589058e-05,
+  "n": 32,
+  "ok": true
+ },
+ "orig/mavali_medium": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.2467171629726437e-05,
+  "max_abs_dlogit_b8": 2.38281631279591e-05,
+  "max_abs_feature_diff": 9.274482727050781e-05,
+  "max_scaled_feature_diff": 1.589245948707685e-05,
+  "n": 32,
+  "ok": true
+ },
+ "orig/screenshot_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 8.64093181029979e-06,
+  "max_abs_dlogit_b8": 8.157754032822595e-05,
+  "max_abs_feature_diff": 9.870529174804688e-05,
+  "max_scaled_feature_diff": 1.318969952990301e-05,
+  "n": 32,
+  "ok": true
+ },
+ "orig/social_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.66327054165194e-05,
+  "max_abs_dlogit_b8": 4.262693859224953e-05,
+  "max_abs_feature_diff": 5.4836273193359375e-05,
+  "max_scaled_feature_diff": 1.1927713785553351e-05,
+  "n": 32,
+  "ok": true
+ }
+}

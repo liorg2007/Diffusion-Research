@@ -1,0 +1,60 @@
+PASS CP 0/50 upper 0.0711 (0.0000,0.0711)
+PASS 1% threshold on 300 calib reals leaves <= 3 above (3)
+PASS label PASS 
+PASS label INCONCLUSIVE (layer gain CI includes 0) 
+PASS label INCONCLUSIVE (a source at AUROC 0.80, FPR 0.07) 
+PASS label KILL (AUROC < 0.75) 
+PASS label KILL (FPR > 10%) 
+PASS label boundary: AUROC 0.85 and FPR 0.05 pass 
+PASS weighted AUROC == sklearn 
+PASS fov512: sha256 unique, rows 3519 
+PASS fov512: all crop files exist 
+PASS fov512: OI split 300/100/200 by image {'train': 300, 'test': 200, 'calib': 100}
+PASS fov512: OI rows == manifest sha256 set; every OI file hash == manifest 
+PASS fov512: no family id shared by train and calib/test (train 181, eval 399)
+PASS fov512: E6 role counts (fakes train 230/test 532+..., RAISE 84/53/183) 
+PASS fov512: held-out source pools never in training rows; only role=train; FLUX and the LOGO generator excluded 
+PASS fov512: calib reals of VISION+RAISE are role=calib reals of those pools only 
+PASS fov512: plan row 0 is all ones 
+PASS fov512: rows of one family share bootstrap weights (RAISE real + its fakes) (385 families)
+PASS fov512: VISION test copies of one device share weights (25 devices)
+PASS fov512: fam replicate draws sum to the number of clusters (K=385)
+PASS fov512: dev replicate draws sum to the number of clusters (K=25)
+PASS fov512: img replicate draws sum to the number of clusters (K=200)
+PASS orig: sha256 unique, rows 3519 
+PASS orig: all crop files exist 
+PASS orig: OI split 300/100/200 by image {'train': 300, 'test': 200, 'calib': 100}
+PASS orig: OI rows == manifest sha256 set; every OI file hash == manifest 
+PASS orig: no family id shared by train and calib/test (train 181, eval 399)
+PASS orig: E6 role counts (fakes train 230/test 532+..., RAISE 84/53/183) 
+PASS orig: held-out source pools never in training rows; only role=train; FLUX and the LOGO generator excluded 
+PASS orig: calib reals of VISION+RAISE are role=calib reals of those pools only 
+PASS orig: plan row 0 is all ones 
+PASS orig: rows of one family share bootstrap weights (RAISE real + its fakes) (385 families)
+PASS orig: VISION test copies of one device share weights (25 devices)
+PASS orig: fam replicate draws sum to the number of clusters (K=385)
+PASS orig: dev replicate draws sum to the number of clusters (K=25)
+PASS orig: img replicate draws sum to the number of clusters (K=200)
+PASS fov224: sha256 unique, rows 3979 
+PASS fov224: all crop files exist 
+PASS fov224: OI split 300/100/200 by image {'train': 300, 'test': 200, 'calib': 100}
+PASS fov224: OI rows == manifest sha256 set; every OI file hash == manifest 
+PASS fov224: no family id shared by train and calib/test (train 241, eval 439)
+PASS fov224: E6 role counts (fakes train 230/test 532+..., RAISE 84/53/183) 
+PASS fov224: each D3 id has ONE split (real + fakes together) 
+PASS fov224: D3 id split 60/20/20 over the 100 ids (reals < 224 px dropped afterwards) {'train': 60, 'calib': 20, 'test': 20}
+PASS fov224: kept D3 reals have raw short side >= 224 (never upscaled); every D3 crop is 224x224 (D3 reals kept 60, fakes 400)
+PASS fov224: held-out source pools never in training rows; only role=train; FLUX and the LOGO generator excluded 
+PASS fov224: calib reals of VISION+RAISE are role=calib reals of those pools only 
+PASS fov224: plan row 0 is all ones 
+PASS fov224: rows of one family share bootstrap weights (RAISE real + its fakes) (405 families)
+PASS fov224: VISION test copies of one device share weights (25 devices)
+PASS fov224: fam replicate draws sum to the number of clusters (K=405)
+PASS fov224: dev replicate draws sum to the number of clusters (K=25)
+PASS fov224: img replicate draws sum to the number of clusters (K=200)
+PASS features load for new OI rows (4608-d, finite) 
+PASS D-008 guard: 13 (arm, condition) pairs all ok, max|dlogit| 1.21e-04 <= 1e-3 
+PASS synthetic: train rows = role train; reals only from the training sources 
+PASS synthetic: held-out source AUROC high for block 8 (signal), near chance for block 12 (no signal) (b8 1.000, last 0.542)
+PASS synthetic: scores cover all rows and conditions 
+ALL PASS
