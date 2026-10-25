@@ -1,0 +1,43 @@
+{
+ "experiment": "014-statistical-field (E5, docs/04-phase4-plan.md Amendment 14)",
+ "seed": 0,
+ "arms": {"orig": {"splits": "experiments/003-baselines-eval/splits.csv", "dino_subdir": null},
+          "fov512": {"splits": "experiments/004-phase4-features/splits_fov512.csv", "dino_subdir": "fov512"}},
+ "primary_arm": "orig",
+ "conditions": ["clean", "jpeg75_resize05", "social_sim"],
+ "rows": "all 2919 rows of the official splits (no detector is trained; split column is ignored)",
+ "statistics": {
+  "gray": "BT.601 luma of the 8-bit RGB crop after the condition, float, no rounding",
+  "hp": "valid-region high-pass residual x - mean(4-neighbours), border 1px dropped",
+  "S1": "radially averaged power (Hann window), 16 log-spaced bins in f in [1/64, 1/4] cycles/px; alpha = -slope of log10 P vs log10 f; resid = RMS of the fit in log10",
+  "S2": "Haar (decimated) detail coefficients H,V,D at levels 1-4 of the gray image: log10 variance and excess kurtosis (db2 not used)",
+  "S3": "hp residual of gray; 8 equal-count bins of the 5x5-mean intensity; per bin sigma = 1.4826*MAD(hp)/sqrt(1.25); linear fit vs mean intensity/255 of sigma (primary: s3_slope_sd, s3_icpt_sd) and of sigma^2 (s3_slope_var, s3_icpt_var; the physical Poisson-Gaussian form)",
+  "S4": "hp residuals of R,G,B: corr(hpR-hpG, hpB-hpG), corr(hpR,hpG), corr(hpB,hpG); green hp residual energy in the 4 (row%2,col%2) phases: coefficient of variation (s4_phase_cv) and checkerboard contrast |e00+e11-e01-e10|/sum (s4_phase_diag)",
+  "S5": "16x16 non-overlapping patches of gray: Shannon entropy (bits, 32 levels) mean; patch std (local contrast) mean and std"
+ },
+ "groups": {"S1": ["s1_alpha", "s1_resid"], "S2L1": "s2_l1_*", "S2L2-4": "s2_l2_*, s2_l3_*, s2_l4_*", "S3": "s3_*", "S4": "s4_*", "S5": "s5_*"},
+ "fine_scale_F": ["S2L1", "S3", "S4"],
+ "effect_size": {"measure": "Cliff delta = 2*AUROC-1, positive = fake larger", "n_boot": 1000,
+                 "ci": "cluster bootstrap (experiments/lib/metrics.bootstrap_weights): reals by device (each RAISE image its own cluster), fakes by image within generator; percentile 95%",
+                 "real_pools": ["all", "native", "WA", "FBH", "RAISE"], "ci_only_for": "all"},
+ "mmd": {"kernel": "RBF on z-scored features (clipped +-8), bandwidth = median pairwise distance over the 2919 rows of the cell",
+         "estimator": "unbiased MMD^2", "n_perm": 1000, "alpha": 0.01, "holm_over": "the 8 generators, per space x arm x condition",
+         "reals": "all reals (pre-registered pool); sensitivity: native+RAISE only (no near-duplicate WA/FBH copies)"},
+ "spaces": {"battery": "38 statistics", "dino_b0": "DINOv2-base primary (block 12 CLS+mean, 1536-d)", "dino_blk4": "block 4 CLS+mean", "dino_blk8": "block 8 CLS+mean",
+            "note": "block 12 == B0 primary, not repeated"},
+ "c2st": {"model": "StandardScaler(fit on train fold, clip +-8) + LogisticRegression(class_weight=balanced, C=1.0 battery / 0.01 DINOv2, lbfgs, max_iter=1000)",
+          "folds": "K=4. Real groups (VISION device; RAISE: one group per image) and the 8 generators are shuffled (seeded) and dealt round-robin into 4 folds (generator folds hold 2 generators). A test fold = its real groups + its generators' fakes; training uses only reals of other groups and fakes of other generators. Twin-disjoint pruning in each fold: training fakes whose RAISE twin id is a test-fold RAISE real and training RAISE reals whose id is a test-fold fake twin are dropped. WA/FBH/native copies share a device so stay in one fold.",
+          "repeats": 5, "metric": "AUROC of pooled out-of-fold scores, mean over repeats; 95% CI = cluster bootstrap (1000 replicates) on repeat 0",
+          "sensitivity": "plain folds without twin pruning, repeats 3 (battery, dino_b0)"},
+ "twin": {"id": "regex (r[0-9a-f]{8,}t) on basename(src_path), as in the H4 critic check c4",
+          "pairs": "RAISE real (any split) x each fake sharing its id, per generator",
+          "paired_test": "per statistic: sign test (two-sided binomial, ties dropped) on fake-real differences, Holm over the 38 statistics; pooled over generators on the per-id mean difference",
+          "paired_c2st": "4 id folds x 4 generator folds = 16 cells; cell (a,b) trains on twin ids not in a, fakes of generators not in b (reals once per id); tests on reals with id in a and twin fakes with id in a and generator in b; AUROC averaged over cells weighted by test pairs; also matched-pair win rate; repeats 5; CI = bootstrap over twin ids on repeat 0"},
+ "predictions": {
+  "P1": "orig, clean: twin paired C2ST AUROC of the battery >= 0.75 (fov512 reported)",
+  "P2": "orig, jpeg75_resize05: battery C2ST < 0.70 AND DINOv2-B0 C2ST < 0.70 AND no generator significant at 0.01 (Holm) for MMD in battery and dino_b0 (all-reals pool). Strict reading: all three on both spaces",
+  "P3": "orig, all-reals. P3a: mean |delta| over 8 generators computed per statistic; >=3 of the top-5 clean statistics lie in F={S2L1,S3,S4} AND mean|delta|_clean(F) > mean|delta|_clean(not F). P3b: group ratio = mean|delta|(jpeg75_resize05)/mean|delta|(clean); min(ratio_S1, ratio_S5) > max(ratio_S2L1, ratio_S3, ratio_S4). P3 = P3a and P3b (social_sim, fov512 reported)",
+  "P4": "battery C2ST (clean): AUROC(reals=VISION native, orig) - AUROC(reals=WA u RAISE, fov512) >= 0.05; single-factor variants reported"
+ },
+ "parallel": {"workers": 6}
+}

@@ -367,3 +367,9 @@
   - D-008 max |dlogit| 1.1e-4.
   - Deviations: TPR on 585 test fakes only; synthetic platform = screenshot_sim; B0 TPR is not LOGO.
   - Stop rule: H2's pre-registered primary is B0/A0, so the count is finalised once A0 arrives from official H1. If A0 agrees, 2 of 3.
+- 2026-10-25 10:33 — E5 statistical field done (014-statistical-field/results/; exploratory, CPU, ~21 min). Selftest 14/14.
+  - P1 CONFIRMED: twin-paired battery C2ST 0.777 clean (DINOv2 0.866).
+  - P2 REFUTED: at jpeg75_resize05, battery C2ST 0.710, DINOv2-B0 0.940, block 8 0.970. MMD significant 8/8 generators (device- and generator-held-out folds).
+  - P3 REFUTED: only S4 (colour residual correlation) is strongly suppressed by laundering.
+  - P4 CONFIRMED: battery 0.972 natives/orig vs 0.723 WA+RAISE/fov512.
+  - Caution: the DINOv2 C2ST may include the zoom shortcut (natives in orig). The critic must test scale-matched reals before any claim.
