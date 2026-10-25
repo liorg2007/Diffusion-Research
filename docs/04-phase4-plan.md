@@ -562,3 +562,37 @@ Reporting: an "atlas" of effect sizes (statistic × generator × condition) plus
   - F_b8 T-clean must also be reported, so the gain from laundered training is separated from the gain from the layer.
 
 **D-008.** No new GPU features are expected. If any are computed, the guard applies.
+
+## Amendment 16 (2026-10-25 20:50, before any data or result): E7, leave-one-real-source-out test of the mid-level detector (experiments/016-loso)
+**Why.** E6 P1 passed, but P2 showed that a single-source-trained probe calls NEW real photos fake (`015/results/critique.md`). E7 asks whether training on several real sources makes block 8 transfer to an UNSEEN real source. This is the one bounded experiment granted by the D-016 limit raise. If it is killed, the mid-level line closes.
+
+**Real sources.** Each is used whole as the held-out source in turn:
+1. **VISION:** natives + WA + FBH; groups = device.
+2. **RAISE:** B-Free resized PNGs; groups = caption family.
+3. **OI:** new, Open Images V7. 600 photos from the official validation list with License == CC BY 2.0 (licence checked per image from the official metadata CSV), short side ≥ 512. Fetched from the official CVDF bucket; ≤ 1 GB. Splits by image: 300 train / 100 calib / 200 test.
+4. **OWNER:** the owner's phone photos, used if ≥ 150 are supplied before the run; otherwise reported as pending.
+
+**Pilot-only fourth source.** RAID/D3 reals (100, 324 px, on disk) appear only in a fov224 secondary arm, because they are smaller than 512.
+
+**Fakes.**
+- The official Synthbuster 6 + SD3.5 (LOGO) and FLUX (test-only), with the E6 caption-family assignment.
+- Plus the RAID/D3 originals' fakes (400, 4 generators, LAION content), so that not all fakes share RAISE content. In the fov224 arm only, because they are under 512 px.
+
+**Arms and features.**
+- Primary arm: fov512 (critic recommendation). orig is reported.
+- Features: block 8 (F_b8) vs block 12 (F_last) on the same rows; 004 pipeline; D-008 guard on new GPU features.
+- Training: T-aug (clean + jpeg75_resize05 + social_sim), as in E6.
+
+**Evaluation (per held-out real source S).**
+- Train on all other real sources plus the fakes (LOGO over generators).
+- Test S's test reals against the held-out generators' test fakes. Macro AUROC at clean, jpeg75_resize05, social_sim, screenshot_sim and mavali_medium.
+- FPR on S at a 1% threshold set on the TRAINING sources' calib reals (clean and laundered).
+- "Learning curve": train with 1 vs 2 other sources.
+
+**Pass** (all, at jpeg75_resize05, primary arm):
+- every held-out source has AUROC ≥ 0.85 and FPR ≤ 5%;
+- F_b8 beats F_last on the mean held-out AUROC by ≥ 0.03, with CI lower bound > 0;
+- mean held-out AUROC with 2 training sources > with 1 (CI lower bound of the difference > 0).
+
+**Kill:** any held-out source with AUROC < 0.75 or FPR > 10%.
+Anything else is INCONCLUSIVE. Each label is reported with drop-one-generator robustness.

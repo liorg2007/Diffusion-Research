@@ -1,0 +1,229 @@
+{
+ "orig": {
+  "F_b8|T-aug|all": {
+   "n_calib": 182,
+   "clean": {
+    "fp_by_device": {
+     "vision_native": {
+      "D09": 1,
+      "D13": 1,
+      "D17": 1
+     },
+     "vision_whatsapp": {
+      "D13": 1,
+      "D16": 1,
+      "D17": 1,
+      "D30": 1,
+      "D32": 1,
+      "D33": 1,
+      "D34": 1,
+      "D35": 1
+     },
+     "vision_facebook_hq": {
+      "D07": 2,
+      "D09": 1,
+      "D13": 1,
+      "D32": 1
+     }
+    },
+    "raise_fp": 12,
+    "q99": {
+     "calib_vision": 0.6308860254287718,
+     "test_vision": 1.0811872577667234,
+     "calib_raise": 1.8055139398574767,
+     "test_raise": 2.1202186059951784
+    },
+    "thr": 0.8493605852127076
+   },
+   "jpeg75_resize05": {
+    "fp_by_device": {
+     "vision_native": {
+      "D07": 2,
+      "D34": 1
+     },
+     "vision_whatsapp": {
+      "D14": 1,
+      "D17": 1,
+      "D20": 1,
+      "D21": 1,
+      "D26": 3,
+      "D30": 1,
+      "D32": 2,
+      "D34": 1
+     },
+     "vision_facebook_hq": {
+      "D09": 1,
+      "D20": 1,
+      "D26": 1,
+      "D30": 1,
+      "D31": 1,
+      "D32": 1,
+      "D34": 2
+     }
+    },
+    "raise_fp": 13,
+    "q99": {
+     "calib_vision": 2.3732176208496094,
+     "test_vision": 1.314910581111907,
+     "calib_raise": 2.1694838809967036,
+     "test_raise": 3.1199406528472915
+    },
+    "thr": 0.8493605852127076
+   }
+  },
+  "F_last|T-clean|all": {
+   "n_calib": 182,
+   "clean": {
+    "fp_by_device": {
+     "vision_native": {
+      "D17": 1
+     },
+     "vision_whatsapp": {
+      "D17": 2,
+      "D31": 1
+     },
+     "vision_facebook_hq": {
+      "D31": 1
+     }
+    },
+    "raise_fp": 3,
+    "q99": {
+     "calib_vision": 1.1035861635208124,
+     "test_vision": 1.6758717393875102,
+     "calib_raise": 2.472424936294555,
+     "test_raise": 2.484212341308596
+    },
+    "thr": 2.395567655563355
+   },
+   "jpeg75_resize05": {
+    "fp_by_device": {
+     "vision_native": {
+      "D17": 2,
+      "D31": 1
+     },
+     "vision_whatsapp": {
+      "D17": 2,
+      "D34": 1
+     },
+     "vision_facebook_hq": {
+      "D17": 1,
+      "D31": 1,
+      "D34": 1
+     }
+    },
+    "raise_fp": 2,
+    "q99": {
+     "calib_vision": 1.6565218496322631,
+     "test_vision": 2.158286383152004,
+     "calib_raise": 3.1312998676300037,
+     "test_raise": 2.557381429672248
+    },
+    "thr": 2.395567655563355
+   }
+  }
+ },
+ "fov512": {
+  "F_b8|T-aug|all": {
+   "n_calib": 182,
+   "clean": {
+    "fp_by_device": {
+     "vision_native": {
+      "D13": 1,
+      "D17": 2,
+      "D34": 1
+     },
+     "vision_whatsapp": {
+      "D13": 1,
+      "D17": 2,
+      "D34": 1
+     },
+     "vision_facebook_hq": {
+      "D13": 2,
+      "D17": 2,
+      "D34": 1
+     }
+    },
+    "raise_fp": 7,
+    "q99": {
+     "calib_vision": 3.162916898727416,
+     "test_vision": 3.744345805644988,
+     "calib_raise": 1.0320538973808264,
+     "test_raise": 5.1822972297668475
+    },
+    "thr": 3.3502008914947514
+   },
+   "jpeg75_resize05": {
+    "fp_by_device": {
+     "vision_native": {
+      "D30": 1,
+      "D34": 1
+     },
+     "vision_whatsapp": {
+      "D30": 1,
+      "D34": 2
+     },
+     "vision_facebook_hq": {
+      "D30": 1,
+      "D34": 1
+     }
+    },
+    "raise_fp": 5,
+    "q99": {
+     "calib_vision": 0.8602557945251463,
+     "test_vision": 2.5584461855888296,
+     "calib_raise": 3.0938823032379115,
+     "test_raise": 5.694686412811285
+    },
+    "thr": 3.3502008914947514
+   }
+  },
+  "F_last|T-clean|all": {
+   "n_calib": 182,
+   "clean": {
+    "fp_by_device": {
+     "vision_native": {
+      "D17": 4,
+      "D31": 1
+     },
+     "vision_whatsapp": {
+      "D17": 3,
+      "D31": 1
+     },
+     "vision_facebook_hq": {
+      "D17": 4,
+      "D31": 1
+     }
+    },
+    "raise_fp": 12,
+    "q99": {
+     "calib_vision": 0.6018429648876187,
+     "test_vision": 1.7445947813987723,
+     "calib_raise": 2.049396090507505,
+     "test_raise": 2.4403767919540424
+    },
+    "thr": 1.6613467931747439
+   },
+   "jpeg75_resize05": {
+    "fp_by_device": {
+     "vision_native": {
+      "D17": 2
+     },
+     "vision_whatsapp": {
+      "D17": 2
+     },
+     "vision_facebook_hq": {
+      "D17": 2
+     }
+    },
+    "raise_fp": 8,
+    "q99": {
+     "calib_vision": 1.2559874916076657,
+     "test_vision": 1.177348074913024,
+     "calib_raise": 1.4784124135971064,
+     "test_raise": 2.9459262895584124
+    },
+    "thr": 1.6613467931747439
+   }
+  }
+ }
+}
