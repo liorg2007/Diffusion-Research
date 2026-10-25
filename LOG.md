@@ -347,3 +347,11 @@
   - Setup gaps worked around without overwriting anything: created the 003/cache dir; data/processed/crop512/sidecar.csv copied from the no-clobber fov_prep sidecar (same lib/preprocess fields); cache/prep_report.json restored from the committed Mac results.json 'prep' section.
   - GPU outputs saved as step6_gpu_{results.json,tables.md,log}; the Mac files stay canonical.
   - Next: the official Phase 4 run (H4 first), per the 006 notes sequence.
+- 2026-10-25 09:22 — OFFICIAL H4 done (006/official/; 34 min after ~14 min of 004 feature extraction for orig/fov512/fov224 + jm). Lib tests 62 passed.
+  - Pre-registered label cell (orig, with Firefly, post-LN): REFUTED.
+    - Best σ 0.02: AUROC(ii) 0.619 [0.572, 0.664] passes the validity gate (CI lower > 0.5; beats texture 0.538).
+    - Primary gap AUROC(M) − AUROC(ii) = −0.042 [−0.056, −0.028] < 0.03. B0 gap −0.020.
+    - fov512 is also REFUTED (gap −0.012); fov224 UNINFORMATIVE (gate fails).
+  - Reading: the RIGID-style drift score is weak (~0.6) but NOT driven by a JPEG-real/PNG-fake shortcut.
+  - B0-JM fix: criterion NOT met in any arm. VISION − RAISE gap 0.097 → 0.088 (orig). The gap persists in fov512 (0.113), so it is not explained by zoom/FOV, contrary to the H1 pilot critic's reading.
+  - Stop-rule count (official, non-pilot): H4 refuted = 1 of 3. Launching opus/high critic.

@@ -1,0 +1,119 @@
+08:47:06 H4 OFFICIAL profile=official out=/home/zera/project/Diffusion-Research/experiments/006-format-shortcut/official n_boot=2000 raise pool=raise
+08:47:06 arms ['orig', 'fov512', 'fov224']; rows active 2919/2919
+08:47:23 D-008 orig/clean: post: scaled 1.7e-05 dscore 1.6e-06, pre: scaled 1.3e-05 dscore 1.5e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:47:39 D-008 orig/jpeg(90): post: scaled 1.6e-05 dscore 1.9e-06, pre: scaled 1.4e-05 dscore 1.9e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:47:55 D-008 orig/jpeg75_resize05: post: scaled 1.6e-05 dscore 2.1e-06, pre: scaled 1.3e-05 dscore 1.5e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:48:10 D-008 fov512/clean: post: scaled 1.8e-05 dscore 1.3e-06, pre: scaled 1.9e-05 dscore 1.1e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:48:25 D-008 fov512/jpeg(90): post: scaled 1.2e-05 dscore 9.7e-07, pre: scaled 1.1e-05 dscore 9.0e-07 | pipeline vs 004 cache scaled 0.0e+00
+08:48:41 D-008 fov512/jpeg75_resize05: post: scaled 1.7e-05 dscore 2.1e-06, pre: scaled 1.9e-05 dscore 1.8e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:48:56 D-008 fov224/clean: post: scaled 1.2e-05 dscore 8.0e-07, pre: scaled 1.3e-05 dscore 7.4e-07 | pipeline vs 004 cache scaled 0.0e+00
+08:49:12 D-008 fov224/jpeg(90): post: scaled 1.7e-05 dscore 1.2e-06, pre: scaled 1.5e-05 dscore 1.0e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:49:12   orig/clean: scoring 1961 images x 3 sigmas x 4 draws
+08:49:15     clean: 32/1961
+08:49:27     clean: 192/1961
+08:49:40     clean: 352/1961
+08:49:51     clean: 512/1961
+08:50:04     clean: 672/1961
+08:50:17     clean: 832/1961
+08:50:29     clean: 992/1961
+08:50:42     clean: 1152/1961
+08:50:55     clean: 1312/1961
+08:51:07     clean: 1472/1961
+08:51:20     clean: 1632/1961
+08:51:32     clean: 1792/1961
+08:51:44     clean: 1952/1961
+08:51:45   orig/jpeg(90): scoring 1245 images x 3 sigmas x 4 draws
+08:51:48     jpeg(90): 32/1245
+08:52:01     jpeg(90): 192/1245
+08:52:13     jpeg(90): 352/1245
+08:52:26     jpeg(90): 512/1245
+08:52:39     jpeg(90): 672/1245
+08:52:51     jpeg(90): 832/1245
+08:53:04     jpeg(90): 992/1245
+08:53:17     jpeg(90): 1152/1245
+08:53:24   orig/jpeg75_resize05: scoring 1245 images x 3 sigmas x 4 draws
+08:53:27     jpeg75_resize05: 32/1245
+08:53:39     jpeg75_resize05: 192/1245
+08:53:52     jpeg75_resize05: 352/1245
+08:54:05     jpeg75_resize05: 512/1245
+08:54:17     jpeg75_resize05: 672/1245
+08:54:30     jpeg75_resize05: 832/1245
+08:54:43     jpeg75_resize05: 992/1245
+08:54:55     jpeg75_resize05: 1152/1245
+08:55:04   fov512/clean: scoring 1961 images x 3 sigmas x 4 draws
+08:55:06     clean: 32/1961
+08:55:19     clean: 192/1961
+08:55:31     clean: 352/1961
+08:55:44     clean: 512/1961
+08:55:56     clean: 672/1961
+08:56:09     clean: 832/1961
+08:56:21     clean: 992/1961
+08:56:34     clean: 1152/1961
+08:56:47     clean: 1312/1961
+08:56:59     clean: 1472/1961
+08:57:11     clean: 1632/1961
+08:57:24     clean: 1792/1961
+08:57:37     clean: 1952/1961
+08:57:37   fov512/jpeg(90): scoring 1245 images x 3 sigmas x 4 draws
+08:57:40     jpeg(90): 32/1245
+08:57:53     jpeg(90): 192/1245
+08:58:05     jpeg(90): 352/1245
+08:58:18     jpeg(90): 512/1245
+08:58:31     jpeg(90): 672/1245
+08:58:43     jpeg(90): 832/1245
+08:58:57     jpeg(90): 992/1245
+08:59:09     jpeg(90): 1152/1245
+08:59:16   fov512/jpeg75_resize05: scoring 1245 images x 3 sigmas x 4 draws
+08:59:19     jpeg75_resize05: 32/1245
+08:59:32     jpeg75_resize05: 192/1245
+08:59:44     jpeg75_resize05: 352/1245
+08:59:57     jpeg75_resize05: 512/1245
+09:00:10     jpeg75_resize05: 672/1245
+09:00:22     jpeg75_resize05: 832/1245
+09:00:36     jpeg75_resize05: 992/1245
+09:00:48     jpeg75_resize05: 1152/1245
+09:00:56   fov224/clean: scoring 1961 images x 3 sigmas x 4 draws
+09:00:58     clean: 32/1961
+09:01:11     clean: 192/1961
+09:01:23     clean: 352/1961
+09:01:35     clean: 512/1961
+09:01:48     clean: 672/1961
+09:02:00     clean: 832/1961
+09:02:13     clean: 992/1961
+09:02:25     clean: 1152/1961
+09:02:37     clean: 1312/1961
+09:02:50     clean: 1472/1961
+09:03:02     clean: 1632/1961
+09:03:14     clean: 1792/1961
+09:03:27     clean: 1952/1961
+09:03:28   fov224/jpeg(90): scoring 1245 images x 3 sigmas x 4 draws
+09:03:30     jpeg(90): 32/1245
+09:03:42     jpeg(90): 192/1245
+09:03:55     jpeg(90): 352/1245
+09:04:07     jpeg(90): 512/1245
+09:04:19     jpeg(90): 672/1245
+09:04:32     jpeg(90): 832/1245
+09:04:44     jpeg(90): 992/1245
+09:04:57     jpeg(90): 1152/1245
+09:10:06 B0[orig]: models ['dalle2', 'dalle3', 'firefly', 'full', 'midjourney-v5', 'sd3_large', 'stable-diffusion-2', 'stable-diffusion-xl'], conditions ['clean', 'jpeg(90)', 'jpeg75_resize05']
+09:15:21 B0[fov512]: models ['dalle2', 'dalle3', 'firefly', 'full', 'midjourney-v5', 'sd3_large', 'stable-diffusion-2', 'stable-diffusion-xl'], conditions ['clean', 'jpeg(90)', 'jpeg75_resize05']
+09:20:33 B0[fov224]: models ['dalle2', 'dalle3', 'firefly', 'full', 'midjourney-v5', 'sd3_large', 'stable-diffusion-2', 'stable-diffusion-xl'], conditions ['clean', 'jpeg(90)']
+09:20:37 [orig/post/with_firefly] best sigma 0.02: AUROC(ii)=0.619 gap(M-ii)=-0.042 B0 gap=-0.020 texture(ii)=0.538 gate=True -> REFUTED
+09:20:37 [orig/post/without_firefly] best sigma 0.02: AUROC(ii)=0.578 gap(M-ii)=-0.045 B0 gap=-0.020 texture(ii)=0.580 gate=False -> UNINFORMATIVE
+09:20:39 [orig/post/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.587 gap(M-ii)=-0.055 B0 gap=-0.021 texture(ii)=0.558 gate=True -> REFUTED
+09:20:40 [orig/pre/with_firefly] best sigma 0.02: AUROC(ii)=0.612 gap(M-ii)=-0.035 B0 gap=-0.020 texture(ii)=0.538 gate=True -> REFUTED
+09:20:41 [orig/pre/without_firefly] best sigma 0.01: AUROC(ii)=0.571 gap(M-ii)=-0.053 B0 gap=-0.020 texture(ii)=0.580 gate=False -> UNINFORMATIVE
+09:20:41 [orig/pre/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.582 gap(M-ii)=-0.049 B0 gap=-0.021 texture(ii)=0.558 gate=True -> REFUTED
+09:20:43 [fov512/post/with_firefly] best sigma 0.02: AUROC(ii)=0.590 gap(M-ii)=-0.012 B0 gap=-0.007 texture(ii)=0.501 gate=True -> REFUTED
+09:20:44 [fov512/post/without_firefly] best sigma 0.02: AUROC(ii)=0.567 gap(M-ii)=-0.011 B0 gap=-0.008 texture(ii)=0.524 gate=True -> REFUTED
+09:20:45 [fov512/post/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.570 gap(M-ii)=-0.029 B0 gap=-0.007 texture(ii)=0.514 gate=True -> REFUTED
+09:20:46 [fov512/pre/with_firefly] best sigma 0.02: AUROC(ii)=0.591 gap(M-ii)=-0.008 B0 gap=-0.007 texture(ii)=0.501 gate=True -> REFUTED
+09:20:47 [fov512/pre/without_firefly] best sigma 0.02: AUROC(ii)=0.567 gap(M-ii)=-0.007 B0 gap=-0.008 texture(ii)=0.524 gate=True -> REFUTED
+09:20:48 [fov512/pre/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.572 gap(M-ii)=-0.027 B0 gap=-0.007 texture(ii)=0.514 gate=True -> REFUTED
+09:20:49 [fov224/post/with_firefly] best sigma 0.01: AUROC(ii)=0.516 gap(M-ii)=+0.037 B0 gap=+0.006 texture(ii)=0.505 gate=False -> UNINFORMATIVE
+09:20:50 [fov224/post/without_firefly] best sigma 0.01: AUROC(ii)=0.514 gap(M-ii)=+0.035 B0 gap=+0.006 texture(ii)=0.519 gate=False -> UNINFORMATIVE
+09:20:51 [fov224/post/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.515 gap(M-ii)=+0.036 B0 gap=+0.006 texture(ii)=0.506 gate=False -> UNINFORMATIVE
+09:20:52 [fov224/pre/with_firefly] best sigma 0.01: AUROC(ii)=0.515 gap(M-ii)=+0.038 B0 gap=+0.006 texture(ii)=0.505 gate=False -> UNINFORMATIVE
+09:20:52 [fov224/pre/without_firefly] best sigma 0.01: AUROC(ii)=0.513 gap(M-ii)=+0.037 B0 gap=+0.006 texture(ii)=0.519 gate=False -> UNINFORMATIVE
+09:20:54 [fov224/pre/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.514 gap(M-ii)=+0.038 B0 gap=+0.006 texture(ii)=0.506 gate=False -> UNINFORMATIVE
+09:20:59 done in 2033s; outputs in /home/zera/project/Diffusion-Research/experiments/006-format-shortcut/official

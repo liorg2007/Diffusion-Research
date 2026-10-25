@@ -1,0 +1,614 @@
+start 2026-10-25 08:32
+08:32:57 device cuda, 2919 rows from splits.csv, cache /home/zera/project/Diffusion-Research/experiments/004-phase4-features/cache/feats
+08:32:59 condition min sizes on a 512px crop: {'clean': 512, 'jpeg75_resize05': 256, 'social_sim': 359, 'resize(0.5)': 256, 'jpeg(75)': 512, 'jpeg(90)': 512, 'mavali_medium': 384, 'screenshot_sim': 230, 'jr(60,0.5)': 256, 'jr(60,0.75)': 384, 'jr(60,1.0)': 512, 'jr(75,0.5)': 256, 'jr(75,0.75)': 384, 'jr(75,1.0)': 512, 'jr(90,0.5)': 256, 'jr(90,0.75)': 384, 'jr(90,1.0)': 512}
+08:33:01 design check: primary config == 003 b0 config (backbone, input_size, layers, use_cls, use_mean)
+08:33:01 self-check: primary-config forward vs secondary[:, -1536:] max|diff|=0.00e+00
+08:33:01 condition clean
+08:33:03   clean: 240/2919 new (0 cached)
+08:33:05   clean: 480/2919 new (0 cached)
+08:33:07   clean: 720/2919 new (0 cached)
+08:33:09   clean: 960/2919 new (0 cached)
+08:33:11   clean: 1200/2919 new (0 cached)
+08:33:12   clean: 1440/2919 new (0 cached)
+08:33:14   clean: 1680/2919 new (0 cached)
+08:33:16   clean: 1920/2919 new (0 cached)
+08:33:17   clean: 2160/2919 new (0 cached)
+08:33:19   clean: 2400/2919 new (0 cached)
+08:33:21   clean: 2640/2919 new (0 cached)
+08:33:22   clean: 2880/2919 new (0 cached)
+08:33:23   clean: 2919/2919 new (0 cached)
+08:33:46   D-008 clean: max|dF|=5.15e-04 scaled=3.52e-05 max|dlogit|=2.03e-05 -> ok
+08:33:46 condition jpeg75_resize05
+08:33:48   jpeg75_resize05: 240/2919 new (0 cached)
+08:33:50   jpeg75_resize05: 480/2919 new (0 cached)
+08:33:52   jpeg75_resize05: 720/2919 new (0 cached)
+08:33:53   jpeg75_resize05: 960/2919 new (0 cached)
+08:33:55   jpeg75_resize05: 1200/2919 new (0 cached)
+08:33:57   jpeg75_resize05: 1440/2919 new (0 cached)
+08:33:59   jpeg75_resize05: 1680/2919 new (0 cached)
+08:34:01   jpeg75_resize05: 1920/2919 new (0 cached)
+08:34:03   jpeg75_resize05: 2160/2919 new (0 cached)
+08:34:04   jpeg75_resize05: 2400/2919 new (0 cached)
+08:34:06   jpeg75_resize05: 2640/2919 new (0 cached)
+08:34:08   jpeg75_resize05: 2880/2919 new (0 cached)
+08:34:08   jpeg75_resize05: 2919/2919 new (0 cached)
+08:34:13   D-008 jpeg75_resize05: max|dF|=6.58e-05 scaled=1.38e-05 max|dlogit|=9.89e-06 -> ok
+08:34:13 condition social_sim
+08:34:16   social_sim: 240/2919 new (0 cached)
+08:34:18   social_sim: 480/2919 new (0 cached)
+08:34:20   social_sim: 720/2919 new (0 cached)
+08:34:22   social_sim: 960/2919 new (0 cached)
+08:34:24   social_sim: 1200/2919 new (0 cached)
+08:34:26   social_sim: 1440/2919 new (0 cached)
+08:34:28   social_sim: 1680/2919 new (0 cached)
+08:34:30   social_sim: 1920/2919 new (0 cached)
+08:34:32   social_sim: 2160/2919 new (0 cached)
+08:34:34   social_sim: 2400/2919 new (0 cached)
+08:34:36   social_sim: 2640/2919 new (0 cached)
+08:34:38   social_sim: 2880/2919 new (0 cached)
+08:34:38   social_sim: 2919/2919 new (0 cached)
+08:34:42   D-008 social_sim: max|dF|=1.24e-04 scaled=1.08e-05 max|dlogit|=1.01e-05 -> ok
+08:34:42 condition resize(0.5)
+08:34:44   resize(0.5): 240/2919 new (0 cached)
+08:34:47   resize(0.5): 480/2919 new (0 cached)
+08:34:49   resize(0.5): 720/2919 new (0 cached)
+08:34:51   resize(0.5): 960/2919 new (0 cached)
+08:34:52   resize(0.5): 1200/2919 new (0 cached)
+08:34:54   resize(0.5): 1440/2919 new (0 cached)
+08:34:56   resize(0.5): 1680/2919 new (0 cached)
+08:34:58   resize(0.5): 1920/2919 new (0 cached)
+08:35:00   resize(0.5): 2160/2919 new (0 cached)
+08:35:01   resize(0.5): 2400/2919 new (0 cached)
+08:35:03   resize(0.5): 2640/2919 new (0 cached)
+08:35:05   resize(0.5): 2880/2919 new (0 cached)
+08:35:05   resize(0.5): 2919/2919 new (0 cached)
+08:35:09   D-008 resize(0.5): max|dF|=7.44e-05 scaled=1.24e-05 max|dlogit|=1.18e-05 -> ok
+08:35:09 condition jpeg(75)
+08:35:11   jpeg(75): 240/2919 new (0 cached)
+08:35:13   jpeg(75): 480/2919 new (0 cached)
+08:35:15   jpeg(75): 720/2919 new (0 cached)
+08:35:17   jpeg(75): 960/2919 new (0 cached)
+08:35:20   jpeg(75): 1200/2919 new (0 cached)
+08:35:22   jpeg(75): 1440/2919 new (0 cached)
+08:35:24   jpeg(75): 1680/2919 new (0 cached)
+08:35:26   jpeg(75): 1920/2919 new (0 cached)
+08:35:27   jpeg(75): 2160/2919 new (0 cached)
+08:35:29   jpeg(75): 2400/2919 new (0 cached)
+08:35:31   jpeg(75): 2640/2919 new (0 cached)
+08:35:33   jpeg(75): 2880/2919 new (0 cached)
+08:35:33   jpeg(75): 2919/2919 new (0 cached)
+08:35:37   D-008 jpeg(75): max|dF|=6.39e-05 scaled=2.40e-05 max|dlogit|=1.03e-05 -> ok
+08:35:37 condition jpeg(90)
+08:35:39   jpeg(90): 240/2919 new (0 cached)
+08:35:41   jpeg(90): 480/2919 new (0 cached)
+08:35:43   jpeg(90): 720/2919 new (0 cached)
+08:35:45   jpeg(90): 960/2919 new (0 cached)
+08:35:47   jpeg(90): 1200/2919 new (0 cached)
+08:35:49   jpeg(90): 1440/2919 new (0 cached)
+08:35:52   jpeg(90): 1680/2919 new (0 cached)
+08:35:54   jpeg(90): 1920/2919 new (0 cached)
+08:35:56   jpeg(90): 2160/2919 new (0 cached)
+08:35:58   jpeg(90): 2400/2919 new (0 cached)
+08:35:59   jpeg(90): 2640/2919 new (0 cached)
+08:36:01   jpeg(90): 2880/2919 new (0 cached)
+08:36:02   jpeg(90): 2919/2919 new (0 cached)
+08:36:06   D-008 jpeg(90): max|dF|=7.53e-05 scaled=1.37e-05 max|dlogit|=1.04e-05 -> ok
+08:36:06 condition mavali_medium
+08:36:08   mavali_medium: 240/2919 new (0 cached)
+08:36:10   mavali_medium: 480/2919 new (0 cached)
+08:36:12   mavali_medium: 720/2919 new (0 cached)
+08:36:14   mavali_medium: 960/2919 new (0 cached)
+08:36:16   mavali_medium: 1200/2919 new (0 cached)
+08:36:18   mavali_medium: 1440/2919 new (0 cached)
+08:36:19   mavali_medium: 1680/2919 new (0 cached)
+08:36:21   mavali_medium: 1920/2919 new (0 cached)
+08:36:23   mavali_medium: 2160/2919 new (0 cached)
+08:36:26   mavali_medium: 2400/2919 new (0 cached)
+08:36:28   mavali_medium: 2640/2919 new (0 cached)
+08:36:30   mavali_medium: 2880/2919 new (0 cached)
+08:36:30   mavali_medium: 2919/2919 new (0 cached)
+08:36:34   D-008 mavali_medium: max|dF|=1.59e-04 scaled=1.20e-05 max|dlogit|=8.91e-06 -> ok
+08:36:34 condition screenshot_sim
+08:36:36   screenshot_sim: 240/2919 new (0 cached)
+08:36:38   screenshot_sim: 480/2919 new (0 cached)
+08:36:40   screenshot_sim: 720/2919 new (0 cached)
+08:36:42   screenshot_sim: 960/2919 new (0 cached)
+08:36:43   screenshot_sim: 1200/2919 new (0 cached)
+08:36:45   screenshot_sim: 1440/2919 new (0 cached)
+08:36:47   screenshot_sim: 1680/2919 new (0 cached)
+08:36:49   screenshot_sim: 1920/2919 new (0 cached)
+08:36:51   screenshot_sim: 2160/2919 new (0 cached)
+08:36:52   screenshot_sim: 2400/2919 new (0 cached)
+08:36:54   screenshot_sim: 2640/2919 new (0 cached)
+08:36:56   screenshot_sim: 2880/2919 new (0 cached)
+08:36:56   screenshot_sim: 2919/2919 new (0 cached)
+08:37:01   D-008 screenshot_sim: max|dF|=6.48e-05 scaled=9.61e-06 max|dlogit|=8.03e-06 -> ok
+08:37:01 condition jr(60,0.5)
+08:37:03   jr(60,0.5): 240/872 new (0 cached)
+08:37:05   jr(60,0.5): 480/872 new (0 cached)
+08:37:07   jr(60,0.5): 720/872 new (0 cached)
+08:37:08   jr(60,0.5): 872/872 new (0 cached)
+08:37:12   D-008 jr(60,0.5): max|dF|=1.09e-04 scaled=1.29e-05 max|dlogit|=1.43e-05 -> ok
+08:37:12 condition jr(60,0.75)
+08:37:14   jr(60,0.75): 240/872 new (0 cached)
+08:37:16   jr(60,0.75): 480/872 new (0 cached)
+08:37:18   jr(60,0.75): 720/872 new (0 cached)
+08:37:19   jr(60,0.75): 872/872 new (0 cached)
+08:37:23   D-008 jr(60,0.75): max|dF|=7.15e-05 scaled=1.14e-05 max|dlogit|=9.83e-06 -> ok
+08:37:23 condition jr(60,1.0)
+08:37:25   jr(60,1.0): 240/872 new (0 cached)
+08:37:27   jr(60,1.0): 480/872 new (0 cached)
+08:37:29   jr(60,1.0): 720/872 new (0 cached)
+08:37:31   jr(60,1.0): 872/872 new (0 cached)
+08:37:35   D-008 jr(60,1.0): max|dF|=6.48e-05 scaled=1.59e-05 max|dlogit|=1.26e-05 -> ok
+08:37:35 condition jr(75,0.5)
+08:37:37   jr(75,0.5): 240/872 new (0 cached)
+08:37:39   jr(75,0.5): 480/872 new (0 cached)
+08:37:41   jr(75,0.5): 720/872 new (0 cached)
+08:37:42   jr(75,0.5): 872/872 new (0 cached)
+08:37:46   D-008 jr(75,0.5): max|dF|=5.29e-05 scaled=1.83e-05 max|dlogit|=1.10e-05 -> ok
+08:37:46 condition jr(75,0.75)
+08:37:48   jr(75,0.75): 240/872 new (0 cached)
+08:37:50   jr(75,0.75): 480/872 new (0 cached)
+08:37:52   jr(75,0.75): 720/872 new (0 cached)
+08:37:53   jr(75,0.75): 872/872 new (0 cached)
+08:37:57   D-008 jr(75,0.75): max|dF|=7.92e-05 scaled=1.48e-05 max|dlogit|=1.49e-05 -> ok
+08:37:57 condition jr(75,1.0)
+08:37:59   jr(75,1.0): 240/872 new (0 cached)
+08:38:01   jr(75,1.0): 480/872 new (0 cached)
+08:38:03   jr(75,1.0): 720/872 new (0 cached)
+08:38:05   jr(75,1.0): 872/872 new (0 cached)
+08:38:09   D-008 jr(75,1.0): max|dF|=6.48e-05 scaled=1.14e-05 max|dlogit|=3.60e-05 -> ok
+08:38:09 condition jr(90,0.5)
+08:38:11   jr(90,0.5): 240/872 new (0 cached)
+08:38:13   jr(90,0.5): 480/872 new (0 cached)
+08:38:15   jr(90,0.5): 720/872 new (0 cached)
+08:38:16   jr(90,0.5): 872/872 new (0 cached)
+08:38:20   D-008 jr(90,0.5): max|dF|=1.74e-04 scaled=1.48e-05 max|dlogit|=8.85e-06 -> ok
+08:38:20 condition jr(90,0.75)
+08:38:22   jr(90,0.75): 240/872 new (0 cached)
+08:38:24   jr(90,0.75): 480/872 new (0 cached)
+08:38:26   jr(90,0.75): 720/872 new (0 cached)
+08:38:27   jr(90,0.75): 872/872 new (0 cached)
+08:38:31   D-008 jr(90,0.75): max|dF|=1.63e-04 scaled=1.67e-05 max|dlogit|=1.02e-05 -> ok
+08:38:31 condition jr(90,1.0)
+08:38:33   jr(90,1.0): 240/872 new (0 cached)
+08:38:35   jr(90,1.0): 480/872 new (0 cached)
+08:38:38   jr(90,1.0): 720/872 new (0 cached)
+08:38:39   jr(90,1.0): 872/872 new (0 cached)
+08:38:43   D-008 jr(90,1.0): max|dF|=7.30e-05 scaled=2.31e-05 max|dlogit|=1.52e-05 -> ok
+08:38:43 done in 341s
+SKIP verify003: /home/zera/project/Diffusion-Research/experiments/003-baselines-eval/cache/b0/hf-dinov2-facebook_dinov2-base_clean.npz not found (003 cache is git-ignored; produced by 003 run.py b0)
+08:38:44 device cuda, 2919 rows from splits.csv, cache /home/zera/project/Diffusion-Research/experiments/004-phase4-features/cache/feats
+08:38:46 design check: primary config == 003 b0 config (backbone, input_size, layers, use_cls, use_mean)
+08:38:47 self-check: primary-config forward vs secondary[:, -1536:] max|diff|=0.00e+00
+08:38:47 condition jm(85,95)
+08:38:49   jm(85,95): 240/435 new (0 cached)
+08:38:50   jm(85,95): 435/435 new (0 cached)
+08:39:12   D-008 jm(85,95): max|dF|=5.72e-05 scaled=2.24e-05 max|dlogit|=1.15e-05 -> ok
+08:39:12 done in 25s
+SKIP verify003: /home/zera/project/Diffusion-Research/experiments/003-baselines-eval/cache/b0/hf-dinov2-facebook_dinov2-base_clean.npz not found (003 cache is git-ignored; produced by 003 run.py b0)
+08:39:13 device cuda, 2919 rows from splits_fov512.csv, cache /home/zera/project/Diffusion-Research/experiments/004-phase4-features/cache/fov512
+08:39:15 condition min sizes on a 512px crop: {'clean': 512, 'jpeg75_resize05': 256, 'social_sim': 359, 'resize(0.5)': 256, 'jpeg(75)': 512, 'jpeg(90)': 512, 'mavali_medium': 384, 'screenshot_sim': 230, 'jr(60,0.5)': 256, 'jr(60,0.75)': 384, 'jr(60,1.0)': 512, 'jr(75,0.5)': 256, 'jr(75,0.75)': 384, 'jr(75,1.0)': 512, 'jr(90,0.5)': 256, 'jr(90,0.75)': 384, 'jr(90,1.0)': 512}
+08:39:18 design check: primary config == 003 b0 config (backbone, input_size, layers, use_cls, use_mean)
+08:39:18 self-check: primary-config forward vs secondary[:, -1536:] max|diff|=0.00e+00
+08:39:18 condition clean
+08:39:20   clean: 240/2919 new (0 cached)
+08:39:22   clean: 480/2919 new (0 cached)
+08:39:24   clean: 720/2919 new (0 cached)
+08:39:25   clean: 960/2919 new (0 cached)
+08:39:27   clean: 1200/2919 new (0 cached)
+08:39:29   clean: 1440/2919 new (0 cached)
+08:39:30   clean: 1680/2919 new (0 cached)
+08:39:32   clean: 1920/2919 new (0 cached)
+08:39:34   clean: 2160/2919 new (0 cached)
+08:39:36   clean: 2400/2919 new (0 cached)
+08:39:37   clean: 2640/2919 new (0 cached)
+08:39:39   clean: 2880/2919 new (0 cached)
+08:39:39   clean: 2919/2919 new (0 cached)
+08:40:05   D-008 clean: max|dF|=6.87e-05 scaled=1.04e-05 max|dlogit|=1.11e-05 -> ok
+08:40:05 condition jpeg75_resize05
+08:40:07   jpeg75_resize05: 240/2919 new (0 cached)
+08:40:09   jpeg75_resize05: 480/2919 new (0 cached)
+08:40:11   jpeg75_resize05: 720/2919 new (0 cached)
+08:40:13   jpeg75_resize05: 960/2919 new (0 cached)
+08:40:15   jpeg75_resize05: 1200/2919 new (0 cached)
+08:40:17   jpeg75_resize05: 1440/2919 new (0 cached)
+08:40:19   jpeg75_resize05: 1680/2919 new (0 cached)
+08:40:21   jpeg75_resize05: 1920/2919 new (0 cached)
+08:40:23   jpeg75_resize05: 2160/2919 new (0 cached)
+08:40:25   jpeg75_resize05: 2400/2919 new (0 cached)
+08:40:27   jpeg75_resize05: 2640/2919 new (0 cached)
+08:40:29   jpeg75_resize05: 2880/2919 new (0 cached)
+08:40:29   jpeg75_resize05: 2919/2919 new (0 cached)
+08:40:33   D-008 jpeg75_resize05: max|dF|=8.96e-05 scaled=1.65e-05 max|dlogit|=8.71e-06 -> ok
+08:40:33 condition social_sim
+08:40:35   social_sim: 240/2919 new (0 cached)
+08:40:37   social_sim: 480/2919 new (0 cached)
+08:40:39   social_sim: 720/2919 new (0 cached)
+08:40:41   social_sim: 960/2919 new (0 cached)
+08:40:43   social_sim: 1200/2919 new (0 cached)
+08:40:45   social_sim: 1440/2919 new (0 cached)
+08:40:47   social_sim: 1680/2919 new (0 cached)
+08:40:50   social_sim: 1920/2919 new (0 cached)
+08:40:52   social_sim: 2160/2919 new (0 cached)
+08:40:54   social_sim: 2400/2919 new (0 cached)
+08:40:57   social_sim: 2640/2919 new (0 cached)
+08:40:59   social_sim: 2880/2919 new (0 cached)
+08:40:59   social_sim: 2919/2919 new (0 cached)
+08:41:03   D-008 social_sim: max|dF|=1.62e-04 scaled=2.31e-05 max|dlogit|=1.02e-05 -> ok
+08:41:03 condition resize(0.5)
+08:41:05   resize(0.5): 240/2919 new (0 cached)
+08:41:07   resize(0.5): 480/2919 new (0 cached)
+08:41:08   resize(0.5): 720/2919 new (0 cached)
+08:41:10   resize(0.5): 960/2919 new (0 cached)
+08:41:12   resize(0.5): 1200/2919 new (0 cached)
+08:41:14   resize(0.5): 1440/2919 new (0 cached)
+08:41:16   resize(0.5): 1680/2919 new (0 cached)
+08:41:18   resize(0.5): 1920/2919 new (0 cached)
+08:41:20   resize(0.5): 2160/2919 new (0 cached)
+08:41:22   resize(0.5): 2400/2919 new (0 cached)
+08:41:24   resize(0.5): 2640/2919 new (0 cached)
+08:41:26   resize(0.5): 2880/2919 new (0 cached)
+08:41:26   resize(0.5): 2919/2919 new (0 cached)
+08:41:30   D-008 resize(0.5): max|dF|=6.20e-05 scaled=1.13e-05 max|dlogit|=1.06e-05 -> ok
+08:41:30 condition jpeg(75)
+08:41:32   jpeg(75): 240/2919 new (0 cached)
+08:41:34   jpeg(75): 480/2919 new (0 cached)
+08:41:36   jpeg(75): 720/2919 new (0 cached)
+08:41:38   jpeg(75): 960/2919 new (0 cached)
+08:41:40   jpeg(75): 1200/2919 new (0 cached)
+08:41:42   jpeg(75): 1440/2919 new (0 cached)
+08:41:44   jpeg(75): 1680/2919 new (0 cached)
+08:41:46   jpeg(75): 1920/2919 new (0 cached)
+08:41:48   jpeg(75): 2160/2919 new (0 cached)
+08:41:50   jpeg(75): 2400/2919 new (0 cached)
+08:41:52   jpeg(75): 2640/2919 new (0 cached)
+08:41:53   jpeg(75): 2880/2919 new (0 cached)
+08:41:54   jpeg(75): 2919/2919 new (0 cached)
+08:41:58   D-008 jpeg(75): max|dF|=5.53e-05 scaled=1.39e-05 max|dlogit|=1.00e-05 -> ok
+08:41:58 condition jpeg(90)
+08:42:01   jpeg(90): 240/2919 new (0 cached)
+08:42:03   jpeg(90): 480/2919 new (0 cached)
+08:42:05   jpeg(90): 720/2919 new (0 cached)
+08:42:07   jpeg(90): 960/2919 new (0 cached)
+08:42:09   jpeg(90): 1200/2919 new (0 cached)
+08:42:10   jpeg(90): 1440/2919 new (0 cached)
+08:42:12   jpeg(90): 1680/2919 new (0 cached)
+08:42:14   jpeg(90): 1920/2919 new (0 cached)
+08:42:16   jpeg(90): 2160/2919 new (0 cached)
+08:42:18   jpeg(90): 2400/2919 new (0 cached)
+08:42:20   jpeg(90): 2640/2919 new (0 cached)
+08:42:22   jpeg(90): 2880/2919 new (0 cached)
+08:42:22   jpeg(90): 2919/2919 new (0 cached)
+08:42:26   D-008 jpeg(90): max|dF|=5.44e-05 scaled=9.90e-06 max|dlogit|=1.13e-05 -> ok
+08:42:26 condition mavali_medium
+08:42:30   mavali_medium: 240/2919 new (0 cached)
+08:42:32   mavali_medium: 480/2919 new (0 cached)
+08:42:33   mavali_medium: 720/2919 new (0 cached)
+08:42:35   mavali_medium: 960/2919 new (0 cached)
+08:42:37   mavali_medium: 1200/2919 new (0 cached)
+08:42:39   mavali_medium: 1440/2919 new (0 cached)
+08:42:41   mavali_medium: 1680/2919 new (0 cached)
+08:42:43   mavali_medium: 1920/2919 new (0 cached)
+08:42:45   mavali_medium: 2160/2919 new (0 cached)
+08:42:47   mavali_medium: 2400/2919 new (0 cached)
+08:42:49   mavali_medium: 2640/2919 new (0 cached)
+08:42:51   mavali_medium: 2880/2919 new (0 cached)
+08:42:51   mavali_medium: 2919/2919 new (0 cached)
+08:42:55   D-008 mavali_medium: max|dF|=6.58e-05 scaled=1.11e-05 max|dlogit|=1.05e-05 -> ok
+08:42:55 condition screenshot_sim
+08:42:57   screenshot_sim: 240/2919 new (0 cached)
+08:42:59   screenshot_sim: 480/2919 new (0 cached)
+08:43:02   screenshot_sim: 720/2919 new (0 cached)
+08:43:04   screenshot_sim: 960/2919 new (0 cached)
+08:43:06   screenshot_sim: 1200/2919 new (0 cached)
+08:43:08   screenshot_sim: 1440/2919 new (0 cached)
+08:43:09   screenshot_sim: 1680/2919 new (0 cached)
+08:43:11   screenshot_sim: 1920/2919 new (0 cached)
+08:43:13   screenshot_sim: 2160/2919 new (0 cached)
+08:43:15   screenshot_sim: 2400/2919 new (0 cached)
+08:43:17   screenshot_sim: 2640/2919 new (0 cached)
+08:43:19   screenshot_sim: 2880/2919 new (0 cached)
+08:43:19   screenshot_sim: 2919/2919 new (0 cached)
+08:43:23   D-008 screenshot_sim: max|dF|=1.77e-04 scaled=3.72e-05 max|dlogit|=1.76e-05 -> ok
+08:43:23 condition jr(60,0.5)
+08:43:25   jr(60,0.5): 240/872 new (0 cached)
+08:43:27   jr(60,0.5): 480/872 new (0 cached)
+08:43:29   jr(60,0.5): 720/872 new (0 cached)
+08:43:30   jr(60,0.5): 872/872 new (0 cached)
+08:43:35   D-008 jr(60,0.5): max|dF|=7.78e-05 scaled=9.63e-06 max|dlogit|=1.10e-05 -> ok
+08:43:35 condition jr(60,0.75)
+08:43:37   jr(60,0.75): 240/872 new (0 cached)
+08:43:39   jr(60,0.75): 480/872 new (0 cached)
+08:43:41   jr(60,0.75): 720/872 new (0 cached)
+08:43:42   jr(60,0.75): 872/872 new (0 cached)
+08:43:46   D-008 jr(60,0.75): max|dF|=7.44e-05 scaled=8.04e-06 max|dlogit|=1.18e-05 -> ok
+08:43:46 condition jr(60,1.0)
+08:43:48   jr(60,1.0): 240/872 new (0 cached)
+08:43:50   jr(60,1.0): 480/872 new (0 cached)
+08:43:52   jr(60,1.0): 720/872 new (0 cached)
+08:43:53   jr(60,1.0): 872/872 new (0 cached)
+08:43:57   D-008 jr(60,1.0): max|dF|=1.43e-04 scaled=1.40e-05 max|dlogit|=1.06e-05 -> ok
+08:43:57 condition jr(75,0.5)
+08:43:59   jr(75,0.5): 240/872 new (0 cached)
+08:44:01   jr(75,0.5): 480/872 new (0 cached)
+08:44:03   jr(75,0.5): 720/872 new (0 cached)
+08:44:04   jr(75,0.5): 872/872 new (0 cached)
+08:44:09   D-008 jr(75,0.5): max|dF|=6.58e-05 scaled=9.06e-06 max|dlogit|=1.29e-05 -> ok
+08:44:09 condition jr(75,0.75)
+08:44:11   jr(75,0.75): 240/872 new (0 cached)
+08:44:13   jr(75,0.75): 480/872 new (0 cached)
+08:44:15   jr(75,0.75): 720/872 new (0 cached)
+08:44:16   jr(75,0.75): 872/872 new (0 cached)
+08:44:20   D-008 jr(75,0.75): max|dF|=9.42e-05 scaled=9.62e-06 max|dlogit|=1.01e-05 -> ok
+08:44:20 condition jr(75,1.0)
+08:44:22   jr(75,1.0): 240/872 new (0 cached)
+08:44:24   jr(75,1.0): 480/872 new (0 cached)
+08:44:26   jr(75,1.0): 720/872 new (0 cached)
+08:44:27   jr(75,1.0): 872/872 new (0 cached)
+08:44:31   D-008 jr(75,1.0): max|dF|=1.58e-04 scaled=1.55e-05 max|dlogit|=8.36e-06 -> ok
+08:44:31 condition jr(90,0.5)
+08:44:33   jr(90,0.5): 240/872 new (0 cached)
+08:44:35   jr(90,0.5): 480/872 new (0 cached)
+08:44:37   jr(90,0.5): 720/872 new (0 cached)
+08:44:38   jr(90,0.5): 872/872 new (0 cached)
+08:44:43   D-008 jr(90,0.5): max|dF|=7.65e-05 scaled=1.06e-05 max|dlogit|=1.10e-05 -> ok
+08:44:43 condition jr(90,0.75)
+08:44:45   jr(90,0.75): 240/872 new (0 cached)
+08:44:47   jr(90,0.75): 480/872 new (0 cached)
+08:44:49   jr(90,0.75): 720/872 new (0 cached)
+08:44:51   jr(90,0.75): 872/872 new (0 cached)
+08:44:54   D-008 jr(90,0.75): max|dF|=7.01e-05 scaled=9.72e-06 max|dlogit|=1.32e-05 -> ok
+08:44:54 condition jr(90,1.0)
+08:44:57   jr(90,1.0): 240/872 new (0 cached)
+08:44:59   jr(90,1.0): 480/872 new (0 cached)
+08:45:01   jr(90,1.0): 720/872 new (0 cached)
+08:45:02   jr(90,1.0): 872/872 new (0 cached)
+08:45:06   D-008 jr(90,1.0): max|dF|=5.44e-05 scaled=1.06e-05 max|dlogit|=7.96e-06 -> ok
+08:45:06 done in 348s
+SKIP verify003: /home/zera/project/Diffusion-Research/experiments/003-baselines-eval/cache/b0/hf-dinov2-facebook_dinov2-base_clean.npz not found (003 cache is git-ignored; produced by 003 run.py b0)
+08:45:08 device cuda, 2919 rows from splits_fov512.csv, cache /home/zera/project/Diffusion-Research/experiments/004-phase4-features/cache/fov512
+08:45:10 design check: primary config == 003 b0 config (backbone, input_size, layers, use_cls, use_mean)
+08:45:10 self-check: primary-config forward vs secondary[:, -1536:] max|diff|=0.00e+00
+08:45:10 condition jm(85,95)
+08:45:12   jm(85,95): 240/435 new (0 cached)
+08:45:14   jm(85,95): 435/435 new (0 cached)
+08:45:35   D-008 jm(85,95): max|dF|=7.01e-05 scaled=1.16e-05 max|dlogit|=1.28e-05 -> ok
+08:45:35 done in 25s
+SKIP verify003: /home/zera/project/Diffusion-Research/experiments/003-baselines-eval/cache/b0/hf-dinov2-facebook_dinov2-base_clean.npz not found (003 cache is git-ignored; produced by 003 run.py b0)
+08:45:37 device cuda, 2919 rows from splits_fov224.csv, cache /home/zera/project/Diffusion-Research/experiments/004-phase4-features/cache/fov224
+08:45:39 design check: primary config == 003 b0 config (backbone, input_size, layers, use_cls, use_mean)
+08:45:40 self-check: primary-config forward vs secondary[:, -1536:] max|diff|=0.00e+00
+08:45:40 condition clean
+08:45:41   clean: 240/2919 new (0 cached)
+08:45:43   clean: 480/2919 new (0 cached)
+08:45:44   clean: 720/2919 new (0 cached)
+08:45:46   clean: 960/2919 new (0 cached)
+08:45:48   clean: 1200/2919 new (0 cached)
+08:45:49   clean: 1440/2919 new (0 cached)
+08:45:51   clean: 1680/2919 new (0 cached)
+08:45:52   clean: 1920/2919 new (0 cached)
+08:45:53   clean: 2160/2919 new (0 cached)
+08:45:55   clean: 2400/2919 new (0 cached)
+08:45:56   clean: 2640/2919 new (0 cached)
+08:45:58   clean: 2880/2919 new (0 cached)
+08:45:58   clean: 2919/2919 new (0 cached)
+08:46:21   D-008 clean: max|dF|=6.10e-05 scaled=1.28e-05 max|dlogit|=2.80e-05 -> ok
+08:46:21 condition jpeg(90)
+08:46:23   jpeg(90): 240/2919 new (0 cached)
+08:46:25   jpeg(90): 480/2919 new (0 cached)
+08:46:26   jpeg(90): 720/2919 new (0 cached)
+08:46:27   jpeg(90): 960/2919 new (0 cached)
+08:46:29   jpeg(90): 1200/2919 new (0 cached)
+08:46:30   jpeg(90): 1440/2919 new (0 cached)
+08:46:32   jpeg(90): 1680/2919 new (0 cached)
+08:46:33   jpeg(90): 1920/2919 new (0 cached)
+08:46:35   jpeg(90): 2160/2919 new (0 cached)
+08:46:36   jpeg(90): 2400/2919 new (0 cached)
+08:46:38   jpeg(90): 2640/2919 new (0 cached)
+08:46:39   jpeg(90): 2880/2919 new (0 cached)
+08:46:39   jpeg(90): 2919/2919 new (0 cached)
+08:46:43   D-008 jpeg(90): max|dF|=5.91e-05 scaled=1.31e-05 max|dlogit|=2.68e-05 -> ok
+08:46:43 condition jm(85,95)
+08:46:45   jm(85,95): 240/435 new (0 cached)
+08:46:46   jm(85,95): 435/435 new (0 cached)
+08:46:48   D-008 jm(85,95): max|dF|=9.68e-05 scaled=1.10e-05 max|dlogit|=3.82e-05 -> ok
+08:46:48 done in 68s
+SKIP verify003: /home/zera/project/Diffusion-Research/experiments/003-baselines-eval/cache/b0/hf-dinov2-facebook_dinov2-base_clean.npz not found (003 cache is git-ignored; produced by 003 run.py b0)
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:2071: FutureWarning: The default value for l1_ratios will change from None to (0.0,) in version 1.10. From version 1.10 onwards, only array-like with values in [0, 1] will be allowed, None will be forbidden. To avoid this warning, explicitly set a value, e.g. l1_ratios=(0,).
+  warnings.warn(
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:2129: FutureWarning: The fitted attributes of LogisticRegressionCV will be simplified in scikit-learn 1.10 to remove redundancy. Set`use_legacy_attributes=False` to enable the new behavior now, or set it to `True` to silence this warning during the transition period while keeping the deprecated behavior for the time being. The default value of use_legacy_attributes will change from True to False in scikit-learn 1.10. See the docstring of LogisticRegressionCV for more details.
+  warnings.warn(
+PASS test_amendment3_lib::test_bootstrap_weights_structure_and_seed (0.0s)
+PASS test_amendment3_lib::test_fit_probe_class_weight_changes_the_threshold_not_default (0.2s)
+PASS test_amendment3_lib::test_fit_probe_default_identical_to_original_recipe (0.1s)
+PASS test_amendment3_lib::test_fit_probe_groups_keep_copies_in_one_fold (0.1s)
+PASS test_amendment3_lib::test_fit_probe_groups_validation_and_few_groups (0.0s)
+PASS test_amendment3_lib::test_fov_mode_exif_orientation_and_square_and_equal_size (0.2s)
+PASS test_amendment3_lib::test_fov_mode_never_upscales_and_default_mode_unchanged (0.1s)
+PASS test_amendment3_lib::test_fov_mode_resizes_short_side_then_center_crops (0.1s)
+PASS test_amendment3_lib::test_grouped_bootstrap_ci_is_wider_than_iid_when_clusters_correlate (0.0s)
+PASS test_amendment3_lib::test_grouped_bootstrap_diff_is_paired_and_seeded (0.0s)
+PASS test_amendment3_lib::test_phase4_conditions_leave_224_px_on_512_crops (1.0s)
+PASS test_amendment3_lib::test_preprocess_manifest_fov_and_rewrite_paths (0.9s)
+PASS test_amendment3_lib::test_weighted_auroc_matches_sklearn_with_ties_and_unit_weights (0.0s)
+PASS test_data_pipeline::test_group_split_no_camera_overlap_and_holdout (0.0s)
+PASS test_data_pipeline::test_jpeg_quality_estimate (0.0s)
+PASS test_data_pipeline::test_manifest_roundtrip_and_validation (0.0s)
+PASS test_data_pipeline::test_perturb_deterministic_and_correct (0.0s)
+PASS test_data_pipeline::test_preprocess_strips_exif_crops_skips_and_sidecar (0.0s)
+PASS test_data_pipeline::test_social_sim_seeded_per_image (0.0s)
+PASS test_data_pipeline::test_split_checks_catch_leaks (0.0s)
+PASS test_data_pipeline::test_split_deterministic_and_seed_sensitive (0.0s)
+PASS test_du2::test_du2_downs_up_then_plain_center_crop (0.2s)
+PASS test_du2::test_du2_short_side_512_is_identical_to_crop_and_small_is_skipped (0.1s)
+[features] cache config mismatch for /tmp/libtest_s0sz_9sn/cache/tiny-clip_clean.npz; recomputing
+PASS test_features::test_cache_roundtrip_clip (1.4s)
+PASS test_features::test_crop_not_resize_and_small_image_error (0.0s)
+PASS test_features::test_default_device_smoke (0.6s)
+PASS test_features::test_dinov3_registers_and_layers (0.0s)
+PASS test_features::test_tv_and_timm_adapters (0.3s)
+PASS test_h1_run::test_build_deltas_default_unchanged_and_real_train_indices (0.0s)
+PASS test_h1_run::test_cli_flags_set_modes_and_defaults_stay_off (0.0s)
+PASS test_h1_run::test_group_plan_and_pool_tables_and_cluster_arrays (0.1s)
+PASS test_h2v2::test_brand_grouping_rule (0.0s)
+PASS test_h2v2::test_conformal_threshold_index_and_clipping (0.0s)
+A0 {'platform_brand': 'NOT_SUPPORTED', 'platform': 'NOT_SUPPORTED'}
+PASS test_h2v2::test_h2v2_end_to_end_synthetic_and_invariants (0.2s)
+PASS test_h2v2::test_h2v2_held_out_device_never_in_its_own_calibration (0.0s)
+PASS test_h2v2::test_h2v2_matched_diff_interpolates_and_flags_clamping (0.0s)
+PASS test_h4::test_fakeset_generator_stream_independent_of_other_generators (0.0s)
+PASS test_h4::test_jm_condition_seeded_fraction_and_rows_mask (0.0s)
+PASS test_h4::test_laplacian_texture_flat_smooth_noisy_and_channel_mean (0.0s)
+PASS test_h4::test_mean_change_and_vc_dc (0.0s)
+PASS test_h4::test_plans_macro_matches_metrics_and_is_paired (0.0s)
+PASS test_h4::test_realset_named_pools_get_independent_streams (0.0s)
+PASS test_h4::test_residualize_removes_log_texture_trend_and_uses_fit_rows_only (0.0s)
+PASS test_h4::test_texture_direction_set_on_calibration_only (0.0s)
+PASS test_h4::test_validity_gate_and_official_label_branches (0.0s)
+PASS test_metrics::test_bootstrap_seeded_and_sane (0.6s)
+PASS test_metrics::test_calibrated_threshold (0.0s)
+PASS test_metrics::test_fpr_at_95_tpr_and_tpr_at_1fpr (0.0s)
+PASS test_metrics::test_hand_computed_basic (0.0s)
+PASS test_metrics::test_per_generator_uses_all_test_reals (0.0s)
+PASS test_metrics::test_perfect_and_inverted (0.0s)
+PASS test_metrics::test_single_class_and_tiny (0.0s)
+PASS test_metrics::test_ties (0.0s)
+PASS test_perturb_phase4::test_existing_conditions_unchanged (0.0s)
+PASS test_perturb_phase4::test_jr_grid (0.0s)
+PASS test_perturb_phase4::test_mavali_medium (0.0s)
+PASS test_perturb_phase4::test_screenshot_sim_seeded_sizes_and_fit (0.1s)
+PASS test_probe_and_eval::test_fit_probe_separable (0.1s)
+PASS test_probe_and_eval::test_format_bias_detects_leakage_and_clean_control (0.5s)
+PASS test_probe_and_eval::test_logo_never_trains_on_heldout_or_test_rows (0.3s)
+PASS test_probe_and_eval::test_run_eval_backbone_probe_logo_and_cli (5.2s)
+[clean] AUROC=1.0000  format-bias AUROC=1.0000
+[jpeg75_resize05] AUROC=1.0000  format-bias AUROC=1.0000
+[social_sim] AUROC=1.0000  format-bias AUROC=1.0000
+[clean] AUROC=1.0000  format-bias AUROC=1.0000
+[jpeg75_resize05] AUROC=1.0000  format-bias AUROC=1.0000
+[social_sim] AUROC=1.0000  format-bias AUROC=1.0000
+PASS test_probe_and_eval::test_run_eval_scorer_end_to_end (1.4s)
+
+62 passed, 0 failed
+08:47:06 H4 OFFICIAL profile=official out=/home/zera/project/Diffusion-Research/experiments/006-format-shortcut/official n_boot=2000 raise pool=raise
+08:47:06 arms ['orig', 'fov512', 'fov224']; rows active 2919/2919
+08:47:23 D-008 orig/clean: post: scaled 1.7e-05 dscore 1.6e-06, pre: scaled 1.3e-05 dscore 1.5e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:47:39 D-008 orig/jpeg(90): post: scaled 1.6e-05 dscore 1.9e-06, pre: scaled 1.4e-05 dscore 1.9e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:47:55 D-008 orig/jpeg75_resize05: post: scaled 1.6e-05 dscore 2.1e-06, pre: scaled 1.3e-05 dscore 1.5e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:48:10 D-008 fov512/clean: post: scaled 1.8e-05 dscore 1.3e-06, pre: scaled 1.9e-05 dscore 1.1e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:48:25 D-008 fov512/jpeg(90): post: scaled 1.2e-05 dscore 9.7e-07, pre: scaled 1.1e-05 dscore 9.0e-07 | pipeline vs 004 cache scaled 0.0e+00
+08:48:41 D-008 fov512/jpeg75_resize05: post: scaled 1.7e-05 dscore 2.1e-06, pre: scaled 1.9e-05 dscore 1.8e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:48:56 D-008 fov224/clean: post: scaled 1.2e-05 dscore 8.0e-07, pre: scaled 1.3e-05 dscore 7.4e-07 | pipeline vs 004 cache scaled 0.0e+00
+08:49:12 D-008 fov224/jpeg(90): post: scaled 1.7e-05 dscore 1.2e-06, pre: scaled 1.5e-05 dscore 1.0e-06 | pipeline vs 004 cache scaled 0.0e+00
+08:49:12   orig/clean: scoring 1961 images x 3 sigmas x 4 draws
+08:49:15     clean: 32/1961
+08:49:27     clean: 192/1961
+08:49:40     clean: 352/1961
+08:49:51     clean: 512/1961
+08:50:04     clean: 672/1961
+08:50:17     clean: 832/1961
+08:50:29     clean: 992/1961
+08:50:42     clean: 1152/1961
+08:50:55     clean: 1312/1961
+08:51:07     clean: 1472/1961
+08:51:20     clean: 1632/1961
+08:51:32     clean: 1792/1961
+08:51:44     clean: 1952/1961
+08:51:45   orig/jpeg(90): scoring 1245 images x 3 sigmas x 4 draws
+08:51:48     jpeg(90): 32/1245
+08:52:01     jpeg(90): 192/1245
+08:52:13     jpeg(90): 352/1245
+08:52:26     jpeg(90): 512/1245
+08:52:39     jpeg(90): 672/1245
+08:52:51     jpeg(90): 832/1245
+08:53:04     jpeg(90): 992/1245
+08:53:17     jpeg(90): 1152/1245
+08:53:24   orig/jpeg75_resize05: scoring 1245 images x 3 sigmas x 4 draws
+08:53:27     jpeg75_resize05: 32/1245
+08:53:39     jpeg75_resize05: 192/1245
+08:53:52     jpeg75_resize05: 352/1245
+08:54:05     jpeg75_resize05: 512/1245
+08:54:17     jpeg75_resize05: 672/1245
+08:54:30     jpeg75_resize05: 832/1245
+08:54:43     jpeg75_resize05: 992/1245
+08:54:55     jpeg75_resize05: 1152/1245
+08:55:04   fov512/clean: scoring 1961 images x 3 sigmas x 4 draws
+08:55:06     clean: 32/1961
+08:55:19     clean: 192/1961
+08:55:31     clean: 352/1961
+08:55:44     clean: 512/1961
+08:55:56     clean: 672/1961
+08:56:09     clean: 832/1961
+08:56:21     clean: 992/1961
+08:56:34     clean: 1152/1961
+08:56:47     clean: 1312/1961
+08:56:59     clean: 1472/1961
+08:57:11     clean: 1632/1961
+08:57:24     clean: 1792/1961
+08:57:37     clean: 1952/1961
+08:57:37   fov512/jpeg(90): scoring 1245 images x 3 sigmas x 4 draws
+08:57:40     jpeg(90): 32/1245
+08:57:53     jpeg(90): 192/1245
+08:58:05     jpeg(90): 352/1245
+08:58:18     jpeg(90): 512/1245
+08:58:31     jpeg(90): 672/1245
+08:58:43     jpeg(90): 832/1245
+08:58:57     jpeg(90): 992/1245
+08:59:09     jpeg(90): 1152/1245
+08:59:16   fov512/jpeg75_resize05: scoring 1245 images x 3 sigmas x 4 draws
+08:59:19     jpeg75_resize05: 32/1245
+08:59:32     jpeg75_resize05: 192/1245
+08:59:44     jpeg75_resize05: 352/1245
+08:59:57     jpeg75_resize05: 512/1245
+09:00:10     jpeg75_resize05: 672/1245
+09:00:22     jpeg75_resize05: 832/1245
+09:00:36     jpeg75_resize05: 992/1245
+09:00:48     jpeg75_resize05: 1152/1245
+09:00:56   fov224/clean: scoring 1961 images x 3 sigmas x 4 draws
+09:00:58     clean: 32/1961
+09:01:11     clean: 192/1961
+09:01:23     clean: 352/1961
+09:01:35     clean: 512/1961
+09:01:48     clean: 672/1961
+09:02:00     clean: 832/1961
+09:02:13     clean: 992/1961
+09:02:25     clean: 1152/1961
+09:02:37     clean: 1312/1961
+09:02:50     clean: 1472/1961
+09:03:02     clean: 1632/1961
+09:03:14     clean: 1792/1961
+09:03:27     clean: 1952/1961
+09:03:28   fov224/jpeg(90): scoring 1245 images x 3 sigmas x 4 draws
+09:03:30     jpeg(90): 32/1245
+09:03:42     jpeg(90): 192/1245
+09:03:55     jpeg(90): 352/1245
+09:04:07     jpeg(90): 512/1245
+09:04:19     jpeg(90): 672/1245
+09:04:32     jpeg(90): 832/1245
+09:04:44     jpeg(90): 992/1245
+09:04:57     jpeg(90): 1152/1245
+09:10:06 B0[orig]: models ['dalle2', 'dalle3', 'firefly', 'full', 'midjourney-v5', 'sd3_large', 'stable-diffusion-2', 'stable-diffusion-xl'], conditions ['clean', 'jpeg(90)', 'jpeg75_resize05']
+09:15:21 B0[fov512]: models ['dalle2', 'dalle3', 'firefly', 'full', 'midjourney-v5', 'sd3_large', 'stable-diffusion-2', 'stable-diffusion-xl'], conditions ['clean', 'jpeg(90)', 'jpeg75_resize05']
+09:20:33 B0[fov224]: models ['dalle2', 'dalle3', 'firefly', 'full', 'midjourney-v5', 'sd3_large', 'stable-diffusion-2', 'stable-diffusion-xl'], conditions ['clean', 'jpeg(90)']
+09:20:37 [orig/post/with_firefly] best sigma 0.02: AUROC(ii)=0.619 gap(M-ii)=-0.042 B0 gap=-0.020 texture(ii)=0.538 gate=True -> REFUTED
+09:20:37 [orig/post/without_firefly] best sigma 0.02: AUROC(ii)=0.578 gap(M-ii)=-0.045 B0 gap=-0.020 texture(ii)=0.580 gate=False -> UNINFORMATIVE
+09:20:39 [orig/post/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.587 gap(M-ii)=-0.055 B0 gap=-0.021 texture(ii)=0.558 gate=True -> REFUTED
+09:20:40 [orig/pre/with_firefly] best sigma 0.02: AUROC(ii)=0.612 gap(M-ii)=-0.035 B0 gap=-0.020 texture(ii)=0.538 gate=True -> REFUTED
+09:20:41 [orig/pre/without_firefly] best sigma 0.01: AUROC(ii)=0.571 gap(M-ii)=-0.053 B0 gap=-0.020 texture(ii)=0.580 gate=False -> UNINFORMATIVE
+09:20:41 [orig/pre/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.582 gap(M-ii)=-0.049 B0 gap=-0.021 texture(ii)=0.558 gate=True -> REFUTED
+09:20:43 [fov512/post/with_firefly] best sigma 0.02: AUROC(ii)=0.590 gap(M-ii)=-0.012 B0 gap=-0.007 texture(ii)=0.501 gate=True -> REFUTED
+09:20:44 [fov512/post/without_firefly] best sigma 0.02: AUROC(ii)=0.567 gap(M-ii)=-0.011 B0 gap=-0.008 texture(ii)=0.524 gate=True -> REFUTED
+09:20:45 [fov512/post/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.570 gap(M-ii)=-0.029 B0 gap=-0.007 texture(ii)=0.514 gate=True -> REFUTED
+09:20:46 [fov512/pre/with_firefly] best sigma 0.02: AUROC(ii)=0.591 gap(M-ii)=-0.008 B0 gap=-0.007 texture(ii)=0.501 gate=True -> REFUTED
+09:20:47 [fov512/pre/without_firefly] best sigma 0.02: AUROC(ii)=0.567 gap(M-ii)=-0.007 B0 gap=-0.008 texture(ii)=0.524 gate=True -> REFUTED
+09:20:48 [fov512/pre/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.572 gap(M-ii)=-0.027 B0 gap=-0.007 texture(ii)=0.514 gate=True -> REFUTED
+09:20:49 [fov224/post/with_firefly] best sigma 0.01: AUROC(ii)=0.516 gap(M-ii)=+0.037 B0 gap=+0.006 texture(ii)=0.505 gate=False -> UNINFORMATIVE
+09:20:50 [fov224/post/without_firefly] best sigma 0.01: AUROC(ii)=0.514 gap(M-ii)=+0.035 B0 gap=+0.006 texture(ii)=0.519 gate=False -> UNINFORMATIVE
+09:20:51 [fov224/post/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.515 gap(M-ii)=+0.036 B0 gap=+0.006 texture(ii)=0.506 gate=False -> UNINFORMATIVE
+09:20:52 [fov224/pre/with_firefly] best sigma 0.01: AUROC(ii)=0.515 gap(M-ii)=+0.038 B0 gap=+0.006 texture(ii)=0.505 gate=False -> UNINFORMATIVE
+09:20:52 [fov224/pre/without_firefly] best sigma 0.01: AUROC(ii)=0.513 gap(M-ii)=+0.037 B0 gap=+0.006 texture(ii)=0.519 gate=False -> UNINFORMATIVE
+09:20:54 [fov224/pre/with_firefly_plus_flux] best sigma 0.01: AUROC(ii)=0.514 gap(M-ii)=+0.038 B0 gap=+0.006 texture(ii)=0.506 gate=False -> UNINFORMATIVE
+09:20:59 done in 2033s; outputs in /home/zera/project/Diffusion-Research/experiments/006-format-shortcut/official
+done 2026-10-25 09:21
