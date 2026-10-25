@@ -1,0 +1,54 @@
+orig s=0.01: AUROC(ii)=0.618 AUROC(M)=0.562 gap=-0.056 | RAISE real score shift jpeg90-clean: mean +0.0030 median +0.0011 frac>0 0.71 (real score sd 0.0168); lap ratio 1.033
+orig s=0.02: AUROC(ii)=0.619 AUROC(M)=0.576 gap=-0.042 | RAISE real score shift jpeg90-clean: mean +0.0046 median +0.0023 frac>0 0.70 (real score sd 0.0320); lap ratio 1.033
+   per-gen RIGID(ii) dalle2=0.644 dalle3=0.385 firefl=0.864 midjou=0.533 stable=0.629 stable=0.734 sd3_la=0.542
+   per-gen tex(-lap)(ii) dalle2=0.576 dalle3=0.264 firefl=0.716 midjou=0.393 stable=0.341 stable=0.562 sd3_la=0.384
+   drop dalle2              : RIGID 0.614  tex(-lap) 0.443  margin +0.171
+   drop dalle3              : RIGID 0.658  tex(-lap) 0.495  margin +0.162
+   drop firefly             : RIGID 0.578  tex(-lap) 0.420  margin +0.158
+   drop midjourney-v5       : RIGID 0.633  tex(-lap) 0.474  margin +0.159
+   drop stable-diffusion-2  : RIGID 0.617  tex(-lap) 0.482  margin +0.134
+   drop stable-diffusion-xl : RIGID 0.599  tex(-lap) 0.446  margin +0.154
+   drop sd3_large           : RIGID 0.631  tex(-lap) 0.475  margin +0.156
+orig s=0.05: AUROC(ii)=0.595 AUROC(M)=0.578 gap=-0.018 | RAISE real score shift jpeg90-clean: mean +0.0048 median +0.0028 frac>0 0.65 (real score sd 0.0723); lap ratio 1.033
+fov512 s=0.01: AUROC(ii)=0.583 AUROC(M)=0.554 gap=-0.029 | RAISE real score shift jpeg90-clean: mean +0.0014 median +0.0004 frac>0 0.58 (real score sd 0.0122); lap ratio 1.055
+fov512 s=0.02: AUROC(ii)=0.590 AUROC(M)=0.578 gap=-0.012 | RAISE real score shift jpeg90-clean: mean +0.0013 median +0.0005 frac>0 0.54 (real score sd 0.0240); lap ratio 1.055
+   per-gen RIGID(ii) dalle2=0.710 dalle3=0.350 firefl=0.728 midjou=0.597 stable=0.644 stable=0.743 sd3_la=0.357
+   per-gen tex(-lap)(ii) dalle2=0.655 dalle3=0.331 firefl=0.641 midjou=0.548 stable=0.380 stable=0.654 sd3_la=0.286
+   drop dalle2              : RIGID 0.570  tex(-lap) 0.473  margin +0.096
+   drop dalle3              : RIGID 0.630  tex(-lap) 0.527  margin +0.103
+   drop firefly             : RIGID 0.567  tex(-lap) 0.476  margin +0.091
+   drop midjourney-v5       : RIGID 0.589  tex(-lap) 0.491  margin +0.098
+   drop stable-diffusion-2  : RIGID 0.581  tex(-lap) 0.519  margin +0.062
+   drop stable-diffusion-xl : RIGID 0.564  tex(-lap) 0.473  margin +0.091
+   drop sd3_large           : RIGID 0.629  tex(-lap) 0.535  margin +0.094
+fov512 s=0.05: AUROC(ii)=0.554 AUROC(M)=0.556 gap=+0.002 | RAISE real score shift jpeg90-clean: mean +0.0016 median -0.0005 frac>0 0.48 (real score sd 0.0564); lap ratio 1.055
+fov224 s=0.01: AUROC(ii)=0.516 AUROC(M)=0.552 gap=+0.037 | RAISE real score shift jpeg90-clean: mean -0.0008 median -0.0007 frac>0 0.38 (real score sd 0.0137); lap ratio 1.064
+   per-gen RIGID(ii) dalle2=0.618 dalle3=0.397 firefl=0.523 midjou=0.580 stable=0.437 stable=0.723 sd3_la=0.333
+   per-gen tex(-lap)(ii) dalle2=0.613 dalle3=0.406 firefl=0.582 midjou=0.589 stable=0.361 stable=0.616 sd3_la=0.299
+   drop dalle2              : RIGID 0.499  tex(-lap) 0.475  margin +0.023
+   drop dalle3              : RIGID 0.535  tex(-lap) 0.510  margin +0.025
+   drop firefly             : RIGID 0.514  tex(-lap) 0.481  margin +0.034
+   drop midjourney-v5       : RIGID 0.505  tex(-lap) 0.480  margin +0.025
+   drop stable-diffusion-2  : RIGID 0.529  tex(-lap) 0.518  margin +0.011
+   drop stable-diffusion-xl : RIGID 0.481  tex(-lap) 0.475  margin +0.006
+   drop sd3_large           : RIGID 0.546  tex(-lap) 0.528  margin +0.018
+fov224 s=0.02: AUROC(ii)=0.509 AUROC(M)=0.548 gap=+0.039 | RAISE real score shift jpeg90-clean: mean -0.0027 median -0.0017 frac>0 0.33 (real score sd 0.0248); lap ratio 1.064
+   per-gen RIGID(ii) dalle2=0.598 dalle3=0.383 firefl=0.554 midjou=0.547 stable=0.497 stable=0.704 sd3_la=0.282
+   per-gen tex(-lap)(ii) dalle2=0.613 dalle3=0.406 firefl=0.582 midjou=0.589 stable=0.361 stable=0.616 sd3_la=0.299
+   drop dalle2              : RIGID 0.495  tex(-lap) 0.475  margin +0.019
+   drop dalle3              : RIGID 0.530  tex(-lap) 0.510  margin +0.020
+   drop firefly             : RIGID 0.502  tex(-lap) 0.481  margin +0.021
+   drop midjourney-v5       : RIGID 0.503  tex(-lap) 0.480  margin +0.023
+   drop stable-diffusion-2  : RIGID 0.511  tex(-lap) 0.518  margin -0.006
+   drop stable-diffusion-xl : RIGID 0.477  tex(-lap) 0.475  margin +0.002
+   drop sd3_large           : RIGID 0.547  tex(-lap) 0.528  margin +0.019
+fov224 s=0.05: AUROC(ii)=0.476 AUROC(M)=0.516 gap=+0.039 | RAISE real score shift jpeg90-clean: mean -0.0053 median -0.0046 frac>0 0.28 (real score sd 0.0445); lap ratio 1.064
+   per-gen RIGID(ii) dalle2=0.506 dalle3=0.414 firefl=0.503 midjou=0.476 stable=0.577 stable=0.625 sd3_la=0.234
+   per-gen tex(-lap)(ii) dalle2=0.613 dalle3=0.406 firefl=0.582 midjou=0.589 stable=0.361 stable=0.616 sd3_la=0.299
+   drop dalle2              : RIGID 0.471  tex(-lap) 0.475  margin -0.004
+   drop dalle3              : RIGID 0.487  tex(-lap) 0.510  margin -0.023
+   drop firefly             : RIGID 0.472  tex(-lap) 0.481  margin -0.009
+   drop midjourney-v5       : RIGID 0.476  tex(-lap) 0.480  margin -0.003
+   drop stable-diffusion-2  : RIGID 0.460  tex(-lap) 0.518  margin -0.058
+   drop stable-diffusion-xl : RIGID 0.451  tex(-lap) 0.475  margin -0.024
+   drop sd3_large           : RIGID 0.517  tex(-lap) 0.528  margin -0.011

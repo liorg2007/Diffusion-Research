@@ -355,3 +355,7 @@
   - Reading: the RIGID-style drift score is weak (~0.6) but NOT driven by a JPEG-real/PNG-fake shortcut.
   - B0-JM fix: criterion NOT met in any arm. VISION − RAISE gap 0.097 → 0.088 (orig). The gap persists in fov512 (0.113), so it is not explained by zoom/FOV, contrary to the H1 pilot critic's reading.
   - Stop-rule count (official, non-pilot): H4 refuted = 1 of 3. Launching opus/high critic.
+- 2026-10-25 09:58 — Official H4 critic (opus/high): REFUTED is correct; no verdict-changing bug.
+  - The gate pass is Firefly-dependent: without Firefly the margin over texture is −0.002, but the residualized score and fov512 still pass.
+  - KEY: caption-twin leakage in the 003 splits explains most of the VISION − RAISE gap (twin in train+test 0.786 vs no twin 0.935).
+  - Wrote Amendment 13 before reading any official H1/H2 output: twin-disjoint sensitivity, primary pools fixed, stop-rule counting (only FAIL/REFUTED/NOT_SUPPORTED count), drop-one-generator gate robustness, RAISE as a descriptive H2 group.

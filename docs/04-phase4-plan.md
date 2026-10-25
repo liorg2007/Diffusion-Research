@@ -480,3 +480,19 @@ So `du2` has the zoom (field of view) of `orig` and the downsampling history of 
 3. JPEG-history-matched control as in the idea file.
 
 **D-008.** Guards apply to any new GPU features (|Δlogit| ≤ 1e-3) and to VAE outputs (sd-vae-ft-mse pixel guard, already passed).
+
+## Amendment 13 (2026-10-25 09:58, after the official H4 critique, BEFORE the lead has read any official H1/H2 output)
+**Trigger.** `experiments/006-format-shortcut/official/critique.md` found caption-twin leakage in the 003 splits. Each Synthbuster fake is named after the RAISE image whose caption prompted it, and the splits do not group by that id. B0 scores RAISE test reals 0.786 when the twin fake is in train and test, versus 0.935 with no twin (n=18). Most of the "VISION − RAISE gap" is likely content leakage, not format or zoom.
+
+**Changes (all official runs from H1 on; labels stay as pre-registered, the additions are sensitivity rows):**
+1. **Twin-disjoint sensitivity.**
+   - Every official H1 and H2 analysis is repeated with a twin-disjoint refit: train fakes whose RAISE twin id is a calib or test RAISE real are dropped from training.
+   - The pre-registered label is computed as before. If the twin-disjoint label differs, both are reported, and the twin-disjoint one is flagged as the more valid.
+   - The Phase 3 VISION − RAISE gap (0.086) and the B0-JM criterion built on it are marked "confounded by caption twins".
+2. **H1 primary pools** stay `vision_native` as pre-registered (`--primary-pools vision_native`). Pools are never switched to obtain headroom. RAISE and the other pools are per-pool descriptive rows.
+3. **Stop-rule counting.**
+   - Only official labels FAIL / REFUTED / NOT_SUPPORTED count as failed hypotheses.
+   - UNINFORMATIVE and "no headroom" labels do NOT count: the hypothesis was not tested. They are listed separately in the Phase 4 report.
+   - Under this rule H4 (REFUTED) = 1 of 3.
+4. **Gate robustness.** Every gate decision is reported with Firefly in and out, and with each generator dropped in turn. A label that flips when any single generator is dropped is reported as "fragile" next to the label.
+5. **H2:** RAISE is added as a descriptive group (not used for the verdict).

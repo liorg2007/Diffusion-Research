@@ -1,0 +1,48 @@
+[orig] vision_native: n=358 max-cos to fakes (twins excluded) median 0.585 IQR [0.513,0.649]; top5-mean median 0.546
+[orig] raise: n=199 max-cos to fakes (twins excluded) median 0.600 IQR [0.535,0.653]; top5-mean median 0.535
+[orig] B0 macro AUROC vision_native: all 0.953
+      sim-quartile 1 [0.208,0.477] n= 89 AUROC 0.957
+      sim-quartile 2 [0.477,0.541] n= 86 AUROC 0.972
+      sim-quartile 3 [0.541,0.592] n= 84 AUROC 0.961
+      sim-quartile 4 [0.592,0.759] n=101 AUROC 0.925
+      Spearman(B0 mean logit of reals, content proximity) = +0.116
+[orig] B0 macro AUROC raise: all 0.855
+      sim-quartile 1 [0.208,0.477] n= 51 AUROC 0.862
+      sim-quartile 2 [0.477,0.541] n= 54 AUROC 0.862
+      sim-quartile 3 [0.541,0.592] n= 56 AUROC 0.858
+      sim-quartile 4 [0.592,0.759] n= 39 AUROC 0.831
+      Spearman(B0 mean logit of reals, content proximity) = +0.056
+[orig] RAISE test reals with a caption-twin TEST fake: n=125 AUROC 0.831; without: n=74 AUROC 0.896
+[orig] RAISE test reals with a caption-twin B0-TRAIN fake: n=126 AUROC 0.829; without: n=73 AUROC 0.900
+[orig] RAISE test reals with NO twin in test or train fakes: n=18 AUROC 0.935
+[orig] B0 macro AUROC vision_whatsapp (scale-matched control for RAISE, same photos as natives): 0.914
+[orig] B0 macro AUROC vision_facebook_hq (scale-matched control for RAISE, same photos as natives): 0.932
+[fov512] vision_native: n=358 max-cos to fakes (twins excluded) median 0.510 IQR [0.443,0.553]; top5-mean median 0.468
+[fov512] raise: n=199 max-cos to fakes (twins excluded) median 0.611 IQR [0.529,0.671]; top5-mean median 0.549
+[fov512] B0 macro AUROC vision_native: all 0.939
+      sim-quartile 1 [0.173,0.432] n=124 AUROC 0.942
+      sim-quartile 2 [0.432,0.486] n= 99 AUROC 0.966
+      sim-quartile 3 [0.486,0.543] n=101 AUROC 0.963
+      sim-quartile 4 [0.543,0.735] n= 36 AUROC 0.795
+      Spearman(B0 mean logit of reals, content proximity) = -0.036
+[fov512] B0 macro AUROC raise: all 0.826
+      sim-quartile 1 [0.173,0.432] n= 16 AUROC 0.761
+      sim-quartile 2 [0.432,0.486] n= 41 AUROC 0.843
+      sim-quartile 3 [0.486,0.543] n= 39 AUROC 0.826
+      sim-quartile 4 [0.543,0.735] n=104 AUROC 0.832
+      Spearman(B0 mean logit of reals, content proximity) = -0.015
+[fov512] RAISE test reals with a caption-twin TEST fake: n=125 AUROC 0.797; without: n=74 AUROC 0.875
+[fov512] RAISE test reals with a caption-twin B0-TRAIN fake: n=126 AUROC 0.802; without: n=73 AUROC 0.869
+[fov512] RAISE test reals with NO twin in test or train fakes: n=18 AUROC 0.918
+[fov512] B0 macro AUROC vision_whatsapp (scale-matched control for RAISE, same photos as natives): 0.939
+[fov512] B0 macro AUROC vision_facebook_hq (scale-matched control for RAISE, same photos as natives): 0.939
+raw short side vision_native: median 2448 (min 720, max 3936), formats {'JPEG': 358}
+raw short side raise: median 833 (min 833, max 835), formats {'PNG': 199}
+raw short side dalle2: median 1024, formats {'PNG': 120}
+raw short side dalle3: median 1024, formats {'PNG': 120}
+raw short side firefly: median 1792, formats {'JPEG': 120}
+raw short side midjourney-v5: median 896, formats {'PNG': 120}
+raw short side stable-diffusion-2: median 768, formats {'PNG': 120}
+raw short side stable-diffusion-xl: median 832, formats {'PNG': 120}
+raw short side sd3_large: median 1024, formats {'PNG': 150}
+raw short side flux: median 1024, formats {'PNG': 150}

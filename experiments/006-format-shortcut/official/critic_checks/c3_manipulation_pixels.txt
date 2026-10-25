@@ -1,0 +1,6 @@
+RAISE test crops (n=40): PSNR jpeg(90) vs clean median 37.16 dB (min 29.81, max 42.94)
+raw-file 8x8 blockiness ratio raise          (n=30): median 1.000 [p10 0.993, p90 1.009]
+raw-file 8x8 blockiness ratio vision_native  (n=30): median 1.048 [p10 1.005, p90 1.156]
+raw-file 8x8 blockiness ratio firefly        (n=30): median 1.039 [p10 1.006, p90 1.092]
+raw-file 8x8 blockiness ratio dalle3         (n=30): median 1.020 [p10 1.007, p90 1.043]
+raw-file 8x8 blockiness ratio sd3_large      (n=30): median 1.002 [p10 0.979, p90 1.016]
