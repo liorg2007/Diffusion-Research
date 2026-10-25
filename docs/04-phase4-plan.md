@@ -528,3 +528,37 @@ So `du2` has the zoom (field of view) of `orig` and the downsampling history of 
 - **P4 (shortcut check):** removing zoom (fov512) and format (comparing against WA/RAISE, which match the fakes' scale) reduces the battery's C2ST by ≥ 0.05 compared with VISION natives in `orig`.
 
 Reporting: an "atlas" of effect sizes (statistic × generator × condition) plus the multivariate tests. No method claim is made from E5.
+
+## Amendment 15 (2026-10-25 20:20, before any result): E6, a mid-level DINOv2 detector built on the E5 lead (experiments/015-midlayer-probe)
+**Why.** E5 and its critic (`014/results/critique.md`) found that, with content, scale and format controlled, a block-8 DINOv2 linear classifier separates RAISE reals from their caption-twin fakes at about 0.93 AUROC after jpeg75_resize05 (about 0.86 if trained clean). That is far above B0's 0.875 laundered LOGO (003). E6 turns this into a detector and tries to falsify it. It is exploratory (D-016).
+
+**Features.** All from the cached official 004 features (secondary = blocks 4/8/12, CLS + mean): F_b8 (block 8, 1,536-d), F_last (B0 primary), F_cat (4/8/12). Arms: orig (label) and fov512.
+
+**Training.**
+- Logistic probe, balanced, grouped CV over C. Groups are device (VISION), RAISE caption id (twins: a RAISE real and all its fakes share a group), and image otherwise.
+- Strictly twin- and id-disjoint between train and calib/test; FLUX is test-only. LOGO over the 7 train-having generators.
+- Two training regimes:
+  - **T-clean:** clean only;
+  - **T-aug:** clean + jpeg75_resize05 + social_sim copies of every train image, grouped with their source.
+- `screenshot_sim` and `mavali_medium` are held-out laundering types, never used in training.
+
+**Evaluation.**
+- Macro-AUROC over the 7 generators plus FLUX (LOGO), per condition (clean, jpeg75_resize05, social_sim, screenshot_sim, mavali_medium).
+- Per real pool: native, WA, FBH, RAISE.
+- FPR at a pooled 1% threshold set on calib reals (clean), applied to every test pool and condition.
+- Twin-paired AUROC on the test RAISE ids.
+- Cross-source test, the "new real pipeline" proxy:
+  - train with RAISE as the ONLY real source → test against VISION reals (natives, WA, FBH);
+  - train with VISION as the only real source → test against RAISE reals;
+  - same fakes protocol.
+
+**Pre-registered predictions** (label arm orig, block 8, T-aug unless stated):
+- **P1, improvement over B0:** at jpeg75_resize05, F_b8 beats B0 (F_last, T-clean, 003 recipe) by ≥ +0.03 on LOGO-macro AND ≥ +0.03 on FLUX, with a clean loss ≤ 0.01. Each CI lower bound > 0.
+- **P2, falsifier (from the E5 critic):** twin-paired laundered AUROC ≥ 0.85 AND cross-source laundered AUROC ≥ 0.85 in both directions. If either cross-source direction is < 0.85, the E5 residual is labelled "real-source-specific" and P1 cannot support any method claim.
+- **P3, FPR:** at the pooled 1% threshold, test FPR ≤ 2% on every real pool at jpeg75_resize05 (Clopper-Pearson CIs reported).
+- **Gates:**
+  - the Laplacian texture baseline must stay < 0.70 laundered;
+  - the label must not flip when any one generator is dropped (otherwise "fragile");
+  - F_b8 T-clean must also be reported, so the gain from laundered training is separated from the gain from the layer.
+
+**D-008.** No new GPU features are expected. If any are computed, the guard applies.
