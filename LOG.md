@@ -389,3 +389,12 @@
   - H2: disclosure: alpha=0.5% is a built-in tie (worst-group@0.5% == pooled@0.05% in 125/125 cells), so it always counts toward NOT_SUPPORTED; the label still stands. Lead's A-arm command: analyze.py --v2 --scores 005/official/orig/scores_long.csv.gz --splits 007/official/splits_orig.csv --groupings platform --min-group 100 --label OFFICIAL.
   - KEY: the FPR tail is ONE phone. D17 (Microsoft Lumia 640) carries 17/23 B0 false positives (orig) and 30/30 (fov512), with 40% of its photos flagged on every platform. The other 21-24 phones are at 0%.
   - Phase 5: 358 reals per platform cannot certify <= 1% (CP upper bound with 0 errors is 1.03%). Modern phones still need H3.
+- 2026-10-25 20:34 — E6 mid-level detector done (015-midlayer-probe/results/; exploratory under D-016; CPU, ~3 min).
+  - P1 PASS: F_b8 trained on laundered copies (T-aug), jpeg75_resize05 macro 0.947 vs B0 0.855 (+0.092 [+0.069, +0.121]); FLUX 0.874 vs 0.797 (+0.077); clean 0.970 (no loss).
+  - Held-out launderings: screenshot_sim 0.961, mavali_medium 0.942.
+  - P2 FAIL: twin-paired 0.889 (meets 0.85), but cross-source RAISE->VISION 0.644 and VISION->RAISE 0.604 (in-source control 0.916). The E5 residual is real-source-specific, so P1 supports no method claim.
+  - P3 FAIL: FPR at the pooled 1% threshold is native 0.8%, WA 3.1%, FBH 2.2%, RAISE 7.1%.
+  - Gates pass (texture 0.635); no label flips over 11 drop-one subsets.
+  - fov512: 0.953 / FLUX 0.913; cross-source 0.826 / 0.700.
+  - Deviation: official splits are not twin-consistent, so caption families were assigned whole by majority (dropped 258 fakes, 79 RAISE reals).
+  - Launching opus/high critic.

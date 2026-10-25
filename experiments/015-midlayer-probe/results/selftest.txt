@@ -1,0 +1,50 @@
+PASS CP 0/50 upper 0.0711 (0.0000,0.0711)
+PASS CP 5/50 [0.0332,0.2181] (0.0333,0.2181)
+PASS synthetic: no caption id shared by train and calib/test (train ids 3, eval ids 37)
+PASS synthetic: kept rows keep their official split 
+PASS synthetic: rows without a caption id are untouched 
+PASS synthetic: every family is on one side 
+PASS groups: a RAISE real and all its fakes share one group 
+PASS groups: VISION copies share their device group 
+PASS LOGO model excludes the left-out generator 
+PASS FLUX is never a training row 
+PASS raise_only trains on RAISE reals only 
+PASS vision_only trains on VISION natives only 
+PASS training rows are role==train 
+PASS planted block-8 signal: F_b8 AUROC high (1.000)
+PASS F_last on the same data is near chance (columns checked) (0.491)
+PASS scores shape [conds, N] 
+PASS weighted AUROC point == sklearn 
+PASS paired diff of identical scores is exactly 0 with CI [0,0] 
+PASS signal vs shuffled scores: positive delta, CI > 0 (0.562)
+PASS shuffled scores: macro AUROC near 0.5 (0.438)
+PASS twin plan has pairs and ids (ids 20, pairs 42)
+PASS twin AUROC with perfectly separating scores = 1, win rate 1 
+PASS twin AUROC null: CI covers 0.5 ([0.27,0.53])
+PASS threshold at 1% of 200 calib reals allows 2 false positives 
+PASS [orig] real: no caption id in both train and calib/test 
+PASS [orig] real: kept rows keep the official split 
+PASS [orig] real: FLUX has no train rows 
+PASS [orig] real: VISION rows all kept 
+PASS [orig] real: VISION test devices disjoint from train devices 
+PASS [orig] real: features cached for every row, clean 
+PASS [orig] real: features cached for every row, jpeg75_resize05 
+PASS [orig] real: features cached for every row, social_sim 
+PASS [orig] real: features cached for every row, screenshot_sim 
+PASS [orig] real: features cached for every row, mavali_medium 
+PASS [fov512] real: no caption id in both train and calib/test 
+PASS [fov512] real: kept rows keep the official split 
+PASS [fov512] real: FLUX has no train rows 
+PASS [fov512] real: VISION rows all kept 
+PASS [fov512] real: VISION test devices disjoint from train devices 
+PASS [fov512] real: features cached for every row, clean 
+PASS [fov512] real: features cached for every row, jpeg75_resize05 
+PASS [fov512] real: features cached for every row, social_sim 
+PASS [fov512] real: features cached for every row, screenshot_sim 
+PASS [fov512] real: features cached for every row, mavali_medium 
+PASS primary (B0) == last 1536 columns of secondary (block 12) 
+PASS F_b8 slice is columns 1536:3072 and F_last 3072:4608 
+PASS block 8 differs from block 12 features 
+PASS orig and fov512 splits identical apart from path 
+PASS lap224: flat image 0, noisy image large 
+ALL PASS

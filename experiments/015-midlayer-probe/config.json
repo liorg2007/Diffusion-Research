@@ -1,0 +1,31 @@
+{
+ "experiment": "015-midlayer-probe (E6, Amendment 15 of docs/04-phase4-plan.md; exploratory under D-016)",
+ "seed": 0,
+ "n_boot": 1000,
+ "arms": {"orig": {"splits": "experiments/003-baselines-eval/splits.csv", "subdir": "feats"},
+          "fov512": {"splits": "experiments/004-phase4-features/splits_fov512.csv", "subdir": "fov512"}},
+ "label_arm": "orig",
+ "features": {"F_b8": [1536, 3072], "F_last": [3072, 4608], "F_cat": [0, 4608]},
+ "feature_layout": "004 secondary = [blk4 CLS|blk4 mean|blk8 CLS|blk8 mean|blk12 CLS|blk12 mean], H=768; block 12 == B0 primary",
+ "regimes": {"T-clean": ["clean"], "T-aug": ["clean", "jpeg75_resize05", "social_sim"]},
+ "eval_conditions": ["clean", "jpeg75_resize05", "social_sim", "screenshot_sim", "mavali_medium"],
+ "held_out_conditions": ["screenshot_sim", "mavali_medium"],
+ "train_generators": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl", "sd3_large"],
+ "test_only_generator": "flux",
+ "sources": {"all": "train reals = VISION natives + RAISE (b0_train recipe)", "raise_only": "train reals = RAISE only", "vision_only": "train reals = VISION natives only"},
+ "probe": "lib/probe.fit_probe: StandardScaler + LogisticRegressionCV (Cs=logspace(-4,1,6), 5-fold StratifiedGroupKFold, AUROC), class_weight=balanced, groups = device (VISION) / caption id (RAISE real + all its fakes) / image",
+ "b0_literal_003": "fit_probe(X_last_clean[b0_train], y) with no groups, no class weights (003 run.py stage_b0); LOGO = b0_train minus g. Secondary comparator only.",
+ "split_rule": "Official 003/004 split kept for every row without a caption id. A caption family (RAISE real + every fake with the same r<hex>t id, all generators incl. FLUX) goes on the TRAIN side if it has more official-train rows than official-calib/test rows, else on the EVAL side (ties -> eval). Only rows whose official split matches the side are kept; the others are dropped from E6.",
+ "primary_reals": "test reals of pools vision_native + raise (003 test-real convention); per-pool rows: native, WA, FBH, RAISE; cross-source: RAISE-only model -> native+WA+FBH test reals, VISION-only model -> RAISE test reals",
+ "macro": "LOGO-macro = mean AUROC over 7 train generators (their LOGO model) + FLUX ('full' model); macro7 (without FLUX) reported as sensitivity",
+ "fpr_threshold": "FPR 1% on pooled calib reals (clean scores) of the same model; FPR per pool with Clopper-Pearson 95% CI; model = 'full' (FLUX unseen)",
+ "twin_pairs": "RAISE test reals and the test fakes with the same caption id; per-generator AUROC (LOGO model of that generator) pooled over generators weighted by pairs; bootstrap over caption ids",
+ "texture": "mean |4-neighbour Laplacian| of the grayscale 224 center crop of the conditioned image (009 lap224); sign from calib reals vs train fakes; gate uses max over both signs",
+ "predictions": {
+  "P1": "label arm orig, F_b8 T-aug vs B0 at jpeg75_resize05: LOGO-macro gain >= 0.03 AND FLUX gain >= 0.03, clean loss <= 0.01, CI lower bounds of both gains > 0",
+  "P2": "twin-paired laundered AUROC >= 0.85 AND cross-source laundered AUROC >= 0.85 in both directions (else real-source-specific)",
+  "P3": "FPR at pooled 1% calib threshold <= 2% on every real pool at jpeg75_resize05",
+  "gates": ["texture baseline < 0.70 laundered", "labels not fragile to dropping any one generator", "F_b8 T-clean reported"]
+ },
+ "p1_gains_thresholds": {"gain": 0.03, "flux_gain": 0.03, "clean_loss": 0.01, "twin": 0.85, "cross": 0.85, "fpr": 0.02, "texture": 0.70}
+}
