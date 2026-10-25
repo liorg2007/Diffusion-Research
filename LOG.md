@@ -384,3 +384,8 @@
   - fov512: gain +0.002 (fail). Twin-disjoint is worse in both arms.
 - 2026-10-25 20:19 — OFFICIAL H2-v2 A-arms (orig): A0 / A1 / A2 NOT_SUPPORTED. fov512 column done (007/official/summary_fov512.md).
 - 2026-10-25 20:19 — STOP RULE: 3 failed hypotheses (H4, H1, H2). Owner explicitly said to keep exploring, recorded as D-016. Phase 4 hypothesis tests closed; exploration continues on the E5 lead.
+- 2026-10-25 20:27 — Official H1/H2 critic (opus/high): both labels hold; every headline number reproduced.
+  - H1: FLUX never seen. The killed first launch (with raise pools) was missing from this log; recorded here: it died before any evaluation, and the cache reuse is verified (refit diff <= 5e-7). Drift -67% is not a win (A2 raises test-native FPR 8.1% -> 16.5% at the 5% threshold). The twin-disjoint run mostly measures half the train fakes.
+  - H2: disclosure: alpha=0.5% is a built-in tie (worst-group@0.5% == pooled@0.05% in 125/125 cells), so it always counts toward NOT_SUPPORTED; the label still stands. Lead's A-arm command: analyze.py --v2 --scores 005/official/orig/scores_long.csv.gz --splits 007/official/splits_orig.csv --groupings platform --min-group 100 --label OFFICIAL.
+  - KEY: the FPR tail is ONE phone. D17 (Microsoft Lumia 640) carries 17/23 B0 false positives (orig) and 30/30 (fov512), with 40% of its photos flagged on every platform. The other 21-24 phones are at 0%.
+  - Phase 5: 358 reals per platform cannot certify <= 1% (CP upper bound with 0 errors is 1.03%). Modern phones still need H3.
