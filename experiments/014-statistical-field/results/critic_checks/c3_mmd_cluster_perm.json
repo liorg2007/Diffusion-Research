@@ -1,0 +1,482 @@
+[
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "dalle2",
+  "mmd2": 0.03540329425115907,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "dalle3",
+  "mmd2": 0.11058537395999801,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "firefly",
+  "mmd2": 0.026694168289622677,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "midjourney-v5",
+  "mmd2": 0.04962333454851997,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "stable-diffusion-2",
+  "mmd2": 0.07573464649375317,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "stable-diffusion-xl",
+  "mmd2": 0.05734203330671184,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "sd3_large",
+  "mmd2": 0.14457534678740114,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "flux",
+  "mmd2": 0.08068345078234684,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "dalle2",
+  "mmd2": 0.03505812369646599,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "dalle3",
+  "mmd2": 0.0944527532233097,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "firefly",
+  "mmd2": 0.03462337517418912,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "midjourney-v5",
+  "mmd2": 0.025233494736089934,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "stable-diffusion-2",
+  "mmd2": 0.06354667279904724,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "stable-diffusion-xl",
+  "mmd2": 0.039872137602477764,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "sd3_large",
+  "mmd2": 0.10922542352094666,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "battery",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "flux",
+  "mmd2": 0.04652161024064627,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "dalle2",
+  "mmd2": 0.007284646054799504,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "dalle3",
+  "mmd2": 0.023881615733192696,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "firefly",
+  "mmd2": 0.009526734637914869,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "midjourney-v5",
+  "mmd2": 0.01001874570426775,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "stable-diffusion-2",
+  "mmd2": 0.017826855920285434,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "stable-diffusion-xl",
+  "mmd2": 0.014624078081144853,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "sd3_large",
+  "mmd2": 0.012422289832244138,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "flux",
+  "mmd2": 0.015487179345352153,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "dalle2",
+  "mmd2": 0.006716189765265668,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "dalle3",
+  "mmd2": 0.027572356957168198,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "firefly",
+  "mmd2": 0.011229557992037176,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "midjourney-v5",
+  "mmd2": 0.00951172672533196,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "stable-diffusion-2",
+  "mmd2": 0.02301672686432288,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "stable-diffusion-xl",
+  "mmd2": 0.015914897140338224,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "sd3_large",
+  "mmd2": 0.013164394343826658,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_b0",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "flux",
+  "mmd2": 0.013645875852059675,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "dalle2",
+  "mmd2": 0.034170116580348076,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "dalle3",
+  "mmd2": 0.08791445124207709,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "firefly",
+  "mmd2": 0.03680487874937399,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "midjourney-v5",
+  "mmd2": 0.03924028847492189,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "stable-diffusion-2",
+  "mmd2": 0.05553271888589184,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "stable-diffusion-xl",
+  "mmd2": 0.047568833540402755,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "sd3_large",
+  "mmd2": 0.056615386161028125,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "orig",
+  "reals": "native+RAISE",
+  "gen": "flux",
+  "mmd2": 0.05768040311275868,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "dalle2",
+  "mmd2": 0.021423498043041667,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "dalle3",
+  "mmd2": 0.09817016792356159,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "firefly",
+  "mmd2": 0.03927744279275114,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "midjourney-v5",
+  "mmd2": 0.027695681366720182,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "stable-diffusion-2",
+  "mmd2": 0.06407885705674587,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "stable-diffusion-xl",
+  "mmd2": 0.04018937844456927,
+  "p_cluster": 0.001,
+  "n_clusters": 554,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "sd3_large",
+  "mmd2": 0.050690721051226406,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ },
+ {
+  "space": "dino_blk8",
+  "arm": "fov512",
+  "reals": "WA+RAISE",
+  "gen": "flux",
+  "mmd2": 0.049647119399143014,
+  "p_cluster": 0.001,
+  "n_clusters": 584,
+  "p_holm": 0.008
+ }
+]

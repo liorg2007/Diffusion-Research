@@ -373,3 +373,9 @@
   - P3 REFUTED: only S4 (colour residual correlation) is strongly suppressed by laundering.
   - P4 CONFIRMED: battery 0.972 natives/orig vs 0.723 WA+RAISE/fov512.
   - Caution: the DINOv2 C2ST may include the zoom shortcut (natives in orig). The critic must test scale-matched reals before any claim.
+- 2026-10-25 20:14 — E5 critic (opus/high): sound, no bug; P1/P3/P4 stand; P2's refutation is robust (device-level MMD still at the floor).
+  - Headline corrected: 0.940/0.970 is inflated by training on laundered data (+0.042) and by VISION WA/FBH copies (+0.034). WA copies are content-confounded (0.98-0.99).
+  - Best defensible content-controlled laundered effect (twin-paired, RAISE-only): block 8 about 0.93 (0.86 if trained clean), B0 about 0.85, hand-built battery about 0.70.
+  - Caveat: one real source (RAISE, resized by B-Free) and 361 caption ids, so a diffusion signature cannot yet be separated from RAISE processing.
+  - Follow-up design: a frozen block-8 linear detector tested on a NEW real pipeline, with falsifier twin AUROC < 0.85.
+  - Official H1 agent was cut off by the API session limit mid-run (twin matching stage); resume after the limit resets.
