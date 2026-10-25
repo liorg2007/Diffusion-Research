@@ -1,0 +1,7 @@
+B0 {'platform_brand': 'INCONCLUSIVE', 'platform': 'NOT_SUPPORTED'}
+B0_twinfree {'platform_brand': 'NOT_SUPPORTED', 'platform': 'NOT_SUPPORTED'}
+bfree {'platform_brand': 'NOT_SUPPORTED', 'platform': 'NOT_SUPPORTED'}
+clipdet {'platform_brand': 'INCONCLUSIVE', 'platform': 'SUPPORTED'}
+communityforensics {'platform_brand': 'NOT_SUPPORTED', 'platform': 'NOT_SUPPORTED'}
+rine {'platform_brand': 'NOT_SUPPORTED', 'platform': 'NOT_SUPPORTED'}
+wrote /home/zera/project/Diffusion-Research/experiments/007-worst-env-conformal/official/orig_sens_platform_brand_min50/results_v2_scores_long_orig.json /home/zera/project/Diffusion-Research/experiments/007-worst-env-conformal/official/orig_sens_platform_brand_min50/tables_v2_scores_long_orig.md

@@ -1,0 +1,70 @@
+09:28:06 orig/communityforensics/clean: 1702 rows reused from 003 cache
+09:29:21 cpuref orig/communityforensics/clean 73s
+09:29:52 orig/communityforensics/clean: D-008 max|dlogit|=6.34e-05 (n=32, tol 0.001)
+09:30:14 orig/communityforensics/clean: 1788/1788
+09:30:15 orig/communityforensics/jpeg75_resize05: 943 rows reused from 003 cache
+09:30:15 orig/communityforensics/screenshot_sim: 0 rows reused from 003 cache
+09:31:55 cpuref orig/communityforensics/screenshot_sim 99s
+09:32:09 orig/communityforensics/screenshot_sim: D-008 max|dlogit|=1.14e-04 (n=32, tol 0.001)
+09:32:52 orig/communityforensics/screenshot_sim: 132/358
+09:33:36 orig/communityforensics/screenshot_sim: 232/358
+09:34:15 orig/communityforensics/screenshot_sim: 332/358
+09:34:26 orig/communityforensics/screenshot_sim: 358/358
+09:34:29 orig/bfree/clean: 1702 rows reused from 003 cache
+normalize RESNET
+09:36:38 cpuref orig/bfree/clean 128s
+normalize RESNET
+09:36:47 orig/bfree/clean: D-008 max|dlogit|=4.05e-05 (n=32, tol 0.001)
+09:37:00 orig/bfree/clean: 1788/1788
+09:37:01 orig/bfree/jpeg75_resize05: 943 rows reused from 003 cache
+09:37:01 orig/bfree/screenshot_sim: 0 rows reused from 003 cache
+normalize RESNET
+09:45:34 cpuref orig/bfree/screenshot_sim 512s
+09:45:52 orig/bfree/screenshot_sim: D-008 max|dlogit|=6.22e-05 (n=32, tol 0.001)
+09:46:35 orig/bfree/screenshot_sim: 132/358
+09:47:05 orig/bfree/screenshot_sim: 232/358
+09:47:28 orig/bfree/screenshot_sim: 332/358
+09:47:39 orig/bfree/screenshot_sim: 358/358
+09:47:42 orig/rine/clean: 1702 rows reused from 003 cache
+09:52:31 cpuref orig/rine/clean 288s
+09:53:29 orig/rine/clean: D-008 max|dlogit|=6.56e-06 (n=32, tol 0.001)
+09:53:53 orig/rine/clean: 1788/1788
+09:53:55 orig/rine/jpeg75_resize05: 943 rows reused from 003 cache
+09:53:55 orig/rine/screenshot_sim: 0 rows reused from 003 cache
+09:57:18 cpuref orig/rine/screenshot_sim 203s
+09:57:23 orig/rine/screenshot_sim: D-008 max|dlogit|=4.53e-06 (n=32, tol 0.001)
+09:57:40 orig/rine/screenshot_sim: 132/358
+09:57:49 orig/rine/screenshot_sim: 232/358
+09:58:03 orig/rine/screenshot_sim: 332/358
+09:58:06 orig/rine/screenshot_sim: 358/358
+09:58:07 orig/clipdet/clean: 1702 rows reused from 003 cache
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+10:00:13 cpuref orig/clipdet/clean 125s
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+10:00:35 orig/clipdet/clean: D-008 max|dlogit|=3.67e-05 (n=32, tol 0.001)
+10:00:47 orig/clipdet/clean: 1788/1788
+10:00:48 orig/clipdet/jpeg75_resize05: 943 rows reused from 003 cache
+10:00:48 orig/clipdet/screenshot_sim: 0 rows reused from 003 cache
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+10:01:59 cpuref orig/clipdet/screenshot_sim 70s
+10:02:01 orig/clipdet/screenshot_sim: D-008 max|dlogit|=2.40e-05 (n=32, tol 0.001)
+10:02:05 orig/clipdet/screenshot_sim: 132/358
+10:02:15 orig/clipdet/screenshot_sim: 232/358
+10:02:38 orig/clipdet/screenshot_sim: 332/358
+10:02:44 orig/clipdet/screenshot_sim: 358/358
+10:04:07 cpuref fov512/communityforensics/clean 78s
+10:04:31 fov512/communityforensics/clean: D-008 max|dlogit|=8.61e-05 (n=32, tol 0.001)
+10:04:53 fov512/communityforensics/clean: 132/1788
+10:05:08 fov512/communityforensics/clean: 232/1788
+10:05:24 fov512/communityforensics/clean: 332/1788
+10:06:01 fov512/communityforensics/clean: 432/1788
+10:06:30 fov512/communityforensics/clean: 532/1788
+10:07:11 fov512/communityforensics/clean: 632/1788
+10:08:00 fov512/communityforensics/clean: 732/1788
+10:08:49 fov512/communityforensics/clean: 832/1788
+10:09:33 fov512/communityforensics/clean: 932/1788
+10:10:22 fov512/communityforensics/clean: 1032/1788
+10:11:09 fov512/communityforensics/clean: 1132/1788

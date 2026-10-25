@@ -1,0 +1,7 @@
+B0 {'platform': 'NOT_SUPPORTED'}
+B0_twinfree {'platform': 'NOT_SUPPORTED'}
+bfree {'platform': 'NOT_SUPPORTED'}
+clipdet {'platform': 'SUPPORTED'}
+communityforensics {'platform': 'NOT_SUPPORTED'}
+rine {'platform': 'NOT_SUPPORTED'}
+wrote /home/zera/project/Diffusion-Research/experiments/007-worst-env-conformal/official/orig_primary_drop_flux/results_v2_scores_long_orig.json /home/zera/project/Diffusion-Research/experiments/007-worst-env-conformal/official/orig_primary_drop_flux/tables_v2_scores_long_orig.md

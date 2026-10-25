@@ -359,3 +359,11 @@
   - The gate pass is Firefly-dependent: without Firefly the margin over texture is −0.002, but the residualized score and fov512 still pass.
   - KEY: caption-twin leakage in the 003 splits explains most of the VISION − RAISE gap (twin in train+test 0.786 vs no twin 0.935).
   - Wrote Amendment 13 before reading any official H1/H2 output: twin-disjoint sensitivity, primary pools fixed, stop-rule counting (only FAIL/REFUTED/NOT_SUPPORTED count), drop-one-generator gate robustness, RAISE as a descriptive H2 group.
+- 2026-10-25 10:15 — OFFICIAL H2-v2, orig arm (007/official/summary_orig.md; sonnet/high). The fov512 column is still scoring in the background; A-arms are pending official H1.
+  - Primary (platform groups, min 100; h2v2.py rule): B0 NOT_SUPPORTED. Also NOT_SUPPORTED: B0 twin-disjoint, CommFor, RINE, B-Free. ClipDet SUPPORTED.
+  - No flips with Firefly out or any single generator dropped.
+  - Calibrated FPR (LODO x LOPO pooled), B0: M2 pooled@1% gives 1.28%, worst platform 2.51% (WA); M3 worst-group gives 0.78% / 1.96%, at a TPR cost (clean 38.6 -> 28.2%).
+  - RAISE descriptive (thresholds from VISION): B0 1.2% clean / 2.3% laundered; RINE 13.9% laundered. The default logit-0 threshold flags 32.8% of RAISE.
+  - D-008 max |dlogit| 1.1e-4.
+  - Deviations: TPR on 585 test fakes only; synthetic platform = screenshot_sim; B0 TPR is not LOGO.
+  - Stop rule: H2's pre-registered primary is B0/A0, so the count is finalised once A0 arrives from official H1. If A0 agrees, 2 of 3.
