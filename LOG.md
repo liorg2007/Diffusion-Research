@@ -341,3 +341,9 @@
   - Pooled F2 pair-trained probe adopted as a candidate generator-free baseline (0.892 / 0.665 / 0.759 fov512). Not a blur axis, not decoder-specific.
   - Process rules for future pre-registrations: a mechanism gate on fakes per arm; a miss of ≥ 0.10 below the fail line = FAIL regardless of gates; commit code before full runs.
   - KB updated.
+- 2026-10-25 08:32 — SETUP_WSL step 6 PASSED (Phase 3 reproduced on the GPU PC).
+  - Splits are byte-identical. CUDA-vs-CPU D-008 guards ok for every scorer × condition (max |Δlogit| ≤ 5e-5).
+  - 136 AUROC cells vs the Mac results: max |Δ| 0.0019 (B-Free jpeg75_resize05, SD2); 0 cells over 0.005.
+  - Setup gaps worked around without overwriting anything: created the 003/cache dir; data/processed/crop512/sidecar.csv copied from the no-clobber fov_prep sidecar (same lib/preprocess fields); cache/prep_report.json restored from the committed Mac results.json 'prep' section.
+  - GPU outputs saved as step6_gpu_{results.json,tables.md,log}; the Mac files stay canonical.
+  - Next: the official Phase 4 run (H4 first), per the 006 notes sequence.

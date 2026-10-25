@@ -1,0 +1,322 @@
+08:02:58 communityforensics: computing CPU reference (32 imgs x 3 conds)
+08:03:06 cpuref communityforensics clean done in 4s
+08:03:09 cpuref communityforensics jpeg75_resize05 done in 3s
+08:03:12 cpuref communityforensics social_sim done in 3s
+08:03:18 communityforensics clean: D-008 check max|dlogit|=6.96e-05 (tol 0.001)
+08:03:20 communityforensics clean: 132/1961
+08:03:22 communityforensics clean: 232/1961
+08:03:24 communityforensics clean: 332/1961
+08:03:26 communityforensics clean: 432/1961
+08:03:28 communityforensics clean: 532/1961
+08:03:30 communityforensics clean: 632/1961
+08:03:33 communityforensics clean: 732/1961
+08:03:35 communityforensics clean: 832/1961
+08:03:37 communityforensics clean: 932/1961
+08:03:39 communityforensics clean: 1032/1961
+08:03:40 communityforensics clean: 1132/1961
+08:03:42 communityforensics clean: 1232/1961
+08:03:44 communityforensics clean: 1332/1961
+08:03:46 communityforensics clean: 1432/1961
+08:03:48 communityforensics clean: 1532/1961
+08:03:50 communityforensics clean: 1632/1961
+08:03:52 communityforensics clean: 1732/1961
+08:03:54 communityforensics clean: 1832/1961
+08:03:55 communityforensics clean: 1932/1961
+08:03:56 communityforensics clean: 1961/1961
+08:03:56 communityforensics jpeg75_resize05: D-008 check max|dlogit|=6.27e-05 (tol 0.001)
+08:03:58 communityforensics jpeg75_resize05: 132/1961
+08:03:59 communityforensics jpeg75_resize05: 232/1961
+08:04:01 communityforensics jpeg75_resize05: 332/1961
+08:04:02 communityforensics jpeg75_resize05: 432/1961
+08:04:04 communityforensics jpeg75_resize05: 532/1961
+08:04:06 communityforensics jpeg75_resize05: 632/1961
+08:04:07 communityforensics jpeg75_resize05: 732/1961
+08:04:09 communityforensics jpeg75_resize05: 832/1961
+08:04:10 communityforensics jpeg75_resize05: 932/1961
+08:04:11 communityforensics jpeg75_resize05: 1032/1961
+08:04:13 communityforensics jpeg75_resize05: 1132/1961
+08:04:14 communityforensics jpeg75_resize05: 1232/1961
+08:04:16 communityforensics jpeg75_resize05: 1332/1961
+08:04:17 communityforensics jpeg75_resize05: 1432/1961
+08:04:18 communityforensics jpeg75_resize05: 1532/1961
+08:04:20 communityforensics jpeg75_resize05: 1632/1961
+08:04:21 communityforensics jpeg75_resize05: 1732/1961
+08:04:22 communityforensics jpeg75_resize05: 1832/1961
+08:04:24 communityforensics jpeg75_resize05: 1932/1961
+08:04:24 communityforensics jpeg75_resize05: 1961/1961
+08:04:25 communityforensics social_sim: D-008 check max|dlogit|=5.63e-05 (tol 0.001)
+08:04:26 communityforensics social_sim: 132/1961
+08:04:28 communityforensics social_sim: 232/1961
+08:04:30 communityforensics social_sim: 332/1961
+08:04:32 communityforensics social_sim: 432/1961
+08:04:33 communityforensics social_sim: 532/1961
+08:04:35 communityforensics social_sim: 632/1961
+08:04:37 communityforensics social_sim: 732/1961
+08:04:39 communityforensics social_sim: 832/1961
+08:04:40 communityforensics social_sim: 932/1961
+08:04:42 communityforensics social_sim: 1032/1961
+08:04:43 communityforensics social_sim: 1132/1961
+08:04:45 communityforensics social_sim: 1232/1961
+08:04:47 communityforensics social_sim: 1332/1961
+08:04:48 communityforensics social_sim: 1432/1961
+08:04:50 communityforensics social_sim: 1532/1961
+08:04:51 communityforensics social_sim: 1632/1961
+08:04:53 communityforensics social_sim: 1732/1961
+08:04:54 communityforensics social_sim: 1832/1961
+08:04:56 communityforensics social_sim: 1932/1961
+08:04:56 communityforensics social_sim: 1961/1961
+08:04:56 bfree: computing CPU reference (32 imgs x 3 conds)
+normalize RESNET
+08:05:22 cpuref bfree clean done in 25s
+08:05:45 cpuref bfree jpeg75_resize05 done in 23s
+08:06:07 cpuref bfree social_sim done in 22s
+normalize RESNET
+08:06:10 bfree clean: D-008 check max|dlogit|=2.86e-05 (tol 0.001)
+08:06:14 bfree clean: 132/1961
+08:06:18 bfree clean: 232/1961
+08:06:23 bfree clean: 332/1961
+08:06:27 bfree clean: 432/1961
+08:06:31 bfree clean: 532/1961
+08:06:35 bfree clean: 632/1961
+08:06:39 bfree clean: 732/1961
+08:06:43 bfree clean: 832/1961
+08:06:47 bfree clean: 932/1961
+08:06:51 bfree clean: 1032/1961
+08:06:55 bfree clean: 1132/1961
+08:06:59 bfree clean: 1232/1961
+08:07:03 bfree clean: 1332/1961
+08:07:07 bfree clean: 1432/1961
+08:07:11 bfree clean: 1532/1961
+08:07:15 bfree clean: 1632/1961
+08:07:19 bfree clean: 1732/1961
+08:07:24 bfree clean: 1832/1961
+08:07:28 bfree clean: 1932/1961
+08:07:29 bfree clean: 1961/1961
+08:07:30 bfree jpeg75_resize05: D-008 check max|dlogit|=7.19e-05 (tol 0.001)
+08:07:34 bfree jpeg75_resize05: 132/1961
+08:07:39 bfree jpeg75_resize05: 232/1961
+08:07:43 bfree jpeg75_resize05: 332/1961
+08:07:47 bfree jpeg75_resize05: 432/1961
+08:07:51 bfree jpeg75_resize05: 532/1961
+08:07:56 bfree jpeg75_resize05: 632/1961
+08:08:00 bfree jpeg75_resize05: 732/1961
+08:08:04 bfree jpeg75_resize05: 832/1961
+08:08:08 bfree jpeg75_resize05: 932/1961
+08:08:13 bfree jpeg75_resize05: 1032/1961
+08:08:18 bfree jpeg75_resize05: 1132/1961
+08:08:25 bfree jpeg75_resize05: 1232/1961
+08:08:32 bfree jpeg75_resize05: 1332/1961
+08:08:39 bfree jpeg75_resize05: 1432/1961
+08:08:45 bfree jpeg75_resize05: 1532/1961
+08:08:52 bfree jpeg75_resize05: 1632/1961
+08:09:14 bfree jpeg75_resize05: 1732/1961
+08:09:19 bfree jpeg75_resize05: 1832/1961
+08:09:26 bfree jpeg75_resize05: 1932/1961
+08:09:28 bfree jpeg75_resize05: 1961/1961
+08:09:32 bfree social_sim: D-008 check max|dlogit|=4.45e-05 (tol 0.001)
+08:09:43 bfree social_sim: 132/1961
+08:09:53 bfree social_sim: 232/1961
+08:10:09 bfree social_sim: 332/1961
+08:10:15 bfree social_sim: 432/1961
+08:10:19 bfree social_sim: 532/1961
+08:10:24 bfree social_sim: 632/1961
+08:10:28 bfree social_sim: 732/1961
+08:10:33 bfree social_sim: 832/1961
+08:10:38 bfree social_sim: 932/1961
+08:10:42 bfree social_sim: 1032/1961
+08:10:47 bfree social_sim: 1132/1961
+08:10:51 bfree social_sim: 1232/1961
+08:10:56 bfree social_sim: 1332/1961
+08:11:00 bfree social_sim: 1432/1961
+08:11:05 bfree social_sim: 1532/1961
+08:11:09 bfree social_sim: 1632/1961
+08:11:14 bfree social_sim: 1732/1961
+08:11:19 bfree social_sim: 1832/1961
+08:11:23 bfree social_sim: 1932/1961
+08:11:24 bfree social_sim: 1961/1961
+08:11:24 rine: computing CPU reference (32 imgs x 3 conds)
+08:11:43 cpuref rine clean done in 17s
+08:11:56 cpuref rine jpeg75_resize05 done in 13s
+08:12:09 cpuref rine social_sim done in 13s
+08:12:13 rine clean: D-008 check max|dlogit|=1.73e-05 (tol 0.001)
+08:12:17 rine clean: 132/1961
+08:12:19 rine clean: 232/1961
+08:12:22 rine clean: 332/1961
+08:12:24 rine clean: 432/1961
+08:12:27 rine clean: 532/1961
+08:12:29 rine clean: 632/1961
+08:12:32 rine clean: 732/1961
+08:12:34 rine clean: 832/1961
+08:12:37 rine clean: 932/1961
+08:12:39 rine clean: 1032/1961
+08:12:42 rine clean: 1132/1961
+08:12:44 rine clean: 1232/1961
+08:12:47 rine clean: 1332/1961
+08:12:50 rine clean: 1432/1961
+08:12:52 rine clean: 1532/1961
+08:12:55 rine clean: 1632/1961
+08:12:57 rine clean: 1732/1961
+08:12:59 rine clean: 1832/1961
+08:13:02 rine clean: 1932/1961
+08:13:03 rine clean: 1961/1961
+08:13:04 rine jpeg75_resize05: D-008 check max|dlogit|=2.65e-05 (tol 0.001)
+08:13:06 rine jpeg75_resize05: 132/1961
+08:13:09 rine jpeg75_resize05: 232/1961
+08:13:12 rine jpeg75_resize05: 332/1961
+08:13:15 rine jpeg75_resize05: 432/1961
+08:13:17 rine jpeg75_resize05: 532/1961
+08:13:20 rine jpeg75_resize05: 632/1961
+08:13:23 rine jpeg75_resize05: 732/1961
+08:13:26 rine jpeg75_resize05: 832/1961
+08:13:29 rine jpeg75_resize05: 932/1961
+08:13:32 rine jpeg75_resize05: 1032/1961
+08:13:34 rine jpeg75_resize05: 1132/1961
+08:13:37 rine jpeg75_resize05: 1232/1961
+08:13:40 rine jpeg75_resize05: 1332/1961
+08:13:42 rine jpeg75_resize05: 1432/1961
+08:13:45 rine jpeg75_resize05: 1532/1961
+08:13:48 rine jpeg75_resize05: 1632/1961
+08:13:50 rine jpeg75_resize05: 1732/1961
+08:13:53 rine jpeg75_resize05: 1832/1961
+08:13:56 rine jpeg75_resize05: 1932/1961
+08:13:57 rine jpeg75_resize05: 1961/1961
+08:13:58 rine social_sim: D-008 check max|dlogit|=3.47e-05 (tol 0.001)
+08:14:01 rine social_sim: 132/1961
+08:14:04 rine social_sim: 232/1961
+08:14:07 rine social_sim: 332/1961
+08:14:10 rine social_sim: 432/1961
+08:14:12 rine social_sim: 532/1961
+08:14:15 rine social_sim: 632/1961
+08:14:18 rine social_sim: 732/1961
+08:14:21 rine social_sim: 832/1961
+08:14:24 rine social_sim: 932/1961
+08:14:27 rine social_sim: 1032/1961
+08:14:30 rine social_sim: 1132/1961
+08:14:33 rine social_sim: 1232/1961
+08:14:36 rine social_sim: 1332/1961
+08:14:39 rine social_sim: 1432/1961
+08:14:41 rine social_sim: 1532/1961
+08:14:44 rine social_sim: 1632/1961
+08:14:47 rine social_sim: 1732/1961
+08:14:50 rine social_sim: 1832/1961
+08:14:53 rine social_sim: 1932/1961
+08:14:54 rine social_sim: 1961/1961
+08:14:54 clipdet: computing CPU reference (32 imgs x 3 conds)
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+08:15:13 cpuref clipdet clean done in 18s
+08:15:25 cpuref clipdet jpeg75_resize05 done in 12s
+08:15:38 cpuref clipdet social_sim done in 13s
+/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+08:15:43 clipdet clean: D-008 check max|dlogit|=3.37e-05 (tol 0.001)
+08:15:46 clipdet clean: 132/1961
+08:15:48 clipdet clean: 232/1961
+08:15:51 clipdet clean: 332/1961
+08:15:53 clipdet clean: 432/1961
+08:15:56 clipdet clean: 532/1961
+08:15:58 clipdet clean: 632/1961
+08:16:01 clipdet clean: 732/1961
+08:16:03 clipdet clean: 832/1961
+08:16:06 clipdet clean: 932/1961
+08:16:09 clipdet clean: 1032/1961
+08:16:11 clipdet clean: 1132/1961
+08:16:14 clipdet clean: 1232/1961
+08:16:17 clipdet clean: 1332/1961
+08:16:19 clipdet clean: 1432/1961
+08:16:21 clipdet clean: 1532/1961
+08:16:24 clipdet clean: 1632/1961
+08:16:26 clipdet clean: 1732/1961
+08:16:29 clipdet clean: 1832/1961
+08:16:31 clipdet clean: 1932/1961
+08:16:32 clipdet clean: 1961/1961
+08:16:33 clipdet jpeg75_resize05: D-008 check max|dlogit|=5.03e-05 (tol 0.001)
+08:16:35 clipdet jpeg75_resize05: 132/1961
+08:16:38 clipdet jpeg75_resize05: 232/1961
+08:16:41 clipdet jpeg75_resize05: 332/1961
+08:16:44 clipdet jpeg75_resize05: 432/1961
+08:16:47 clipdet jpeg75_resize05: 532/1961
+08:16:49 clipdet jpeg75_resize05: 632/1961
+08:16:52 clipdet jpeg75_resize05: 732/1961
+08:16:55 clipdet jpeg75_resize05: 832/1961
+08:16:57 clipdet jpeg75_resize05: 932/1961
+08:17:00 clipdet jpeg75_resize05: 1032/1961
+08:17:02 clipdet jpeg75_resize05: 1132/1961
+08:17:05 clipdet jpeg75_resize05: 1232/1961
+08:17:07 clipdet jpeg75_resize05: 1332/1961
+08:17:10 clipdet jpeg75_resize05: 1432/1961
+08:17:13 clipdet jpeg75_resize05: 1532/1961
+08:17:16 clipdet jpeg75_resize05: 1632/1961
+08:17:18 clipdet jpeg75_resize05: 1732/1961
+08:17:21 clipdet jpeg75_resize05: 1832/1961
+08:17:24 clipdet jpeg75_resize05: 1932/1961
+08:17:24 clipdet jpeg75_resize05: 1961/1961
+08:17:25 clipdet social_sim: D-008 check max|dlogit|=3.08e-05 (tol 0.001)
+08:17:28 clipdet social_sim: 132/1961
+08:17:31 clipdet social_sim: 232/1961
+08:17:34 clipdet social_sim: 332/1961
+08:17:37 clipdet social_sim: 432/1961
+08:17:40 clipdet social_sim: 532/1961
+08:17:42 clipdet social_sim: 632/1961
+08:17:46 clipdet social_sim: 732/1961
+08:17:49 clipdet social_sim: 832/1961
+08:17:52 clipdet social_sim: 932/1961
+08:17:55 clipdet social_sim: 1032/1961
+08:17:57 clipdet social_sim: 1132/1961
+08:18:00 clipdet social_sim: 1232/1961
+08:18:03 clipdet social_sim: 1332/1961
+08:18:06 clipdet social_sim: 1432/1961
+08:18:08 clipdet social_sim: 1532/1961
+08:18:11 clipdet social_sim: 1632/1961
+08:18:14 clipdet social_sim: 1732/1961
+08:18:17 clipdet social_sim: 1832/1961
+08:18:20 clipdet social_sim: 1932/1961
+08:18:21 clipdet social_sim: 1961/1961
+08:18:57 b0 features clean: 2635 imgs, dim 1536
+08:19:30 b0 features jpeg75_resize05: 2396 imgs, dim 1536
+08:20:08 b0 features social_sim: 2396 imgs, dim 1536
+08:20:30 b0 probe trained n=674 C=0.01
+08:20:36 b0_dinov2 clean: D-008 check max|dlogit|=2.42e-05, max|dfeat|=4.57e-04
+08:20:40 b0_dinov2 jpeg75_resize05: D-008 check max|dlogit|=9.23e-06, max|dfeat|=6.77e-05
+08:20:44 b0_dinov2 social_sim: D-008 check max|dlogit|=9.92e-06, max|dfeat|=1.24e-04
+08:23:09 b0 LOGO clean: macro AUROC 0.9164
+08:25:30 b0 LOGO jpeg75_resize05: macro AUROC 0.8606
+08:27:54 b0 LOGO social_sim: macro AUROC 0.9033
+Traceback (most recent call last):
+  File "/home/zera/project/Diffusion-Research/experiments/003-baselines-eval/run.py", line 621, in <module>
+    stage_report()
+  File "/home/zera/project/Diffusion-Research/experiments/003-baselines-eval/run.py", line 462, in stage_report
+    side = pd.read_csv(PROC / "sidecar.csv")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 872, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 300, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1643, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1907, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.venv/lib/python3.12/site-packages/pandas/io/common.py", line 930, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/zera/project/Diffusion-Research/data/processed/crop512/sidecar.csv'
+08:29:30 metrics done in 54s
+Traceback (most recent call last):
+  File "/home/zera/project/Diffusion-Research/experiments/003-baselines-eval/run.py", line 621, in <module>
+    stage_report()
+  File "/home/zera/project/Diffusion-Research/experiments/003-baselines-eval/run.py", line 493, in stage_report
+    prep = json.loads((CACHE / "prep_report.json").read_text())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/zera/project/Diffusion-Research/experiments/003-baselines-eval/cache/prep_report.json'
+08:31:38 metrics done in 53s
+08:32:25 report written
