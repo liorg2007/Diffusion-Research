@@ -131,3 +131,12 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - **Limit raised for E9 (2026-10-26 07:46).** Under the owner's standing instruction ("if the hypothesis looks good, bring the limit up" and "lets explore further"), raised by one for E9 (Amendment 18).
   - Evidence: the E8 critic's post-hoc few-shot check. One held-out-source offset direction from that source's train-role reals lifts RAISE 0.764 → 0.936 (FPR 19.1 → 3.8%) and OI 0.856 → 0.933 (16.0 → 6.5%). With 25–50 target reals it still gives 0.89–0.93.
   - The critic's default was "stop and finalize". This raise is the owner's call, logged here.
+
+**D-017 — Owner relaxes the acceptance bar for exploratory methods (2026-10-26 08:11, before any E9 result exists; only results/choice.json, run.log and selftest.txt existed)**
+- **Owner's words:** "Lets lower the restrictions, if we have a novel methodology for distinction, if the error is a bit above 1% its OK because we might have a new discovery, and lowering the precentage might be a case of resource problem or even a bit more research. You are very good, don't give up!"
+- **New "DISCOVERY" tier** (applies to E9 and later exploratory methods). Every held-out real source must reach, at jpeg75_resize05, with the frozen method:
+  - AUROC ≥ 0.90; and
+  - FPR ≤ 5% at the deployed threshold;
+  - with the gain over the simple baseline (A-thr for E9) still required.
+- **Labels.** The original pre-registered labels (E9: PASS / KILL / INCONCLUSIVE) are ALWAYS reported unchanged. The DISCOVERY tier is an additional label, never a replacement, and it is decided by the rule above, fixed before any result.
+- **Unchanged.** The Phase 5 target (FPR ≤ 1% on fresh phone photos) stays the stated goal. A DISCOVERY means "novel and promising, needs more data or compute to reach the target", not "target met".

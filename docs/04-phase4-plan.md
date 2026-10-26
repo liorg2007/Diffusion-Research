@@ -644,3 +644,5 @@ Anything else is INCONCLUSIVE. Each label is reported with drop-one-generator ro
 - Otherwise INCONCLUSIVE.
 - Each label is reported with drop-one-generator robustness, and the n-curve is reported.
 - **Owner phone photos**, when supplied, are the confirmatory test: a 4th held-out pipeline, with all choices frozen.
+
+**Amendment 18 addendum (2026-10-26 08:11, before any E9 result; D-017).** E9 gets an additional DISCOVERY label: every held-out source at jpeg75_resize05, n = 50, frozen A-off, block 8, fov512 must reach AUROC ≥ 0.90 AND FPR ≤ 5%, AND beat A-thr on FPR at matched TPR on ≥ 2 of 3 sources. The original PASS / KILL / INCONCLUSIVE label is reported unchanged next to it.
