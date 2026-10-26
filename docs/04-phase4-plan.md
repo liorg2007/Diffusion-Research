@@ -646,3 +646,42 @@ Anything else is INCONCLUSIVE. Each label is reported with drop-one-generator ro
 - **Owner phone photos**, when supplied, are the confirmatory test: a 4th held-out pipeline, with all choices frozen.
 
 **Amendment 18 addendum (2026-10-26 08:11, before any E9 result; D-017).** E9 gets an additional DISCOVERY label: every held-out source at jpeg75_resize05, n = 50, frozen A-off, block 8, fov512 must reach AUROC ≥ 0.90 AND FPR ≤ 5%, AND beat A-thr on FPR at matched TPR on ≥ 2 of 3 sources. The original PASS / KILL / INCONCLUSIVE label is reported unchanged next to it.
+
+## Amendment 19 (2026-10-26 22:14, before any data is downloaded or any result exists): E10, does real-source DIVERSITY fix the unseen-pipeline problem? (experiments/019-source-diversity)
+**Why.** E7, E8 and E9 all fail on the same obstacle: a probe trained with 2 real sources calls a NEW real pipeline fake (RAISE 19.1%, OI 16.0% FPR at jpeg75_resize05; `016-loso/results/tables.md`). E7 measured a small, real gain from 1 → 2 training sources (+0.032 [+0.025, +0.039]). E10 asks whether many more, deliberately different real pipelines close the gap, without any adaptation to the test pipeline. Owner instruction 2026-10-26 ("go with option 2"); limit raise logged in D-016.
+
+**Real sources (6).** Each is held out in turn.
+1. **VISION, RAISE, OI:** as in E7 (same files, splits and groups).
+2. **UNS, Unsplash Lite 1.4 (new):** professional and enthusiast photos, the "polished" style that E7's OI false alarms came from.
+   - 600 photos, at most 3 per photographer; photo_submitted_at < 2022-01-01 (guard against AI-generated content).
+   - Fetched from the official images.unsplash.com URL in the dataset at w=1600, q=95, fm=jpg (an imgix re-encode, recorded).
+   - Groups = photographer. Licence: Unsplash Lite terms (commercial and non-commercial use allowed).
+3. **WMC, Wikimedia Commons "Quality images" (new):** community-reviewed enthusiast photos with varied cameras and editing.
+   - 600 JPEG files, uploaded before 2022-01-01, licence CC BY / CC BY-SA / CC0 / public domain, checked per file from the API extmetadata; at most 3 per uploader.
+   - Fetched as the official 1600-px thumbnail from upload.wikimedia.org. Groups = uploader.
+4. **HDRP, Google HDR+ burst dataset (new):** final.jpg of the 2017-10-23 pipeline, Nexus/Pixel phones with computational merging. This is the closest public stand-in for a phone ISP.
+   - 600 bursts from gs://hdrplusdata/20171106/results_20171023/, originals, no re-encode. Groups = the 4-character burst prefix. Licence: CC BY-SA.
+- **For each new source:** short side ≥ 512; split by group into 300 train / 100 calib / 200 test (seed 0). EXIF is stripped by the existing prep (D-009).
+- **The OWNER source** is used if ≥ 150 photos exist before the run, otherwise reported as pending.
+
+**Fixed from E7.** Fakes, LOGO over the 7 training generators, FLUX test-only, caption-family assignment, fov512 prep, 004 feature pipeline, T-aug probe, D-008 guard on the new GPU features, the 1,000-replicate cluster bootstrap (new clusters: photographer, uploader, burst prefix), and threshold reading A (1% FPR on the training sources' calib reals, clean), with reading B reported.
+
+**Analysis.** fov512, jpeg75_resize05, F_b8 primary; F_last reported.
+- For each held-out source S: train with every subset of the 5 other sources (k = 1…5; 31 subsets); F_last only at k = 5.
+- **Size-matched control:** at k = 5, subsample the training reals to the mean real count of the k = 2 subsets (5 seeded draws, grouped). This separates "more kinds of photos" from "more photos".
+- **Leak check (written before running, per the E9 lesson).**
+  - Every operation is applied identically to reals and fakes.
+  - The held-out source contributes only test reals, and none of its train or calib reals is used.
+  - There is no per-source normalisation or adaptation.
+  - Thresholds come only from the training sources' calib reals.
+  - Fake test rows are the same in every fold.
+
+**Labels** (k = 5, fov512, jpeg75_resize05, F_b8, reading A; all reported, none replaces another):
+- **DIVERSITY HELPS:** the mean over the 6 held-out sources of AUROC(k=5) − AUROC(k=2), averaged over all k = 2 subsets, is ≥ 0.03 with CI lo > 0, AND the mean FPR difference has CI hi < 0. "Diversity, not quantity" is claimed only if the size-matched k = 5 run also meets the AUROC part.
+- **DISCOVERY (D-017):** every held-out source reaches AUROC ≥ 0.90 and FPR ≤ 5% at k = 5, AND DIVERSITY HELPS holds.
+- **E7-rule label:** PASS / KILL / INCONCLUSIVE, exactly as Amendment 16 (with b8 − last and the learning curve computed at k = 5 vs k = 1…4).
+- **KILL of the diversity line:** the DIVERSITY HELPS AUROC difference has CI lo ≤ 0, OR any held-out source at k = 5 has AUROC < 0.75 or FPR > 10%.
+- **Key secondary:** VISION, RAISE and OI held out with 5 training sources vs E7's 2 (paired, the same test rows).
+- **Robustness:** drop-one-generator and drop-one-source (each new source removed from the pool) are reported for every label.
+
+**Budget.** About 4.5 GB of new downloads (Unsplash metadata zip 0.32 GB, about 0.6 GB of Unsplash images, about 0.5 GB of Commons, about 3.6 GB of HDR+), bringing the total to about 14.4 GB of the 20 GB ceiling (D-015). No single item is over 5 GB. HDR+ originals are deleted after prep and feature caching; a manifest lets them be re-fetched.

@@ -132,6 +132,10 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
   - Evidence: the E8 critic's post-hoc few-shot check. One held-out-source offset direction from that source's train-role reals lifts RAISE 0.764 → 0.936 (FPR 19.1 → 3.8%) and OI 0.856 → 0.933 (16.0 → 6.5%). With 25–50 target reals it still gives 0.89–0.93.
   - The critic's default was "stop and finalize". This raise is the owner's call, logged here.
 
+- **Limit raised for E10 (2026-10-26 22:14).** The owner, after the E9 KILL, chose "option 2" (many more real-photo sources): "Please explain what you did so far, then go with option 2." The stop-rule limit is raised by one, for E10 (Amendment 19).
+  - Evidence: E7's 1 → 2 source gain (+0.032, CI lo > 0) and the E7 critic's mechanism (the false alarms are polished photos, a style absent from training).
+  - E10 tests training-time diversity only: no per-pipeline adaptation, so E9's leak path does not exist.
+
 **D-017 — Owner relaxes the acceptance bar for exploratory methods (2026-10-26 08:11, before any E9 result exists; only results/choice.json, run.log and selftest.txt existed)**
 - **Owner's words:** "Lets lower the restrictions, if we have a novel methodology for distinction, if the error is a bit above 1% its OK because we might have a new discovery, and lowering the precentage might be a case of resource problem or even a bit more research. You are very good, don't give up!"
 - **New "DISCOVERY" tier** (applies to E9 and later exploratory methods). Every held-out real source must reach, at jpeg75_resize05, with the frozen method:
