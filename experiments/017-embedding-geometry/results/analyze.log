@@ -1,0 +1,12 @@
+07:30:09 E8 analyze m1 fov512 (3s)
+07:30:11 E8 analyze m2 fov512 (2s)
+07:30:12 E8 analyze m3 fov512 (1s)
+07:30:20 E8 lap fov512/clean done
+07:30:27 E8 lap fov512/jpeg75_resize05 done
+07:30:28 E8 analyze texture fov512 (16s)
+07:30:30 E8 analyze m1 orig (3s)
+07:30:32 E8 analyze m2 orig (2s)
+07:30:33 E8 analyze m3 orig (1s)
+07:30:39 E8 lap orig/clean done
+07:30:46 E8 lap orig/jpeg75_resize05 done
+07:30:47 E8 analyze texture orig (13s)

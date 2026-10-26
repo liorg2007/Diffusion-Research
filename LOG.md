@@ -411,3 +411,9 @@
 - 2026-10-25 21:28 — Phase 5 report written (fable/high, docs/03-final-report.md). Lead checked the derived n=368 (two-sided 95% CP, 0 errors) and the key numbers against their sources.
   - Bottom line: no Phase 5 target met; the central obstacle is unseen real sources (E7).
   - Housekeeping: KB statuses for H1/H2/H4 set to their official outcomes; new kb/ideas/midlayer-laundered-probe.md (negative); README status rewritten; STORAGE total corrected to ~9.9 GB.
+- 2026-10-26 07:40 — E8 embedding geometry done (017-embedding-geometry/results/; CPU ~10 min).
+  - R1 'entangled' holds: real-real C2ST 0.977 vs real-fake 0.984, ratio 0.994. At ceiling, so weakly discriminating.
+  - R2 FAILS: probe directions per real source barely agree (cos 0.29-0.39, about split-half noise). The RAISE twin direction transfers to VISION (AUROC 0.802, FPR 0.9%) but not to OI (0.554, FPR 15%).
+  - R3 KILL: removing the source subspace changes nothing (VISION 0.898, RAISE 0.687, OI 0.797 / 17.5% FPR vs E7). Holds in all drop-one subsets and every k.
+  - Deviation to review: subspace = LDA + mean-difference + PCs, added after a synthetic check and before held-out results.
+  - Reading: no source-invariant linear diffusion direction in DINOv2-base features on our data. Launching opus/high critic.

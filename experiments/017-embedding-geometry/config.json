@@ -1,0 +1,22 @@
+{
+ "experiment": "017-embedding-geometry (E8, Amendment 17 of docs/04-phase4-plan.md; exploratory under D-016)",
+ "seed": 0,
+ "n_boot": 1000,
+ "primary_arm": "fov512",
+ "arms": ["fov512", "orig"],
+ "eval_conds": ["clean", "jpeg75_resize05"],
+ "t_aug": ["clean", "jpeg75_resize05", "social_sim"],
+ "launder_cond": "jpeg75_resize05",
+ "sources": ["VISION", "RAISE", "OI"],
+ "heldout_for_dtwin": ["VISION", "OI"],
+ "feature_slices": {"F_b8": [1536, 3072], "F_last": [3072, 4608], "F_cat": [0, 4608]},
+ "m1": {"feats": {"F_b8": {"seeds": 3, "matched_subsamples": 3}, "F_last": {"seeds": 1, "matched_subsamples": 0}, "F_cat": {"seeds": 1, "matched_subsamples": 0}},
+        "n_splits": 5, "matched_n": 399, "real_pools": "E7 train_pools (VISION = natives only)", "fake_rows": "all fakes, all roles, all 8 generators",
+        "statistic": "pooled out-of-fold AUROC (group-held-out StratifiedGroupKFold), averaged over CV seeds; cluster bootstrap over device/caption-family/image groups"},
+ "m2": {"feats": ["F_b8", "F_last"], "dtwin_headline": "mean over the 3 T-aug conditions of the pair differences", "split_half_reps": 10},
+ "m3": {"feat": "F_b8", "extra_pcs_grid": [0, 1, 2, 4, 8], "k_def": "removed dims k = 2(n_train_sources-1) + j: LDA + mean-difference + j PCs", "k_rule": "smallest k whose calib source-ID AUROC is within 0.02 of the minimum over the grid",
+        "calib_tol": 0.02, "scaler": "training reals only (T-aug stack)"},
+ "readings": {"R1_ratio": 0.9, "R2_cos_min": 0.5, "R2_auroc_min": 0.80, "R3_auroc_min": 0.85, "R3_fpr_max": 0.05, "kill_auroc_gain": 0.03, "kill_fpr_gain": 0.05},
+ "fpr_target": 0.01,
+ "map": {"max_points": 1800, "tsne_perplexity": 30}
+}

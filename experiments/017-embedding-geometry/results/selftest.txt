@@ -1,0 +1,28 @@
+PASS cosine(a, a) = 1, cosine(a, -a) = -1 
+PASS shared shift -> probe-normal cosines ~ 1 (min 0.967)
+PASS shared shift -> d_twin ~ shared direction and ~ probe normals (0.979, 0.974)
+PASS to_common keeps direction (cosine of rescaled normals stays high) 
+PASS source-specific shifts -> probe-normal cosines ~ 0 (max |cos| 0.053)
+PASS source_subspace is orthonormal with k = 2(n_src-1)+n_extra (40, 6)
+PASS source removal raises held-out AUROC (style shift) (0.078 -> 0.729)
+PASS U was estimated from training reals only (no held-out row used): style axes explained (|N^T U_src| = 1.38)
+PASS project_out with k=0 is identity 
+PASS choose_k picks the smallest k within tol of the minimum 
+PASS r3: PASS-R3 
+PASS r3: KILL (no source improves by >= 0.03 AUROC or >= 5 FPR points) 
+PASS r3: INCONCLUSIVE (one source improves, not all pass) 
+PASS r3 boundary: +0.03 AUROC counts as an improvement (not KILL); +0.029 does (KILL) 
+PASS fov512: twin pairs are train-role, RAISE real with its own caption id (99 pairs, 71 reals)
+PASS fov512: training rows of held-out VISION contain no VISION pool and no non-train role 
+PASS fov512: training rows of held-out RAISE contain no RAISE pool and no non-train role 
+PASS fov512: training rows of held-out OI contain no OI pool and no non-train role 
+PASS fov512: no caption id shared by train and calib/test 
+PASS fov512: E7 OI AUROC / FPR reproduced by eval_scores (AUROC 0.8085 vs 0.8085, FPR 0.160)
+PASS orig: twin pairs are train-role, RAISE real with its own caption id (99 pairs, 71 reals)
+PASS orig: training rows of held-out VISION contain no VISION pool and no non-train role 
+PASS orig: training rows of held-out RAISE contain no RAISE pool and no non-train role 
+PASS orig: training rows of held-out OI contain no OI pool and no non-train role 
+PASS orig: no caption id shared by train and calib/test 
+PASS orig: E7 OI AUROC / FPR reproduced by eval_scores (AUROC 0.7534 vs 0.7534, FPR 0.350)
+PASS fov512 k=0 refit on standardized features reproduces E7's cached scores (affine-equivalent) (corr 1.0000000, max|d| 8.68e-05)
+ALL PASS
