@@ -1,0 +1,57 @@
+{
+ "fov512/clean": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 7.16777299780702e-06,
+  "max_abs_dlogit_b8": 8.936413267335297e-05,
+  "max_abs_feature_diff": 5.245208740234375e-05,
+  "max_scaled_feature_diff": 1.0173252121603582e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/jpeg75_resize05": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.0206432092374484e-05,
+  "max_abs_dlogit_b8": 0.00014405680291673661,
+  "max_abs_feature_diff": 0.0003333091735839844,
+  "max_scaled_feature_diff": 3.5019289498450235e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/mavali_medium": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.6012079462335294e-05,
+  "max_abs_dlogit_b8": 5.825590086949717e-05,
+  "max_abs_feature_diff": 5.7697296142578125e-05,
+  "max_scaled_feature_diff": 1.1062763405789156e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/screenshot_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.3867267217193557e-05,
+  "max_abs_dlogit_b8": 4.951768530681022e-05,
+  "max_abs_feature_diff": 8.368492126464844e-05,
+  "max_scaled_feature_diff": 1.342018640571041e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/social_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b0": 1.5137033279044587e-05,
+  "max_abs_dlogit_b8": 3.861188780795999e-05,
+  "max_abs_feature_diff": 7.639825344085693e-05,
+  "max_scaled_feature_diff": 9.346127626486123e-06,
+  "n": 32,
+  "ok": true
+ }
+}

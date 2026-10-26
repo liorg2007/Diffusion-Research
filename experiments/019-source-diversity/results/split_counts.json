@@ -1,0 +1,59 @@
+{
+ "counts": {
+  "UNS": {
+   "n_manifest": 600,
+   "n_short_lt_512_dropped": 0,
+   "n_images": 600,
+   "images": {
+    "train": 300,
+    "calib": 100,
+    "test": 200
+   },
+   "n_groups": {
+    "calib": 87,
+    "test": 175,
+    "train": 255
+   },
+   "max_group_size": 3
+  },
+  "WMC": {
+   "n_manifest": 600,
+   "n_short_lt_512_dropped": 0,
+   "n_images": 600,
+   "images": {
+    "train": 300,
+    "calib": 100,
+    "test": 200
+   },
+   "n_groups": {
+    "calib": 61,
+    "test": 102,
+    "train": 163
+   },
+   "max_group_size": 3
+  },
+  "HDRP": {
+   "n_manifest": 600,
+   "n_short_lt_512_dropped": 0,
+   "n_images": 600,
+   "images": {
+    "train": 300,
+    "calib": 99,
+    "test": 201
+   },
+   "n_groups": {
+    "calib": 9,
+    "test": 12,
+    "train": 22
+   },
+   "max_group_size": 53
+  }
+ },
+ "owner": {
+  "status": "pending",
+  "dir": "data/raw/owner_phone",
+  "n_images": 0,
+  "min_images": 150,
+  "reason": "directory missing"
+ }
+}

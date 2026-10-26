@@ -1,0 +1,72 @@
+{
+ "mode": "fov (short side -> 512, PIL BICUBIC antialiased, center crop 512)",
+ "size": 512,
+ "n_rows_in": 1800,
+ "n_missing_raw_dropped": 0,
+ "n_processed": 1800,
+ "n_ok": 1800,
+ "n_short_side_lt_512": 0,
+ "n_error": 0,
+ "short_side_lt_512": [],
+ "no_clobber": {
+  "enabled": true,
+  "n_existing_equal": 0,
+  "n_existing_differ": 0,
+  "n_newly_written": 1800
+ },
+ "raw_sha_match": {
+  "n_match": 1800,
+  "n_total": 1800
+ },
+ "shape_ok_512_rgb": 1800,
+ "counts_pool_split": [
+  {
+   "pool": "commons",
+   "split": "calib",
+   "n": 100
+  },
+  {
+   "pool": "commons",
+   "split": "test",
+   "n": 200
+  },
+  {
+   "pool": "commons",
+   "split": "train",
+   "n": 300
+  },
+  {
+   "pool": "hdrplus",
+   "split": "calib",
+   "n": 99
+  },
+  {
+   "pool": "hdrplus",
+   "split": "test",
+   "n": 201
+  },
+  {
+   "pool": "hdrplus",
+   "split": "train",
+   "n": 300
+  },
+  {
+   "pool": "unsplash",
+   "split": "calib",
+   "n": 100
+  },
+  {
+   "pool": "unsplash",
+   "split": "test",
+   "n": 200
+  },
+  {
+   "pool": "unsplash",
+   "split": "train",
+   "n": 300
+  }
+ ],
+ "out_dir": "data/processed/fov512",
+ "seconds": 38.08492469787598
+}
+wrote /home/zera/project/Diffusion-Research/experiments/019-source-diversity/_prep/out_fov512.csv 1800 rows

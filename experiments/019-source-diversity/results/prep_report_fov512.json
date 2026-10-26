@@ -1,0 +1,133 @@
+{
+ "mode": "fov (short side -> 512, PIL BICUBIC antialiased, center crop 512)",
+ "size": 512,
+ "n_rows_in": 1800,
+ "n_missing_raw_dropped": 0,
+ "n_processed": 1800,
+ "n_ok": 1800,
+ "n_short_side_lt_512": 0,
+ "n_error": 0,
+ "short_side_lt_512": [],
+ "no_clobber": {
+  "enabled": true,
+  "n_existing_equal": 0,
+  "n_existing_differ": 0,
+  "n_newly_written": 1800
+ },
+ "raw_sha_match": {
+  "n_match": 1800,
+  "n_total": 1800
+ },
+ "shape_ok_512_rgb": 1800,
+ "manifest_preflight": {
+  "n_manifest_rows_excl_latent_diffusion": 2920,
+  "n_short_side_lt_512": 0,
+  "short_side_lt_512_by_generator": {},
+  "min_short_side": 576,
+  "by_generator": [
+   {
+    "generator": "dalle2",
+    "count": 120,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "dalle3",
+    "count": 120,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "firefly",
+    "count": 120,
+    "min": 1536,
+    "median": 1792.0
+   },
+   {
+    "generator": "flux",
+    "count": 150,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "midjourney-v5",
+    "count": 120,
+    "min": 896,
+    "median": 896.0
+   },
+   {
+    "generator": "real",
+    "count": 1900,
+    "min": 718,
+    "median": 1152.0
+   },
+   {
+    "generator": "sd3_large",
+    "count": 150,
+    "min": 1024,
+    "median": 1024.0
+   },
+   {
+    "generator": "stable-diffusion-2",
+    "count": 120,
+    "min": 576,
+    "median": 768.0
+   },
+   {
+    "generator": "stable-diffusion-xl",
+    "count": 120,
+    "min": 576,
+    "median": 832.0
+   }
+  ]
+ },
+ "counts_pool_split": [
+  {
+   "pool": "commons",
+   "split": "calib",
+   "n": 100
+  },
+  {
+   "pool": "commons",
+   "split": "test",
+   "n": 200
+  },
+  {
+   "pool": "commons",
+   "split": "train",
+   "n": 300
+  },
+  {
+   "pool": "hdrplus",
+   "split": "calib",
+   "n": 99
+  },
+  {
+   "pool": "hdrplus",
+   "split": "test",
+   "n": 201
+  },
+  {
+   "pool": "hdrplus",
+   "split": "train",
+   "n": 300
+  },
+  {
+   "pool": "unsplash",
+   "split": "calib",
+   "n": 100
+  },
+  {
+   "pool": "unsplash",
+   "split": "test",
+   "n": 200
+  },
+  {
+   "pool": "unsplash",
+   "split": "train",
+   "n": 300
+  }
+ ],
+ "out_dir": "data/processed/fov512",
+ "seconds": 38.08492469787598
+}
