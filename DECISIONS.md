@@ -125,3 +125,6 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - **Limit raised for E7 (2026-10-25 20:50).** Under the owner's "if the hypothesis looks good, bring the limit up", the stop-rule limit is raised by one, for E7 only.
   - Evidence: E6 P1 PASS (block 8, laundered training: +0.092 [+0.069, +0.121] laundered macro over B0, robust to every single-generator drop; +0.07 on held-out launderings). The critic (`015/results/critique.md`) rates it "worth exactly one more bounded experiment".
   - E7 has hard pass/kill rules (Amendment 16). If it is killed, the mid-level line is closed with no further raise.
+- **Limit raised again (2026-10-26 07:13).** The owner said: "So please raise the boundry, and lets explore further." The stop-rule limit is raised by one more, for E8 (Amendment 17).
+  - E8 is a diagnostic of embedding geometry: does a source-invariant diffusion direction exist? It is motivated by E5 (the difference survives laundering) and E7 (the KILL is a real-source-domain effect).
+  - The mid-level detector line itself stays closed. E8 makes no detector claim unless its own pre-registered criteria pass.

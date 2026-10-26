@@ -596,3 +596,32 @@ Reporting: an "atlas" of effect sizes (statistic × generator × condition) plus
 
 **Kill:** any held-out source with AUROC < 0.75 or FPR > 10%.
 Anything else is INCONCLUSIVE. Each label is reported with drop-one-generator robustness.
+
+## Amendment 17 (2026-10-26 07:13, before any result): E8, embedding geometry and a source-invariant diffusion direction (experiments/017-embedding-geometry)
+**Question.** In DINOv2 features (B0 last layer, block 8, blocks 4/8/12), is there a "diffusion direction" that is the same no matter which real source you start from? Or is real-vs-fake entangled with real-source identity?
+
+**Data.**
+- Sources: E7's three real sources (VISION, RAISE, OI) and its fakes (Synthbuster 6 + SD3.5 + FLUX). FLUX is test-only.
+- Caches: the E7/004 caches, arm fov512 (primary) and orig.
+- Conditions: clean and jpeg75_resize05.
+- No new downloads; CPU only.
+
+**Measures.**
+- **M1, source separation vs real/fake separation.** Device/id-held-out C2ST AUROC for each real-source pair (VISION–RAISE, VISION–OI, RAISE–OI), compared with each source vs the fakes. Reported as a ratio.
+- **M2, direction consistency.**
+  - d_twin = mean(fake twin − RAISE real) within RAISE caption families (train ids only).
+  - d_probe(S) = the unit normal of a probe trained on real source S vs the fakes, for each S.
+  - Report the cosine similarities between the d_probe(S), and between d_twin and each d_probe(S).
+  - Report the AUROC of the d_twin projection alone on each held-out source (VISION, OI) vs held-out-generator fakes, plus its FPR at a 1% threshold set on RAISE calib reals.
+- **M3, source-nuisance removal.** For each held-out source S:
+  - estimate the "source subspace" U_k from the TRAINING real sources only (LDA directions between source means, plus the top-k PCA of the between-source mean differences, with k ≤ the number of training sources − 1 + 8);
+  - project it out, retrain the E7 probe, and evaluate on S;
+  - k is chosen on training-source calib data only.
+- **M4, a 2-D map** (PCA, and UMAP if available without installing; otherwise t-SNE from sklearn), coloured by source and by real/fake. Descriptive only.
+
+**Pre-registered readings** (fov512, jpeg75_resize05, block 8):
+- **R1 (entangled):** a mean real-real C2ST ≥ 0.9× the mean real-vs-fake C2ST is read as "source differences are as large as real/fake differences".
+- **R2 (invariant direction exists):** all cosines between the d_probe(S) are ≥ 0.5, AND the d_twin projection reaches AUROC ≥ 0.80 on both held-out sources.
+- **R3 (removal works, the only detector-relevant outcome):** M3 brings every held-out source to AUROC ≥ 0.85 and FPR ≤ 5%. That would be a candidate to re-open detector work (E9), with owner photos as the acceptance test. Kill for M3: no held-out source improves by ≥ 0.03 in AUROC or by ≥ 5 points in FPR over E7.
+
+**Guards.** Drop-one-generator robustness for R2/R3; texture baseline reported. No GPU expected (D-008 applies if any is used).
