@@ -439,3 +439,13 @@ env/.venv/bin/python -I experiments/lib/tests/run_all.py
 
 **The stop rule**
 - The stop rule was overridden by the owner (D-016), and its limit was raised once for E7. Everything after the official H1/H2 results is exploratory and must not be read as confirmatory.
+
+## Addendum (2026-10-26): E8 and E9, after this report was first written
+- **E8, embedding geometry** (`experiments/017-embedding-geometry/results/`, critique.md). The real sources differ from each other almost as much as from the fakes (C2ST 0.977 vs 0.984). The fake directions per real source are only partly shared, so there is no single source-invariant linear "diffusion direction" findable with 2–3 sources in DINOv2 block 8. Projecting out the source subspace did not help (R3 KILL).
+- **E9, real-anchor adaptation** (`experiments/018-real-anchor/results/`, critique.md). KILL.
+  - The pre-registered A-off passed literally (0.957 / 0.985 / 0.951), but that was a label leak introduced by the lead's pre-registration: the shift was applied only to the held-out source's real test images.
+  - The deployable reading (shift every image) leaves AUROC unchanged (0.917 / 0.689 / 0.809).
+  - The label-agnostic A-proj gains +0.188 (RAISE) and +0.084 (OI) but stays below the bars: RAISE 0.877 [0.852, 0.899], OI FPR 8.3% [5.3, 11.7] at n = 50.
+  - No label-agnostic cell meets the D-017 DISCOVERY tier.
+  - The E8 critic's post-hoc few-shot lift, recomputed like for like (LOGO, n = 50), is RAISE about 0.879 and OI about 0.886. The earlier "0.936 / 0.933" were an oracle using all target reals with full-model scoring.
+- **Conclusion.** The real-anchor line is closed (critic recommendation; no further limit raise). The central obstacle stated in §4 stands: detectors learn the real-photo pipeline, and a few anchor photos only partly correct it (≈ 0.88 AUROC, 4–8% FPR on unseen sources).

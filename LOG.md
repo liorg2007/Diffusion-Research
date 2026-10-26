@@ -424,3 +424,4 @@
   - Deployment reading (shift all images): AUROC unchanged (0.917/0.689/0.809), only the threshold moves, no gain over A-thr: KILL.
   - Label-agnostic A-proj: RAISE 0.877/4.5%, OI 0.893/8.3% (n=50); n=100 OI 0.903/7.6%: KILL; not DISCOVERY (D-017).
   - Lead's reading: E9 = KILL. The E8 critic's post-hoc few-shot numbers need re-checking for the same leak. The 'real-anchor' artifact page overstates the fix and will be corrected. Launching opus/high critic.
+- 2026-10-26 09:21 — E9 critic (opus/high): leak confirmed (50 train FAKES used as 'anchors' also score ~0.999; the shift equals 2.6 real-score SDs on RAISE). E9 = KILL. The E8 post-hoc check had no leak but was inflated by full-model scoring and all-reals use; like for like: RAISE ~0.879, OI ~0.886. A-proj gain real but below DISCOVERY. Real-anchor line CLOSED; no further limit raise. Final report addendum written; artifact page corrected; apply_to_new_source.py flagged as not to be used.

@@ -75,3 +75,7 @@ A-off AUROC / FPR: VISION 0.970 / 0.1%, RAISE 0.986 / 0.0%, OI 0.965 / 3.1% (INC
 
 ## Files
 `config.json`, `run.py`, `selftest.py`, `apply_to_new_source.py`, `results/` (`choice.json`, `results.json`, `tables.md`, `scores_long.csv.gz`, `ncurve.png`, `selftest.txt`, `run.log`), `cache/` (git-ignored, 531 MB: probes, A-proj score tensors, per-method eval pickles).
+
+## Lead note after the critique (2026-10-26)
+- E9 = KILL. The literal A-off PASS is a label leak (only the test reals were shifted); see results/critique.md.
+- `apply_to_new_source.py` still implements A-off. It must NOT be used as a test. The only honest test for new owner photos is A-proj with an anchor-set threshold, run once and frozen beforehand. Re-freezing it needs a new pre-registration.
