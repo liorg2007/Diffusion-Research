@@ -1,0 +1,91 @@
+PASS split: 600 images, groups <= 3 -> exactly 300/100/200 {'train': 300, 'calib': 100, 'test': 200}
+PASS split: every group lies in exactly ONE split 
+PASS split: deterministic (same seed twice) 
+PASS split: seed matters 
+PASS split: shuffling the image order does not change a group's split 
+PASS split: 590 images -> train 300, calib 100, test gets the remainder (190), reported exactly {'train': 300, 'calib': 100, 'test': 190}
+PASS split: large groups (up to 12 images): all images assigned, whole groups {'train': 300, 'calib': 100, 'test': 200}
+PASS new_rows: 603 manifest rows, 1 too small -> 602 kept, dropped count reported 
+PASS new_rows: 602 images (2 above the caps) -> each bucket within +3 of its cap (overflow groups go to the bucket with most room), roles by whole group, in_scoring_set only for test 
+PASS fits: no duplicate (feat, T, variant) 
+PASS fits: F_b8 = all 62 non-empty subsets of size 1..5 of the 6 sources 
+PASS fits: for each held-out S all 31 subsets of the other 5 are fitted (186 (S, T) pairs) 
+PASS fits: F_last at k = 5 only for the main labels (6 sets) 
+PASS fits: + 12 F_last sets at k = 4 for the drop-one-source E7-rule labels (config drop_source_flast) 
+PASS fits: size-matched control = 6 held-out x 5 seeds, F_b8, T = the 5 others 
+PASS fits: 110 combos x 8 models = 880 probes (110)
+PASS canon: source order fixed 
+PASS size-match target for OI held out = mean over the 10 pairs of the other 5 = 2 x 1083/5 = 433 {'VISION': 514, 'RAISE': 520, 'OI': 433, 'UNS': 433, 'WMC': 433, 'HDRP': 433}
+PASS size-match target for VISION held out = 2 x 1284/5 = 514 (513.6 rounded) 
+PASS size-match seed 0: whole groups, achieved 432 <= 433, and within 2 of the target 
+PASS size-match seed 1: whole groups, achieved 432 <= 433, and within 2 of the target 
+PASS size-match seed 2: whole groups, achieved 432 <= 433, and within 2 of the target 
+PASS size-match seed 3: whole groups, achieved 432 <= 433, and within 2 of the target 
+PASS size-match seed 4: whole groups, achieved 432 <= 433, and within 2 of the target 
+PASS size-match: deterministic, seeds differ 
+PASS synthetic data: every source has train/calib/test reals 
+PASS plan: row 0 all ones 
+PASS plan: rows of one cluster (family / device / group) share weights (107 clusters)
+PASS plan: kind fam: replicate draws sum to K = 20 
+PASS plan: kind dev: replicate draws sum to K = 7 
+PASS plan: kind img: replicate draws sum to K = 20 
+PASS plan: kind gunsplash: replicate draws sum to K = 20 
+PASS plan: kind gcommons: replicate draws sum to K = 20 
+PASS plan: kind ghdrplus: replicate draws sum to K = 20 
+PASS plan: new-source reals are clustered by their GROUP (kind g<pool>), RAISE reals and fakes by family 
+PASS plan on the E7 rows is IDENTICAL to E7's plan (paired differences with E7) 
+PASS clean fold passes all audits 
+PASS LEAK caught: held-out source's train reals in the training rows 
+PASS LEAK caught (no S given): reals from a pool outside the training sources 
+PASS LEAK caught: held-out source's test or calib reals in the training rows 
+PASS LEAK caught: held-out calib reals in the threshold rows 
+PASS LEAK caught: train-role reals used as threshold rows 
+PASS clean threshold rows (calib reals of the training sources) pass 
+PASS LEAK caught: evaluation rows that are not the held-out source's test reals 
+PASS LEAK caught: FLUX fake in training 
+PASS LEAK caught: the LOGO generator in a g_<gen> fit 
+PASS LOGO fit excludes its generator 
+PASS LEAK caught: fake test rows differ between folds 
+PASS T-aug audit passes for the three configured conditions 
+PASS LEAK caught: a condition applied to one class only / a repeated or unknown condition 
+PASS LEAK caught: a row not prepared as fov512 (different transform) 
+PASS same-prep audit passes on clean paths 
+PASS labels: all-good -> HELPS, NOT_QUANTITY, DISCOVERY, PASS, no kill 
+PASS labels: AUROC gain 0.029 < 0.03 -> not HELPS, not DISCOVERY 
+PASS labels: CI lo <= 0 -> not HELPS and KILL OF LINE 
+PASS labels: FPR-difference CI hi = 0 (not < 0) -> not HELPS 
+PASS labels: size-matched run fails the AUROC part -> HELPS but NOT 'diversity, not quantity' 
+PASS labels: no control -> NOT_QUANTITY undetermined (None) 
+PASS labels: AUROC 0.89 everywhere -> HELPS but not DISCOVERY; E7 rule PASS (>= 0.85) 
+PASS labels: FPR 6% -> not DISCOVERY, E7 INCONCLUSIVE (not killed) 
+PASS labels: one source at AUROC 0.74 -> E7 KILL and KILL OF LINE (even if HELPS) 
+PASS labels: one source at FPR 10.1% -> E7 KILL and KILL OF LINE 
+PASS labels: boundary AUROC 0.90 and FPR 0.05 satisfy DISCOVERY 
+PASS labels: b8-last CI includes 0 -> E7 INCONCLUSIVE (DIVERSITY HELPS unaffected) 
+PASS labels: k=5 not clearly above k=3 -> E7 learning-curve gate fails (INCONCLUSIVE), vs-k=1-only reading still true 
+PASS labels: missing F_last -> E7 label flags it instead of guessing 
+PASS diff_summary: percentile CI of replicates 1..B, point = replicate 0 
+PASS end-to-end (planted diversity gain): DIVERSITY HELPS, NOT QUANTITY, DISCOVERY, PASS {'DIVERSITY_HELPS': True, 'DISCOVERY': True, 'E7_RULE': 'PASS'}
+PASS end-to-end (no gain with k): not HELPS, KILL OF LINE {'delta': -4.7222222222272535e-05, 'ci_lo': -0.03132809206931031, 'ci_hi': 0.027684692387263163, 'p_le0': 0.43333333333333335}
+PASS end-to-end (gain from QUANTITY only: control behaves like k=2): HELPS true but NOT_QUANTITY false 
+PASS end-to-end: learning curve increases with k [0.332, 0.583, 0.794, 0.923, 0.975]
+PASS end-to-end: drop-one-generator robustness has all 10 subsets x 2 readings; drop-one-source 3 pools x 2 readings 
+PASS end-to-end: drop-one-source recomputes the labels on a 5-source pool (k_max = 4) 
+PASS end-to-end: audit counter covers every fold (6 x (31 + 5 control)) 
+PASS key secondary: VISION/RAISE/OI, k=5 vs the 2-source E7 subset, all 5 conditions, same rows 
+PASS finalize: results.json has labels for both readings, robustness, key secondary, parity, ctl targets, owner status 
+PASS finalize: tables.md has every section (403 lines)
+PASS finalize: scores_long.csv.gz written for the k=5 fits (6 held-out x 2 conditions) 
+PASS PLANTED LEAK (held-out train reals in training) is caught by evaluate() 
+PASS PLANTED LEAK (held-out calib reals in the thresholds) is caught by evaluate() 
+PASS PLANTED LEAK (fake test rows differ between folds) is caught by evaluate() 
+PASS after removing the plants, evaluate() runs clean 
+PASS fit_scores on synthetic features: shape [conds, N] and planted block-8 signal detected on the held-out source (AUROC 1.000)
+PASS fit_scores: block-12 columns carry no planted signal (near chance) (AUROC 0.525)
+PASS ctl fit: training reals subsampled by whole groups to <= the k=2 mean target, fakes unchanged (n_real 50, target 50)
+PASS ctl rows: deterministic per seed, different across seeds, all train-role reals of T 
+PASS E7 rows: E6 role counts reproduced (train fakes 230, RAISE reals 84/53/183, OI 300/100/200) 
+PASS E7 rows: no family id shared by train and calib/test 
+PASS OWNER source: pending unless >= 150 photos exist {'status': 'pending', 'dir': 'data/raw/owner_phone', 'n_images': 0, 'min_images': 150, 'reason': 'directory missing'}
+SKIP real new-source checks: splits_fov512.csv not built yet (prep stage pending)
+ALL PASS

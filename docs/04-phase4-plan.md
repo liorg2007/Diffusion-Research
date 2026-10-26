@@ -685,3 +685,12 @@ Anything else is INCONCLUSIVE. Each label is reported with drop-one-generator ro
 - **Robustness:** drop-one-generator and drop-one-source (each new source removed from the pool) are reported for every label.
 
 **Budget.** About 4.5 GB of new downloads (Unsplash metadata zip 0.32 GB, about 0.6 GB of Unsplash images, about 0.5 GB of Commons, about 3.6 GB of HDR+), bringing the total to about 14.4 GB of the 20 GB ceiling (D-015). No single item is over 5 GB. HDR+ originals are deleted after prep and feature caching; a manifest lets them be re-fetched.
+
+**Amendment 19 addendum (2026-10-26 22:29, code written, before any real-data stage of E10).** The lead accepts the code agent's proposed deviations (`019-source-diversity/notes.md`):
+1. 12 extra F_last fits at k = 4, needed for the drop-one-source E7-rule label.
+2. Drop-one-source does not re-run the size-matched control, so the "diversity, not quantity" reading is made on the full pool only.
+3. **OWNER is reported as pending.** data/raw/owner_phone does not exist. Any future owner photos are a separate, test-only confirmatory run under the frozen E10 choices.
+4. Group-based splits may overshoot a bucket by 1–3 images; exact counts are reported.
+5. Size-matched draws are whole-group subsamples at or just below the target count.
+6. Manifest rows with short side under 512 are dropped and counted.
+- **The E7-rule learning-curve gate is read strictly:** k = 5 must beat each of k = 1…4 with CI lo > 0. The "vs k = 1" reading is reported alongside.
