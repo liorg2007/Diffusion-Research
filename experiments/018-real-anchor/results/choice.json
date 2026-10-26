@@ -1,0 +1,41 @@
+{
+ "method": "A-off",
+ "fold": "VISION",
+ "setting": {
+  "arm": "fov512",
+  "feat": "F_b8",
+  "cond": "jpeg75_resize05",
+  "n": 50
+ },
+ "rule": "higher mean (over the 20 anchor draws) macro AUROC; if the two means differ by < tie_auroc, the lower mean FPR (reading A, full model) wins; frozen in results/choice.json before any RAISE/OI adapted result is computed",
+ "candidates": {
+  "A-off": {
+   "auroc_mean": 0.9566311847204721,
+   "auroc_p025_p975": [
+    0.9449778340225696,
+    0.9672566390364264
+   ],
+   "fpr_mean": 0.004655493482309124,
+   "fpr_p025_p975": [
+    0.0032355679702048418,
+    0.00558659217877095
+   ]
+  },
+  "A-proj": {
+   "auroc_mean": 0.945666953831742,
+   "auroc_p025_p975": [
+    0.9365154972951168,
+    0.9534205186012911
+   ],
+   "fpr_mean": 0.004562383612662942,
+   "fpr_p025_p975": [
+    0.0032355679702048418,
+    0.00558659217877095
+   ]
+  }
+ },
+ "frozen_at": "2026-10-26 07:59:13",
+ "frozen_epoch": 1792994353.3245082,
+ "config_sha256": "f31b4e729eb3175e530a4cd6170a433b0921f34e84d78d3b3331082db15d9fb7",
+ "note": "chosen on the VISION fold only; no RAISE/OI adapted (A-off / A-proj / A-thr) result existed at this moment"
+}

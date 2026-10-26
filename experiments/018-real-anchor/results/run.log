@@ -1,0 +1,151 @@
+2026-10-26 07:54:39 E9 probes: 12 tasks
+2026-10-26 07:55:27 E9   [1/12] probe fov512 F_b8 VISION (48s)
+2026-10-26 07:55:27 E9   [2/12] probe fov512 F_b8 RAISE (46s)
+2026-10-26 07:55:27 E9   [3/12] probe fov512 F_b8 OI (34s)
+2026-10-26 07:55:27 E9   [4/12] probe fov512 F_last VISION (45s)
+2026-10-26 07:55:27 E9   [5/12] probe fov512 F_last RAISE (39s)
+2026-10-26 07:55:27 E9   [6/12] probe fov512 F_last OI (31s)
+2026-10-26 07:55:27 E9   [7/12] probe orig F_b8 VISION (48s)
+2026-10-26 07:55:27 E9   [8/12] probe orig F_b8 RAISE (47s)
+2026-10-26 07:55:27 E9   [9/12] probe orig F_b8 OI (31s)
+2026-10-26 07:55:27 E9   [10/12] probe orig F_last VISION (45s)
+2026-10-26 07:55:27 E9   [11/12] probe orig F_last RAISE (39s)
+2026-10-26 07:55:27 E9   [12/12] probe orig F_last OI (31s)
+2026-10-26 07:55:27 E9 12 tasks in 48s
+2026-10-26 07:55:27 E9 probes: fov512 F_b8 held-out VISION: max |score - E7 cached score| = 1.15e-06
+2026-10-26 07:55:27 E9 probes: fov512 F_b8 held-out RAISE: max |score - E7 cached score| = 1.23e-06
+2026-10-26 07:55:27 E9 probes: fov512 F_b8 held-out OI: max |score - E7 cached score| = 1.32e-06
+2026-10-26 07:55:27 E9 probes: fov512 F_last held-out VISION: max |score - E7 cached score| = 5.47e-07
+2026-10-26 07:55:27 E9 probes: fov512 F_last held-out RAISE: max |score - E7 cached score| = 2.87e-07
+2026-10-26 07:55:27 E9 probes: fov512 F_last held-out OI: max |score - E7 cached score| = 5.68e-07
+2026-10-26 07:55:27 E9 probes: orig F_b8 held-out VISION: max |score - E7 cached score| = 7.22e-07
+2026-10-26 07:55:27 E9 probes: orig F_b8 held-out RAISE: max |score - E7 cached score| = 1.21e-06
+2026-10-26 07:55:28 E9 probes: orig F_b8 held-out OI: max |score - E7 cached score| = 2.47e-06
+2026-10-26 07:55:28 E9 probes: orig F_last held-out VISION: max |score - E7 cached score| = 5.57e-07
+2026-10-26 07:55:28 E9 probes: orig F_last held-out RAISE: max |score - E7 cached score| = 5.71e-07
+2026-10-26 07:55:28 E9 probes: orig F_last held-out OI: max |score - E7 cached score| = 7.87e-07
+2026-10-26 07:56:48 E9 probes: fov512 F_b8 held-out VISION: max |score - E7 cached score| = 1.15e-06
+2026-10-26 07:56:48 E9 probes: fov512 F_b8 held-out RAISE: max |score - E7 cached score| = 1.23e-06
+2026-10-26 07:56:48 E9 probes: fov512 F_b8 held-out OI: max |score - E7 cached score| = 1.32e-06
+2026-10-26 07:56:48 E9 probes: fov512 F_last held-out VISION: max |score - E7 cached score| = 5.47e-07
+2026-10-26 07:56:48 E9 probes: fov512 F_last held-out RAISE: max |score - E7 cached score| = 2.87e-07
+2026-10-26 07:56:48 E9 probes: fov512 F_last held-out OI: max |score - E7 cached score| = 5.68e-07
+2026-10-26 07:56:48 E9 probes: orig F_b8 held-out VISION: max |score - E7 cached score| = 7.22e-07
+2026-10-26 07:56:48 E9 probes: orig F_b8 held-out RAISE: max |score - E7 cached score| = 1.21e-06
+2026-10-26 07:56:48 E9 probes: orig F_b8 held-out OI: max |score - E7 cached score| = 2.47e-06
+2026-10-26 07:56:48 E9 probes: orig F_last held-out VISION: max |score - E7 cached score| = 5.57e-07
+2026-10-26 07:56:49 E9 probes: orig F_last held-out RAISE: max |score - E7 cached score| = 5.71e-07
+2026-10-26 07:56:49 E9 probes: orig F_last held-out OI: max |score - E7 cached score| = 7.87e-07
+2026-10-26 07:56:49 E9 choose: VISION fold only: 20 A-proj probe sets
+2026-10-26 07:58:17 E9   [1/20] proj fov512__F_b8__VISION__n50__d0 (88s)
+2026-10-26 07:58:18 E9   [2/20] proj fov512__F_b8__VISION__n50__d1 (89s)
+2026-10-26 07:58:18 E9   [3/20] proj fov512__F_b8__VISION__n50__d2 (88s)
+2026-10-26 07:58:18 E9   [4/20] proj fov512__F_b8__VISION__n50__d3 (89s)
+2026-10-26 07:58:19 E9   [5/20] proj fov512__F_b8__VISION__n50__d4 (90s)
+2026-10-26 07:58:19 E9   [6/20] proj fov512__F_b8__VISION__n50__d5 (89s)
+2026-10-26 07:58:19 E9   [7/20] proj fov512__F_b8__VISION__n50__d6 (89s)
+2026-10-26 07:58:19 E9   [8/20] proj fov512__F_b8__VISION__n50__d7 (90s)
+2026-10-26 07:58:19 E9   [9/20] proj fov512__F_b8__VISION__n50__d8 (90s)
+2026-10-26 07:58:19 E9   [10/20] proj fov512__F_b8__VISION__n50__d9 (88s)
+2026-10-26 07:58:19 E9   [11/20] proj fov512__F_b8__VISION__n50__d10 (89s)
+2026-10-26 07:58:19 E9   [12/20] proj fov512__F_b8__VISION__n50__d11 (90s)
+2026-10-26 07:58:19 E9   [13/20] proj fov512__F_b8__VISION__n50__d12 (90s)
+2026-10-26 07:58:19 E9   [14/20] proj fov512__F_b8__VISION__n50__d13 (90s)
+2026-10-26 07:58:53 E9   [15/20] proj fov512__F_b8__VISION__n50__d14 (36s)
+2026-10-26 07:58:53 E9   [16/20] proj fov512__F_b8__VISION__n50__d15 (36s)
+2026-10-26 07:58:53 E9   [17/20] proj fov512__F_b8__VISION__n50__d16 (35s)
+2026-10-26 07:58:53 E9   [18/20] proj fov512__F_b8__VISION__n50__d17 (36s)
+2026-10-26 07:58:53 E9   [19/20] proj fov512__F_b8__VISION__n50__d18 (36s)
+2026-10-26 07:58:53 E9   [20/20] proj fov512__F_b8__VISION__n50__d19 (35s)
+2026-10-26 07:58:53 E9 20 tasks in 124s
+2026-10-26 07:59:05 E9 probes: fov512 F_b8 held-out VISION: max |score - E7 cached score| = 1.15e-06
+2026-10-26 07:59:05 E9 probes: fov512 F_b8 held-out RAISE: max |score - E7 cached score| = 1.23e-06
+2026-10-26 07:59:05 E9 probes: fov512 F_b8 held-out OI: max |score - E7 cached score| = 1.32e-06
+2026-10-26 07:59:05 E9 probes: fov512 F_last held-out VISION: max |score - E7 cached score| = 5.47e-07
+2026-10-26 07:59:06 E9 probes: fov512 F_last held-out RAISE: max |score - E7 cached score| = 2.87e-07
+2026-10-26 07:59:06 E9 probes: fov512 F_last held-out OI: max |score - E7 cached score| = 5.68e-07
+2026-10-26 07:59:06 E9 probes: orig F_b8 held-out VISION: max |score - E7 cached score| = 7.22e-07
+2026-10-26 07:59:06 E9 probes: orig F_b8 held-out RAISE: max |score - E7 cached score| = 1.21e-06
+2026-10-26 07:59:06 E9 probes: orig F_b8 held-out OI: max |score - E7 cached score| = 2.47e-06
+2026-10-26 07:59:06 E9 probes: orig F_last held-out VISION: max |score - E7 cached score| = 5.57e-07
+2026-10-26 07:59:06 E9 probes: orig F_last held-out RAISE: max |score - E7 cached score| = 5.71e-07
+2026-10-26 07:59:06 E9 probes: orig F_last held-out OI: max |score - E7 cached score| = 7.87e-07
+2026-10-26 07:59:06 E9   [1/1] eval fov512 F_b8 VISION E7 (0s)
+2026-10-26 07:59:06 E9 1 tasks in 0s
+2026-10-26 07:59:13 E9   [1/1] eval fov512 F_b8 VISION n=50 ['A-off', 'A-proj'] (7s)
+2026-10-26 07:59:13 E9 1 tasks in 7s
+2026-10-26 07:59:13 E9 choose: VISION fold {"A-off": {"auroc_mean": 0.9566311847204721, "auroc_p025_p975": [0.9449778340225696, 0.9672566390364264], "fpr_mean": 0.004655493482309124, "fpr_p025_p975": [0.0032355679702048418, 0.00558659217877095]}, "A-proj": {"auroc_mean": 0.945666953831742, "auroc_p025_p975": [0.9365154972951168, 0.9534205186012911], "fpr_mean": 0.004562383612662942, "fpr_p025_p975": [0.0032355679702048418, 0.00558659217877095]}} -> CHOSEN A-off (frozen in results/choice.json)
+2026-10-26 07:59:19 E9 probes: fov512 F_b8 held-out VISION: max |score - E7 cached score| = 1.15e-06
+2026-10-26 07:59:19 E9 probes: fov512 F_b8 held-out RAISE: max |score - E7 cached score| = 1.23e-06
+2026-10-26 07:59:19 E9 probes: fov512 F_b8 held-out OI: max |score - E7 cached score| = 1.32e-06
+2026-10-26 07:59:19 E9 probes: fov512 F_last held-out VISION: max |score - E7 cached score| = 5.47e-07
+2026-10-26 07:59:19 E9 probes: fov512 F_last held-out RAISE: max |score - E7 cached score| = 2.87e-07
+2026-10-26 07:59:19 E9 probes: fov512 F_last held-out OI: max |score - E7 cached score| = 5.68e-07
+2026-10-26 07:59:19 E9 probes: orig F_b8 held-out VISION: max |score - E7 cached score| = 7.22e-07
+2026-10-26 07:59:19 E9 probes: orig F_b8 held-out RAISE: max |score - E7 cached score| = 1.21e-06
+2026-10-26 07:59:19 E9 probes: orig F_b8 held-out OI: max |score - E7 cached score| = 2.47e-06
+2026-10-26 07:59:19 E9 probes: orig F_last held-out VISION: max |score - E7 cached score| = 5.57e-07
+2026-10-26 07:59:19 E9 probes: orig F_last held-out RAISE: max |score - E7 cached score| = 5.71e-07
+2026-10-26 07:59:19 E9 probes: orig F_last held-out OI: max |score - E7 cached score| = 7.87e-07
+2026-10-26 07:59:19 E9 choose: choice.json already frozen: A-off
+2026-10-26 07:59:19 E9 proj: 940 A-proj probe sets (8 models each)
+2026-10-26 08:05:21 E9   [47/940] proj fov512__F_b8__VISION__n100__d6 (95s)
+2026-10-26 08:09:25 E9   [94/940] proj fov512__F_b8__RAISE__n25__d13 (80s)
+2026-10-26 08:14:15 E9   [141/940] proj fov512__F_b8__OI__n10__d0 (52s)
+2026-10-26 08:16:48 E9   [188/940] proj fov512__F_b8__OI__n50__d7 (50s)
+2026-10-26 08:20:08 E9   [235/940] proj fov512__F_last__VISION__n10__d14 (72s)
+2026-10-26 08:24:22 E9   [282/940] proj fov512__F_last__VISION__n100__d1 (71s)
+2026-10-26 08:27:39 E9   [329/940] proj fov512__F_last__RAISE__n25__d8 (62s)
+2026-10-26 08:31:08 E9   [376/940] proj fov512__F_last__RAISE__n100__d15 (64s)
+2026-10-26 08:33:48 E9   [423/940] proj fov512__F_last__OI__n50__d2 (46s)
+2026-10-26 08:36:54 E9   [470/940] proj orig__F_b8__VISION__n10__d9 (87s)
+2026-10-26 08:42:06 E9   [517/940] proj orig__F_b8__VISION__n50__d16 (85s)
+2026-10-26 08:46:33 E9   [564/940] proj orig__F_b8__RAISE__n25__d3 (81s)
+2026-10-26 08:51:01 E9   [611/940] proj orig__F_b8__RAISE__n100__d10 (85s)
+2026-10-26 08:53:57 E9   [658/940] proj orig__F_b8__OI__n25__d17 (49s)
+2026-10-26 08:56:57 E9   [705/940] proj orig__F_last__VISION__n10__d4 (71s)
+2026-10-26 09:00:37 E9   [752/940] proj orig__F_last__VISION__n50__d11 (69s)
+2026-10-26 09:04:39 E9   [799/940] proj orig__F_last__RAISE__n10__d18 (61s)
+2026-10-26 09:08:02 E9   [846/940] proj orig__F_last__RAISE__n100__d5 (64s)
+2026-10-26 09:10:35 E9   [893/940] proj orig__F_last__OI__n25__d12 (44s)
+2026-10-26 09:12:48 E9   [940/940] proj orig__F_last__OI__n100__d19 (16s)
+2026-10-26 09:12:49 E9 940 tasks in 4409s
+2026-10-26 09:12:49 E9   [1/11] eval fov512 F_b8 RAISE E7 (0s)
+2026-10-26 09:12:49 E9   [2/11] eval fov512 F_b8 OI E7 (0s)
+2026-10-26 09:12:49 E9   [3/11] eval fov512 F_last VISION E7 (0s)
+2026-10-26 09:12:49 E9   [4/11] eval fov512 F_last RAISE E7 (0s)
+2026-10-26 09:12:49 E9   [5/11] eval fov512 F_last OI E7 (0s)
+2026-10-26 09:12:49 E9   [6/11] eval orig F_b8 VISION E7 (0s)
+2026-10-26 09:12:49 E9   [7/11] eval orig F_b8 RAISE E7 (0s)
+2026-10-26 09:12:49 E9   [8/11] eval orig F_b8 OI E7 (0s)
+2026-10-26 09:12:49 E9   [9/11] eval orig F_last VISION E7 (0s)
+2026-10-26 09:12:49 E9   [10/11] eval orig F_last RAISE E7 (0s)
+2026-10-26 09:12:49 E9   [11/11] eval orig F_last OI E7 (0s)
+2026-10-26 09:12:49 E9 11 tasks in 0s
+2026-10-26 09:12:49 E9 eval: 48 tasks
+2026-10-26 09:13:02 E9   [2/48] eval fov512 F_b8 VISION n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (13s)
+2026-10-26 09:13:06 E9   [4/48] eval fov512 F_b8 VISION n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (14s)
+2026-10-26 09:13:06 E9   [6/48] eval fov512 F_b8 RAISE n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:06 E9   [8/48] eval fov512 F_b8 RAISE n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:06 E9   [10/48] eval fov512 F_b8 OI n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:06 E9   [12/48] eval fov512 F_b8 OI n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:06 E9   [14/48] eval fov512 F_last VISION n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (14s)
+2026-10-26 09:13:06 E9   [16/48] eval fov512 F_last VISION n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (13s)
+2026-10-26 09:13:06 E9   [18/48] eval fov512 F_last RAISE n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:06 E9   [20/48] eval fov512 F_last RAISE n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:06 E9   [22/48] eval fov512 F_last OI n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:06 E9   [24/48] eval fov512 F_last OI n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:12 E9   [26/48] eval orig F_b8 VISION n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (12s)
+2026-10-26 09:13:13 E9   [28/48] eval orig F_b8 VISION n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (12s)
+2026-10-26 09:13:13 E9   [30/48] eval orig F_b8 RAISE n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:13 E9   [32/48] eval orig F_b8 RAISE n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (4s)
+2026-10-26 09:13:13 E9   [34/48] eval orig F_b8 OI n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (3s)
+2026-10-26 09:13:13 E9   [36/48] eval orig F_b8 OI n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (3s)
+2026-10-26 09:13:15 E9   [38/48] eval orig F_last VISION n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (9s)
+2026-10-26 09:13:15 E9   [40/48] eval orig F_last VISION n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (9s)
+2026-10-26 09:13:15 E9   [42/48] eval orig F_last RAISE n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (3s)
+2026-10-26 09:13:15 E9   [44/48] eval orig F_last RAISE n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (3s)
+2026-10-26 09:13:15 E9   [46/48] eval orig F_last OI n=25 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (3s)
+2026-10-26 09:13:15 E9   [48/48] eval orig F_last OI n=100 ['A-thr', 'A-off', 'A-off-all', 'A-off-pc', 'A-proj'] (3s)
+2026-10-26 09:13:15 E9 48 tasks in 26s
+2026-10-26 09:13:19 E9 report done; chosen A-off label {'label': 'PASS', 'kill_src': False, 'no_gain': False, 'sources_ok': True, 'n_gain_sources': 2}

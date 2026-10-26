@@ -1,0 +1,58 @@
+PASS project_dir removes the direction 
+PASS anchor_delta = train mean - anchor mean 
+PASS thr_fpr 1% on 300 reals leaves <= 3 above 
+PASS thr_fpr 1% on 50 reals = max (0 false positives allowed) 
+PASS choose_method: higher AUROC wins 
+PASS choose_method: tie -> lower FPR 
+PASS label PASS 
+PASS label KILL (AUROC < 0.85) 
+PASS label KILL (FPR > 8%) 
+PASS label KILL (no gain on any source) 
+PASS label INCONCLUSIVE (AUROC 0.88, gain on 1 source) 
+PASS label INCONCLUSIVE (gain on 1 of 3 only) 
+PASS fpr_at_tpr_w = brute force at TPR 0.6 (0.1917)
+PASS integer weights == row expansion (0.2222 vs 0.2222)
+PASS op_point_w = direct 
+PASS gain of a score over itself at its own operating point = 0 (0.00e+00)
+PASS pure offset: unadapted AUROC is far below in-source (unadapted 0.723, in-source 0.975)
+PASS pure offset: A-off recovers the in-source AUROC (A-off 0.975)
+PASS pure offset: A-proj recovers the in-source AUROC (A-proj 0.969)
+PASS pure offset: A-off on a source WITHOUT an offset changes nothing 
+PASS offset + rotation: A-off improves on unadapted (unadapted 0.644, A-off 0.827)
+PASS offset + rotation: A-off is only PARTIAL (well below in-source) (A-off 0.827, in-source 0.975)
+PASS offset + rotation: A-proj also only partial (A-proj 0.823)
+PASS A-off-all (shift reals and fakes) leaves AUROC unchanged (0.7226 vs 0.7226)
+PASS pure offset: FPR at the calib threshold falls from large to ~1-3% (0.367 -> 0.012)
+PASS [fov512] VISION: anchor pool = train/calib-role reals of the source's train pools (142) 
+PASS [fov512] VISION: anchor pool rows and groups disjoint from the source's test reals 
+PASS [fov512] VISION: draws nested, no repeats, seeded 
+PASS [fov512] RAISE: anchor pool = train/calib-role reals of the source's train pools (137) 
+PASS [fov512] RAISE: anchor pool rows and groups disjoint from the source's test reals 
+PASS [fov512] RAISE: draws nested, no repeats, seeded 
+PASS [fov512] OI: anchor pool = train/calib-role reals of the source's train pools (400) 
+PASS [fov512] OI: anchor pool rows and groups disjoint from the source's test reals 
+PASS [fov512] OI: draws nested, no repeats, seeded 
+PASS [orig] VISION: anchor pool = train/calib-role reals of the source's train pools (142) 
+PASS [orig] VISION: anchor pool rows and groups disjoint from the source's test reals 
+PASS [orig] VISION: draws nested, no repeats, seeded 
+PASS [orig] RAISE: anchor pool = train/calib-role reals of the source's train pools (137) 
+PASS [orig] RAISE: anchor pool rows and groups disjoint from the source's test reals 
+PASS [orig] RAISE: draws nested, no repeats, seeded 
+PASS [orig] OI: anchor pool = train/calib-role reals of the source's train pools (400) 
+PASS [orig] OI: anchor pool rows and groups disjoint from the source's test reals 
+PASS [orig] OI: draws nested, no repeats, seeded 
+PASS both arms draw the same anchor rows 
+PASS VISION fold: training rows never include VISION 
+PASS training-reals offset reference mean uses only train-role training-source reals 
+PASS A-off: shifting features == shifting the score by w.delta (linear probe) (8.9e-15)
+PASS A-proj: projected training reals have zero mean component along the offset direction's unit vector 
+PASS A-proj direction aligns with the standardized offset 
+PASS VISION anchor offset is finite and non-zero (norm 13.271)
+PASS [fov512] E7 probe refit reproduces cached E7 scores, held-out VISION (max diff 1.2e-06)
+PASS [fov512] E7 probe refit reproduces cached E7 scores, held-out RAISE (max diff 1.2e-06)
+PASS [fov512] E7 probe refit reproduces cached E7 scores, held-out OI (max diff 1.3e-06)
+PASS [orig] E7 probe refit reproduces cached E7 scores, held-out VISION (max diff 7.2e-07)
+PASS [orig] E7 probe refit reproduces cached E7 scores, held-out RAISE (max diff 1.2e-06)
+PASS [orig] E7 probe refit reproduces cached E7 scores, held-out OI (max diff 2.5e-06)
+PASS protocol: choice.json frozen before the first RAISE/OI adapted cache file 
+ALL PASS
