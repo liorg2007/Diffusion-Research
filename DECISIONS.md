@@ -128,3 +128,6 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - **Limit raised again (2026-10-26 07:13).** The owner said: "So please raise the boundry, and lets explore further." The stop-rule limit is raised by one more, for E8 (Amendment 17).
   - E8 is a diagnostic of embedding geometry: does a source-invariant diffusion direction exist? It is motivated by E5 (the difference survives laundering) and E7 (the KILL is a real-source-domain effect).
   - The mid-level detector line itself stays closed. E8 makes no detector claim unless its own pre-registered criteria pass.
+- **Limit raised for E9 (2026-10-26 07:46).** Under the owner's standing instruction ("if the hypothesis looks good, bring the limit up" and "lets explore further"), raised by one for E9 (Amendment 18).
+  - Evidence: the E8 critic's post-hoc few-shot check. One held-out-source offset direction from that source's train-role reals lifts RAISE 0.764 → 0.936 (FPR 19.1 → 3.8%) and OI 0.856 → 0.933 (16.0 → 6.5%). With 25–50 target reals it still gives 0.89–0.93.
+  - The critic's default was "stop and finalize". This raise is the owner's call, logged here.

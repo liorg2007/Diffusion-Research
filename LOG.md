@@ -417,3 +417,4 @@
   - R3 KILL: removing the source subspace changes nothing (VISION 0.898, RAISE 0.687, OI 0.797 / 17.5% FPR vs E7). Holds in all drop-one subsets and every k.
   - Deviation to review: subspace = LDA + mean-difference + PCs, added after a synthetic check and before held-out results.
   - Reading: no source-invariant linear diffusion direction in DINOv2-base features on our data. Launching opus/high critic.
+- 2026-10-26 07:46 — E8 critic: labels stand. Corrected reading: 'not findable with 2-3 sources and block 8'; directions are partly shared (~0.4-0.6 after noise correction). Post-hoc: few-shot real anchors fix most of a new pipeline's offset. Limit raised for E9 (owner instruction); Amendment 18 pre-registered.

@@ -625,3 +625,22 @@ Anything else is INCONCLUSIVE. Each label is reported with drop-one-generator ro
 - **R3 (removal works, the only detector-relevant outcome):** M3 brings every held-out source to AUROC ≥ 0.85 and FPR ≤ 5%. That would be a candidate to re-open detector work (E9), with owner photos as the acceptance test. Kill for M3: no held-out source improves by ≥ 0.03 in AUROC or by ≥ 5 points in FPR over E7.
 
 **Guards.** Drop-one-generator robustness for R2/R3; texture baseline reported. No GPU expected (D-008 applies if any is used).
+
+## Amendment 18 (2026-10-26 07:46, before any result): E9, per-pipeline real-anchor adaptation (experiments/018-real-anchor)
+**Why.** E8's critic found, post hoc, that most of a new real pipeline's shift toward "fake" is a mean offset, and that a few dozen real photos from the pipeline can estimate it. E9 tests this properly. The setting: a detector meeting a NEW real pipeline gets n "anchor" real photos from that pipeline (no fakes from it) before deployment.
+
+**Setup.**
+- E7's leave-one-real-source-out folds (VISION, RAISE, OI held out in turn); fov512 primary, orig reported; block 8 vs last layer; T-aug probe exactly as E7.
+- **Adaptation methods** (fixed here):
+  - **A-off:** subtract the anchor mean offset. Shift the held-out source's features by (mean of training reals − mean of the anchor reals), then score with the unchanged E7 probe.
+  - **A-proj:** project out the anchor offset direction (unit vector of the same difference) from all features, then retrain the probe on the training data.
+  - **A-thr:** threshold-only. Keep the E7 probe and set the 1% threshold on the anchor reals' scores. This is the simplest baseline.
+- **Anchor sizes:** n ∈ {10, 25, 50, 100}, drawn from the held-out source's train/calib-role reals, grouped by device or caption family, disjoint from its test reals; 20 seeded draws per n.
+- **Evaluation:** the held-out source's test reals vs held-out-generator fakes (incl. FLUX) at clean / jpeg75_resize05 / social_sim / screenshot_sim / mavali_medium. The FPR threshold comes from the training sources' calib reals (A-off, A-proj) or from the anchors (A-thr). Mean and 2.5–97.5 percentiles over draws, plus a cluster bootstrap.
+
+**Pre-registered criteria** (fov512, jpeg75_resize05, block 8, n = 50, the best of A-off and A-proj chosen on the VISION fold only and then applied unchanged to RAISE and OI):
+- **PASS:** every held-out source has AUROC ≥ 0.90 and FPR ≤ 3%, AND the method beats A-thr on FPR at matched TPR (CI lower bound > 0) on ≥ 2 of 3 sources.
+- **KILL:** any source with AUROC < 0.85 or FPR > 8% at n = 50, OR no gain over A-thr.
+- Otherwise INCONCLUSIVE.
+- Each label is reported with drop-one-generator robustness, and the n-curve is reported.
+- **Owner phone photos**, when supplied, are the confirmatory test: a 4th held-out pipeline, with all choices frozen.
