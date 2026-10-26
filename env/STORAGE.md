@@ -1,7 +1,7 @@
 # Storage ledger (D-015)
 
 Large items on the GPU PC (> 100 MB), why each is kept, and when it can be deleted. Provenance for downloads is in `env/SOURCES.md`.
-Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 9.9 GB (incl. VAEs, RAID subset, Open Images subset), against the 20 GB working ceiling (D-015).
+Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 13.8 GB (incl. VAEs, RAID subset, Open Images subset, E10 sources: Unsplash zip 0.32 + images 0.35, Commons 0.50, HDR+ 2.74), against the 20 GB working ceiling (D-015).
 
 | Item | Size | Source | Needed by | Status |
 |---|---|---|---|---|
@@ -21,6 +21,9 @@ Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 
 | third_party | 263 MB | author GitHub clones | scorers | keep |
 
 | data/raw/openimages | 186 MB | Open Images V7 val, CC BY 2.0 | E7 | keep until E7 critiqued |
+| data/raw/hdrplus | 2.7 GB | Google HDR+ (CC BY-SA) | E10 | delete after E10 prep + feature caching (re-fetch from manifest) |
+| data/raw/commons | 0.5 GB | Wikimedia Commons QI | E10 | keep until E10 critiqued |
+| data/raw/unsplash | 0.36 GB | Unsplash Lite 1.4.0 | E10 | keep until E10 critiqued |
 
 Deleted:
 - 2026-10-24: data/processed/du2512 (587 MB) and 004 cache pilot_du2 (81 MB), the confounded E1b arm. Results are committed in experiments/008-scale-sensitivity/pilot_du2/.
