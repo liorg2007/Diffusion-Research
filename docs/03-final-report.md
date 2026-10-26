@@ -469,5 +469,5 @@ env/.venv/bin/python -I experiments/lib/tests/run_all.py
   - An unseen real source and an unseen generator each cost about 0.07 AUROC (0.926 with both seen; 0.767 with both unseen). Even with every real source seen, the leave-one-generator-out ceiling is 0.855, so real-source diversity alone cannot reach 0.90.
   - Adding sources is not monotone: Unsplash lowers VISION, OI and Commons.
 - **Status:** line closed.
-  - The remaining lever the evidence points to is the generator side: more and more varied training fakes (about 230 now per LOGO fold, [from tables.md test counts; train count per critic]) or a non-frozen backbone. That would be a new pre-registered line.
+  - The remaining lever the evidence points to is the generator side: more and more varied training fakes (about 230 train fakes in the full model: n_train 530 minus 300 reals for a single-source fit, `019-source-diversity/run.log`) or a non-frozen backbone. That would be a new pre-registered line.
   - The owner phone photos stay a free, test-only FPR datapoint under the frozen k = 5 choices.
