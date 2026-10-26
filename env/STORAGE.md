@@ -21,9 +21,9 @@ Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 
 | third_party | 263 MB | author GitHub clones | scorers | keep |
 
 | data/raw/openimages | 186 MB | Open Images V7 val, CC BY 2.0 | E7 | keep until E7 critiqued |
-| data/raw/hdrplus | 2.7 GB | Google HDR+ (CC BY-SA) | E10 | delete after E10 prep + feature caching (re-fetch from manifest) |
-| data/raw/commons | 0.5 GB | Wikimedia Commons QI | E10 | keep until E10 critiqued |
-| data/raw/unsplash | 0.36 GB | Unsplash Lite 1.4.0 | E10 | keep until E10 critiqued |
+| data/raw/commons | 0.5 GB | Wikimedia Commons QI | E10 | keep (possible owner-photo run re-uses E10 features only; may delete) |
+| data/raw/unsplash | 0.36 GB | Unsplash Lite 1.4.0 | E10 | keep (may delete; features cached) |
 
 Deleted:
 - 2026-10-24: data/processed/du2512 (587 MB) and 004 cache pilot_du2 (81 MB), the confounded E1b arm. Results are committed in experiments/008-scale-sensitivity/pilot_du2/.
+- 2026-10-27: data/raw/hdrplus/images (2.7 GB), per Amendment 19. Features cached in experiments/019-source-diversity/cache; re-fetch via fetch_hdrplus.py and hdrplus_manifest.csv (md5-verified).

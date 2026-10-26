@@ -1,0 +1,12 @@
+dup VISION {'n': 1074, 'n_cos_gt_0_95_other_src': 0, 'max_other_src': 0.786079466342926, 'n_cos_gt_0_95_trainfake': 0, 'max_trainfake': 0.8086483478546143}
+dup RAISE {'n': 183, 'n_cos_gt_0_95_other_src': 0, 'max_other_src': 0.8316294550895691, 'n_cos_gt_0_95_trainfake': 0, 'max_trainfake': 0.8390873670578003}
+dup OI {'n': 200, 'n_cos_gt_0_95_other_src': 0, 'max_other_src': 0.859247088432312, 'n_cos_gt_0_95_trainfake': 0, 'max_trainfake': 0.548424482345581}
+dup UNS {'n': 200, 'n_cos_gt_0_95_other_src': 0, 'max_other_src': 0.9083973169326782, 'n_cos_gt_0_95_trainfake': 0, 'max_trainfake': 0.7885712385177612}
+dup WMC {'n': 200, 'n_cos_gt_0_95_other_src': 0, 'max_other_src': 0.8628745079040527, 'n_cos_gt_0_95_trainfake': 0, 'max_trainfake': 0.7709903717041016}
+dup HDRP {'n': 201, 'n_cos_gt_0_95_other_src': 0, 'max_other_src': 0.8285810947418213, 'n_cos_gt_0_95_trainfake': 0, 'max_trainfake': 0.6686453223228455}
+VISION rho(delta,score)=+0.07  FPR by delta tertile {'lo': 0.008, 'mid': 0.006, 'hi': 0.017}  median delta -0.061
+RAISE  rho(delta,score)=+0.11  FPR by delta tertile {'lo': 0.115, 'mid': 0.098, 'hi': 0.213}  median delta -0.053
+OI     rho(delta,score)=+0.21  FPR by delta tertile {'lo': 0.0, 'mid': 0.03, 'hi': 0.015}  median delta -0.059
+UNS    rho(delta,score)=+0.07  FPR by delta tertile {'lo': 0.149, 'mid': 0.121, 'hi': 0.239}  median delta -0.066
+WMC    rho(delta,score)=+0.08  FPR by delta tertile {'lo': 0.03, 'mid': 0.015, 'hi': 0.164}  median delta -0.059
+HDRP   rho(delta,score)=+0.08  FPR by delta tertile {'lo': 0.0, 'mid': 0.015, 'hi': 0.0}  median delta -0.079

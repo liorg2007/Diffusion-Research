@@ -449,3 +449,25 @@ env/.venv/bin/python -I experiments/lib/tests/run_all.py
   - No label-agnostic cell meets the D-017 DISCOVERY tier.
   - The E8 critic's post-hoc few-shot lift, recomputed like for like (LOGO, n = 50), is RAISE about 0.879 and OI about 0.886. The earlier "0.936 / 0.933" were an oracle using all target reals with full-model scoring.
 - **Conclusion.** The real-anchor line is closed (critic recommendation; no further limit raise). The central obstacle stated in §4 stands: detectors learn the real-photo pipeline, and a few anchor photos only partly correct it (≈ 0.88 AUROC, 4–8% FPR on unseen sources).
+
+## Addendum (2026-10-27): E10, real-source diversity
+- **Question:** does training on many more kinds of real photos fix the unseen-pipeline problem (Amendment 19)?
+  - Three new real sources: Unsplash Lite, Wikimedia Commons Quality images and Google HDR+ phone finals, 600 each.
+  - Six-source leave-one-out, fov512, block 8, jpeg75_resize05.
+- **Labels** (the critic confirmed all of them, no bug or leak; `experiments/019-source-diversity/results/critique.md`):
+  - DIVERSITY HELPS = true;
+  - DIVERSITY NOT QUANTITY = false;
+  - DISCOVERY = false;
+  - E7-rule = KILL;
+  - KILL OF LINE = true.
+- **Numbers** (`019-source-diversity/results/tables.md`):
+  - From 1 → 2 → 5 training sources, mean held-out FPR falls 40.3% → 16.4% → 6.9%, but mean AUROC only rises 0.692 → 0.727 → 0.767.
+  - At k = 5: Unsplash 0.660 AUROC / 17.0% FPR, RAISE 0.670 / 14.2%, Commons 0.738 / 7.0%, OI 0.811 / 1.5% (E7: 16.0%), VISION 0.861 / 1.0%, HDR+ 0.863 / 0.5%.
+- **Critic's reading (post hoc):**
+  - Diversity mostly recalibrates the threshold. At matched FPR the TPR gain is only +0.074.
+  - The cap is not the linear head: an MLP adds about +0.009.
+  - An unseen real source and an unseen generator each cost about 0.07 AUROC (0.926 with both seen; 0.767 with both unseen). Even with every real source seen, the leave-one-generator-out ceiling is 0.855, so real-source diversity alone cannot reach 0.90.
+  - Adding sources is not monotone: Unsplash lowers VISION, OI and Commons.
+- **Status:** line closed.
+  - The remaining lever the evidence points to is the generator side: more and more varied training fakes (about 230 now per LOGO fold, [from tables.md test counts; train count per critic]) or a non-frozen backbone. That would be a new pre-registered line.
+  - The owner phone photos stay a free, test-only FPR datapoint under the frozen k = 5 choices.

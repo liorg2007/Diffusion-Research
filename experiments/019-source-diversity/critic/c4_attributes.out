@@ -1,0 +1,31 @@
+medians by group (reals: held-out test reals at k=5; FAKE = all test fakes)
+          sat  colorful   bright  contrast  sharp   flat  score
+S                                                              
+FAKE    0.363    46.558  118.515    57.726  6.921  0.121  0.470
+HDRP    0.324    43.047   99.102    57.000  7.355  0.132 -3.223
+OI      0.309    43.736  115.880    57.000  5.978  0.177 -3.250
+RAISE   0.363    47.697  142.305    58.721  7.001  0.209 -1.155
+UNS     0.292    31.787  107.134    51.724  6.304  0.245 -0.816
+VISION  0.250    30.295  121.466    53.979  6.203  0.174 -4.071
+WMC     0.289    41.942  125.664    54.026  7.442  0.180 -1.697
+
+Spearman(score, attribute) within each held-out source's reals; and FP vs non-FP medians (MWU p)
+VISION n=1074 FP= 11 sat:rho=-0.12,p=0.191 colorful:rho=-0.12,p=0.106 bright:rho=+0.12,p=0.005 contrast:rho=-0.02,p=0.003 sharp:rho=-0.14,p=0.032 flat:rho=+0.10,p=0.215
+RAISE  n= 183 FP= 26 sat:rho=+0.01,p=0.995 colorful:rho=+0.05,p=0.446 bright:rho=+0.10,p=0.012 contrast:rho=+0.07,p=0.330 sharp:rho=+0.02,p=0.387 flat:rho=-0.15,p=0.537
+OI     n= 200 FP=  3 sat:rho=+0.18,p=0.888 colorful:rho=+0.13,p=0.410 bright:rho=-0.07,p=0.820 contrast:rho=+0.01,p=0.015 sharp:rho=-0.15,p=0.020 flat:rho=-0.01,p=0.142
+UNS    n= 200 FP= 34 sat:rho=-0.17,p=0.080 colorful:rho=+0.09,p=0.968 bright:rho=+0.28,p=0.281 contrast:rho=+0.35,p=0.074 sharp:rho=+0.11,p=0.836 flat:rho=-0.08,p=0.847
+WMC    n= 200 FP= 14 sat:rho=-0.16,p=0.987 colorful:rho=-0.03,p=0.768 bright:rho=+0.15,p=0.089 contrast:rho=+0.07,p=0.372 sharp:rho=+0.15,p=0.979 flat:rho=-0.07,p=0.796
+HDRP   n= 201 FP=  1 sat:rho=-0.04,p=nan colorful:rho=+0.09,p=nan bright:rho=+0.09,p=nan contrast:rho=+0.01,p=nan sharp:rho=+0.22,p=nan flat:rho=-0.17,p=nan
+
+UNS: Spearman(score,bpp)=+0.03  (score,aspect)=+0.13; FPR portrait 0.235 (n=85) vs landscape 0.122 (n=115)
+  FPR by bpp tertile: {'lo': 0.194, 'mid': 0.182, 'hi': 0.134}
+
+WMC: Spearman(score,bpp)=+0.18  (score,aspect)=-0.09; FPR portrait 0.118 (n=51) vs landscape 0.054 (n=149)
+  FPR by bpp tertile: {'lo': 0.075, 'mid': 0.045, 'hi': 0.09}
+
+HDRP: Spearman(score,bpp)=+0.24  (score,aspect)=-0.09; FPR portrait 0.000 (n=21) vs landscape 0.006 (n=180)
+  FPR by bpp tertile: {'lo': 0.0, 'mid': 0.015, 'hi': 0.0}
+VISION: CV AUROC of the 6 attributes for predicting FP among reals = 0.695
+RAISE: CV AUROC of the 6 attributes for predicting FP among reals = 0.631
+UNS: CV AUROC of the 6 attributes for predicting FP among reals = 0.535
+WMC: CV AUROC of the 6 attributes for predicting FP among reals = 0.544

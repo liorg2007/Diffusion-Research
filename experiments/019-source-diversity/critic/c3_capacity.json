@@ -1,0 +1,54 @@
+{
+ "in_dist": {
+  "VISION": {
+   "auroc_in_dist_k6": 0.8989132778478212,
+   "auroc_heldout_k5": 0.8607157723816279
+  },
+  "RAISE": {
+   "auroc_in_dist_k6": 0.7724217792210586,
+   "auroc_heldout_k5": 0.6704254185276285
+  },
+  "OI": {
+   "auroc_in_dist_k6": 0.8805239760896473,
+   "auroc_heldout_k5": 0.8112194520020234
+  },
+  "UNS": {
+   "auroc_in_dist_k6": 0.8440451872471919,
+   "auroc_heldout_k5": 0.6599888450459366
+  },
+  "WMC": {
+   "auroc_in_dist_k6": 0.8136592598650265,
+   "auroc_heldout_k5": 0.737900857349893
+  },
+  "HDRP": {
+   "auroc_in_dist_k6": 0.9204182740390945,
+   "auroc_heldout_k5": 0.8634949223447452
+  }
+ },
+ "mlp": {
+  "VISION": {
+   "linear_full_macro": 0.9282296253103308,
+   "mlp_full_macro": 0.9329079132430298
+  },
+  "RAISE": {
+   "linear_full_macro": 0.7963517045540045,
+   "mlp_full_macro": 0.7900816639355335
+  },
+  "OI": {
+   "linear_full_macro": 0.8932553676368171,
+   "mlp_full_macro": 0.8961807040761112
+  },
+  "UNS": {
+   "linear_full_macro": 0.7618755280779821,
+   "mlp_full_macro": 0.788611101471144
+  },
+  "WMC": {
+   "linear_full_macro": 0.8313707227215023,
+   "mlp_full_macro": 0.8520172161329752
+  },
+  "HDRP": {
+   "linear_full_macro": 0.9383366449799762,
+   "mlp_full_macro": 0.942568552267068
+  }
+ }
+}

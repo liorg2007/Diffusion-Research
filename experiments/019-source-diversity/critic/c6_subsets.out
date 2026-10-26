@@ -1,0 +1,16 @@
+S                k5  mean k2               best k2 (pair) worst k2 k2 mean w/o UNS
+VISION 0.861/0.010    0.830       RAISE+OI 0.917/0.006    0.698           0.883
+RAISE  0.670/0.142    0.635      VISION+OI 0.689/0.191    0.594           0.639
+OI     0.811/0.015    0.754     VISION+WMC 0.840/0.100    0.627           0.799
+UNS    0.660/0.170    0.625      VISION+OI 0.738/0.160    0.487           0.625
+WMC    0.738/0.070    0.701      VISION+OI 0.806/0.110    0.586           0.747
+HDRP   0.863/0.005    0.818     VISION+WMC 0.891/0.005    0.740           0.824
+
+AUROC change when source X is added to the other 4 (k=4 -> k=5), per held-out S:
+VISION {'RAISE': 0.007, 'OI': 0.03, 'UNS': -0.034, 'WMC': -0.01, 'HDRP': 0.021}
+RAISE {'VISION': 0.008, 'OI': 0.006, 'UNS': 0.034, 'WMC': 0.022, 'HDRP': -0.01}
+OI {'VISION': 0.016, 'RAISE': 0.004, 'UNS': -0.028, 'WMC': 0.084, 'HDRP': 0.001}
+UNS {'VISION': -0.001, 'RAISE': -0.016, 'OI': 0.046, 'WMC': -0.01, 'HDRP': 0.012}
+WMC {'VISION': 0.005, 'RAISE': 0.01, 'OI': 0.086, 'UNS': -0.053, 'HDRP': 0.002}
+HDRP {'VISION': 0.012, 'RAISE': -0.021, 'OI': 0.004, 'UNS': 0.016, 'WMC': 0.03}
+UNS portrait vs landscape FP Fisher p = 0.038
