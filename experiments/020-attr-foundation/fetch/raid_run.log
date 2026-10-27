@@ -1,0 +1,15 @@
+real files 4800 ids 4800 lfs entries 4800
+gen_0 files 4800 ids 4800 lfs entries 4800
+gen_1 files 4800 ids 4800 lfs entries 4800
+gen_2 files 4800 ids 4800 lfs entries 4800
+gen_3 files 4800 ids 4800 lfs entries 4800
+ids in all 5 classes 4800 already used (010) 100 pool 4700
+planned bytes (originals) 71316916
+done 500
+done 1000
+done 1500
+done 2000
+ok 2000 errors 0
+manifest sha256 8e24591101ecda0874bfcd2202eab4e742784130f0a4aa5109e7867ca052187c
+per class {'real': 400, 'gen_0': 400, 'gen_1': 400, 'gen_2': 400, 'gen_3': 400} bytes 71316916 formats {'JPEG'}
+EXIT 0
