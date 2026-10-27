@@ -1,0 +1,14 @@
+14:52:03 dev: 197 photos (triplets) over 14 devices
+14:52:04 resolve D33 idx 27: ncc k=1 0.0022 k=3 0.0009 -> k_extra 1
+14:52:04 resolve D33 idx 38: ncc k=1 0.0020 k=3 0.0000 -> k_extra 1
+14:52:05 resolve D33 idx 51: ncc k=1 0.0098 k=3 0.0023 -> k_extra 1
+14:52:05 resolve D33 idx 93: ncc k=1 0.0065 k=3 0.0020 -> k_extra 1
+14:52:05 resolve D33 idx 97: ncc k=1 0.0095 k=3 0.0023 -> k_extra 1
+14:52:05 resolve D33 idx 109: ncc k=1 0.0104 k=3 0.0022 -> k_extra 1
+14:52:05 resolve D33 idx 118: ncc k=1 0.0070 k=3 0.0006 -> k_extra 1
+14:52:05 resolve D33 idx 134: ncc k=1 0.0126 k=3 0.0013 -> k_extra 1
+14:52:06 resolve D33 idx 145: ncc k=1 0.0086 k=3 0.0004 -> k_extra 1
+14:52:16 dev: orientation precheck: native shapes ok & canonical WA/FBH shapes ok = True; thumbnail corr nat-vs-WA min 1.000, nat-vs-FBH min 1.000
+14:52:28 dev: LOPO subtraction check {'device': 'D02', 'left_out_idx': 19, 'max_abs_diff_N': 0.0014443381878663786, 'max_abs_diff_D': 0.0, 'rel_D': 0.0, 'ok': True}
+14:52:28 dev: reusing saved scores 11032
+14:59:06 dev done 424 s

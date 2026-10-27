@@ -1,0 +1,75 @@
+14:32:15 dev: 197 photos (triplets) over 14 devices
+14:32:19 resolve D33 idx 27: ncc k=1 0.0022 k=3 0.0009 -> k_extra 1
+14:32:20 resolve D33 idx 38: ncc k=1 0.0020 k=3 0.0000 -> k_extra 1
+14:32:20 resolve D33 idx 51: ncc k=1 0.0098 k=3 0.0023 -> k_extra 1
+14:32:20 resolve D33 idx 93: ncc k=1 0.0065 k=3 0.0020 -> k_extra 1
+14:32:21 resolve D33 idx 97: ncc k=1 0.0095 k=3 0.0023 -> k_extra 1
+14:32:21 resolve D33 idx 109: ncc k=1 0.0104 k=3 0.0022 -> k_extra 1
+14:32:21 resolve D33 idx 118: ncc k=1 0.0070 k=3 0.0006 -> k_extra 1
+14:32:22 resolve D33 idx 134: ncc k=1 0.0126 k=3 0.0013 -> k_extra 1
+14:32:22 resolve D33 idx 145: ncc k=1 0.0086 k=3 0.0004 -> k_extra 1
+14:32:38 dev: orientation precheck: native shapes ok & canonical WA/FBH shapes ok = True; thumbnail corr nat-vs-WA min 1.000, nat-vs-FBH min 1.000
+14:33:28 fingerprint sums nat D02 (2448, 3264)
+14:33:33 fingerprint sums nat D04 (2448, 3264)
+14:33:33 fingerprint sums nat D05 (2448, 3264)
+14:33:33 fingerprint sums nat D06 (2448, 3264)
+14:33:33 fingerprint sums nat D10 (2448, 3264)
+14:33:33 fingerprint sums nat D11 (2448, 3264)
+14:33:33 fingerprint sums nat D14 (2448, 3264)
+14:33:33 fingerprint sums nat D15 (2448, 3264)
+14:33:33 fingerprint sums nat D18 (2448, 3264)
+14:33:33 fingerprint sums nat D19 (2448, 3264)
+14:33:33 fingerprint sums nat D21 (2448, 3264)
+14:33:34 fingerprint sums nat D29 (2448, 3264)
+14:33:34 fingerprint sums nat D33 (2448, 3264)
+14:33:34 fingerprint sums nat D34 (2448, 3264)
+14:33:34 fingerprint sums wa D02 (960, 1280)
+14:33:34 fingerprint sums wa D04 (960, 1280)
+14:33:34 fingerprint sums wa D05 (960, 1280)
+14:33:34 fingerprint sums wa D06 (960, 1280)
+14:33:34 fingerprint sums wa D10 (960, 1280)
+14:33:34 fingerprint sums wa D11 (960, 1280)
+14:33:34 fingerprint sums wa D14 (960, 1280)
+14:33:35 fingerprint sums wa D15 (960, 1280)
+14:33:35 fingerprint sums wa D18 (960, 1280)
+14:33:35 fingerprint sums wa D19 (960, 1280)
+14:33:37 fingerprint sums wa D21 (960, 1280)
+14:33:39 fingerprint sums wa D29 (960, 1280)
+14:33:40 fingerprint sums wa D33 (960, 1280)
+14:33:41 fingerprint sums wa D34 (960, 1280)
+14:33:53 fingerprint sums fbh D02 (1536, 2048)
+14:33:53 fingerprint sums fbh D04 (1536, 2048)
+14:33:53 fingerprint sums fbh D05 (1536, 2048)
+14:33:53 fingerprint sums fbh D06 (1536, 2048)
+14:33:53 fingerprint sums fbh D10 (1536, 2048)
+14:33:53 fingerprint sums fbh D11 (1536, 2048)
+14:33:54 fingerprint sums fbh D14 (1536, 2048)
+14:33:54 fingerprint sums fbh D15 (1536, 2048)
+14:33:54 fingerprint sums fbh D18 (1536, 2048)
+14:33:54 fingerprint sums fbh D19 (1536, 2048)
+14:33:54 fingerprint sums fbh D21 (1536, 2048)
+14:33:55 fingerprint sums fbh D29 (1536, 2048)
+14:33:56 fingerprint sums fbh D33 (1536, 2048)
+14:33:56 fingerprint sums fbh D34 (1536, 2048)
+14:34:08 dev: LOPO subtraction check {'device': 'D02', 'left_out_idx': 19, 'max_abs_diff_N': 0.0014443381878663786, 'max_abs_diff_D': 0.0, 'rel_D': 0.0, 'ok': True}
+14:34:39 dev: scored 1/788 photos
+14:38:16 dev: scored 101/788 photos
+14:41:32 dev: scored 201/788 photos
+14:42:07 dev: scored 301/788 photos
+14:43:04 dev: scored 401/788 photos
+14:45:02 dev: scored 501/788 photos
+14:46:53 dev: scored 601/788 photos
+14:48:15 dev: scored 701/788 photos
+14:49:23 dev: scores saved 11032
+Traceback (most recent call last):
+  File "/home/zera/project/Diffusion-Research/experiments/021-attr-residual/run.py", line 911, in <module>
+    stage_dev(scratch, a.workers)
+  File "/home/zera/project/Diffusion-Research/experiments/021-attr-residual/run.py", line 715, in stage_dev
+    real_ncc = fr.result()
+               ^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/zera/project/Diffusion-Research/env/.python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.

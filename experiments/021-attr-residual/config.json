@@ -1,0 +1,41 @@
+{
+ "experiment": "021-attr-residual (H-A2, docs/08 + docs/09, D-018 cycle)",
+ "seed": 0,
+ "n_boot": 1000,
+ "n_perm": 200,
+ "generators": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl", "sd3_large", "flux"],
+ "gen": {
+  "crop": 256,
+  "crop_origin": "top-left (0,0) of the image AFTER the condition is applied; clean = native pixel grid, no resize",
+  "conditions": ["clean", "jpeg75_resize05", "social_sim"],
+  "condition_code": "experiments/lib/perturb.py apply_condition(img, cond, key=sha256, seed=0), applied to the FULL decoded RGB image, identical for all classes, BEFORE the crop",
+  "gray": "PIL convert('L') of the RGB crop",
+  "residual": "x - Wiener3x3(x) (scipy.signal.wiener formula, mode=reflect borders), then row and column zero-mean",
+  "train_family_frac": 0.7,
+  "primary_split_seed": 0,
+  "sensitivity_split_seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "fingerprint": "mean train residual per generator (float32)",
+  "score": "normalised correlation <r,f>/(|r||f|); decision argmax over 8",
+  "fingerprint_sources": ["clean (train images of the clean condition; realistic)", "matched (train images under the test condition)"],
+  "spectral": "mean |FFT2(residual)| per generator, centred by the all-train mean spectrum; same NCC; reported, not judged",
+  "m1_C": 1.0,
+  "pass_i_clean_bacc": 0.60,
+  "kill_i_clean_bacc": 0.30,
+  "m1_margin": 0.10
+ },
+ "dev": {
+  "devices": ["D02", "D04", "D05", "D06", "D10", "D11", "D14", "D15", "D18", "D19", "D21", "D29", "D33", "D34"],
+  "same_model_sets": {"iPhone4s": ["D02", "D10"], "iPhone5c": ["D05", "D14", "D18"], "iPhone6": ["D06", "D15"], "iPhone5": ["D29", "D34"]},
+  "native_size_wh": [3264, 2448],
+  "fingerprint": "PRNU MLE K = sum(r*x)/(sum(x^2)+eps), x = gray, r = zero-meaned Wiener residual, eps = 1.0, leave-one-photo-out",
+  "score": "PCE at zero shift (signed), peak-excluded 11x11 window; best of orientation variants {0,180}",
+  "pce_threshold": 60,
+  "eps": 1.0,
+  "perm_crop": 1024,
+  "pass_ii_native_top1": 0.70,
+  "pass_ii_within_model": 0.70,
+  "kill_ii_native_top1": 0.30,
+  "platform_arms": ["nat", "wa", "fbh", "nat2wa"]
+ },
+ "label_rule": "PASS-i: clean bacc >= 0.60 (point). KILL-i: clean bacc < 0.30. PASS-ii: native 14-way top-1 >= 0.70 AND within-model >= 0.70. KILL-ii: native 14-way < 0.30. H-A2 PASS if PASS-i or PASS-ii; KILL if KILL-i and KILL-ii; else INCONCLUSIVE. Validity gates of docs/08 s3 -> INVALID if violated. M1 margin (CI lower bound of bacc minus M1 >= 0.10) reported as annotation."
+}

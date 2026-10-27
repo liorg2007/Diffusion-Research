@@ -1,0 +1,13 @@
+{
+ "stat": "zero-shift NCC on centre 1024x1024 crop of the native, LOPO",
+ "real_top1_macro": 0.9744897959183673,
+ "perm_mean": 0.07385714285714286,
+ "perm_ci": [
+  0.015306122448979591,
+  0.16051870748299327
+ ],
+ "perm_max": 0.1785714285714286,
+ "n_perm": 200,
+ "chance": 0.07142857142857142,
+ "p_ge_real": 0.004975124378109453
+}

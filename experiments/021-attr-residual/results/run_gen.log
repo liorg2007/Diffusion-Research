@@ -1,0 +1,3 @@
+14:31:10 gen: extracting crops/residuals 1020 images x 3 conditions
+14:31:38 gen: 717 train / 303 test rows; families 379/163
+14:39:35 gen done 507 s

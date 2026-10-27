@@ -1,0 +1,24 @@
+{
+ "n_photos": 197,
+ "orientation_precheck_min_corr": 0.9997978098118769,
+ "lopo_check": {
+  "device": "D02",
+  "left_out_idx": 19,
+  "max_abs_diff_N": 0.0014443381878663786,
+  "max_abs_diff_D": 0.0,
+  "rel_D": 0.0,
+  "ok": true
+ },
+ "k_extra_nonzero": {
+  "D33_27": 1,
+  "D33_38": 1,
+  "D33_51": 1,
+  "D33_93": 1,
+  "D33_97": 1,
+  "D33_109": 1,
+  "D33_118": 1,
+  "D33_134": 1,
+  "D33_145": 1
+ },
+ "runtime_s": 423.77894854545593
+}

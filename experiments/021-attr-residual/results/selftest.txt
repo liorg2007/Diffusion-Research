@@ -1,0 +1,29 @@
+[PASS] Wiener 3x3 == scipy.signal.wiener (zero padding mode, all pixels)  max|d|=6.54e-13
+[PASS] residual rows and columns are zero-mean  
+[PASS] FFT cross-correlation == brute-force circular correlation  max|d|=1.8e-07
+[PASS] shifted copy: peak NOT at zero shift (planted shift (3,-2) -> detected)  peak (3, 46)
+[PASS] planted fingerprint recovered (clean, 4-way, chance 0.25)  bacc=1.000 CI=[1.0, 1.0]
+[PASS] permutation control at chance for the planted-fingerprint data  perm mean=0.247 97.5%=0.452 max=0.542 (a few permutations map classes onto the right groups by chance; the mean is the chance check)
+[PASS] degraded condition scores lower than clean (monotone sanity)  0.861 < 1.000
+[PASS] pairwise metric high when fingerprint planted  1.000
+[PASS] null data (no fingerprint), 6 datasets: mean bacc and mean permutation bacc both at chance 0.25  mean bacc=0.266 (range 0.21-0.33), mean perm=0.243
+[PASS] planted content leak inflates an UNGROUPED split (leak exists)  ungrouped bacc=1.000
+[PASS] grouped-split gate catches the ungrouped split  
+[PASS] sha256/crop-hash dedupe gate catches a planted duplicate  
+[PASS] dedupe gate passes on unique hashes  
+[PASS] family split is grouped, 70% of families in train  
+[PASS] test-in-fingerprint leak is large on null data (so the honest pipeline's chance result is meaningful)  leaky=1.000 honest=0.333
+[PASS] spectral variant reported  spectral bacc=0.292
+[PASS] planted PRNU recovered: LOPO top-1 over 3 devices (chance 0.33)  top1=1.000
+[PASS] true-device PCE >> 60 and wrong-device PCE small  median true=10357, p95 false=2.4
+[PASS] PCE peak at zero shift for true device  
+[PASS] planted LEAK (test photo inside its own fingerprint) inflates PCE vs LOPO  leaky median=15266 vs LOPO 10357
+[PASS] LOPO gate raises when the test photo is a fingerprint member  
+[PASS] LOPO subtraction equals explicit leave-one-out re-sum  corr=1.000000
+[PASS] shifted test image: peak not at zero shift (flagged), zero-shift PCE collapses  peak_zero=False shift=(188, 249) pce0=0.0
+[PASS] 180-degree rotated test photo: variants {0,180} recover the fingerprint, variant 0 alone does not  pce 0-only=5.8, best of {0,180}=7677.0
+[PASS] resized-fingerprint arm: true device scores above other device in the resized copy  PCE true=148.0 other=-1.2
+[PASS] device permutation control: true labels high, shuffled labels at chance  real=1.000 perm mean=0.311 max=0.967
+[PASS] null devices (no PRNU): PCE below 60 for the 'true' device  p95=2.9
+
+SELFTEST PASSED
