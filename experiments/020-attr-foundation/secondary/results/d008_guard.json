@@ -1,0 +1,82 @@
+{
+ "fov224/clean": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 1.138448715209961e-05,
+  "max_abs_feature_diff": 0.00011110305786132812,
+  "max_scaled_feature_diff": 1.8232283764518797e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov224/jpeg(75)": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 1.1682510375976562e-05,
+  "max_abs_feature_diff": 0.0003552436828613281,
+  "max_scaled_feature_diff": 3.435865801293403e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov224/jpeg(90)": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 8.106231689453125e-06,
+  "max_abs_feature_diff": 8.630752563476562e-05,
+  "max_scaled_feature_diff": 1.0916487553913612e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/clean": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 6.67572021484375e-05,
+  "max_abs_feature_diff": 0.00018596649169921875,
+  "max_scaled_feature_diff": 3.730621756403707e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/jpeg75_resize05": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 2.574920654296875e-05,
+  "max_abs_feature_diff": 6.580352783203125e-05,
+  "max_scaled_feature_diff": 1.9293624063720927e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/mavali_medium": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 2.7060508728027344e-05,
+  "max_abs_feature_diff": 5.14984130859375e-05,
+  "max_scaled_feature_diff": 1.210842401633272e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/screenshot_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 5.459785461425781e-05,
+  "max_abs_feature_diff": 0.00021314620971679688,
+  "max_scaled_feature_diff": 2.4216857127612457e-05,
+  "n": 32,
+  "ok": true
+ },
+ "fov512/social_sim": {
+  "device": "cuda",
+  "feat_tol": 0.001,
+  "logit_tol": 0.001,
+  "max_abs_dlogit_b8": 2.384185791015625e-05,
+  "max_abs_feature_diff": 5.054473876953125e-05,
+  "max_scaled_feature_diff": 1.7222579117515124e-05,
+  "n": 32,
+  "ok": true
+ }
+}

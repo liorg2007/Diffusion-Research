@@ -1,0 +1,10 @@
+18:46:37 design check: primary config == 003 b0 config (backbone, input_size, layers, use_cls, use_mean)
+18:46:37 SEC-X device cuda
+18:47:23 SEC-X   clean: 900 new (0 cached) in 46s
+18:48:10 SEC-X   jpeg75_resize05: 900 new (0 cached) in 47s
+18:48:42 SEC-X   social_sim: 900 new (0 cached) in 32s
+18:49:00 SEC-X   screenshot_sim: 900 new (0 cached) in 18s
+18:49:20 SEC-X   mavali_medium: 900 new (0 cached) in 20s
+18:49:51 SEC-X   clean: 1600 new (0 cached) in 31s
+18:50:56 SEC-X   jpeg(75): 1600 new (0 cached) in 65s
+18:51:59 SEC-X   jpeg(90): 1600 new (0 cached) in 62s

@@ -1,0 +1,121 @@
+{
+ "fov512": {
+  "n": 16,
+  "generators": [
+   "dalle2",
+   "dalle2",
+   "dalle3",
+   "dalle3",
+   "firefly",
+   "firefly",
+   "flux",
+   "flux",
+   "midjourney-v5",
+   "midjourney-v5",
+   "sd3_large",
+   "sd3_large",
+   "stable-diffusion-2",
+   "stable-diffusion-2",
+   "stable-diffusion-xl",
+   "stable-diffusion-xl"
+  ],
+  "pixel_parity_raw_to_processed": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "features": {
+   "clean": {
+    "max_abs": 3.2901763916015625e-05,
+    "max_scaled": 5.255506039247848e-06,
+    "ok": true
+   },
+   "jpeg75_resize05": {
+    "max_abs": 2.86102294921875e-05,
+    "max_scaled": 6.017871328367619e-06,
+    "ok": true
+   },
+   "social_sim": {
+    "max_abs": 3.170967102050781e-05,
+    "max_scaled": 6.403658062481554e-06,
+    "ok": true
+   },
+   "screenshot_sim": {
+    "max_abs": 2.8133392333984375e-05,
+    "max_scaled": 4.4547291508933995e-06,
+    "ok": true
+   },
+   "mavali_medium": {
+    "max_abs": 3.3855438232421875e-05,
+    "max_scaled": 5.918431270401925e-06,
+    "ok": true
+   }
+  },
+  "ok": true
+ },
+ "fov224": {
+  "n": 16,
+  "generators": [
+   "d3_gen_1",
+   "d3_gen_1",
+   "d3_gen_0",
+   "d3_gen_0",
+   "d3_gen_3",
+   "d3_gen_0",
+   "d3_gen_3",
+   "d3_gen_1",
+   "d3_gen_3",
+   "d3_gen_1",
+   "d3_gen_2",
+   "d3_gen_1",
+   "d3_gen_3",
+   "d3_gen_1",
+   "d3_gen_1",
+   "d3_gen_3"
+  ],
+  "pixel_parity_raw_to_processed": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "features": {
+   "clean": {
+    "max_abs": 3.266334533691406e-05,
+    "max_scaled": 5.389487341744825e-06,
+    "ok": true
+   },
+   "jpeg(75)": {
+    "max_abs": 2.86102294921875e-05,
+    "max_scaled": 5.860038072569296e-06,
+    "ok": true
+   }
+  },
+  "ok": true
+ }
+}
