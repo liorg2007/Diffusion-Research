@@ -144,3 +144,15 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
   - with the gain over the simple baseline (A-thr for E9) still required.
 - **Labels.** The original pre-registered labels (E9: PASS / KILL / INCONCLUSIVE) are ALWAYS reported unchanged. The DISCOVERY tier is an additional label, never a replacement, and it is decided by the rule above, fixed before any result.
 - **Unchanged.** The Phase 5 target (FPR ≤ 1% on fresh phone photos) stays the stated goal. A DISCOVERY means "novel and promising, needs more data or compute to reach the target", not "target met".
+
+**D-018 — New research question: fingerprinting the source of an image (2026-10-27 14:00)**
+- **Owner's words:** "lets then pose a new research question, can we fingerprint an image generator (or even a real image) given an image. Please perform the full research cycle on this, use the knowlege you gathered and try different methods of testing the hypothesis."
+- **Question.** Given one image, can we identify which generator made it, or for a real photo which camera or pipeline produced it?
+  - Closed-set: is it one of the known sources?
+  - Open-set: can we say "unknown source"?
+  - Family level: which VAE or architecture family?
+  - Real side: which camera model or device, and does it survive WhatsApp/Facebook laundering?
+- **Status of earlier work.** This starts a NEW research cycle (survey → hypotheses → pre-registered tests with a critic → fable/high report). The detection line (E1–E10) keeps its verdicts.
+- **Stop rule.** The cycle gets its own stop rule: stop after 3 failed pre-registered hypotheses unless the owner raises the limit (D-016 practice). Labels follow D-017: strict labels plus DISCOVERY.
+- **Unchanged.** CLAUDE.md security, grounding, download (20 GB ceiling, D-015) and licence rules.
+- **Plan files.** docs/07-attribution-survey.md, docs/08-attribution-hypotheses.md and docs/09-attribution-plan.md (pre-registration); experiments/020+; report docs/10-attribution-report.md.
