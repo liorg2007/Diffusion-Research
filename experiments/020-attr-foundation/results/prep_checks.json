@@ -1,0 +1,46 @@
+{
+ "fov512": {
+  "n_rows": 5319,
+  "conds": [
+   "clean",
+   "jpeg75_resize05",
+   "social_sim",
+   "screenshot_sim",
+   "mavali_medium"
+  ],
+  "bad_paths": 0,
+  "n_exif_or_icc": 0,
+  "n_not_rgb": 0,
+  "n_raw_available": 4719,
+  "n_ext_mismatch": 120,
+  "raw_sha_unique": true,
+  "crop_sha_unique": false,
+  "cache_meta": {
+   "ok": true,
+   "n_meta": 15,
+   "spec": "hf:dinov2:facebook/dinov2-base"
+  },
+  "seconds": 22
+ },
+ "fov224": {
+  "n_rows": 400,
+  "conds": [
+   "clean",
+   "jpeg(75)",
+   "jpeg(90)"
+  ],
+  "bad_paths": 0,
+  "n_exif_or_icc": 0,
+  "n_not_rgb": 0,
+  "n_raw_available": 400,
+  "n_ext_mismatch": 0,
+  "raw_sha_unique": true,
+  "crop_sha_unique": true,
+  "cache_meta": {
+   "ok": true,
+   "n_meta": 5,
+   "spec": "hf:dinov2:facebook/dinov2-base"
+  },
+  "seconds": 2
+ }
+}

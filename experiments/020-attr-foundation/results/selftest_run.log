@@ -1,0 +1,61 @@
+PASS splits: grouped folds are valid {'ok': True, 'problems': []}
+PASS splits: deterministic (same seed twice)
+PASS splits: all 5 folds used, roughly balanced [80, 80, 80, 80, 80]
+PASS PLANTED LEAK: a group split across folds is caught
+PASS PLANTED LEAK: train/test sharing a group raises in assert_disjoint_groups
+PASS assert_disjoint_groups passes on a valid fold
+PASS held-out laundering in training is caught
+PASS bootstrap: row 0 is the unweighted point estimate
+PASS bootstrap: every replicate draws n_clusters clusters
+PASS metrics: bacc point == sklearn balanced_accuracy
+PASS metrics: bacc CI brackets the point [0.6635337524084327, 0.6124267871068058, 0.7141264177380806]
+PASS metrics: macro without a class drops exactly that class
+PASS metrics: weighted AUROC point == sklearn roc_auc_score
+PASS metrics: AUROC of identical scores is 0.5
+PASS Holm: adjusted p-values are monotone and >= raw
+PASS pairwise: 6 class pairs x 150 families = 900 pairs 900
+PASS pairwise: a perfect scorer gets 1.0
+PASS pairwise: a pure CONTENT scorer is exactly at chance (ties = 0.5)
+PASS pairwise: a random scorer is ~0.5 0.498
+PASS pairwise: bootstrap macro/pooled point == 1.0 for the perfect scorer
+PASS pairwise: excluding a class removes its pair types (3 of 6 remain)
+PASS label H-A1: all criteria met -> PASS
+PASS label H-A1: CI lower bound within 0.10 of M1 -> INCONCLUSIVE
+PASS label H-A1: RAID 0.50 -> INCONCLUSIVE
+PASS label H-A1: bacc 0.30 -> KILL
+PASS label H-A1: pairwise 0.55 -> KILL
+PASS label H-A1: a failed validity gate -> INVALID (no label)
+PASS open-set usable: mean 0.85, min 0.70 -> True; one generator at 0.60 -> False
+PASS label H-A4: mean 0.9, min 0.9 -> PASS (+DISCOVERY when every real kind acc >= .95)
+PASS label H-A4: one real source at 0.94 kind accuracy -> no DISCOVERY
+PASS label H-A4: min 0.60 -> INCONCLUSIVE; mean 0.65 -> KILL
+PASS label H-A4: INVALID when a gate failed
+PASS gate dedupe: unique hashes pass
+PASS PLANTED LEAK: the same sha256 in two classes is caught
+PASS gate M0-on-tensors: identical tensor shapes -> exactly chance 0.125
+PASS PLANTED LEAK: class-dependent tensor size is caught by the M0-on-tensors gate bacc 0.375
+PASS gate M0-on-tensors: class-independent random sizes stay within the 0.04 margin 0.121
+PASS gate permutation: the honest pipeline is at chance mean 0.493 p95 0.568
+PASS PLANTED LEAK: feature selection on test labels is caught by the permutation control mean 0.729 p95 0.781
+PASS M0: true format comes from content (JPEG under .png), q-table hashed, mismatch flagged
+PASS M0: a real PNG is PNG with no q-table
+PASS M1: 12 finite statistics; noise has higher Laplacian variance and noise std than a flat image
+PASS D-008 guard files readable and ok {'ok': True, 'max_abs_dlogit': 0.00014405680291673661, 'n_entries': 18, 'new_gpu_features_in_this_experiment': False}
+PASS pipeline: closed-set probe on separable synthetic classes reaches high bacc bacc 1.000
+PASS pipeline: eval_closed gives bacc, F1, pairwise (macro+strict), no-drop macro, confusion
+PASS pipeline: M1 baseline on pure-noise features is near chance 0.220
+PASS pipeline: M1 gradient-boosting variant runs
+PASS pipeline: inner-CV nested choice picks a feature set from train data only
+PASS LOGO: a far-away held-out class is flagged novel (Mahalanobis AUROC > 0.95) 1.000
+PASS LOGO: held-out class never appears in the training rows (asserted in task)
+PASS LOGO: a held-out class in the middle of the others is harder than the far one 0.643
+PASS MahaModel: held-out rows are farther than training rows
+PASS kNN-10: returns one distance and 10 labels per row
+PASS H-A4: leave-one-source-out novelty flags the far source AUROC 1.000
+PASS H-A4: nearest KNOWN source of the held-out rows is never the held-out source itself
+PASS H-A4: kNN novelty and the 10-NN real-vote are produced for b8 at the configured conditions
+PASS H-A4: closed-set 16-way head returns one prediction per test row per condition
+PASS permutation (real code path): shuffled labels on separable data give ~chance mean 0.199
+PASS permutation (H-A4 code path): shuffled source labels give ~0.5 novelty AUROC 0.497
+
+59 of 59 checks passed; failed: none  (255s)

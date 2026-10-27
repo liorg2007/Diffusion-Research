@@ -456,3 +456,8 @@
   - 8-way bacc at jpeg75_resize05: CommFor 0.740, ClipDet 0.709, B-Free 0.660, RINE 0.157 (collapsed embedding, effective rank 2). DINOv2 cat (H-A1) is 0.858 [0.838, 0.878]; best detector minus cat -0.118 [-0.149, -0.087].
   - No detector embedding is open-set usable (mean LOGO AUROC ≤ 0.656).
   - D-008 ok (5.3e-05). Gates ok. The 020 report stage crashes (KeyError drop_macro) after results.json; agent resumed. Launching critic.
+- 2026-10-27 18:24 — 020-attr-foundation done.
+  - H-A1 PASS: 8-way bacc at jpeg75_resize05 0.855 [0.834, 0.876] (chance 0.125; M1 0.425; M0 raw metadata 0.688, chance on tensors). Same-caption pairwise 1.000. RAID 4-way 0.688 at jpeg(75). Other conditions 0.81–0.91. Clean-train transfer 0.542. b8 − b12 +0.254.
+  - Open-set usable: NO (msp mean AUROC 0.768, min 0.703).
+  - H-A4 KILL (counting failure 2 of 3): mean novelty AUROC 0.531; 16-way closed-set 0.695.
+  - Gates ok; 6 duplicate D13 WhatsApp crops dropped before folds; report-stage bugs fixed with no number change. Launching critic.

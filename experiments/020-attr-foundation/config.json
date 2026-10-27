@@ -1,0 +1,392 @@
+{
+ "experiment": "020-attr-foundation (D-018 cycle; docs/08 + docs/09 pre-registration): M0, M1, H-A1, H-A4. All constants frozen before any attribution score was read.",
+ "seed": 0,
+ "n_boot": 1000,
+ "outer_folds": 5,
+ "inner_folds": 3,
+ "feature_layout": "004 secondary = [blk4 CLS|blk4 mean|blk8 CLS|blk8 mean|blk12 CLS|blk12 mean], H=768",
+ "dino_slices": {
+  "b4": [
+   0,
+   1536
+  ],
+  "b8": [
+   1536,
+   3072
+  ],
+  "b12": [
+   3072,
+   4608
+  ],
+  "cat": [
+   0,
+   4608
+  ]
+ },
+ "fs_order": [
+  "b4",
+  "b8",
+  "b12",
+  "cat"
+ ],
+ "fs_tiebreak": "inner-CV bacc ties -> first in fs_order, then smaller C",
+ "c_grid": {
+  "dino": [
+   0.0001,
+   0.001,
+   0.01,
+   0.1
+  ],
+  "m1": [
+   0.01,
+   0.1,
+   1,
+   10,
+   100
+  ]
+ },
+ "lr": {
+  "max_iter": 300,
+  "class_weight": "balanced"
+ },
+ "fixed_C_closed_ha4": 0.01,
+ "launder_cond": "jpeg75_resize05",
+ "held_out_launderings": [
+  "screenshot_sim",
+  "mavali_medium"
+ ],
+ "m1_crop": 224,
+ "m1_stats": [
+  "lap_logvar",
+  "lap_absmean",
+  "noise_logstd",
+  "blockiness8",
+  "sat_mean",
+  "sat_std",
+  "mean_r",
+  "mean_g",
+  "mean_b",
+  "luma_std",
+  "luma_skew",
+  "clipped_frac"
+ ],
+ "m1_label_model": "logistic (standardised, C by inner grouped CV); HistGradientBoosting = sensitivity only (not used for the label)",
+ "universes": {
+  "fov512": {
+   "splits": "experiments/019-source-diversity/splits_fov512.csv",
+   "pools": null,
+   "caches": [
+    "experiments/004-phase4-features/cache/fov512",
+    "experiments/016-loso/cache/fov512",
+    "experiments/019-source-diversity/cache/feats"
+   ],
+   "d008_guards": [
+    [
+     "experiments/004-phase4-features/cache/fov512/d008_guard.json",
+     [
+      "clean",
+      "jpeg75_resize05",
+      "social_sim",
+      "screenshot_sim",
+      "mavali_medium"
+     ]
+    ],
+    [
+     "experiments/016-loso/results/d008_guard.json",
+     [
+      "fov512/clean",
+      "fov512/jpeg75_resize05",
+      "fov512/social_sim",
+      "fov512/screenshot_sim",
+      "fov512/mavali_medium"
+     ]
+    ],
+    [
+     "experiments/019-source-diversity/results/d008_guard.json",
+     [
+      "fov512/clean",
+      "fov512/jpeg75_resize05",
+      "fov512/social_sim",
+      "fov512/screenshot_sim",
+      "fov512/mavali_medium"
+     ]
+    ]
+   ],
+   "conditions": [
+    "clean",
+    "jpeg75_resize05",
+    "social_sim",
+    "screenshot_sim",
+    "mavali_medium"
+   ],
+   "tmix": [
+    "clean",
+    "jpeg75_resize05",
+    "social_sim"
+   ],
+   "group_rule": "e6",
+   "group_pools": {
+    "unsplash": "group",
+    "commons": "group",
+    "hdrplus": "group"
+   },
+   "expected_dir": "data/processed/fov512/images"
+  },
+  "fov224": {
+   "splits": "experiments/016-loso/splits_fov224.csv",
+   "pools": [
+    "fake_d3"
+   ],
+   "caches": [
+    "experiments/016-loso/cache/fov224",
+    "experiments/004-phase4-features/cache/fov224"
+   ],
+   "d008_guards": [
+    [
+     "experiments/016-loso/results/d008_guard.json",
+     [
+      "fov224/clean",
+      "fov224/jpeg(75)",
+      "fov224/jpeg(90)"
+     ]
+    ]
+   ],
+   "conditions": [
+    "clean",
+    "jpeg(75)",
+    "jpeg(90)"
+   ],
+   "tmix": [
+    "clean",
+    "jpeg(75)",
+    "jpeg(90)"
+   ],
+   "group_rule": "d3id",
+   "group_pools": {},
+   "expected_dir": "data/processed/fov224/images",
+   "note": "resize-based launderings cannot go through the 224 backbone (016 config); only JPEG-only conditions exist. There is no held-out laundering for RAID."
+  }
+ },
+ "analyses": {
+  "ha1_main": {
+   "kind": "closed",
+   "universe": "fov512",
+   "select": {
+    "pool": [
+     "fake"
+    ]
+   },
+   "role": "main",
+   "classes": [
+    "dalle2",
+    "dalle3",
+    "firefly",
+    "midjourney-v5",
+    "stable-diffusion-2",
+    "stable-diffusion-xl",
+    "sd3_large",
+    "flux"
+   ],
+   "class_column": "generator",
+   "primary": "jpeg75_resize05",
+   "drop_macro": "firefly",
+   "logo": true,
+   "pairwise": true,
+   "perm": {
+    "n": 200,
+    "mean_tol": 0.01,
+    "p95_excess": 0.03
+   },
+   "m0_tensor_max_excess": 0.04
+  },
+  "ha1_raid": {
+   "kind": "closed",
+   "universe": "fov224",
+   "select": {
+    "pool": [
+     "fake_d3"
+    ]
+   },
+   "role": "replication",
+   "classes": [
+    "d3_gen_0",
+    "d3_gen_1",
+    "d3_gen_2",
+    "d3_gen_3"
+   ],
+   "class_column": "generator",
+   "primary": "jpeg(75)",
+   "drop_macro": null,
+   "logo": false,
+   "pairwise": true,
+   "perm": {
+    "n": 200,
+    "mean_tol": 0.015,
+    "p95_excess": 0.05
+   },
+   "m0_tensor_max_excess": 0.06,
+   "note": "existing 100 RAID ids; gen_k -> generator mapping is [unverified]. The +400 ids arm is added later by pointing universes.fov224.splits at an extended splits file (config only)."
+  }
+ },
+ "ha4": {
+  "universe": "fov512",
+  "primary_fs": "b8",
+  "fs_list": [
+   "b4",
+   "b8",
+   "b12"
+  ],
+  "primary": "jpeg75_resize05",
+  "knn_k": 10,
+  "knn_fs": [
+   "b8"
+  ],
+  "knn_conds": [
+   "clean",
+   "jpeg75_resize05"
+  ],
+  "perm": {
+   "n": 200,
+   "proj_dim": 128,
+   "mean_tol": 0.02,
+   "p95_excess": 0.04
+  },
+  "sources": [
+   {
+    "name": "dalle2",
+    "pool": "fake",
+    "generator": "dalle2",
+    "kind": "fake"
+   },
+   {
+    "name": "dalle3",
+    "pool": "fake",
+    "generator": "dalle3",
+    "kind": "fake"
+   },
+   {
+    "name": "firefly",
+    "pool": "fake",
+    "generator": "firefly",
+    "kind": "fake"
+   },
+   {
+    "name": "midjourney-v5",
+    "pool": "fake",
+    "generator": "midjourney-v5",
+    "kind": "fake"
+   },
+   {
+    "name": "stable-diffusion-2",
+    "pool": "fake",
+    "generator": "stable-diffusion-2",
+    "kind": "fake"
+   },
+   {
+    "name": "stable-diffusion-xl",
+    "pool": "fake",
+    "generator": "stable-diffusion-xl",
+    "kind": "fake"
+   },
+   {
+    "name": "sd3_large",
+    "pool": "fake",
+    "generator": "sd3_large",
+    "kind": "fake"
+   },
+   {
+    "name": "flux",
+    "pool": "fake",
+    "generator": "flux",
+    "kind": "fake"
+   },
+   {
+    "name": "VIS-nat",
+    "pool": "vision_native",
+    "kind": "real"
+   },
+   {
+    "name": "VIS-WA",
+    "pool": "vision_whatsapp",
+    "kind": "real"
+   },
+   {
+    "name": "VIS-FBH",
+    "pool": "vision_facebook_hq",
+    "kind": "real"
+   },
+   {
+    "name": "RAISE",
+    "pool": "raise",
+    "kind": "real"
+   },
+   {
+    "name": "OI",
+    "pool": "openimages",
+    "kind": "real"
+   },
+   {
+    "name": "UNS",
+    "pool": "unsplash",
+    "kind": "real"
+   },
+   {
+    "name": "WMC",
+    "pool": "commons",
+    "kind": "real"
+   },
+   {
+    "name": "HDRP",
+    "pool": "hdrplus",
+    "kind": "real"
+   }
+  ],
+  "extra_holdouts": [
+   {
+    "name": "VISION-all",
+    "members": [
+     "VIS-nat",
+     "VIS-WA",
+     "VIS-FBH"
+    ],
+    "kind": "real",
+    "descriptive": true
+   }
+  ],
+  "novelty_primary": "mahalanobis (class means, shared Ledoit-Wolf covariance of within-class residuals, min over known classes); kNN-10 = reported alternative",
+  "e10_reference": "experiments/019-source-diversity/results/tables.md (k=5, F_b8, reading A FPR per held-out source)"
+ },
+ "thresholds": {
+  "ha1_pass_bacc": 0.6,
+  "ha1_m1_margin": 0.1,
+  "ha1_pass_pairwise": 0.75,
+  "ha1_pass_raid": 0.55,
+  "ha1_kill_bacc": 0.35,
+  "ha1_kill_pairwise": 0.6,
+  "open_set_mean_auroc": 0.8,
+  "open_set_min_auroc": 0.65,
+  "ha4_pass_mean": 0.85,
+  "ha4_pass_min": 0.7,
+  "ha4_kill_mean": 0.7,
+  "ha4_discovery_kind": 0.95
+ },
+ "labels_text": {
+  "H-A1": "PASS: at jpeg75_resize05 (T-mix, inner-CV nested feature set): bacc >= 0.60 AND bacc CI lower bound >= M1 bacc + 0.10 AND pairwise (macro over generator pairs) >= 0.75 AND RAID 4-way bacc (jpeg(75)) >= 0.55. KILL: bacc < 0.35 or pairwise < 0.60. Else INCONCLUSIVE.",
+  "open-set usable": "mean LOGO AUROC >= 0.80 and no generator < 0.65, for -max softmax OR Mahalanobis (both flags reported)",
+  "H-A4": "PASS: mean novelty AUROC (Mahalanobis, b8, T-mix) >= 0.85 at jpeg75_resize05 and min >= 0.70. KILL: mean < 0.70. Else INCONCLUSIVE.",
+  "DISCOVERY": "kind accuracy >= 0.95 for every held-out REAL source (8), jpeg75_resize05, b8, T-mix"
+ },
+ "interpretations": [
+  "pairwise = 2-AFC: for an image pair (a of A, b of B) in one caption family, correct iff s_A(a)-s_B(a) > s_A(b)-s_B(b) (s = class log-probability); ties = 0.5; chance 0.5. The strict 'both' reading is reported too.",
+  "pairwise headline = macro over generator pairs; pooled over pairs reported.",
+  "RAID primary condition = jpeg(75) (only JPEG-only conditions exist at fov224).",
+  "H-A4 novelty primary = Mahalanobis on b8 (fixed a priori, not chosen on test); b4/b12 reported with Holm. Concat omitted for H-A4 (cost).",
+  "'CI lower bound >= M1 + 0.10' read literally: lo(bacc_method) >= bacc_M1(point) + 0.10; the paired-difference CI is also reported."
+ ],
+ "perm_control": {
+  "fs": "b8",
+  "C": 0.01,
+  "note": "fixed feature set and C for the 200-shuffle control (no selection): label-permuted nested-free pipeline, T-mix training, primary condition"
+ },
+ "fixed_C_closed_ha4_m1": 1.0
+}

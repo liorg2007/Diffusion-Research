@@ -1,0 +1,47 @@
+{
+ "ha1_main": {
+  "sha256_of_folds": "bc2894a41fea5a1b971fe027b530c5884bf16f7becf5dd97c18ba9151fd433c3",
+  "n": 1020,
+  "sizes": [
+   204,
+   203,
+   204,
+   204,
+   205
+  ],
+  "check": {
+   "ok": true,
+   "problems": []
+  }
+ },
+ "ha1_raid": {
+  "sha256_of_folds": "3206369e7aef2a744406938dc600f2a55013b75d208e5f04113628560b0ca612",
+  "n": 400,
+  "sizes": [
+   80,
+   80,
+   80,
+   80,
+   80
+  ],
+  "check": {
+   "ok": true,
+   "problems": []
+  }
+ },
+ "ha4": {
+  "sha256_of_folds": "8725701cecf7da6d4736ceb86cc512eb286c8481f357c8c1092d92014bdacb65",
+  "n": 5313,
+  "sizes": [
+   1063,
+   1061,
+   1064,
+   1061,
+   1064
+  ],
+  "check": {
+   "ok": true,
+   "problems": []
+  }
+ }
+}

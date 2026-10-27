@@ -1,0 +1,69 @@
+15:04:02 E11 prep fov512: {'n_rows': 5319, 'conds': ['clean', 'jpeg75_resize05', 'social_sim', 'screenshot_sim', 'mavali_medium'], 'bad_paths': 0, 'n_exif_or_icc': 0, 'n_not_rgb': 0, 'n_raw_available': 4719, 'n_ext_mismatch': 120, 'raw_sha_unique': True, 'crop_sha_unique': False, 'cache_meta': {'ok': True, 'n_meta': 15, 'spec': 'hf:dinov2:facebook/dinov2-base'}, 'seconds': 22}
+15:04:04 E11 prep fov224: {'n_rows': 400, 'conds': ['clean', 'jpeg(75)', 'jpeg(90)'], 'bad_paths': 0, 'n_exif_or_icc': 0, 'n_not_rgb': 0, 'n_raw_available': 400, 'n_ext_mismatch': 0, 'raw_sha_unique': True, 'crop_sha_unique': True, 'cache_meta': {'ok': True, 'n_meta': 5, 'spec': 'hf:dinov2:facebook/dinov2-base'}, 'seconds': 2}
+15:12:59 E11 logo: 32/320 (531s)
+15:15:42 E11 logo: 64/320 (694s)
+15:18:06 E11 logo: 96/320 (838s)
+15:19:19 E11 logo: 128/320 (911s)
+15:20:37 E11 logo: 160/320 (989s)
+15:21:30 E11 logo: 192/320 (1042s)
+15:21:54 E11 logo: 224/320 (1065s)
+15:22:20 E11 logo: 256/320 (1092s)
+15:22:41 E11 logo: 288/320 (1113s)
+15:22:59 E11 logo: 320/320 (1131s)
+15:22:59 E11 logo: 320 tasks in 1131s
+15:34:28 E11 ha4: 4/40 (689s)
+15:36:29 E11 ha4: 8/40 (809s)
+15:36:36 E11 ha4: 12/40 (817s)
+15:41:49 E11 ha4: 16/40 (1129s)
+15:41:49 E11 ha4: 20/40 (1129s)
+15:41:49 E11 ha4: 24/40 (1129s)
+15:41:49 E11 ha4: 28/40 (1129s)
+15:41:49 E11 ha4: 32/40 (1129s)
+15:41:49 E11 ha4: 36/40 (1129s)
+15:41:49 E11 ha4: 40/40 (1129s)
+15:41:49 E11 ha4: 40 tasks in 1129s
+15:42:16 E11 perm ha1_main: 100/1000 (27s)
+15:42:39 E11 perm ha1_main: 200/1000 (49s)
+15:43:03 E11 perm ha1_main: 300/1000 (73s)
+15:43:27 E11 perm ha1_main: 400/1000 (98s)
+15:43:50 E11 perm ha1_main: 500/1000 (121s)
+15:44:14 E11 perm ha1_main: 600/1000 (145s)
+15:44:39 E11 perm ha1_main: 700/1000 (169s)
+15:45:04 E11 perm ha1_main: 800/1000 (195s)
+15:45:28 E11 perm ha1_main: 900/1000 (218s)
+15:45:52 E11 perm ha1_main: 1000/1000 (243s)
+15:45:52 E11 perm ha1_main: 1000 tasks in 243s
+15:46:00 E11 perm ha1_raid: 100/1000 (7s)
+15:46:06 E11 perm ha1_raid: 200/1000 (14s)
+15:46:13 E11 perm ha1_raid: 300/1000 (20s)
+15:46:19 E11 perm ha1_raid: 400/1000 (27s)
+15:46:25 E11 perm ha1_raid: 500/1000 (32s)
+15:46:32 E11 perm ha1_raid: 600/1000 (40s)
+15:46:40 E11 perm ha1_raid: 700/1000 (48s)
+15:46:47 E11 perm ha1_raid: 800/1000 (54s)
+15:46:54 E11 perm ha1_raid: 900/1000 (61s)
+15:47:00 E11 perm ha1_raid: 1000/1000 (67s)
+15:47:00 E11 perm ha1_raid: 1000 tasks in 68s
+15:47:54 E11 perm ha4: 20/200 (54s)
+15:48:41 E11 perm ha4: 40/200 (100s)
+15:49:16 E11 perm ha4: 60/200 (136s)
+15:50:05 E11 perm ha4: 80/200 (184s)
+15:50:39 E11 perm ha4: 100/200 (219s)
+15:51:18 E11 perm ha4: 120/200 (257s)
+15:51:41 E11 perm ha4: 140/200 (281s)
+15:52:03 E11 perm ha4: 160/200 (303s)
+15:52:27 E11 perm ha4: 180/200 (327s)
+15:52:45 E11 perm ha4: 200/200 (345s)
+15:52:45 E11 perm ha4: 200 tasks in 345s
+15:55:17 E11 results.json written; labels: {"H-A1": "PASS", "open_set_usable": false, "H-A4": "KILL", "DISCOVERY": false, "all_gates_ok": true}
+Traceback (most recent call last):
+  File "/home/zera/project/Diffusion-Research/experiments/020-attr-foundation/run.py", line 1244, in <module>
+    main()
+  File "/home/zera/project/Diffusion-Research/experiments/020-attr-foundation/run.py", line 1239, in main
+    stage_report(a.workers)
+  File "/home/zera/project/Diffusion-Research/experiments/020-attr-foundation/run.py", line 1219, in stage_report
+    write_tables(R, A)
+  File "/home/zera/project/Diffusion-Research/experiments/020-attr-foundation/tables.py", line 58, in write_tables
+    w("| method | bacc | macro-F1 | " + ("bacc w/o firefly | " if a["drop_macro"] else "") + ("pairwise macro | pairwise pooled | strict(both) macro | " if has_pw else "") + "chosen C / feature set per fold |")
+                                                                  ~^^^^^^^^^^^^^^
+KeyError: 'drop_macro'

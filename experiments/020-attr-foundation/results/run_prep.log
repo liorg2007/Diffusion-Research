@@ -1,0 +1,5 @@
+14:38:12 E11 M1 fov512: 5319 rows x 5 conds in 128s
+14:38:33 E11 prep fov512: {'n_rows': 5319, 'conds': ['clean', 'jpeg75_resize05', 'social_sim', 'screenshot_sim', 'mavali_medium'], 'bad_paths': 0, 'n_exif_or_icc': 0, 'n_not_rgb': 0, 'n_raw_available': 4719, 'n_ext_mismatch': 120, 'raw_sha_unique': True, 'crop_sha_unique': False, 'cache_meta': {'ok': True, 'n_meta': 15, 'spec': 'hf:dinov2:facebook/dinov2-base'}, 'seconds': 157}
+14:38:43 E11 M1 fov224: 400 rows x 3 conds in 6s
+14:38:44 E11 prep fov224: {'n_rows': 400, 'conds': ['clean', 'jpeg(75)', 'jpeg(90)'], 'bad_paths': 0, 'n_exif_or_icc': 0, 'n_not_rgb': 0, 'n_raw_available': 400, 'n_ext_mismatch': 0, 'raw_sha_unique': True, 'crop_sha_unique': True, 'cache_meta': {'ok': True, 'n_meta': 5, 'spec': 'hf:dinov2:facebook/dinov2-base'}, 'seconds': 11}
+14:38:44 E11 stage prep done in 168s
