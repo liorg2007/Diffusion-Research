@@ -461,3 +461,8 @@
   - Open-set usable: NO (msp mean AUROC 0.768, min 0.703).
   - H-A4 KILL (counting failure 2 of 3): mean novelty AUROC 0.531; 16-way closed-set 0.695.
   - Gates ok; 6 duplicate D13 WhatsApp crops dropped before folds; report-stage bugs fixed with no number change. Launching critic.
+- 2026-10-27 18:27 — H-A5 critic: KILL correct, counts as failure.
+  - Deviation (now logged): RINE was probed at proj2, not the pre-registered per-block CLS stack. notes.md wrongly calls the stack out of scope. No label impact: CommFor and B-Free test the mechanism and both fail.
+  - The probes are not like-for-like across layers: detectors were read only at their last layer.
+  - Reading: the gap opens under laundering (clean CommFor ≈ DINOv2 b4). CommFor adds a little in fusion (cat+CommFor 0.880 vs 0.861, descriptive).
+  - 023 report re-run after 020's tables.md appeared.
