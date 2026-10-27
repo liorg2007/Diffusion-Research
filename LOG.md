@@ -449,3 +449,6 @@
   - Not a failure under docs/09 decision 1: the KILL side is clean A < 0.60 and B < 0.50, and clean A is 0.93. The agent's own config rule differs in wording, not in outcome.
   - Gate gap: M1 was not computed, so the beat-M1 test is unchecked.
   - Exploratory: VISION same-model camera transfer AUROC 0.747; HDR+ 6-model 0.200 (chance 0.167). Launching critic.
+- 2026-10-27 18:22 — H-A2 critic (opus/high): PASS via (ii) only; 0 stop-rule failures.
+  - Device PRNU: no leak; content does not drive PCE (near-duplicate probe); device M1 computed post hoc at 0.346, so PRNU clears the margin. The FPR 0 bootstrap is degenerate (rule-of-three bound ≤ 0.0012; largest false PCE 55.7). This is a replication of Lukáš/Chen; notable only in that 13–14 natural photos suffice. Not shown for modern phones.
+  - (i) generators: uninformative (ties M1; raw metadata 0.674 beats it). The jpeg75_resize05 0.523 is a top-left-crop alignment artefact: a (4,4) shift drops it to chance. Oracle-only.

@@ -1,0 +1,402 @@
+{
+ "bacc": {
+  "clean|off=0,0": 0.522165140782322,
+  "clean|off=4,4": 0.20431778147896834,
+  "clean|off=3,5": 0.15255816523759588,
+  "jpeg75_resize05|off=0,0": 0.5227647550702883,
+  "jpeg75_resize05|off=4,4": 0.12497840972179385,
+  "jpeg75_resize05|off=3,5": 0.13956671224614287,
+  "resize(0.5)|off=0,0": 0.5701509177581752,
+  "resize(0.5)|off=4,4": 0.19422999386561934,
+  "resize(0.5)|off=3,5": 0.11470950794727859,
+  "jpeg(75)|off=0,0": 0.125,
+  "jpeg(75)|off=4,4": 0.125,
+  "jpeg(75)|off=3,5": 0.125
+ },
+ "recall_offset00": {
+  "clean": {
+   "dalle2": 0.175,
+   "dalle3": 0.36666666666666664,
+   "firefly": 1.0,
+   "midjourney-v5": 0.4722222222222222,
+   "stable-diffusion-2": 0.4186046511627907,
+   "stable-diffusion-xl": 0.3448275862068966,
+   "sd3_large": 0.4,
+   "flux": 1.0
+  },
+  "jpeg75_resize05": {
+   "dalle2": 0.15,
+   "dalle3": 0.06666666666666667,
+   "firefly": 0.9444444444444444,
+   "midjourney-v5": 0.75,
+   "stable-diffusion-2": 0.4883720930232558,
+   "stable-diffusion-xl": 0.4482758620689655,
+   "sd3_large": 0.36,
+   "flux": 0.9743589743589743
+  },
+  "resize(0.5)": {
+   "dalle2": 0.15,
+   "dalle3": 0.13333333333333333,
+   "firefly": 1.0,
+   "midjourney-v5": 0.7777777777777778,
+   "stable-diffusion-2": 0.4883720930232558,
+   "stable-diffusion-xl": 0.5517241379310345,
+   "sd3_large": 0.46,
+   "flux": 1.0
+  },
+  "jpeg(75)": {
+   "dalle2": 1.0,
+   "dalle3": 0.0,
+   "firefly": 0.0,
+   "midjourney-v5": 0.0,
+   "stable-diffusion-2": 0.0,
+   "stable-diffusion-xl": 0.0,
+   "sd3_large": 0.0,
+   "flux": 0.0
+  }
+ },
+ "lattice_share": {
+  "clean": {
+   "dalle2": {
+    "p4_rowcol": 0.022839644179515138,
+    "p4_grid_points": 0.00023777162270981688,
+    "p8_rowcol": 0.05275148056420184,
+    "p8_grid_points": 0.0009076764958294508,
+    "p16_rowcol": 0.11134148179080675,
+    "p16_grid_points": 0.0038105523050065535
+   },
+   "dalle3": {
+    "p4_rowcol": 0.025751174079721953,
+    "p4_grid_points": 0.004293247026491187,
+    "p8_rowcol": 0.05954577641396103,
+    "p8_grid_points": 0.004798441901846025,
+    "p16_rowcol": 0.1170942297107885,
+    "p16_grid_points": 0.007503842521100131
+   },
+   "firefly": {
+    "p4_rowcol": 0.04853979264076888,
+    "p4_grid_points": 0.007083286602491006,
+    "p8_rowcol": 0.08268402404573855,
+    "p8_grid_points": 0.015656948949356646,
+    "p16_rowcol": 0.15856470236787906,
+    "p16_grid_points": 0.03221593216661309
+   },
+   "midjourney-v5": {
+    "p4_rowcol": 0.029899497782948526,
+    "p4_grid_points": 0.004142925948650459,
+    "p8_rowcol": 0.06677262968331212,
+    "p8_grid_points": 0.009478938963601054,
+    "p16_rowcol": 0.1279386536023046,
+    "p16_grid_points": 0.01197513612867671
+   },
+   "stable-diffusion-2": {
+    "p4_rowcol": 0.024984309373220836,
+    "p4_grid_points": 0.0009464358375315547,
+    "p8_rowcol": 0.05873144028096043,
+    "p8_grid_points": 0.004988701449582989,
+    "p16_rowcol": 0.11711058094218789,
+    "p16_grid_points": 0.007830401182986595
+   },
+   "stable-diffusion-xl": {
+    "p4_rowcol": 0.03624770915530447,
+    "p4_grid_points": 0.009097751028596269,
+    "p8_rowcol": 0.07091173732808899,
+    "p8_grid_points": 0.014242621280702082,
+    "p16_rowcol": 0.1308103241976559,
+    "p16_grid_points": 0.016703734338415772
+   },
+   "sd3_large": {
+    "p4_rowcol": 0.02158050605900961,
+    "p4_grid_points": 0.0011210883545903583,
+    "p8_rowcol": 0.056442645404035305,
+    "p8_grid_points": 0.004420173067314886,
+    "p16_rowcol": 0.11375780810647,
+    "p16_grid_points": 0.010370272192750619
+   },
+   "flux": {
+    "p4_rowcol": 0.024923965722909048,
+    "p4_grid_points": 0.0005271727725845356,
+    "p8_rowcol": 0.06031031889839437,
+    "p8_grid_points": 0.003306560278340809,
+    "p16_rowcol": 0.11762639272242839,
+    "p16_grid_points": 0.007173078285299059
+   }
+  },
+  "jpeg75_resize05": {
+   "dalle2": {
+    "p4_rowcol": 0.020779484215088757,
+    "p4_grid_points": 0.00010225275298629332,
+    "p8_rowcol": 0.04966606672275447,
+    "p8_grid_points": 0.0006485189917486927,
+    "p16_rowcol": 0.11068404696560946,
+    "p16_grid_points": 0.0029953714545174442
+   },
+   "dalle3": {
+    "p4_rowcol": 0.020926036223717234,
+    "p4_grid_points": 0.00013577202717321858,
+    "p8_rowcol": 0.04946948814414223,
+    "p8_grid_points": 0.0005363265915067474,
+    "p16_rowcol": 0.10512394663043848,
+    "p16_grid_points": 0.0030618264824527662
+   },
+   "firefly": {
+    "p4_rowcol": 0.026923960560252983,
+    "p4_grid_points": 0.0028508111374654275,
+    "p8_rowcol": 0.07494903685476442,
+    "p8_grid_points": 0.022587609600163306,
+    "p16_rowcol": 0.13237136847095818,
+    "p16_grid_points": 0.025415653269961175
+   },
+   "midjourney-v5": {
+    "p4_rowcol": 0.020307134401866468,
+    "p4_grid_points": 0.0004697956804788517,
+    "p8_rowcol": 0.048874951981362914,
+    "p8_grid_points": 0.0011250301652399675,
+    "p16_rowcol": 0.10818567697235695,
+    "p16_grid_points": 0.0040601054803981965
+   },
+   "stable-diffusion-2": {
+    "p4_rowcol": 0.02178654632405705,
+    "p4_grid_points": 0.0002527655257734183,
+    "p8_rowcol": 0.050055266507342176,
+    "p8_grid_points": 0.0010421868841179209,
+    "p16_rowcol": 0.10740028506681605,
+    "p16_grid_points": 0.003357163670668294
+   },
+   "stable-diffusion-xl": {
+    "p4_rowcol": 0.020644626194322675,
+    "p4_grid_points": 0.00013636441661909842,
+    "p8_rowcol": 0.049856835813865255,
+    "p8_grid_points": 0.0006354483710802629,
+    "p16_rowcol": 0.1056334073084766,
+    "p16_grid_points": 0.0026788225399687468
+   },
+   "sd3_large": {
+    "p4_rowcol": 0.02671628771189294,
+    "p4_grid_points": 0.0007236923902356914,
+    "p8_rowcol": 0.05886173043922077,
+    "p8_grid_points": 0.008505408139445355,
+    "p16_rowcol": 0.11771560008626993,
+    "p16_grid_points": 0.010840128159482028
+   },
+   "flux": {
+    "p4_rowcol": 0.024959126633405576,
+    "p4_grid_points": 0.0007567991437719922,
+    "p8_rowcol": 0.0548944525801574,
+    "p8_grid_points": 0.004045188005008301,
+    "p16_rowcol": 0.11330950577521294,
+    "p16_grid_points": 0.006557473705353403
+   }
+  },
+  "resize(0.5)": {
+   "dalle2": {
+    "p4_rowcol": 0.020293511962274042,
+    "p4_grid_points": 9.91037043640832e-05,
+    "p8_rowcol": 0.04988194883656121,
+    "p8_grid_points": 0.000587048788218926,
+    "p16_rowcol": 0.10795137116328062,
+    "p16_grid_points": 0.0029632389911253957
+   },
+   "dalle3": {
+    "p4_rowcol": 0.021516913350988532,
+    "p4_grid_points": 0.0001716194142889929,
+    "p8_rowcol": 0.049895079267100746,
+    "p8_grid_points": 0.000569695721194223,
+    "p16_rowcol": 0.10582287845865604,
+    "p16_grid_points": 0.0030834073346644856
+   },
+   "firefly": {
+    "p4_rowcol": 0.037800785875008194,
+    "p4_grid_points": 0.010519449845856444,
+    "p8_rowcol": 0.10172986408285949,
+    "p8_grid_points": 0.04609782321842541,
+    "p16_rowcol": 0.15761987683013856,
+    "p16_grid_points": 0.04822600025437053
+   },
+   "midjourney-v5": {
+    "p4_rowcol": 0.022133678147683043,
+    "p4_grid_points": 0.0015192714881193752,
+    "p8_rowcol": 0.05140814956076211,
+    "p8_grid_points": 0.0020553623108174146,
+    "p16_rowcol": 0.11010859146798,
+    "p16_grid_points": 0.00505043561054595
+   },
+   "stable-diffusion-2": {
+    "p4_rowcol": 0.022652472890656954,
+    "p4_grid_points": 0.0004987873028182349,
+    "p8_rowcol": 0.050957451493305696,
+    "p8_grid_points": 0.0010736098506597524,
+    "p16_rowcol": 0.10815596230557475,
+    "p16_grid_points": 0.0034740457555253214
+   },
+   "stable-diffusion-xl": {
+    "p4_rowcol": 0.022206015396774515,
+    "p4_grid_points": 0.0008980641446335819,
+    "p8_rowcol": 0.05182003238297544,
+    "p8_grid_points": 0.0014843794350806441,
+    "p16_rowcol": 0.1063306240856934,
+    "p16_grid_points": 0.0037938746942493026
+   },
+   "sd3_large": {
+    "p4_rowcol": 0.026841491981969542,
+    "p4_grid_points": 0.000982754289888937,
+    "p8_rowcol": 0.060641972849531024,
+    "p8_grid_points": 0.011524629711632909,
+    "p16_rowcol": 0.11812667003939926,
+    "p16_grid_points": 0.013529993081263809
+   },
+   "flux": {
+    "p4_rowcol": 0.026157941331192015,
+    "p4_grid_points": 0.0009971076903810302,
+    "p8_rowcol": 0.05749442011079806,
+    "p8_grid_points": 0.005037079769294358,
+    "p16_rowcol": 0.11610877963309908,
+    "p16_grid_points": 0.0074731428877102485
+   }
+  },
+  "jpeg(75)": {
+   "dalle2": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   },
+   "dalle3": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   },
+   "firefly": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   },
+   "midjourney-v5": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   },
+   "stable-diffusion-2": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   },
+   "stable-diffusion-xl": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   },
+   "sd3_large": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   },
+   "flux": {
+    "p4_rowcol": NaN,
+    "p4_grid_points": NaN,
+    "p8_rowcol": NaN,
+    "p8_grid_points": NaN,
+    "p16_rowcol": NaN,
+    "p16_grid_points": NaN
+   }
+  }
+ },
+ "native_sizes": {
+  "dalle2": {
+   "1024x1024": 120
+  },
+  "dalle3": {
+   "1024x1024": 100,
+   "1792x1024": 13,
+   "1024x1792": 7
+  },
+  "firefly": {
+   "2304x1792": 36,
+   "2688x1536": 28,
+   "2048x2048": 28
+  },
+  "midjourney-v5": {
+   "1360x896": 72,
+   "1344x896": 20,
+   "896x1360": 14
+  },
+  "stable-diffusion-2": {
+   "1472x704": 9,
+   "832x1152": 8,
+   "896x1152": 8
+  },
+  "stable-diffusion-xl": {
+   "1344x768": 8,
+   "960x1024": 8,
+   "1088x960": 7
+  },
+  "sd3_large": {
+   "1024x1024": 150
+  },
+  "flux": {
+   "1024x1024": 150
+  }
+ },
+ "recall_offset35": {
+  "clean": {
+   "dalle2": 0.1,
+   "dalle3": 0.13333333333333333,
+   "firefly": 0.1388888888888889,
+   "midjourney-v5": 0.1111111111111111,
+   "stable-diffusion-2": 0.16279069767441862,
+   "stable-diffusion-xl": 0.13793103448275862,
+   "sd3_large": 0.18,
+   "flux": 0.2564102564102564
+  },
+  "jpeg75_resize05": {
+   "dalle2": 0.15,
+   "dalle3": 0.26666666666666666,
+   "firefly": 0.1111111111111111,
+   "midjourney-v5": 0.1111111111111111,
+   "stable-diffusion-2": 0.16279069767441862,
+   "stable-diffusion-xl": 0.13793103448275862,
+   "sd3_large": 0.1,
+   "flux": 0.07692307692307693
+  },
+  "resize(0.5)": {
+   "dalle2": 0.05,
+   "dalle3": 0.26666666666666666,
+   "firefly": 0.08333333333333333,
+   "midjourney-v5": 0.16666666666666666,
+   "stable-diffusion-2": 0.11627906976744186,
+   "stable-diffusion-xl": 0.10344827586206896,
+   "sd3_large": 0.08,
+   "flux": 0.05128205128205128
+  },
+  "jpeg(75)": {
+   "dalle2": 1.0,
+   "dalle3": 0.0,
+   "firefly": 0.0,
+   "midjourney-v5": 0.0,
+   "stable-diffusion-2": 0.0,
+   "stable-diffusion-xl": 0.0,
+   "sd3_large": 0.0,
+   "flux": 0.0
+  }
+ }
+}
