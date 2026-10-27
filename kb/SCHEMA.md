@@ -11,7 +11,7 @@
 - **id:** <id>
 - **Authors / venue / year:** ...
 - **Links:** arXiv <id> · paper URL · code URL
-- **Family:** low-level | foundation-features | reconstruction | data-bias-benchmarks | robustness-attacks
+- **Family:** low-level | foundation-features | reconstruction | data-bias-benchmarks | robustness-attacks | attribution | camera-forensics
 - **Status:** read-full | read-abstract-only | partially-verified
 
 ## Summary (plain language)
