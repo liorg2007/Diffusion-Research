@@ -1,0 +1,35 @@
+== native sizes per generator (w x h : n), short side, scale=512/short
+dalle2                 nsizes= 1 short=[(1024, 120)] top=[((1024, 1024), 120)]
+dalle3                 nsizes= 3 short=[(1024, 120)] top=[((1024, 1024), 100), ((1792, 1024), 13), ((1024, 1792), 7)]
+firefly                nsizes= 4 short=[(1536, 28), (1792, 64), (2048, 28)] top=[((2304, 1792), 36), ((2688, 1536), 28), ((2048, 2048), 28), ((1792, 2304), 28)]
+midjourney-v5          nsizes= 4 short=[(896, 120)] top=[((1360, 896), 72), ((1344, 896), 20), ((896, 1360), 14), ((896, 1344), 14)]
+stable-diffusion-2     nsizes=26 short=[(576, 7), (640, 12), (704, 28), (768, 18), (832, 24), (896, 16), (960, 12), (1024, 3)] top=[((1472, 704), 9), ((832, 1152), 8), ((896, 1152), 8), ((1344, 768), 7)]
+stable-diffusion-xl    nsizes=26 short=[(576, 8), (640, 8), (704, 21), (768, 19), (832, 18), (896, 17), (960, 24), (1024, 5)] top=[((1344, 768), 8), ((960, 1024), 8), ((1088, 960), 7), ((896, 1088), 6)]
+sd3_large              nsizes= 1 short=[(1024, 150)] top=[((1024, 1024), 150)]
+flux                   nsizes= 1 short=[(1024, 150)] top=[((1024, 1024), 150)]
+
+== OOF T-mix nested @ jpeg75_resize05 stratified
+[tmix] overall bacc 0.855
+  native 1024x1024 rows per class: {'flux': 150, 'sd3_large': 150, 'dalle2': 120, 'dalle3': 100, 'stable-diffusion-2': 3, 'stable-diffusion-xl': 5}
+  1024^2 subset, 8-way argmax, bacc over classes present(n>=10): 0.927  classes=['dalle2', 'dalle3', 'sd3_large', 'flux']
+  1024^2 subset, argmax restricted to those classes: 0.972
+  dalle2/sd3/flux restricted argmax (from 8-way OOF): 0.971; 8-way recall [0.833, 0.933, 0.96]
+  stable-diffusion-2 recall by short side (short:n:recall): 576:7:0.71 640:12:0.92 704:28:0.75 768:18:0.94 832:24:0.92 896:16:0.88 960:12:0.67
+  stable-diffusion-xl recall by short side (short:n:recall): 576:8:0.88 640:8:1.00 704:21:0.95 768:19:0.58 832:18:0.72 896:17:0.82 960:24:0.79 1024:5:0.40
+  firefly recall by short side (short:n:recall): 1536:28:0.86 1792:64:0.83 2048:28:0.93
+  midjourney-v5 recall by short side (short:n:recall): 896:120:0.67
+  dalle3 recall by short side (short:n:recall): 1024:120:0.97
+  SD2 vs SDXL restricted: all 0.942 (n=240); shared-size rows only 0.942 (n=240, 26 shared sizes)
+  errors: 142; share of errors where predicted class has an image of identical native size: 0.19
+[clean] overall bacc 0.542
+  native 1024x1024 rows per class: {'flux': 150, 'sd3_large': 150, 'dalle2': 120, 'dalle3': 100, 'stable-diffusion-2': 3, 'stable-diffusion-xl': 5}
+  1024^2 subset, 8-way argmax, bacc over classes present(n>=10): 0.653  classes=['dalle2', 'dalle3', 'sd3_large', 'flux']
+  1024^2 subset, argmax restricted to those classes: 0.688
+  dalle2/sd3/flux restricted argmax (from 8-way OOF): 0.662; 8-way recall [0.15, 0.967, 0.507]
+  stable-diffusion-2 recall by short side (short:n:recall): 576:7:0.86 640:12:0.83 704:28:0.75 768:18:0.89 832:24:0.83 896:16:0.88 960:12:0.75
+  stable-diffusion-xl recall by short side (short:n:recall): 576:8:0.12 640:8:0.00 704:21:0.10 768:19:0.16 832:18:0.06 896:17:0.06 960:24:0.12 1024:5:0.00
+  firefly recall by short side (short:n:recall): 1536:28:0.21 1792:64:0.14 2048:28:0.04
+  midjourney-v5 recall by short side (short:n:recall): 896:120:0.68
+  dalle3 recall by short side (short:n:recall): 1024:120:0.99
+  SD2 vs SDXL restricted: all 0.746 (n=240); shared-size rows only 0.746 (n=240, 26 shared sizes)
+  errors: 455; share of errors where predicted class has an image of identical native size: 0.36

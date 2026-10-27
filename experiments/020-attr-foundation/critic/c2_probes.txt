@@ -1,0 +1,25 @@
+A 3-way dalle2/sd3/flux (all 1024^2)                 b4   tmix        bacc@jpeg75_resize05 0.949 [0.925,0.970] chance 0.333 n=420
+A 3-way dalle2/sd3/flux (all 1024^2)                 b4   clean-train bacc@jpeg75_resize05 0.422 [0.393,0.451] chance 0.333 n=420
+A 3-way dalle2/sd3/flux (all 1024^2)                 b8   tmix        bacc@jpeg75_resize05 0.925 [0.897,0.950] chance 0.333 n=420
+A 3-way dalle2/sd3/flux (all 1024^2)                 b8   clean-train bacc@jpeg75_resize05 0.839 [0.803,0.873] chance 0.333 n=420
+A 3-way dalle2/sd3/flux (all 1024^2)                 cat  tmix        bacc@jpeg75_resize05 0.964 [0.943,0.981] chance 0.333 n=420
+A 3-way dalle2/sd3/flux (all 1024^2)                 cat  clean-train bacc@jpeg75_resize05 0.670 [0.634,0.709] chance 0.333 n=420
+B 4-way native-1024^2 only (dalle2/dalle3sq/sd3/flux) cat  tmix        bacc@jpeg75_resize05 0.969 [0.952,0.983] chance 0.250 n=520
+B 4-way native-1024^2 only (dalle2/dalle3sq/sd3/flux) cat  clean-train bacc@jpeg75_resize05 0.671 [0.639,0.700] chance 0.250 n=520
+C SD2 vs SDXL (same 26 native sizes)                 b4   tmix        bacc@jpeg75_resize05 0.933 [0.901,0.963] chance 0.500 n=240
+C SD2 vs SDXL (same 26 native sizes)                 b4   clean-train bacc@jpeg75_resize05 0.754 [0.706,0.796] chance 0.500 n=240
+C SD2 vs SDXL (same 26 native sizes)                 cat  tmix        bacc@jpeg75_resize05 0.921 [0.888,0.954] chance 0.500 n=240
+C SD2 vs SDXL (same 26 native sizes)                 cat  clean-train bacc@jpeg75_resize05 0.771 [0.729,0.818] chance 0.500 n=240
+D scale bucket (short<=704 vs >=896) within SD2+SDXL b4   tmix        bacc@jpeg75_resize05 0.540 [0.460,0.617] chance 0.500 n=161
+D scale bucket (short<=704 vs >=896) within SD2+SDXL b4   clean-train bacc@jpeg75_resize05 0.509 [0.469,0.548] chance 0.500 n=161
+D scale bucket (short<=704 vs >=896) within SD2+SDXL cat  tmix        bacc@jpeg75_resize05 0.596 [0.516,0.674] chance 0.500 n=161
+D scale bucket (short<=704 vs >=896) within SD2+SDXL cat  clean-train bacc@jpeg75_resize05 0.497 [0.453,0.539] chance 0.500 n=161
+D2 scale probe SD2->SDXL b4 clean: AUROC 0.861 (n=83)
+D2 scale probe SD2->SDXL b4 jpeg75_resize05: AUROC 0.613 (n=83)
+D2 scale probe SD2->SDXL cat clean: AUROC 0.855 (n=83)
+D2 scale probe SD2->SDXL cat jpeg75_resize05: AUROC 0.722 (n=83)
+E [tmix] 2-AFC macro: matched 1.000  ALL cross-family pairs (pairwise AUROC) 0.991  min unmatched 0.958
+E [clean] 2-AFC macro: matched 0.996  ALL cross-family pairs (pairwise AUROC) 0.983  min unmatched 0.905
+E matched pairs per type: {'dalle2|dalle3': 15, 'dalle2|firefly': 16, 'dalle2|midjourney-v5': 15, 'dalle2|stable-diffusion-2': 13, 'dalle2|stable-diffusion-xl': 11, 'dalle2|sd3_large': 120, 'dalle2|flux': 17, 'dalle3|firefly': 16, 'dalle3|midjourney-v5': 13, 'dalle3|stable-diffusion-2': 19, 'dalle3|stable-diffusion-xl': 18, 'dalle3|sd3_large': 41, 'dalle3|flux': 86, 'firefly|midjourney-v5': 10, 'firefly|stable-diffusion-2': 11, 'firefly|stable-diffusion-xl': 13, 'firefly|sd3_large': 19, 'firefly|flux': 65, 'midjourney-v5|stable-diffusion-2': 16, 'midjourney-v5|stable-diffusion-xl': 14, 'midjourney-v5|sd3_large': 20, 'midjourney-v5|flux': 13, 'stable-diffusion-2|stable-diffusion-xl': 16, 'stable-diffusion-2|sd3_large': 18, 'stable-diffusion-2|flux': 19, 'stable-diffusion-xl|sd3_large': 17, 'stable-diffusion-xl|flux': 21, 'sd3_large|flux': 23} total 695
+
+[exited with code 0]

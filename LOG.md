@@ -466,3 +466,9 @@
   - The probes are not like-for-like across layers: detectors were read only at their last layer.
   - Reading: the gap opens under laundering (clean CommFor ≈ DINOv2 b4). CommFor adds a little in fusion (cat+CommFor 0.880 vs 0.861, descriptive).
   - 023 report re-run after 020's tables.md appeared.
+- 2026-10-27 18:41 — H-A1/H-A4 critic (opus/high): H-A1 PASS confirmed; open-set NO; H-A4 KILL in every variant. Failure count 2 of 3 (H-A4, H-A5); all 5 counting hypotheses have run.
+  - Scale shortcut ruled out: dalle2/sd3/flux (all native 1024²) 3-way 0.964 [0.943, 0.981]; SD2 vs SDXL (identical size sets) 0.93.
+  - Pairwise 1.000 has no leak but is saturated (unmatched pairs 0.991), so it is non-diagnostic.
+  - The probe reads mid-level rendering style, not semantics (b12 0.562). Holds on unseen launderings (screenshot 0.866, mavali 0.813).
+  - RAID gen_0 partly rides a 256-px size cue; without it, 3-way 0.677.
+  - Novelty: a solid baseline, not SOTA (WILD ViT 88.67).

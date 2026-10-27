@@ -1,0 +1,2 @@
+tmix RAID 3-way gen1-3 restricted bacc 0.677 (chance 0.333); 4-way recall [0.9, 0.52, 0.55, 0.78]
+clean RAID 3-way gen1-3 restricted bacc 0.667 (chance 0.333); 4-way recall [0.98, 0.51, 0.25, 0.43]
