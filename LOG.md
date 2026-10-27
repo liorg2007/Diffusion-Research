@@ -472,3 +472,4 @@
   - The probe reads mid-level rendering style, not semantics (b12 0.562). Holds on unseen launderings (screenshot 0.866, mavali 0.813).
   - RAID gen_0 partly rides a 256-px size cue; without it, 3-way 0.677.
   - Novelty: a solid baseline, not SOTA (WILD ViT 88.67).
+- 2026-10-27 18:56 — H-A3 critic: the method-A arm fails gate 2 (image size gives 0.990; A reads the quantisation grid); A resized to common size gives 0.69 clean and chance laundered. H-A3 INCONCLUSIVE, counted as failure 3 of 3 (D-019). D-018 stop rule reached; remaining work: H-A6 diagnostic, H-A1 secondary arms, report.

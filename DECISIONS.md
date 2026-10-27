@@ -156,3 +156,9 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - **Stop rule.** The cycle gets its own stop rule: stop after 3 failed pre-registered hypotheses unless the owner raises the limit (D-016 practice). Labels follow D-017: strict labels plus DISCOVERY.
 - **Unchanged.** CLAUDE.md security, grounding, download (20 GB ceiling, D-015) and licence rules.
 - **Plan files.** docs/07-attribution-survey.md, docs/08-attribution-hypotheses.md and docs/09-attribution-plan.md (pre-registration); experiments/020+; report docs/10-attribution-report.md.
+
+**D-019 — H-A3 counted as a failure; D-018 stop rule reached (2026-10-27 18:56)**
+- **What the H-A3 critic found** (`experiments/022-attr-platform/results/critique.md`): method A ran on native-size images, where image size alone classifies platform at 0.990, and its clean 0.929 reads the last JPEG quantisation grid, i.e. file metadata recovered from pixels. The gate "M0 at chance on the method's input" (docs/08 §3, gate 2) therefore fails for A.
+- **Decision.** Under docs/09 decision 4, the A arm is INVALID. With the gate-valid arms (B clean 0.61; A resized to a common size, 0.69 clean, chance laundered), H-A3 stays INCONCLUSIVE, with the point estimate on the KILL side of the 0.50–0.80 band. Under docs/09 decision 1 it counts as a failure. This is the stricter reading, chosen over the run's own rule.
+- **Count:** H-A5 KILL, H-A4 KILL, H-A3 → 3 of 3. The D-018 stop rule is reached. Every counting hypothesis had already run, so nothing is cut short.
+- **Remaining work** (all pre-declared, none counting): H-A6 (VAE diagnostic), the H-A1 secondary arms (near-twin, family mapping, RAID n=500), the final report (fable/high). No new hypotheses without an owner limit raise.

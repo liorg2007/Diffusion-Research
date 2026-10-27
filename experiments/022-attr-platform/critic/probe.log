@@ -1,0 +1,4 @@
+M1_native_tmix 1s {'clean': 0.619, 'social_sim': 0.439, 'jpeg75_resize05': 0.444}
+M1_native_clean 0s {'clean': 0.718, 'social_sim': 0.412, 'jpeg75_resize05': 0.416}
+A_common1024_tmix 205s {'clean': 0.69, 'social_sim': 0.365, 'jpeg75_resize05': 0.366}
+A_common1024_clean 21s {'clean': 0.72, 'social_sim': 0.335, 'jpeg75_resize05': 0.335}
