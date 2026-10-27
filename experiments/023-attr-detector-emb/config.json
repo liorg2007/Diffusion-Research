@@ -1,0 +1,50 @@
+{
+ "experiment": "023-attr-detector-emb (D-018 cycle; docs/08 H-A5 + docs/09 pre-registration). Penultimate embeddings of 4 published detectors fed to the EXACT H-A1 probe (experiments/020-attr-foundation/run.py, imported). All constants frozen before any embedding was read.",
+ "seed": 0,
+ "splits": "experiments/019-source-diversity/splits_fov512.csv",
+ "select": {"pool": "fake"},
+ "classes": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl", "sd3_large", "flux"],
+ "conditions": ["clean", "jpeg75_resize05", "social_sim", "screenshot_sim", "mavali_medium"],
+ "tmix": ["clean", "jpeg75_resize05", "social_sim"],
+ "primary": "jpeg75_resize05",
+ "held_out_launderings": ["screenshot_sim", "mavali_medium"],
+ "image_pipeline": "data/processed/fov512/images/<sha>.png (512x512 crop, identical for every class) -> lib/perturb.apply_condition(img, cond, key=sha256, seed=0) (same code path as 004 feature extraction) -> detector's own test transform (taken unmodified from experiments/002-baselines/scorers/*.py)",
+ "ha1_probe": {
+  "module": "experiments/020-attr-foundation/run.py (imported by path; functions make_folds, closed_task, logo_task, eval_closed, eval_logo, cluster_weights, gates, MahaModel are reused unchanged)",
+  "analysis": "ha1_main",
+  "dino_fs": ["b4", "b8", "b12", "cat"],
+  "regimes": ["tmix", "clean"],
+  "note": "same rows/order/groups/folds as 020 ha1_main: StratifiedGroupKFold(5, shuffle, seed 0) on caption-family groups; inner 3-fold grouped CV picks C on the primary condition (train folds only); LR(max_iter=300, class_weight=balanced) on standardised features; C grid = 020 dino grid for every embedding"
+ },
+ "detectors": {
+  "commfor": {"module": "scorers.communityforensics", "arch": "timm vit_small_patch16_384 + Linear(384,1)", "hook": "forward_pre_hook on vit.head: input = pooled 384-d feature (after fc_norm)", "dim": 384, "batch": 8,
+              "transform": "Resize(440) -> CenterCrop(384) -> ImageNet norm (resizes!)"},
+  "bfree": {"module": "scorers.bfree", "arch": "Wrapper5crops(timm DINOv2-reg4 ViT, 504)", "hook": "forward_pre_hook on model.head: input = pooled CLS feature; 5-window forward averages the 5 windows", "dim": 768, "batch": 4,
+            "transform": "full image -> ToTensor -> norm (no resize); windows tiled/cropped to 36x36 tokens"},
+  "rine": {"module": "scorers.rine", "arch": "CLIP ViT-L/14 per-block CLS stack (24 x 1024) -> TIE -> proj2 (LDM checkpoint)", "hook": "forward hook on proj2: output z = the 1024-d vector fed to the head", "dim": 1024, "batch": 8,
+           "transform": "CenterCrop(224) (no resize) -> CLIP norm"},
+  "clipdet": {"module": "scorers.clipdet", "arch": "open_clip ViT-L/14 CommonPool, visual.proj=None (next-to-last), L2-normalised, ChannelLinear head (latent10k_plus)", "hook": "forward_pre_hook on fc: input = 1024-d L2-normalised feature", "dim": 1024, "batch": 8,
+              "transform": "Resize(224, bicubic) -> CenterCrop(224) -> CLIP norm (resizes!)"}
+ },
+ "extract": {"chunk": 120, "workers": 4, "max_batch": 16, "oom_retry": "halve batch on torch.cuda.OutOfMemoryError (never fall back to CPU silently)"},
+ "d008": {"n": 32, "per_generator": 4, "emb_tol_scaled": 0.001, "logit_tol": 0.001, "cpu_batch": 4, "rule": "ok if scaled embedding diff <= tol OR logit diff <= tol (brief); both recorded; abort if not ok"},
+ "boot": {"n_boot": 1000, "ci": "percentile 95%, cluster = caption family (020 cluster_weights, same weights for every embedding => paired)"},
+ "perm": {"n": 200, "C": 0.01, "mean_tol": 0.01, "p95_excess": 0.03, "note": "020 ha1_main perm tolerances; label-permuted fixed-C T-mix pipeline at the primary condition, per embedding"},
+ "label_rule": {
+  "text": "H-A5 (docs/08): PASS if best detector embedding bacc at jpeg75_resize05 >= H-A1 best layer + 0.05 AND paired family-bootstrap CI lower bound (diff) > 0. KILL if best detector embedding bacc <= H-A1 best layer. Else INCONCLUSIVE. INVALID if a validity gate fails.",
+  "margin": 0.05,
+  "ha1_best_layer_headline": "max point bacc over the four fixed H-A1 feature sets b4/b8/b12/cat (T-mix, jpeg75_resize05), computed here with the identical imported pipeline; the 020 nested-choice value is reported alongside",
+  "best_embedding": "argmax point bacc over the 4 detectors (same condition, T-mix); per-detector paired diffs and Holm-adjusted bootstrap p also reported (descriptive)",
+  "open_set_flag": "mean LOGO AUROC >= 0.80 and min >= 0.65 (msp or maha), descriptive for H-A5"
+ },
+ "overlap_flags": {
+  "source": "kb/papers/communityforensics-cvpr2025.md, bfree-cvpr2025.md, clipdet-cvprw2024.md, rine-eccv2024.md; exact checkpoint lists are not public in our KB -> flags are family-level and marked [unverified] where so",
+  "commfor": {"dalle2": "no known overlap", "dalle3": "no known overlap (eval-set generator in paper)", "firefly": "no known overlap (eval-set generator in paper)", "midjourney-v5": "no known overlap (eval-set generator in paper)",
+              "stable-diffusion-2": "LIKELY family overlap: 4,763 HF latent-diffusion models (SD-family checkpoints/finetunes) [exact SD2 overlap unverified]",
+              "stable-diffusion-xl": "POSSIBLE family overlap: HF diffusers models incl. SDXL derivatives [unverified]", "sd3_large": "no known overlap [unverified]", "flux": "no known overlap (FLUX is an eval generator in the paper)"},
+  "bfree": {"dalle2": "none", "dalle3": "none", "firefly": "none", "midjourney-v5": "none", "stable-diffusion-2": "OVERLAP: trained on SD 2.1 inpainting regenerations (same decoder/VAE family; SD2 vs SD2.1 inpainting version [unverified])",
+            "stable-diffusion-xl": "none (different VAE)", "sd3_large": "none (these sd3/flux images are B-Free's own extended-Synthbuster EVAL release)", "flux": "none (B-Free eval release)"},
+  "rine": {"note": "LDM checkpoint: trained on LDM data from Corvi et al. (DMimageDetection); CLIP backbone frozen (OpenAI)", "stable-diffusion-2": "FAMILY overlap (latent diffusion), not the same generator", "stable-diffusion-xl": "FAMILY overlap (latent diffusion)", "others": "none known"},
+  "clipdet": {"note": "head trained on 10k real/Latent-Diffusion pairs (COCO captions); backbone CommonPool CLIP", "stable-diffusion-2": "FAMILY overlap (latent diffusion)", "stable-diffusion-xl": "FAMILY overlap (latent diffusion)", "others": "none known"}
+ }
+}

@@ -452,3 +452,7 @@
 - 2026-10-27 18:22 — H-A2 critic (opus/high): PASS via (ii) only; 0 stop-rule failures.
   - Device PRNU: no leak; content does not drive PCE (near-duplicate probe); device M1 computed post hoc at 0.346, so PRNU clears the margin. The FPR 0 bootstrap is degenerate (rule-of-three bound ≤ 0.0012; largest false PCE 55.7). This is a replication of Lukáš/Chen; notable only in that 13–14 natural photos suffice. Not shown for modern phones.
   - (i) generators: uninformative (ties M1; raw metadata 0.674 beats it). The jpeg75_resize05 0.523 is a top-left-crop alignment artefact: a (4,4) shift drops it to chance. Oracle-only.
+- 2026-10-27 18:22 — H-A5 done (023-attr-detector-emb): KILL (counting failure 1 of 3 in the D-018 cycle).
+  - 8-way bacc at jpeg75_resize05: CommFor 0.740, ClipDet 0.709, B-Free 0.660, RINE 0.157 (collapsed embedding, effective rank 2). DINOv2 cat (H-A1) is 0.858 [0.838, 0.878]; best detector minus cat -0.118 [-0.149, -0.087].
+  - No detector embedding is open-set usable (mean LOGO AUROC ≤ 0.656).
+  - D-008 ok (5.3e-05). Gates ok. The 020 report stage crashes (KeyError drop_macro) after results.json; agent resumed. Launching critic.
