@@ -1,0 +1,17 @@
+14:27:03 H-A3 data: 1455 images = 485 triplets, 34 devices, sha256 unique over 1455 files; fold test devices: [['D04', 'D09', 'D17', 'D18', 'D23', 'D32', 'D33'], ['D02', 'D08', 'D15', 'D16', 'D22', 'D30', 'D31'], ['D01', 'D07', 'D10', 'D14', 'D21', 'D27', 'D29'], ['D03', 'D06', 'D12', 'D20', 'D26', 'D28'], ['D05', 'D11', 'D19', 'D24', 'D25', 'D34', 'D35']]
+14:29:17 H-A3 featA clean: 1455 images in 134s
+14:31:37 H-A3 featA social_sim: 1455 images in 140s
+14:33:05 H-A3 featA jpeg75_resize05: 1455 images in 88s
+14:41:37 H-A3 cv A_tmix: 509s; clean=0.929 social_sim=0.523 jpeg75_resize05=0.584; fold choices [('A', 0.1), ('A', 0.1), ('A', 0.1), ('A', 0.1), ('A', 0.1)]
+14:41:54 H-A3 cv A_clean: 17s; clean=0.995 social_sim=0.335 jpeg75_resize05=0.333; fold choices [('A', 0.1), ('A', 0.001), ('A', 0.01), ('A', 0.1), ('A', 0.01)]
+14:57:57 H-A3 cv B_tmix: 964s; clean=0.610 social_sim=0.425 jpeg75_resize05=0.399; fold choices [('b8', 0.001), ('b8', 0.001), ('b8', 0.001), ('b8', 0.001), ('b8', 0.001)]
+14:59:29 H-A3 cv B_clean: 92s; clean=0.621 social_sim=0.385 jpeg75_resize05=0.351; fold choices [('b8', 0.001), ('b4', 0.01), ('b4', 0.01), ('b8', 0.01), ('b8', 0.01)]
+14:59:31 H-A3 M0 raw bacc [0.9848797250859107, 0.9641034388936363, 0.9986312145783556]; M0 on preprocessed tensors 0.333
+14:59:31 H-A3 label: {"tmix": {"label": "INCONCLUSIVE", "counts_as_failure": false, "A_clean": 0.9292096219931271, "A_social_sim": 0.5230240549828178, "B_clean": 0.6096219931271478, "B_social_sim": 0.4247422680412371}, "clean": {"label": "INCONCLUSIVE", "counts_as_failure": false, "A_clean": 0.9945017182130584, "A_social_sim": 0.3347079037800687, "B_clean": 0.6213058419243986, "B_social_sim": 0.3848797250859106}}
+15:14:11 H-A3 perm A: 880s clean: mean 0.332 max 0.368 (real 0.929) social_sim: mean 0.333 max 0.379 (real 0.523) jpeg75_resize05: mean 0.334 max 0.366 (real 0.584)
+15:18:24 H-A3 perm B: 253s clean: mean 0.334 max 0.355 (real 0.610) social_sim: mean 0.333 max 0.358 (real 0.425) jpeg75_resize05: mean 0.334 max 0.346 (real 0.399)
+15:18:49 H-A3 vision same-model transfer: mean AUROC 0.747, control 0.501 (25s)
+15:21:40 H-A3 HDR+ b4: bacc [0.20030813936263403, 0.17625075779007024, 0.3351601145810567]
+15:23:41 H-A3 HDR+ b8: bacc [0.1729195384994174, 0.14264409844318354, 0.30560618293148845]
+15:25:09 H-A3 HDR+ b12: bacc [0.11393483821290062, 0.0899143582818496, 0.2415293401263492]
+15:52:00 H-A3 done in 5098s

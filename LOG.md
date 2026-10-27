@@ -443,3 +443,9 @@
   - (ii) VISION device PRNU/PCE, 14 same-size devices, leave-one-photo-out: top-1 0.985 [0.969, 1.000] (chance 0.071); within-model 1.000; at PCE 60 TPR 0.964 / FPR 0; WhatsApp→WhatsApp 0.930, FB→FB 0.871, native fingerprint→WA 0.915. M0 0.498.
   - (i) generators: INCONCLUSIVE-i (clean bacc 0.522 [0.478, 0.567]; pairwise 0.840; M1 0.530, so no margin; laundered with clean fingerprints at chance).
   - Gates ticked; one OOM bug fix, no scored change. Launching opus/high critic.
+- 2026-10-27 18:20 — All 5 running agents (020, 022, 023, 024, H-A2 critic) were cut off by an API session rate limit (reset 18:00). Background processes had died or finished; no results were lost. All 5 resumed from saved state.
+- 2026-10-27 18:21 — H-A3 done (022-attr-platform): INCONCLUSIVE.
+  - Method A (DCT): clean 0.929 [0.900, 0.955], social_sim 0.523, jpeg75_resize05 0.584. Method B (DINOv2 b8): 0.610 / 0.425 / 0.399. Chance 0.333; M0 0.985 raw, 0.333 preprocessed.
+  - Not a failure under docs/09 decision 1: the KILL side is clean A < 0.60 and B < 0.50, and clean A is 0.93. The agent's own config rule differs in wording, not in outcome.
+  - Gate gap: M1 was not computed, so the beat-M1 test is unchecked.
+  - Exploratory: VISION same-model camera transfer AUROC 0.747; HDR+ 6-model 0.200 (chance 0.167). Launching critic.

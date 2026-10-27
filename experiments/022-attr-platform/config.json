@@ -1,0 +1,131 @@
+{
+ "experiment": "022-attr-platform (H-A3, D-018 cycle; docs/08 H-A3 + docs/09 pre-registration, frozen)",
+ "seed": 0,
+ "n_boot": 1000,
+ "n_perm": 200,
+ "workers": 14,
+ "data": {
+  "splits": "experiments/004-phase4-features/splits_fov512.csv",
+  "pools": {
+   "0": "vision_native",
+   "1": "vision_whatsapp",
+   "2": "vision_facebook_hq"
+  },
+  "class_names": [
+   "native",
+   "whatsapp",
+   "facebook_hq"
+  ],
+  "exclude_devices": [
+   "D13"
+  ],
+  "expected_triplets": 485,
+  "folds": "sklearn GroupKFold(5) over devices (sorted, deterministic); all copies and all conditions of a photo are in one device group"
+ },
+ "conditions": [
+  "clean",
+  "social_sim",
+  "jpeg75_resize05"
+ ],
+ "launder_seed": 0,
+ "launder_key": "sha256 of the raw file (same key as 004 load_cond); experiments/lib/perturb.apply_condition; A launders the NATIVE decoded image, B uses the 004 cached features (laundering applied to the fov512 crop)",
+ "train_modes": {
+  "tmix": [
+   "clean",
+   "social_sim",
+   "jpeg75_resize05"
+  ],
+  "clean": [
+   "clean"
+  ]
+ },
+ "primary_train_mode": "tmix",
+ "primary_train_mode_why": "docs/08 Common definitions: Training = T-mix. clean-train transfer is reported as sensitivity (docs/08 gate 4) with its own label.",
+ "method_A": {
+  "luma": "Y = 0.299R+0.587G+0.114B of the decoded RGB (no EXIF transpose: the as-stored grid is the object; no metadata read)",
+  "dct": "8x8 orthonormal DCT-II of (Y-128) on the native grid, origin top-left, cropped to multiples of 8",
+  "zigzag_ac": [
+   1,
+   15
+  ],
+  "hist": {
+   "lo": -16.0,
+   "hi": 16.0,
+   "bin": 0.5,
+   "note": "values clipped into the end bins, normalised to sum 1 per coefficient: 15 x 64 = 960 features"
+  },
+  "periodicity": {
+   "s_min": 2,
+   "s_max": 39,
+   "phi_block_cap": 60000,
+   "rule": "phi(s)=|mean exp(2*pi*i*c/s)|; contrast C(s)=phi(s)-0.5*(phi(s-1)+phi(s+1)); s_hat = largest s with C(s)>=0.8*max C; features s_hat and C(s_hat) per coefficient = 30"
+  },
+  "n_features": 990
+ },
+ "method_B": {
+  "blocks": {
+   "b4": [
+    0,
+    1536
+   ],
+   "b8": [
+    1536,
+    3072
+   ],
+   "b12": [
+    3072,
+    4608
+   ]
+  },
+  "layout": "004 secondary 4608-d = [blk4 CLS|blk4 mean|blk8 CLS|blk8 mean|blk12 CLS|blk12 mean]",
+  "caches": [
+   "experiments/004-phase4-features/cache/fov512"
+  ],
+  "block_choice": "highest mean inner grouped-CV balanced accuracy on the training fold"
+ },
+ "probe": {
+  "model": "StandardScaler + multinomial L2 logistic, class_weight balanced",
+  "Cs": "logspace(-4,1,6) (= lib/probe.CS)",
+  "inner_cv": "GroupKFold(5) by device on the training fold, score = balanced accuracy",
+  "max_iter": 3000
+ },
+ "m0": {
+  "features": "log2 w, log2 h, aspect, file bytes, bytes/pixel, mean luma/chroma quantisation step, one-hot of quantisation-table hash (train hashes)",
+  "model": "DecisionTree(max_depth=6)",
+  "conditions": "clean (raw files) only; undefined after in-memory laundering",
+  "preprocessed_tensor_check": "same pipeline on (w,h,aspect,format) of the fov512 PNGs (constant) -> must equal chance"
+ },
+ "permutation": {
+  "scheme": "labels shuffled within each photo triplet (device,vidx), 200 shuffles, primary (T-mix) protocol, C fixed to the median C chosen in the real run (per method), block fixed to the modal block for B",
+  "gate": "mean permuted bacc within 1/3 +- 0.02 for every method x condition"
+ },
+ "thresholds": {
+  "pass_clean": 0.8,
+  "pass_social_sim": 0.6,
+  "kill_A_clean": 0.6,
+  "kill_B_clean": 0.5,
+  "chance": 0.3333333333
+ },
+ "label_rule": "PASS if (A or B) has clean>=0.80 AND social_sim>=0.60 (point estimates, primary train mode); KILL if A clean<0.60 AND B clean<0.50 (clean, primary train mode); else INCONCLUSIVE. counts_as_failure (docs/09 decision 1): KILL, or INCONCLUSIVE with max(A_clean,B_clean) < 0.80 (point estimate does not reach the PASS clean bar). Chosen before any result.",
+ "camera_model_arm": {
+  "vision": {
+   "features": "DINOv2 fov512 block 4 (CLS+mean), native images, clean",
+   "model_sets": "devices sharing the folder model name",
+   "C": 0.01,
+   "n_neg_splits": 10,
+   "design": "binary 'is model M': train = device A positives vs half of the non-M devices; test = same-model device B positives vs the other half; AUROC. control: positives from a device C of a different model vs other-model negatives."
+  },
+  "hdrplus": {
+   "features": "019 cache fov512 clean, block 4 primary (b8,b12 descriptive)",
+   "merge": {
+    "angler": "Nexus 6P",
+    "bullhead": "Nexus 5X",
+    "marlin": "Pixel XL",
+    "sailfish": "Pixel"
+   },
+   "cv": "GroupKFold(5) by burst group",
+   "n_perm": 200
+  }
+ },
+ "d008": "no new GPU pass: method B reads only the existing 004 fov512 caches (their D-008 guard: 004 cache/fov512/d008_guard.json); method A is CPU numpy"
+}

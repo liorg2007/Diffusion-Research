@@ -1,0 +1,3787 @@
+{
+ "config": {
+  "experiment": "022-attr-platform (H-A3, D-018 cycle; docs/08 H-A3 + docs/09 pre-registration, frozen)",
+  "seed": 0,
+  "n_boot": 1000,
+  "n_perm": 200,
+  "workers": 14,
+  "data": {
+   "splits": "experiments/004-phase4-features/splits_fov512.csv",
+   "pools": {
+    "0": "vision_native",
+    "1": "vision_whatsapp",
+    "2": "vision_facebook_hq"
+   },
+   "class_names": [
+    "native",
+    "whatsapp",
+    "facebook_hq"
+   ],
+   "exclude_devices": [
+    "D13"
+   ],
+   "expected_triplets": 485,
+   "folds": "sklearn GroupKFold(5) over devices (sorted, deterministic); all copies and all conditions of a photo are in one device group"
+  },
+  "conditions": [
+   "clean",
+   "social_sim",
+   "jpeg75_resize05"
+  ],
+  "launder_seed": 0,
+  "launder_key": "sha256 of the raw file (same key as 004 load_cond); experiments/lib/perturb.apply_condition; A launders the NATIVE decoded image, B uses the 004 cached features (laundering applied to the fov512 crop)",
+  "train_modes": {
+   "tmix": [
+    "clean",
+    "social_sim",
+    "jpeg75_resize05"
+   ],
+   "clean": [
+    "clean"
+   ]
+  },
+  "primary_train_mode": "tmix",
+  "primary_train_mode_why": "docs/08 Common definitions: Training = T-mix. clean-train transfer is reported as sensitivity (docs/08 gate 4) with its own label.",
+  "method_A": {
+   "luma": "Y = 0.299R+0.587G+0.114B of the decoded RGB (no EXIF transpose: the as-stored grid is the object; no metadata read)",
+   "dct": "8x8 orthonormal DCT-II of (Y-128) on the native grid, origin top-left, cropped to multiples of 8",
+   "zigzag_ac": [
+    1,
+    15
+   ],
+   "hist": {
+    "lo": -16.0,
+    "hi": 16.0,
+    "bin": 0.5,
+    "note": "values clipped into the end bins, normalised to sum 1 per coefficient: 15 x 64 = 960 features"
+   },
+   "periodicity": {
+    "s_min": 2,
+    "s_max": 39,
+    "phi_block_cap": 60000,
+    "rule": "phi(s)=|mean exp(2*pi*i*c/s)|; contrast C(s)=phi(s)-0.5*(phi(s-1)+phi(s+1)); s_hat = largest s with C(s)>=0.8*max C; features s_hat and C(s_hat) per coefficient = 30"
+   },
+   "n_features": 990
+  },
+  "method_B": {
+   "blocks": {
+    "b4": [
+     0,
+     1536
+    ],
+    "b8": [
+     1536,
+     3072
+    ],
+    "b12": [
+     3072,
+     4608
+    ]
+   },
+   "layout": "004 secondary 4608-d = [blk4 CLS|blk4 mean|blk8 CLS|blk8 mean|blk12 CLS|blk12 mean]",
+   "caches": [
+    "experiments/004-phase4-features/cache/fov512"
+   ],
+   "block_choice": "highest mean inner grouped-CV balanced accuracy on the training fold"
+  },
+  "probe": {
+   "model": "StandardScaler + multinomial L2 logistic, class_weight balanced",
+   "Cs": "logspace(-4,1,6) (= lib/probe.CS)",
+   "inner_cv": "GroupKFold(5) by device on the training fold, score = balanced accuracy",
+   "max_iter": 3000
+  },
+  "m0": {
+   "features": "log2 w, log2 h, aspect, file bytes, bytes/pixel, mean luma/chroma quantisation step, one-hot of quantisation-table hash (train hashes)",
+   "model": "DecisionTree(max_depth=6)",
+   "conditions": "clean (raw files) only; undefined after in-memory laundering",
+   "preprocessed_tensor_check": "same pipeline on (w,h,aspect,format) of the fov512 PNGs (constant) -> must equal chance"
+  },
+  "permutation": {
+   "scheme": "labels shuffled within each photo triplet (device,vidx), 200 shuffles, primary (T-mix) protocol, C fixed to the median C chosen in the real run (per method), block fixed to the modal block for B",
+   "gate": "mean permuted bacc within 1/3 +- 0.02 for every method x condition"
+  },
+  "thresholds": {
+   "pass_clean": 0.8,
+   "pass_social_sim": 0.6,
+   "kill_A_clean": 0.6,
+   "kill_B_clean": 0.5,
+   "chance": 0.3333333333
+  },
+  "label_rule": "PASS if (A or B) has clean>=0.80 AND social_sim>=0.60 (point estimates, primary train mode); KILL if A clean<0.60 AND B clean<0.50 (clean, primary train mode); else INCONCLUSIVE. counts_as_failure (docs/09 decision 1): KILL, or INCONCLUSIVE with max(A_clean,B_clean) < 0.80 (point estimate does not reach the PASS clean bar). Chosen before any result.",
+  "camera_model_arm": {
+   "vision": {
+    "features": "DINOv2 fov512 block 4 (CLS+mean), native images, clean",
+    "model_sets": "devices sharing the folder model name",
+    "C": 0.01,
+    "n_neg_splits": 10,
+    "design": "binary 'is model M': train = device A positives vs half of the non-M devices; test = same-model device B positives vs the other half; AUROC. control: positives from a device C of a different model vs other-model negatives."
+   },
+   "hdrplus": {
+    "features": "019 cache fov512 clean, block 4 primary (b8,b12 descriptive)",
+    "merge": {
+     "angler": "Nexus 6P",
+     "bullhead": "Nexus 5X",
+     "marlin": "Pixel XL",
+     "sailfish": "Pixel"
+    },
+    "cv": "GroupKFold(5) by burst group",
+    "n_perm": 200
+   }
+  },
+  "d008": "no new GPU pass: method B reads only the existing 004 fov512 caches (their D-008 guard: 004 cache/fov512/d008_guard.json); method A is CPU numpy"
+ },
+ "n_images": 1455,
+ "n_triplets": 485,
+ "n_devices": 34,
+ "folds": [
+  [
+   "D04",
+   "D09",
+   "D17",
+   "D18",
+   "D23",
+   "D32",
+   "D33"
+  ],
+  [
+   "D02",
+   "D08",
+   "D15",
+   "D16",
+   "D22",
+   "D30",
+   "D31"
+  ],
+  [
+   "D01",
+   "D07",
+   "D10",
+   "D14",
+   "D21",
+   "D27",
+   "D29"
+  ],
+  [
+   "D03",
+   "D06",
+   "D12",
+   "D20",
+   "D26",
+   "D28"
+  ],
+  [
+   "D05",
+   "D11",
+   "D19",
+   "D24",
+   "D25",
+   "D34",
+   "D35"
+  ]
+ ],
+ "chance": 0.3333333333333333,
+ "gates": {
+  "sha256_unique_files": 1455,
+  "B_cache_rows_found": {
+   "clean": 1455,
+   "social_sim": 1455,
+   "jpeg75_resize05": 1455
+  },
+  "permutation_ok": true
+ },
+ "cv": {
+  "A_tmix": {
+   "clean": {
+    "bacc": [
+     0.9292096219931271,
+     0.900329939071954,
+     0.9548310356971438
+    ],
+    "confusion": [
+     [
+      429,
+      26,
+      30
+     ],
+     [
+      1,
+      484,
+      0
+     ],
+     [
+      33,
+      13,
+      439
+     ]
+    ],
+    "recall": [
+     [
+      0.8845,
+      0.0536,
+      0.0619
+     ],
+     [
+      0.0021,
+      0.9979,
+      0.0
+     ],
+     [
+      0.068,
+      0.0268,
+      0.9052
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.9523809523809524,
+      "acc": 0.9523809523809523,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.9523809523809524,
+      "acc": 0.9523809523809523,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.7111111111111111,
+      "acc": 0.7111111111111111,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.9285714285714285,
+      "acc": 0.9285714285714286,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.9761904761904763,
+      "acc": 0.9761904761904762,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.880952380952381,
+      "acc": 0.8809523809523809,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.9761904761904763,
+      "acc": 0.9761904761904762,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.7142857142857143,
+      "acc": 0.7142857142857143,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.8333333333333334,
+      "acc": 0.8333333333333334,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.9777777777777779,
+      "acc": 0.9777777777777777,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.7999999999999999,
+      "acc": 0.8,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.8809523809523809,
+      "acc": 0.8809523809523809,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.9761904761904763,
+      "acc": 0.9761904761904762,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.9761904761904763,
+      "acc": 0.9761904761904762,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.9761904761904763,
+      "acc": 0.9761904761904762,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.7619047619047619,
+      "acc": 0.7619047619047619,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.8571428571428572,
+      "acc": 0.8571428571428571,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.9333333333333332,
+      "acc": 0.9333333333333333,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.9555555555555556,
+      "acc": 0.9555555555555556,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.9555555555555556,
+      "acc": 0.9555555555555556,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.9523809523809524,
+      "acc": 0.9523809523809523,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.8571428571428571,
+      "acc": 0.8571428571428571,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.9761904761904763,
+      "acc": 0.9761904761904762,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.8333333333333334,
+      "acc": 0.8333333333333334,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "social_sim": {
+    "bacc": [
+     0.5230240549828178,
+     0.49034197190762846,
+     0.5541757166990562
+    ],
+    "confusion": [
+     [
+      295,
+      79,
+      111
+     ],
+     [
+      109,
+      236,
+      140
+     ],
+     [
+      165,
+      90,
+      230
+     ]
+    ],
+    "recall": [
+     [
+      0.6082,
+      0.1629,
+      0.2289
+     ],
+     [
+      0.2247,
+      0.4866,
+      0.2887
+     ],
+     [
+      0.3402,
+      0.1856,
+      0.4742
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.5714285714285715,
+      "acc": 0.5714285714285714,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.48888888888888893,
+      "acc": 0.4888888888888889,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.5714285714285714,
+      "acc": 0.5714285714285714,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.5238095238095238,
+      "acc": 0.5238095238095238,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.5555555555555555,
+      "acc": 0.5555555555555556,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.6428571428571428,
+      "acc": 0.6428571428571429,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.5777777777777778,
+      "acc": 0.5777777777777777,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.39999999999999997,
+      "acc": 0.4,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.5476190476190477,
+      "acc": 0.5476190476190477,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.6666666666666666,
+      "acc": 0.6666666666666666,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.619047619047619,
+      "acc": 0.6190476190476191,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.6666666666666666,
+      "acc": 0.6666666666666666,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.4000000000000001,
+      "acc": 0.4,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.5777777777777778,
+      "acc": 0.5777777777777777,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.5952380952380952,
+      "acc": 0.5952380952380952,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.5714285714285715,
+      "acc": 0.5714285714285714,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.5714285714285714,
+      "acc": 0.5714285714285714,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.4222222222222222,
+      "acc": 0.4222222222222222,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.7111111111111111,
+      "acc": 0.7111111111111111,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.5238095238095238,
+      "acc": 0.5238095238095238,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "jpeg75_resize05": {
+    "bacc": [
+     0.5835051546391753,
+     0.5537187219005402,
+     0.6119096509240246
+    ],
+    "confusion": [
+     [
+      293,
+      76,
+      116
+     ],
+     [
+      90,
+      291,
+      104
+     ],
+     [
+      91,
+      129,
+      265
+     ]
+    ],
+    "recall": [
+     [
+      0.6041,
+      0.1567,
+      0.2392
+     ],
+     [
+      0.1856,
+      0.6,
+      0.2144
+     ],
+     [
+      0.1876,
+      0.266,
+      0.5464
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.4761904761904761,
+      "acc": 0.47619047619047616,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.6444444444444444,
+      "acc": 0.6444444444444445,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.619047619047619,
+      "acc": 0.6190476190476191,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.5952380952380952,
+      "acc": 0.5952380952380952,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.5952380952380952,
+      "acc": 0.5952380952380952,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.4888888888888889,
+      "acc": 0.4888888888888889,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.5714285714285714,
+      "acc": 0.5714285714285714,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.7333333333333334,
+      "acc": 0.7333333333333333,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.5555555555555555,
+      "acc": 0.5555555555555556,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.6428571428571428,
+      "acc": 0.6428571428571429,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.5714285714285714,
+      "acc": 0.5714285714285714,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.6904761904761904,
+      "acc": 0.6904761904761905,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.5714285714285715,
+      "acc": 0.5714285714285714,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.688888888888889,
+      "acc": 0.6888888888888889,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.6,
+      "acc": 0.6,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.6,
+      "acc": 0.6,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.5952380952380952,
+      "acc": 0.5952380952380952,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.7857142857142857,
+      "acc": 0.7857142857142857,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.6904761904761904,
+      "acc": 0.6904761904761905,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.5555555555555555,
+      "acc": 0.5555555555555556,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.6888888888888888,
+      "acc": 0.6888888888888889,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.5238095238095238,
+      "acc": 0.5238095238095238,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "folds": {
+    "0": {
+     "block": "A",
+     "inner_bacc": 0.6845124633056143,
+     "C": 0.1
+    },
+    "1": {
+     "block": "A",
+     "inner_bacc": 0.6692094980924034,
+     "C": 0.1
+    },
+    "2": {
+     "block": "A",
+     "inner_bacc": 0.6595313347039389,
+     "C": 0.1
+    },
+    "3": {
+     "block": "A",
+     "inner_bacc": 0.6713907044299201,
+     "C": 0.1
+    },
+    "4": {
+     "block": "A",
+     "inner_bacc": 0.6663071895424837,
+     "C": 0.1
+    }
+   }
+  },
+  "A_clean": {
+   "clean": {
+    "bacc": [
+     0.9945017182130584,
+     0.9841269841269842,
+     1.0
+    ],
+    "confusion": [
+     [
+      485,
+      0,
+      0
+     ],
+     [
+      0,
+      485,
+      0
+     ],
+     [
+      6,
+      2,
+      477
+     ]
+    ],
+    "recall": [
+     [
+      1.0,
+      0.0,
+      0.0
+     ],
+     [
+      0.0,
+      1.0,
+      0.0
+     ],
+     [
+      0.0124,
+      0.0041,
+      0.9835
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.9761904761904763,
+      "acc": 0.9761904761904762,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.8333333333333334,
+      "acc": 0.8333333333333334,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 1.0,
+      "acc": 1.0,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "social_sim": {
+    "bacc": [
+     0.3347079037800687,
+     0.31669107758064813,
+     0.3535262714447569
+    ],
+    "confusion": [
+     [
+      150,
+      46,
+      289
+     ],
+     [
+      136,
+      39,
+      310
+     ],
+     [
+      147,
+      40,
+      298
+     ]
+    ],
+    "recall": [
+     [
+      0.3093,
+      0.0948,
+      0.5959
+     ],
+     [
+      0.2804,
+      0.0804,
+      0.6392
+     ],
+     [
+      0.3031,
+      0.0825,
+      0.6144
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.4222222222222222,
+      "acc": 0.4222222222222222,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.30952380952380953,
+      "acc": 0.30952380952380953,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.30952380952380953,
+      "acc": 0.30952380952380953,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.2857142857142857,
+      "acc": 0.2857142857142857,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.3571428571428572,
+      "acc": 0.35714285714285715,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.24444444444444444,
+      "acc": 0.24444444444444444,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.28571428571428575,
+      "acc": 0.2857142857142857,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.3095238095238095,
+      "acc": 0.30952380952380953,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.28571428571428575,
+      "acc": 0.2857142857142857,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.35555555555555557,
+      "acc": 0.35555555555555557,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.30952380952380953,
+      "acc": 0.30952380952380953,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.2857142857142857,
+      "acc": 0.2857142857142857,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.2619047619047619,
+      "acc": 0.2619047619047619,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.2857142857142857,
+      "acc": 0.2857142857142857,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.19999999999999998,
+      "acc": 0.2,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.35555555555555557,
+      "acc": 0.35555555555555557,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.2857142857142857,
+      "acc": 0.2857142857142857,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.3111111111111111,
+      "acc": 0.3111111111111111,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.2888888888888889,
+      "acc": 0.28888888888888886,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "jpeg75_resize05": {
+    "bacc": [
+     0.3333333333333333,
+     0.3333333333333333,
+     0.3333333333333333
+    ],
+    "confusion": [
+     [
+      0,
+      0,
+      485
+     ],
+     [
+      0,
+      1,
+      484
+     ],
+     [
+      0,
+      1,
+      484
+     ]
+    ],
+    "recall": [
+     [
+      0.0,
+      0.0,
+      1.0
+     ],
+     [
+      0.0,
+      0.0021,
+      0.9979
+     ],
+     [
+      0.0,
+      0.0021,
+      0.9979
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "folds": {
+    "0": {
+     "block": "A",
+     "inner_bacc": 0.9992156862745099,
+     "C": 0.1
+    },
+    "1": {
+     "block": "A",
+     "inner_bacc": 0.9945098039215686,
+     "C": 0.001
+    },
+    "2": {
+     "block": "A",
+     "inner_bacc": 0.9937254901960785,
+     "C": 0.01
+    },
+    "3": {
+     "block": "A",
+     "inner_bacc": 0.9937254901960785,
+     "C": 0.1
+    },
+    "4": {
+     "block": "A",
+     "inner_bacc": 0.9937254901960785,
+     "C": 0.01
+    }
+   }
+  },
+  "B_tmix": {
+   "clean": {
+    "bacc": [
+     0.6096219931271478,
+     0.5728061711354787,
+     0.6448247326668237
+    ],
+    "confusion": [
+     [
+      338,
+      106,
+      41
+     ],
+     [
+      116,
+      254,
+      115
+     ],
+     [
+      53,
+      137,
+      295
+     ]
+    ],
+    "recall": [
+     [
+      0.6969,
+      0.2186,
+      0.0845
+     ],
+     [
+      0.2392,
+      0.5237,
+      0.2371
+     ],
+     [
+      0.1093,
+      0.2825,
+      0.6082
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.6904761904761904,
+      "acc": 0.6904761904761905,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.619047619047619,
+      "acc": 0.6190476190476191,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.6222222222222222,
+      "acc": 0.6222222222222222,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.5714285714285714,
+      "acc": 0.5714285714285714,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.5238095238095238,
+      "acc": 0.5238095238095238,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.7857142857142857,
+      "acc": 0.7857142857142857,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.5714285714285714,
+      "acc": 0.5714285714285714,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.5238095238095238,
+      "acc": 0.5238095238095238,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.6222222222222222,
+      "acc": 0.6222222222222222,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.6428571428571429,
+      "acc": 0.6428571428571429,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.7333333333333334,
+      "acc": 0.7333333333333333,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.4666666666666666,
+      "acc": 0.4666666666666667,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.6428571428571428,
+      "acc": 0.6428571428571429,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.6428571428571428,
+      "acc": 0.6428571428571429,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.6666666666666666,
+      "acc": 0.6666666666666666,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.7619047619047619,
+      "acc": 0.7619047619047619,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.7555555555555555,
+      "acc": 0.7555555555555555,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.8444444444444444,
+      "acc": 0.8444444444444444,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.5555555555555555,
+      "acc": 0.5555555555555556,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.5476190476190477,
+      "acc": 0.5476190476190477,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.738095238095238,
+      "acc": 0.7380952380952381,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.5111111111111111,
+      "acc": 0.5111111111111111,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.7555555555555555,
+      "acc": 0.7555555555555555,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.6428571428571428,
+      "acc": 0.6428571428571429,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.6190476190476191,
+      "acc": 0.6190476190476191,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "social_sim": {
+    "bacc": [
+     0.4247422680412371,
+     0.4023423177397571,
+     0.44766378714190164
+    ],
+    "confusion": [
+     [
+      131,
+      180,
+      174
+     ],
+     [
+      76,
+      270,
+      139
+     ],
+     [
+      83,
+      185,
+      217
+     ]
+    ],
+    "recall": [
+     [
+      0.2701,
+      0.3711,
+      0.3588
+     ],
+     [
+      0.1567,
+      0.5567,
+      0.2866
+     ],
+     [
+      0.1711,
+      0.3814,
+      0.4474
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.5238095238095238,
+      "acc": 0.5238095238095238,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.3571428571428572,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.5111111111111111,
+      "acc": 0.5111111111111111,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.5952380952380952,
+      "acc": 0.5952380952380952,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.35555555555555557,
+      "acc": 0.35555555555555557,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.4888888888888889,
+      "acc": 0.4888888888888889,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.39999999999999997,
+      "acc": 0.4,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.30952380952380953,
+      "acc": 0.30952380952380953,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.4666666666666666,
+      "acc": 0.4666666666666667,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.48888888888888893,
+      "acc": 0.4888888888888889,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.39999999999999997,
+      "acc": 0.4,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.4222222222222222,
+      "acc": 0.4222222222222222,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "jpeg75_resize05": {
+    "bacc": [
+     0.3993127147766324,
+     0.3814408241766012,
+     0.41769568669637824
+    ],
+    "confusion": [
+     [
+      179,
+      160,
+      146
+     ],
+     [
+      133,
+      237,
+      115
+     ],
+     [
+      169,
+      151,
+      165
+     ]
+    ],
+    "recall": [
+     [
+      0.3691,
+      0.3299,
+      0.301
+     ],
+     [
+      0.2742,
+      0.4887,
+      0.2371
+     ],
+     [
+      0.3485,
+      0.3113,
+      0.3402
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.4285714285714286,
+      "acc": 0.42857142857142855,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.30952380952380953,
+      "acc": 0.30952380952380953,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.4000000000000001,
+      "acc": 0.4,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.3555555555555556,
+      "acc": 0.35555555555555557,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.4666666666666666,
+      "acc": 0.4666666666666667,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.5111111111111111,
+      "acc": 0.5111111111111111,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.45238095238095233,
+      "acc": 0.4523809523809524,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.4285714285714286,
+      "acc": 0.42857142857142855,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.3555555555555556,
+      "acc": 0.35555555555555557,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.35555555555555557,
+      "acc": 0.35555555555555557,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "folds": {
+    "0": {
+     "block": "b8",
+     "inner_bacc": 0.49048973580042354,
+     "C": 0.001
+    },
+    "1": {
+     "block": "b8",
+     "inner_bacc": 0.48037471744044513,
+     "C": 0.001
+    },
+    "2": {
+     "block": "b8",
+     "inner_bacc": 0.4801357820123354,
+     "C": 0.001
+    },
+    "3": {
+     "block": "b8",
+     "inner_bacc": 0.4758278867102397,
+     "C": 0.001
+    },
+    "4": {
+     "block": "b8",
+     "inner_bacc": 0.4820152505446623,
+     "C": 0.001
+    }
+   }
+  },
+  "B_clean": {
+   "clean": {
+    "bacc": [
+     0.6213058419243986,
+     0.5762344453693625,
+     0.6680528092546116
+    ],
+    "confusion": [
+     [
+      309,
+      115,
+      61
+     ],
+     [
+      85,
+      291,
+      109
+     ],
+     [
+      58,
+      123,
+      304
+     ]
+    ],
+    "recall": [
+     [
+      0.6371,
+      0.2371,
+      0.1258
+     ],
+     [
+      0.1753,
+      0.6,
+      0.2247
+     ],
+     [
+      0.1196,
+      0.2536,
+      0.6268
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.7619047619047619,
+      "acc": 0.7619047619047619,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.5952380952380952,
+      "acc": 0.5952380952380952,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.7111111111111111,
+      "acc": 0.7111111111111111,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.5714285714285715,
+      "acc": 0.5714285714285714,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.8333333333333334,
+      "acc": 0.8333333333333334,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.5777777777777777,
+      "acc": 0.5777777777777777,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.5476190476190476,
+      "acc": 0.5476190476190477,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.7619047619047619,
+      "acc": 0.7619047619047619,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.7333333333333334,
+      "acc": 0.7333333333333333,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.4444444444444444,
+      "acc": 0.4444444444444444,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.6666666666666666,
+      "acc": 0.6666666666666666,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.6428571428571429,
+      "acc": 0.6428571428571429,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.5952380952380952,
+      "acc": 0.5952380952380952,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.7619047619047619,
+      "acc": 0.7619047619047619,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.6666666666666666,
+      "acc": 0.6666666666666666,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.8095238095238094,
+      "acc": 0.8095238095238095,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.8444444444444444,
+      "acc": 0.8444444444444444,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.8666666666666666,
+      "acc": 0.8666666666666667,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.5555555555555555,
+      "acc": 0.5555555555555556,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.4761904761904761,
+      "acc": 0.47619047619047616,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.7380952380952381,
+      "acc": 0.7380952380952381,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.7380952380952381,
+      "acc": 0.7380952380952381,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.48888888888888893,
+      "acc": 0.4888888888888889,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.7555555555555555,
+      "acc": 0.7555555555555555,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.6904761904761906,
+      "acc": 0.6904761904761905,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.5238095238095238,
+      "acc": 0.5238095238095238,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "social_sim": {
+    "bacc": [
+     0.3848797250859106,
+     0.3670764179392126,
+     0.40261272690550126
+    ],
+    "confusion": [
+     [
+      20,
+      142,
+      323
+     ],
+     [
+      8,
+      186,
+      291
+     ],
+     [
+      7,
+      124,
+      354
+     ]
+    ],
+    "recall": [
+     [
+      0.0412,
+      0.2928,
+      0.666
+     ],
+     [
+      0.0165,
+      0.3835,
+      0.6
+     ],
+     [
+      0.0144,
+      0.2557,
+      0.7299
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.30952380952380953,
+      "acc": 0.30952380952380953,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.5111111111111111,
+      "acc": 0.5111111111111111,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.4523809523809524,
+      "acc": 0.4523809523809524,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.5,
+      "acc": 0.5,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.35555555555555557,
+      "acc": 0.35555555555555557,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.30952380952380953,
+      "acc": 0.30952380952380953,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.2619047619047619,
+      "acc": 0.2619047619047619,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.4761904761904762,
+      "acc": 0.47619047619047616,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.4444444444444444,
+      "acc": 0.4444444444444444,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.39999999999999997,
+      "acc": 0.4,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.42857142857142855,
+      "acc": 0.42857142857142855,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.4047619047619048,
+      "acc": 0.40476190476190477,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "jpeg75_resize05": {
+    "bacc": [
+     0.3505154639175258,
+     0.34295483150198686,
+     0.3595117767192383
+    ],
+    "confusion": [
+     [
+      0,
+      86,
+      399
+     ],
+     [
+      0,
+      108,
+      377
+     ],
+     [
+      1,
+      82,
+      402
+     ]
+    ],
+    "recall": [
+     [
+      0.0,
+      0.1773,
+      0.8227
+     ],
+     [
+      0.0,
+      0.2227,
+      0.7773
+     ],
+     [
+      0.0021,
+      0.1691,
+      0.8289
+     ]
+    ],
+    "majority_rate": 0.3333333333333333,
+    "per_device": {
+     "D01": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D02": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone4s"
+     },
+     "D03": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_P9"
+     },
+     "D04": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "LG_D290"
+     },
+     "D05": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5c"
+     },
+     "D06": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone6"
+     },
+     "D07": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Lenovo_P70A"
+     },
+     "D08": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTab3"
+     },
+     "D09": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone4"
+     },
+     "D10": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Apple_iPhone4s"
+     },
+     "D11": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Samsung_GalaxyS3"
+     },
+     "D12": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Sony_XperiaZ1Compact"
+     },
+     "D14": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone5c"
+     },
+     "D15": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone6"
+     },
+     "D16": {
+      "bacc": 0.4222222222222222,
+      "acc": 0.4222222222222222,
+      "model": "Huawei_P9Lite"
+     },
+     "D17": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Microsoft_Lumia640LTE"
+     },
+     "D18": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone5c"
+     },
+     "D19": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Apple_iPhone6Plus"
+     },
+     "D20": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPadMini"
+     },
+     "D21": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Wiko_Ridge4G"
+     },
+     "D22": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTrendPlus"
+     },
+     "D23": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Asus_Zenfone2Laser"
+     },
+     "D24": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Xiaomi_RedmiNote3"
+     },
+     "D25": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "OnePlus_A3000"
+     },
+     "D26": {
+      "bacc": 0.37777777777777777,
+      "acc": 0.37777777777777777,
+      "model": "Samsung_GalaxyS3Mini"
+     },
+     "D27": {
+      "bacc": 0.39999999999999997,
+      "acc": 0.4,
+      "model": "Samsung_GalaxyS5"
+     },
+     "D28": {
+      "bacc": 0.38095238095238093,
+      "acc": 0.38095238095238093,
+      "model": "Huawei_P8"
+     },
+     "D29": {
+      "bacc": 0.4047619047619047,
+      "acc": 0.40476190476190477,
+      "model": "Apple_iPhone5"
+     },
+     "D30": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_Honor5c"
+     },
+     "D31": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyS4Mini"
+     },
+     "D32": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "OnePlus_A3003"
+     },
+     "D33": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Huawei_Ascend"
+     },
+     "D34": {
+      "bacc": 0.35714285714285715,
+      "acc": 0.35714285714285715,
+      "model": "Apple_iPhone5"
+     },
+     "D35": {
+      "bacc": 0.3333333333333333,
+      "acc": 0.3333333333333333,
+      "model": "Samsung_GalaxyTabA"
+     }
+    }
+   },
+   "folds": {
+    "0": {
+     "block": "b8",
+     "inner_bacc": 0.6323963607352174,
+     "C": 0.001
+    },
+    "1": {
+     "block": "b4",
+     "inner_bacc": 0.6403030163552118,
+     "C": 0.01
+    },
+    "2": {
+     "block": "b4",
+     "inner_bacc": 0.6151749056430084,
+     "C": 0.01
+    },
+    "3": {
+     "block": "b8",
+     "inner_bacc": 0.6213289760348584,
+     "C": 0.01
+    },
+    "4": {
+     "block": "b8",
+     "inner_bacc": 0.6175599128540304,
+     "C": 0.01
+    }
+   }
+  }
+ },
+ "M0_raw": {
+  "bacc": [
+   0.9848797250859107,
+   0.9641034388936363,
+   0.9986312145783556
+  ],
+  "confusion": [
+   [
+    466,
+    0,
+    19
+   ],
+   [
+    0,
+    485,
+    0
+   ],
+   [
+    1,
+    2,
+    482
+   ]
+  ],
+  "recall": [
+   [
+    0.9608,
+    0.0,
+    0.0392
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0021,
+    0.0041,
+    0.9938
+   ]
+  ],
+  "majority_rate": 0.3333333333333333,
+  "per_device": {
+   "D01": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Samsung_GalaxyS3Mini"
+   },
+   "D02": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone4s"
+   },
+   "D03": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Huawei_P9"
+   },
+   "D04": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "LG_D290"
+   },
+   "D05": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone5c"
+   },
+   "D06": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone6"
+   },
+   "D07": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Lenovo_P70A"
+   },
+   "D08": {
+    "bacc": 0.6666666666666666,
+    "acc": 0.6666666666666666,
+    "model": "Samsung_GalaxyTab3"
+   },
+   "D09": {
+    "bacc": 0.9761904761904763,
+    "acc": 0.9761904761904762,
+    "model": "Apple_iPhone4"
+   },
+   "D10": {
+    "bacc": 0.9777777777777779,
+    "acc": 0.9777777777777777,
+    "model": "Apple_iPhone4s"
+   },
+   "D11": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Samsung_GalaxyS3"
+   },
+   "D12": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Sony_XperiaZ1Compact"
+   },
+   "D14": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone5c"
+   },
+   "D15": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone6"
+   },
+   "D16": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Huawei_P9Lite"
+   },
+   "D17": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Microsoft_Lumia640LTE"
+   },
+   "D18": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone5c"
+   },
+   "D19": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone6Plus"
+   },
+   "D20": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPadMini"
+   },
+   "D21": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Wiko_Ridge4G"
+   },
+   "D22": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Samsung_GalaxyTrendPlus"
+   },
+   "D23": {
+    "bacc": 0.8809523809523809,
+    "acc": 0.8809523809523809,
+    "model": "Asus_Zenfone2Laser"
+   },
+   "D24": {
+    "bacc": 0.9761904761904763,
+    "acc": 0.9761904761904762,
+    "model": "Xiaomi_RedmiNote3"
+   },
+   "D25": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "OnePlus_A3000"
+   },
+   "D26": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Samsung_GalaxyS3Mini"
+   },
+   "D27": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Samsung_GalaxyS5"
+   },
+   "D28": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Huawei_P8"
+   },
+   "D29": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone5"
+   },
+   "D30": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Huawei_Honor5c"
+   },
+   "D31": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Samsung_GalaxyS4Mini"
+   },
+   "D32": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "OnePlus_A3003"
+   },
+   "D33": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Huawei_Ascend"
+   },
+   "D34": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Apple_iPhone5"
+   },
+   "D35": {
+    "bacc": 1.0,
+    "acc": 1.0,
+    "model": "Samsung_GalaxyTabA"
+   }
+  },
+  "n_distinct_qt_hashes": 30,
+  "qt_hash_by_platform": {
+   "native": {
+    "3d17a2ef9f33": 111,
+    "db3eb7e6012e": 87,
+    "ad70492d6284": 58,
+    "18a0649f7306": 43,
+    "ee0fbbc4c7f3": 43
+   },
+   "whatsapp": {
+    "f177712cc1a5": 485
+   },
+   "facebook_hq": {
+    "556457c27eb1": 202,
+    "ada51ad34565": 81,
+    "d4ba5ebcc18d": 26,
+    "f7f13af500d6": 23,
+    "3eb695a49b8b": 22
+   }
+  }
+ },
+ "M0_preprocessed_tensor": {
+  "bacc": [
+   0.3333333333333333,
+   0.3333333333333333,
+   0.3333333333333333
+  ],
+  "confusion": [
+   [
+    485,
+    0,
+    0
+   ],
+   [
+    485,
+    0,
+    0
+   ],
+   [
+    485,
+    0,
+    0
+   ]
+  ],
+  "recall": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ]
+  ],
+  "majority_rate": 0.3333333333333333,
+  "per_device": {
+   "D01": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyS3Mini"
+   },
+   "D02": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone4s"
+   },
+   "D03": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Huawei_P9"
+   },
+   "D04": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "LG_D290"
+   },
+   "D05": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone5c"
+   },
+   "D06": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone6"
+   },
+   "D07": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Lenovo_P70A"
+   },
+   "D08": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyTab3"
+   },
+   "D09": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone4"
+   },
+   "D10": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone4s"
+   },
+   "D11": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyS3"
+   },
+   "D12": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Sony_XperiaZ1Compact"
+   },
+   "D14": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone5c"
+   },
+   "D15": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone6"
+   },
+   "D16": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Huawei_P9Lite"
+   },
+   "D17": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Microsoft_Lumia640LTE"
+   },
+   "D18": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone5c"
+   },
+   "D19": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone6Plus"
+   },
+   "D20": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPadMini"
+   },
+   "D21": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Wiko_Ridge4G"
+   },
+   "D22": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyTrendPlus"
+   },
+   "D23": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Asus_Zenfone2Laser"
+   },
+   "D24": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Xiaomi_RedmiNote3"
+   },
+   "D25": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "OnePlus_A3000"
+   },
+   "D26": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyS3Mini"
+   },
+   "D27": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyS5"
+   },
+   "D28": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Huawei_P8"
+   },
+   "D29": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone5"
+   },
+   "D30": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Huawei_Honor5c"
+   },
+   "D31": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyS4Mini"
+   },
+   "D32": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "OnePlus_A3003"
+   },
+   "D33": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Huawei_Ascend"
+   },
+   "D34": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Apple_iPhone5"
+   },
+   "D35": {
+    "bacc": 0.3333333333333333,
+    "acc": 0.3333333333333333,
+    "model": "Samsung_GalaxyTabA"
+   }
+  }
+ },
+ "label": {
+  "tmix": {
+   "label": "INCONCLUSIVE",
+   "counts_as_failure": false,
+   "A_clean": 0.9292096219931271,
+   "A_social_sim": 0.5230240549828178,
+   "B_clean": 0.6096219931271478,
+   "B_social_sim": 0.4247422680412371
+  },
+  "clean": {
+   "label": "INCONCLUSIVE",
+   "counts_as_failure": false,
+   "A_clean": 0.9945017182130584,
+   "A_social_sim": 0.3347079037800687,
+   "B_clean": 0.6213058419243986,
+   "B_social_sim": 0.3848797250859106
+  }
+ },
+ "primary_label": "INCONCLUSIVE",
+ "permutation": {
+  "A": {
+   "clean": {
+    "real": 0.9292096219931271,
+    "perm_mean": 0.33210996563573886,
+    "perm_sd": 0.01360393558680312,
+    "perm_q025": 0.30513745704467354,
+    "perm_q975": 0.3601546391752578,
+    "perm_max": 0.36769759450171824,
+    "p_value": 0.004975124378109453,
+    "chance_ok": true
+   },
+   "social_sim": {
+    "real": 0.5230240549828178,
+    "perm_mean": 0.33334364261168387,
+    "perm_sd": 0.013769134241408878,
+    "perm_q025": 0.3098969072164949,
+    "perm_q975": 0.3656529209621993,
+    "perm_max": 0.37869415807560136,
+    "p_value": 0.004975124378109453,
+    "chance_ok": true
+   },
+   "jpeg75_resize05": {
+    "real": 0.5835051546391753,
+    "perm_mean": 0.33356357388316155,
+    "perm_sd": 0.012642550969460663,
+    "perm_q025": 0.3106529209621993,
+    "perm_q975": 0.36013745704467354,
+    "perm_max": 0.36563573883161515,
+    "p_value": 0.004975124378109453,
+    "chance_ok": true
+   },
+   "fixed": {
+    "C": 0.1,
+    "block": "A"
+   }
+  },
+  "B": {
+   "clean": {
+    "real": 0.6096219931271478,
+    "perm_mean": 0.334085910652921,
+    "perm_sd": 0.007578109690672397,
+    "perm_q025": 0.31957044673539514,
+    "perm_q975": 0.3491408934707903,
+    "perm_max": 0.35532646048109967,
+    "p_value": 0.004975124378109453,
+    "chance_ok": true
+   },
+   "social_sim": {
+    "real": 0.4247422680412371,
+    "perm_mean": 0.332979381443299,
+    "perm_sd": 0.008611104463770579,
+    "perm_q025": 0.31613402061855667,
+    "perm_q975": 0.34915807560137463,
+    "perm_max": 0.3580756013745705,
+    "p_value": 0.004975124378109453,
+    "chance_ok": true
+   },
+   "jpeg75_resize05": {
+    "real": 0.3993127147766324,
+    "perm_mean": 0.333639175257732,
+    "perm_sd": 0.004684491664842734,
+    "perm_q025": 0.32575601374570445,
+    "perm_q975": 0.34298969072164953,
+    "perm_max": 0.34570446735395194,
+    "p_value": 0.004975124378109453,
+    "chance_ok": true
+   },
+   "fixed": {
+    "C": 0.001,
+    "block": "b8"
+   }
+  }
+ },
+ "camera_model_arm": {
+  "vision_same_model_transfer": {
+   "pairs": [
+    {
+     "model": "Apple_iPhone4s",
+     "train_device": "D02",
+     "test_device": "D10",
+     "auroc": 0.7645220018852708,
+     "auroc_sd": 0.03254563898274157,
+     "control_auroc": 0.526937907245772,
+     "n_neg_devices": 32
+    },
+    {
+     "model": "Apple_iPhone4s",
+     "train_device": "D10",
+     "test_device": "D02",
+     "auroc": 0.6693644870548022,
+     "auroc_sd": 0.0403645247138494,
+     "control_auroc": 0.5222880059241277,
+     "n_neg_devices": 32
+    },
+    {
+     "model": "Apple_iPhone5",
+     "train_device": "D29",
+     "test_device": "D34",
+     "auroc": 0.4509990796240457,
+     "auroc_sd": 0.054710795660712463,
+     "control_auroc": 0.5185539616979558,
+     "n_neg_devices": 32
+    },
+    {
+     "model": "Apple_iPhone5",
+     "train_device": "D34",
+     "test_device": "D29",
+     "auroc": 0.5372327103723884,
+     "auroc_sd": 0.04832834254144549,
+     "control_auroc": 0.48496174052425356,
+     "n_neg_devices": 32
+    },
+    {
+     "model": "Apple_iPhone5c",
+     "train_device": "D05",
+     "test_device": "D14",
+     "auroc": 0.7680785803235703,
+     "auroc_sd": 0.017313093217288623,
+     "control_auroc": 0.4889876961900774,
+     "n_neg_devices": 31
+    },
+    {
+     "model": "Apple_iPhone5c",
+     "train_device": "D05",
+     "test_device": "D18",
+     "auroc": 0.782440486054883,
+     "auroc_sd": 0.03125740819523458,
+     "control_auroc": 0.47028369081525234,
+     "n_neg_devices": 31
+    },
+    {
+     "model": "Apple_iPhone5c",
+     "train_device": "D14",
+     "test_device": "D05",
+     "auroc": 0.8391690209050964,
+     "auroc_sd": 0.025720175609238803,
+     "control_auroc": 0.5325567259055037,
+     "n_neg_devices": 31
+    },
+    {
+     "model": "Apple_iPhone5c",
+     "train_device": "D14",
+     "test_device": "D18",
+     "auroc": 0.8824663850801123,
+     "auroc_sd": 0.022611251073382518,
+     "control_auroc": 0.4435017580300274,
+     "n_neg_devices": 31
+    },
+    {
+     "model": "Apple_iPhone5c",
+     "train_device": "D18",
+     "test_device": "D05",
+     "auroc": 0.8496623177108626,
+     "auroc_sd": 0.009532704654554806,
+     "control_auroc": 0.49743260097474523,
+     "n_neg_devices": 31
+    },
+    {
+     "model": "Apple_iPhone5c",
+     "train_device": "D18",
+     "test_device": "D14",
+     "auroc": 0.8363598674079732,
+     "auroc_sd": 0.016229128880170002,
+     "control_auroc": 0.542857275095886,
+     "n_neg_devices": 31
+    },
+    {
+     "model": "Apple_iPhone6",
+     "train_device": "D06",
+     "test_device": "D15",
+     "auroc": 0.7296023186740611,
+     "auroc_sd": 0.01677899850366865,
+     "control_auroc": 0.5609808791328148,
+     "n_neg_devices": 32
+    },
+    {
+     "model": "Apple_iPhone6",
+     "train_device": "D15",
+     "test_device": "D06",
+     "auroc": 0.6313453605446585,
+     "auroc_sd": 0.045898958735994706,
+     "control_auroc": 0.45100784353054985,
+     "n_neg_devices": 32
+    },
+    {
+     "model": "Samsung_GalaxyS3Mini",
+     "train_device": "D01",
+     "test_device": "D26",
+     "auroc": 0.8925767175167699,
+     "auroc_sd": 0.017806080829965643,
+     "control_auroc": 0.4683079963783075,
+     "n_neg_devices": 32
+    },
+    {
+     "model": "Samsung_GalaxyS3Mini",
+     "train_device": "D26",
+     "test_device": "D01",
+     "auroc": 0.8240582466967152,
+     "auroc_sd": 0.023665536961121756,
+     "control_auroc": 0.5010959453407795,
+     "n_neg_devices": 32
+    }
+   ],
+   "mean_auroc": [
+    0.7469912557036578,
+    0.6785244209645771,
+    0.8096086474303236
+   ],
+   "mean_control_auroc": [
+    0.5006967161990038,
+    0.48331786431064494,
+    0.5178934297859824
+   ],
+   "note": "CI = bootstrap over ordered device pairs only; exploratory, no label"
+  },
+  "hdrplus_model_id": {
+   "models": [
+    "Nexus 5",
+    "Nexus 5X",
+    "Nexus 6",
+    "Nexus 6P",
+    "Pixel",
+    "Pixel XL"
+   ],
+   "counts": {
+    "Nexus 6": 226,
+    "Nexus 6P": 171,
+    "Pixel XL": 110,
+    "Nexus 5": 37,
+    "Pixel": 36,
+    "Nexus 5X": 20
+   },
+   "n_groups": 43,
+   "chance": 0.16666666666666666,
+   "majority_rate": 0.37666666666666665,
+   "b4": {
+    "bacc": [
+     0.20030813936263403,
+     0.17625075779007024,
+     0.3351601145810567
+    ],
+    "acc": 0.3233333333333333,
+    "confusion": [
+     [
+      1,
+      2,
+      16,
+      8,
+      3,
+      7
+     ],
+     [
+      1,
+      0,
+      7,
+      8,
+      1,
+      3
+     ],
+     [
+      16,
+      13,
+      93,
+      39,
+      23,
+      42
+     ],
+     [
+      11,
+      8,
+      48,
+      68,
+      6,
+      30
+     ],
+     [
+      2,
+      0,
+      7,
+      6,
+      4,
+      17
+     ],
+     [
+      6,
+      5,
+      33,
+      31,
+      7,
+      28
+     ]
+    ],
+    "C": [
+     10.0,
+     1.0,
+     0.1,
+     0.001,
+     0.001
+    ]
+   },
+   "b8": {
+    "bacc": [
+     0.1729195384994174,
+     0.14264409844318354,
+     0.30560618293148845
+    ],
+    "acc": 0.30833333333333335,
+    "confusion": [
+     [
+      0,
+      0,
+      15,
+      14,
+      2,
+      6
+     ],
+     [
+      1,
+      0,
+      6,
+      4,
+      1,
+      8
+     ],
+     [
+      9,
+      8,
+      103,
+      44,
+      11,
+      51
+     ],
+     [
+      7,
+      6,
+      47,
+      62,
+      9,
+      40
+     ],
+     [
+      1,
+      0,
+      9,
+      11,
+      2,
+      13
+     ],
+     [
+      8,
+      3,
+      37,
+      34,
+      10,
+      18
+     ]
+    ],
+    "C": [
+     1.0,
+     10.0,
+     0.1,
+     0.01,
+     0.1
+    ]
+   },
+   "b12": {
+    "bacc": [
+     0.11393483821290062,
+     0.0899143582818496,
+     0.2415293401263492
+    ],
+    "acc": 0.20333333333333334,
+    "confusion": [
+     [
+      0,
+      1,
+      24,
+      7,
+      1,
+      4
+     ],
+     [
+      0,
+      0,
+      7,
+      4,
+      3,
+      6
+     ],
+     [
+      24,
+      9,
+      66,
+      67,
+      10,
+      50
+     ],
+     [
+      7,
+      14,
+      62,
+      42,
+      6,
+      40
+     ],
+     [
+      0,
+      3,
+      13,
+      9,
+      1,
+      10
+     ],
+     [
+      6,
+      5,
+      53,
+      28,
+      5,
+      13
+     ]
+    ],
+    "C": [
+     0.1,
+     1.0,
+     0.1,
+     0.001,
+     0.1
+    ]
+   },
+   "permutation_b4": {
+    "mean": 0.13322582704257535,
+    "q025": 0.09721617060844498,
+    "q975": 0.17029985769002692,
+    "max": 0.187672688919492,
+    "n": 200,
+    "C": 0.1
+   }
+  }
+ },
+ "runtime_s": 5098.04670715332
+}

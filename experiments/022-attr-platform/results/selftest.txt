@@ -1,0 +1,43 @@
+[PASS] zigzag first cells  ([(0, 0), (0, 1), (1, 0), (2, 0), (1, 1), (0, 2)])
+[PASS] zigzag order reproduces the standard luminance table sequence  ([16, 11, 12, 14, 12, 10, 16, 14, 13, 14, 18, 17, 16, 19, 24, 40])
+[PASS] 15 AC coefficients = zigzag 1..15
+[PASS] block_dct matches separable scipy DCT and block order  (max|d|=0.00e+00)
+[PASS] block_dct is orthonormal (Parseval)
+[PASS] block_dct crops to multiples of 8 from the top-left
+[PASS] periodicity recovers planted quantisation steps  ([(3, 3.0, 0.99), (5, 5.0, 0.99), (8, 8.0, 1.0), (12, 12.0, 1.0), (17, 17.0, 0.99), (24, 24.0, 0.99)])
+[PASS] periodicity peak is small for a smooth (unquantised) density  (peak=0.004)
+[PASS] feature vector: 990 dims, finite, histograms sum to 1
+[PASS] step estimator recovers the true luminance steps on decoded JPEGs (informational, >=30% exact at q50 and q75)  (exact rate {50: 0.35714285714285715, 75: 0.5333333333333333})
+[PASS] synthetic folds: no device in both train and test, each device tested once
+[PASS] planted duplicate sha256 across classes is caught by the dedupe gate
+[PASS] dedupe gate passes on the clean synthetic table
+[PASS] method A features finite for all conditions
+[PASS] social_sim deterministic per key, differs across keys
+[PASS] A clean-train, clean test: bacc >= 0.90 on synthetic platform differences  ({'clean': 1.0, 'social_sim': 0.34722222222222227, 'jpeg75_resize05': 0.4351851851851852})
+[PASS] A T-mix: clean >= 0.90 and social_sim >= 0.50  ({'clean': 1.0, 'social_sim': 0.736111111111111, 'jpeg75_resize05': 0.9120370370370371})
+[PASS] M0 (size + quantisation table) ~1.0 on synthetic files  (bacc=0.995)
+[PASS] M0 on preprocessed tensors is exactly at chance  (bacc=0.3333)
+[PASS] bootstrap CI brackets the point estimate; confusion sums to n  ([1.0, 1.0, 1.0])
+[PASS] bacc: perfect=1, constant prediction=1/3
+[PASS] permutation control (24 shuffles, grouped CV) is at chance  (mean=0.329 sd=0.031)
+[PASS] planted label feature -> bacc ~1.0 (pipeline can detect signal)  (1.000)
+[PASS] group-overlap assertion trips on a leaky (random) split
+[PASS] planted content fingerprint + random photo labels: device-grouped CV at chance, leaky CV high (control has power)  (grouped=0.360 leaky=0.722)
+[PASS] method B: inner CV picks the informative block (b8) and reaches bacc >= 0.9  (blocks=['b8', 'b8', 'b8', 'b8', 'b8'] bacc=0.958)
+[PASS] same-model transfer: AUROC high on planted model signature, control near 0.5  (pairs=12 auroc=1.000 control=0.539)
+[PASS] same-model transfer on pure noise is ~0.5  (0.558)
+[PASS] label: PASS when A >= .80 clean and >= .60 social
+[PASS] label: PASS via B
+[PASS] label: KILL when A < .60 and B < .50
+[PASS] label: INCONCLUSIVE otherwise (clean pass but social fails)
+[PASS] label: INCONCLUSIVE mid-range counts as failure when max clean < .80
+[PASS] HDR+ codenames merged to 6 models  ({'Nexus 6': 226, 'Nexus 6P': 171, 'Pixel XL': 110, 'Nexus 5': 37, 'Pixel': 36, 'Nexus 5X': 20})
+[PASS] real table: 485 triplets, 1455 images, D13 excluded, 34 devices
+[PASS] real table: every triplet has one image per platform
+[PASS] real folds: 5 device-grouped folds covering all rows, all copies of a photo together
+[PASS] real data: sha256 unique across 1455 raw files (recomputed from disk)
+[PASS] real B cache: clean block features found for all rows
+[PASS] real B cache: social_sim found for all rows
+[PASS] real B cache: jpeg75_resize05 found for all rows
+[PASS] real triplet: method A features finite under clean/social_sim/jpeg75_resize05
+42/42 passed; failures: []; 15s
