@@ -482,3 +482,4 @@
   - Clean-trained transfer to jpeg75_resize05 and social_sim: 0.333 (chance). Laundering-matched training 0.58–0.59, below M1 (0.70–0.74).
   - SD1.x does not map to kl-f8 on clean (0%), with a size caveat.
   - D-008: GPU sdxl-vae and GPU sd-vae features failed the feature guard, so CPU features are used; the GPU analysis is kept as INVALID. Launching critic.
+- 2026-10-28 05:13 — H-A6 critic: INCONCLUSIVE stands; practically 'works clean, erased by one JPEG75+0.5x'. The SD2-vs-SDXL decoder match is real (same size buckets). It identifies decoder weights, not architecture families (MJ v5 matches sd-vae-ft-mse). For the owner: the D-008 1e-3 feature guard is below sdxl-vae's own CPU run-to-run nondeterminism (1.1e-2). notes.md corrected. All runs done; launching the fable/high report.

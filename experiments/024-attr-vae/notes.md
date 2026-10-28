@@ -35,3 +35,10 @@
 - [x] D-008: sd-vae pixel guard (CUDA vs CPU, 32 images) 1.2e-4 <= 1e-3; sdxl-vae failed at feature level, so sdxl is CPU; sd-vae logit guard marginal on GPU, so the analysis set is all CPU (no accelerator features in the reported models).
 - [x] Selftest 36/36 before the real analysis (results/selftest.txt; re-run after the bug fixes, still 36/36).
 - [ ] Opus/high critique (critique.md): not produced here (lead's step).
+
+## Critic corrections (lead, after results/critique.md)
+- **Size sentence was wrong.** SD2 and SDXL share the same 26 size buckets (~1 MP); each prefers its own VAE in every bucket (100% / 99%). The clean result is a real decoder match.
+- **MJ v5 matches sd-vae-ft-mse** (16/16). The 3 clean "other" errors are 3 of the 4 MJ test images; without MJ, clean accuracy is 0.991. "kl-f8" means "decoder close to ft-mse".
+- **SD1.x → "other" also holds on a 448-px interior crop**, so it is not a crop-margin effect.
+- **D-008:** two CPU runs of the same 18 images differ by up to 1.1e-2 in sdxl features, the same size as the GPU–CPU gap. The 1e-3 guard measures the feature's own instability. The sd-vae-only 1,020-row table does NOT meet D-008 (1.5e-3–4.3e-3) and is descriptive only.
+- **Wording:** drop "weakly in favour" for SD1.x under laundering; per-generator "other" results (4–10 images) are anecdotal.

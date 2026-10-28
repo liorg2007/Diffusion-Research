@@ -1,0 +1,5 @@
+pip install accelerate
+```
+.
+stable-diffusion-1-4 interior448 log_aedr per image: [0.674, 0.928, 0.921, 0.769, 0.747, 0.876, 0.719, 0.749] mean aedr 2.23 | mean log_e1 -2.757
+stable-diffusion-2 interior448 log_aedr per image: [0.257, 0.282, 0.216, 0.446, 0.469, 0.4, 0.344, 0.204] mean aedr 1.394 | mean log_e1 -3.718

@@ -1,0 +1,13 @@
+test per generator: {'stable-diffusion-2': 34, 'stable-diffusion-xl': 33, 'dalle3': 10, 'flux': 8, 'sd3_large': 7, 'dalle2': 7, 'firefly': 5, 'midjourney-v5': 4}
+clean {'dalle2': [0, 0, 7], 'dalle3': [0, 0, 10], 'firefly': [0, 1, 4], 'midjourney-v5': [3, 0, 1], 'stable-diffusion-2': [34, 0, 0], 'stable-diffusion-xl': [0, 33, 0], 'sd3_large': [0, 0, 7], 'flux': [0, 0, 8]}
+jpeg75_resize05 {'dalle2': [0, 0, 7], 'dalle3': [0, 0, 10], 'firefly': [0, 0, 5], 'midjourney-v5': [0, 0, 4], 'stable-diffusion-2': [0, 0, 34], 'stable-diffusion-xl': [0, 0, 33], 'sd3_large': [0, 0, 7], 'flux': [0, 0, 8]}
+social_sim {'dalle2': [0, 0, 7], 'dalle3': [0, 0, 10], 'firefly': [0, 0, 5], 'midjourney-v5': [0, 0, 4], 'stable-diffusion-2': [0, 0, 34], 'stable-diffusion-xl': [0, 0, 33], 'sd3_large': [0, 0, 7], 'flux': [0, 0, 8]}
+coef (rows kl-f8,XL,other; cols sd e1,e2,aedr,hp8 | xl e1,e2,aedr,hp8):
+ [[-1.02  0.21 -2.23  0.56  1.07  0.65  1.83 -0.63]
+ [ 1.19  0.25  1.82 -0.95 -1.36 -0.82 -2.38  0.67]
+ [-0.17 -0.46  0.41  0.38  0.3   0.17  0.55 -0.03]]
+clean bacc w/o MJ: 0.991
+aedr2 clean bacc 0.95
+e1_2 clean bacc 0.967
+hp8_2 clean bacc 0.604
+e1e2_4 clean bacc 0.959

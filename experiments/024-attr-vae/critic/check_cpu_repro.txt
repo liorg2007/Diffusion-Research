@@ -1,0 +1,5 @@
+clean clean n 18 max|dlogit| cpu-run vs cpu-run 0.1233 pred flips 0
+jpeg75_resize05 clean n 18 max|dlogit| cpu-run vs cpu-run 0.0585 pred flips 0
+jpeg75_resize05 matched n 18 max|dlogit| cpu-run vs cpu-run 0.0276 pred flips 0
+social_sim clean n 18 max|dlogit| cpu-run vs cpu-run 0.0872 pred flips 0
+social_sim matched n 18 max|dlogit| cpu-run vs cpu-run 0.0548 pred flips 0
