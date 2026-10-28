@@ -67,3 +67,5 @@ samsung-prnu-arxiv2025, sdnp-tifs2026}.md. Index rows: kb/_index_rows/camera-for
 ## 7. Gaps
 Springer-hosted papers (VISION, Amerini et al.) were unreadable; Lukas 2006 and Chen 2008 only via citations. A follow-up pass should
 obtain the VISION PRNU tables and the platform-ID accuracies from an open copy (author site or the owner's institutional access).
+
+> **Lead note (2026-10-28):** H-A2 (experiments/021-attr-residual) contradicts §6.1's "NOT feasible". With only 13–14 natural photos per device, PRNU/PCE reached 0.985 top-1 on 14 VISION devices (critic-confirmed). See docs/10-attribution-report.md §5.

@@ -5,6 +5,14 @@
 
 **Acceptance targets for a full-scale validation:** FPR ≤ 1% on fresh phone photos; AUROC ≥ 0.95 after social-media laundering; evaluation against transfer attacks.
 
+## Current status — 2026-10-28: attribution cycle (D-018) reported (`docs/10-attribution-report.md`)
+- **Question:** can we fingerprint the source of an image (which generator; for real photos, which camera or platform)?
+- **H-A1 PASS:** mid-level DINOv2 + linear probe names 1 of 8 known generators at 0.855 bacc after jpeg75_resize05 (chance 0.125). It holds 0.81–0.87 on unseen launderings and only works if trained on laundered images. Near-twins (SD1.3/1.4) are inseparable; open-set rejection fails.
+- **H-A2 PASS** (device arm only; a replication): PRNU identifies 14 same-size 2010s phones at 0.985, and via WhatsApp/Facebook copies at 0.93 / 0.87. The generator residual arm is uninformative.
+- **Fails:** H-A3 (platform history is only readable from file metadata), H-A4 (unseen-source novelty), H-A5 (published detectors' embeddings); counted 3/3, so the stop rule is reached (D-019).
+- **H-A6 diagnostic:** the VAE decoder signature scores 0.97 on clean files and chance after one laundering.
+- **Owner open items:** modern-phone photos (data/raw/owner_phone/, 150–250); limit raise for any next step in docs/10 §9.
+
 ## Current status — 2026-10-25: Phase 5 report written (`docs/03-final-report.md`)
 | Phase | State |
 |---|---|
