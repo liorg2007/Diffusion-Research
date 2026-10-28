@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fingerprint Lab</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a78d6'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brandrow">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12a7 7 0 0 1 14 0"/><path d="M8 13a4 4 0 0 1 8 0v2"/><path d="M12 12v6"/><path d="M3 15a9 9 0 0 1 18 0"/></svg></div>
+      <div><h1>Fingerprint Lab</h1><p>Can an image's source be traced? A visual companion to the Diffusion-Research findings.</p></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="pill" id="status"><span class="dot"></span><span id="statusText">connecting…</span></span>
+      <button class="iconbtn" id="themeBtn" title="Toggle light / dark" aria-label="Toggle light or dark theme">◐</button>
+    </div>
+  </div>
+  <div class="banner" role="note"><b>Research demo, not a product.</b> The models are small linear probes on a frozen DINOv2 network, trained on 8 known generators and 6 photo collections. Do not use them to judge real images.</div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-analyze" aria-selected="true" aria-controls="p-analyze">Analyze</button>
+    <button role="tab" id="tab-findings" aria-selected="false" aria-controls="p-findings">Findings</button>
+    <button role="tab" id="tab-phone" aria-selected="false" aria-controls="p-phone">Phone fingerprints</button>
+    <button role="tab" id="tab-caveats" aria-selected="false" aria-controls="p-caveats">Caveats</button>
+  </nav>
+</header>
+
+<main>
+<!-- ============================================================ ANALYZE -->
+<section class="tab active" id="p-analyze" role="tabpanel" aria-labelledby="tab-analyze">
+  <div class="grid2">
+    <div class="stack">
+      <div class="card">
+        <div class="label">1. Pick an image</div>
+        <label class="drop" id="drop" tabindex="0" for="file">
+          <strong>Drop an image here, or click to choose</strong>
+          <span class="small muted">JPEG, PNG or WebP, up to 15 MB. Processed locally; nothing leaves this machine.</span>
+        </label>
+        <input type="file" id="file" accept="image/*" hidden>
+        <div id="samples"></div>
+      </div>
+      <div class="card">
+        <div class="label">2. Launder it first (optional)</div>
+        <p class="small muted">Social media and screenshots re-encode pictures. The models were trained to cope with this, and low-level fingerprints usually do not survive it.</p>
+        <div class="opts" id="conds" role="radiogroup" aria-label="Laundering"></div>
+      </div>
+      <div class="card">
+        <div class="label">Batch check</div>
+        <p class="small muted">Runs every sample at the chosen laundering and compares the hit rates with the held-out numbers.</p>
+        <button class="btn" id="batchBtn">Run all samples</button>
+        <div id="batchOut" class="small" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div class="stack" id="resultCol">
+      <div class="card empty" id="emptyCard">
+        <h3>Nothing analysed yet</h3>
+        <p>Pick a sample on the left (they come from the test folds: neither model trained on them), or drop in your own picture.</p>
+      </div>
+      <div id="result" hidden>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+            <h3>What the models see</h3><span id="truthChip"></span>
+          </div>
+          <div class="previews" style="margin-top:10px">
+            <figure class="pv" style="margin:0"><div class="frame"><img id="imgOrig" alt="Original image"></div><figcaption id="capOrig"></figcaption></figure>
+            <figure class="pv" style="margin:0"><div class="frame"><img id="imgLaund" alt="Laundered image preview"><div class="crop" id="cropBox"></div></div><figcaption id="capLaund"></figcaption></figure>
+          </div>
+          <p class="tiny faint" style="margin-top:8px">Orange box: the central 224 px square that DINOv2 actually reads (after the image is scaled so its short side is 512 px, centre-cropped, then laundered).</p>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <h3>Is it AI?</h3><span id="aiChip"></span>
+          </div>
+          <div class="gauge" id="gauge"><div class="zone" id="gzone"></div><div class="thr" id="gthr"></div><div class="needle" id="gneedle"></div></div>
+          <div class="ends"><span>looks like a real photo</span><span>looks AI-made</span></div>
+          <div class="callout" id="aiCaveat"></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <h3>Which generator?</h3><span id="genChip"></span>
+          </div>
+          <p class="small muted">Closest known style among 8 generators, as probabilities. This is a closed-set guess: it always picks one of the eight.</p>
+          <div class="gbars" id="gbars" style="margin-top:8px"></div>
+          <div class="callout blue" id="genCaveat" style="margin-top:12px"></div>
+          <details class="fold"><summary>Timing and technical details</summary><dl class="kv" id="tech" style="margin-top:8px"></dl></details>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ FINDINGS -->
+<section class="tab" id="p-findings" role="tabpanel" aria-labelledby="tab-findings">
+  <div class="card">
+    <h2>The short version</h2>
+    <p class="muted">An AI image leaves traces at three depths: file metadata, pixel-level patterns, and mid-level "rendering style". Laundering (JPEG plus resizing) erases them from the bottom up. Only the style survives, if the probe was trained on laundered copies. Every figure below is parsed from a result file and cites it.</p>
+  </div>
+  <div class="card"><h3>Hypothesis scorecard (attribution cycle)</h3><p class="small muted">Pre-registered labels with the independent critic's verdict applied. Three counted failures ended the cycle.</p><div class="hyp" id="scoreAttr" style="margin-top:10px"></div><div class="src" id="scoreSrc"></div>
+    <details class="fold"><summary>Earlier detection cycle (docs/03 section 3.3)</summary><div class="scroll" id="scoreDet"></div></details></div>
+  <div id="figs"></div>
+</section>
+
+<!-- ============================================================ PHONE -->
+<section class="tab" id="p-phone" role="tabpanel" aria-labelledby="tab-phone">
+  <div class="card">
+    <h2>Phone fingerprints (PRNU)</h2>
+    <p class="muted">Every camera sensor has tiny fixed differences between pixels. Average the noise of a phone's photos into a reference pattern and you can ask: does this new photo correlate with it? The score is PCE (peak-to-correlation energy); 60 is the usual "match" line.</p>
+    <p class="small muted">Each cell: the photo came from the <b>row</b> device (y), compared with the <b>column</b> device's reference (x). Colour is the median PCE on a log scale. A bright diagonal means "the right phone wins".</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0">
+      <div class="seg" id="armSeg" role="group" aria-label="Photo version"></div>
+      <div class="seg" id="metSeg" role="group" aria-label="Metric"></div>
+    </div>
+    <div class="heatwrap">
+      <div><div id="heat"></div><div id="heatLegend"></div></div>
+      <div class="stack">
+        <div class="stat" id="prnuStats"></div>
+        <div class="callout blue" id="prnuNote"></div>
+        <div class="callout" id="prnuCav"></div>
+      </div>
+    </div>
+    <div class="src" id="prnuSrc" style="margin-top:10px"></div>
+  </div>
+</section>
+
+<!-- ============================================================ CAVEATS -->
+<section class="tab" id="p-caveats" role="tabpanel" aria-labelledby="tab-caveats">
+  <div class="card"><h2>What this demo cannot tell you</h2><p class="muted">Read this before trusting any number on the Analyze tab.</p></div>
+  <div class="cav" id="cavs" style="margin-top:16px"></div>
+</section>
+</main>
+<footer>
+  Built from <code>experiments/019-source-diversity</code>, <code>020-attr-foundation</code>, <code>021-attr-residual</code> and <code>docs/03</code>, <code>docs/10</code> of the Diffusion-Research repository. Sample images keep their original licences (several are non-commercial) and are not redistributed.
+</footer>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+<script src="charts.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

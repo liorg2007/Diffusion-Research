@@ -1,0 +1,6 @@
+# NC / no-redistribution licences (Synthbuster CC BY-NC-SA, B-Free GRIP NC, RAISE, Unsplash terms) + trained models + temp uploads
+samples/
+models/
+tmp/
+__pycache__/
+*.pyc
