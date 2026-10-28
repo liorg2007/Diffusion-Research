@@ -1,0 +1,180 @@
+Cannot initialize model with low cpu memory usage because `accelerate` was not found in the environment. Defaulting to `low_cpu_mem_usage=False`. It is strongly recommended to install `accelerate` for faster and less memory-intense model loading. You can do so with: 
+```
+pip install accelerate
+```
+.
+18:24:09 extract main/clean/sd-vae-ft-mse/cuda: 1020 to do (0 cached)
+18:29:05   main/clean/sd-vae-ft-mse/cuda: 64/1020 297s
+18:30:08   main/clean/sd-vae-ft-mse/cuda: 128/1020 360s
+18:31:11   main/clean/sd-vae-ft-mse/cuda: 192/1020 422s
+18:32:17   main/clean/sd-vae-ft-mse/cuda: 256/1020 488s
+18:33:20   main/clean/sd-vae-ft-mse/cuda: 320/1020 551s
+18:34:17   main/clean/sd-vae-ft-mse/cuda: 384/1020 609s
+18:35:26   main/clean/sd-vae-ft-mse/cuda: 448/1020 677s
+18:36:28   main/clean/sd-vae-ft-mse/cuda: 512/1020 739s
+18:37:29   main/clean/sd-vae-ft-mse/cuda: 576/1020 800s
+18:38:32   main/clean/sd-vae-ft-mse/cuda: 640/1020 863s
+18:39:22   main/clean/sd-vae-ft-mse/cuda: 704/1020 913s
+18:40:11   main/clean/sd-vae-ft-mse/cuda: 768/1020 962s
+18:40:58   main/clean/sd-vae-ft-mse/cuda: 832/1020 1009s
+18:41:46   main/clean/sd-vae-ft-mse/cuda: 896/1020 1057s
+18:42:34   main/clean/sd-vae-ft-mse/cuda: 960/1020 1105s
+18:43:17   main/clean/sd-vae-ft-mse/cuda: 1020/1020 1148s
+18:43:17 extract main/jpeg75_resize05/sd-vae-ft-mse/cuda: 1020 to do (0 cached)
+18:43:30   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 64/1020 14s
+18:43:42   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 128/1020 25s
+18:43:54   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 192/1020 37s
+18:44:07   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 256/1020 50s
+18:44:18   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 320/1020 62s
+18:44:30   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 384/1020 73s
+18:44:43   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 448/1020 87s
+18:44:56   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 512/1020 99s
+18:45:09   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 576/1020 113s
+18:45:20   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 640/1020 124s
+18:45:33   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 704/1020 136s
+18:45:46   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 768/1020 149s
+18:45:58   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 832/1020 161s
+18:46:09   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 896/1020 173s
+18:46:27   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 960/1020 190s
+18:46:37   main/jpeg75_resize05/sd-vae-ft-mse/cuda: 1020/1020 200s
+18:46:37 extract main/social_sim/sd-vae-ft-mse/cuda: 1020 to do (0 cached)
+18:49:47   main/social_sim/sd-vae-ft-mse/cuda: 64/1020 190s
+18:56:37   main/social_sim/sd-vae-ft-mse/cuda: 128/1020 601s
+19:01:56   main/social_sim/sd-vae-ft-mse/cuda: 192/1020 919s
+19:03:32   main/social_sim/sd-vae-ft-mse/cuda: 256/1020 1015s
+19:04:06   main/social_sim/sd-vae-ft-mse/cuda: 320/1020 1049s
+19:04:38   main/social_sim/sd-vae-ft-mse/cuda: 384/1020 1081s
+19:05:13   main/social_sim/sd-vae-ft-mse/cuda: 448/1020 1116s
+19:05:48   main/social_sim/sd-vae-ft-mse/cuda: 512/1020 1151s
+19:06:24   main/social_sim/sd-vae-ft-mse/cuda: 576/1020 1187s
+19:06:58   main/social_sim/sd-vae-ft-mse/cuda: 640/1020 1221s
+19:07:32   main/social_sim/sd-vae-ft-mse/cuda: 704/1020 1255s
+19:08:07   main/social_sim/sd-vae-ft-mse/cuda: 768/1020 1290s
+19:08:40   main/social_sim/sd-vae-ft-mse/cuda: 832/1020 1323s
+19:09:16   main/social_sim/sd-vae-ft-mse/cuda: 896/1020 1359s
+19:09:49   main/social_sim/sd-vae-ft-mse/cuda: 960/1020 1392s
+19:10:20   main/social_sim/sd-vae-ft-mse/cuda: 1020/1020 1423s
+19:10:20 extract sec/clean/sd-vae-ft-mse/cuda: 600 to do (0 cached)
+19:11:07   sec/clean/sd-vae-ft-mse/cuda: 64/600 47s
+19:11:52   sec/clean/sd-vae-ft-mse/cuda: 128/600 91s
+19:12:35   sec/clean/sd-vae-ft-mse/cuda: 192/600 135s
+19:13:20   sec/clean/sd-vae-ft-mse/cuda: 256/600 180s
+19:14:07   sec/clean/sd-vae-ft-mse/cuda: 320/600 226s
+19:14:50   sec/clean/sd-vae-ft-mse/cuda: 384/600 270s
+19:15:35   sec/clean/sd-vae-ft-mse/cuda: 448/600 315s
+19:16:22   sec/clean/sd-vae-ft-mse/cuda: 512/600 362s
+19:17:06   sec/clean/sd-vae-ft-mse/cuda: 576/600 405s
+19:17:24   sec/clean/sd-vae-ft-mse/cuda: 600/600 423s
+19:17:24 extract sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 600 to do (0 cached)
+19:17:34   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 64/600 10s
+19:17:44   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 128/600 21s
+19:17:55   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 192/600 32s
+19:18:06   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 256/600 43s
+19:18:20   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 320/600 56s
+19:18:30   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 384/600 67s
+19:18:41   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 448/600 77s
+19:18:53   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 512/600 89s
+19:19:03   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 576/600 100s
+19:19:07   sec/jpeg75_resize05/sd-vae-ft-mse/cuda: 600/600 104s
+19:19:07 extract sec/social_sim/sd-vae-ft-mse/cuda: 600 to do (0 cached)
+19:19:40   sec/social_sim/sd-vae-ft-mse/cuda: 64/600 33s
+19:20:12   sec/social_sim/sd-vae-ft-mse/cuda: 128/600 65s
+19:20:44   sec/social_sim/sd-vae-ft-mse/cuda: 192/600 97s
+19:21:18   sec/social_sim/sd-vae-ft-mse/cuda: 256/600 131s
+19:21:50   sec/social_sim/sd-vae-ft-mse/cuda: 320/600 163s
+19:22:22   sec/social_sim/sd-vae-ft-mse/cuda: 384/600 195s
+19:22:56   sec/social_sim/sd-vae-ft-mse/cuda: 448/600 229s
+19:23:29   sec/social_sim/sd-vae-ft-mse/cuda: 512/600 262s
+19:24:01   sec/social_sim/sd-vae-ft-mse/cuda: 576/600 294s
+19:24:13   sec/social_sim/sd-vae-ft-mse/cuda: 600/600 306s
+19:24:13 extract done sd-vae-ft-mse cuda subset=all in 3604s
+Cannot initialize model with low cpu memory usage because `accelerate` was not found in the environment. Defaulting to `low_cpu_mem_usage=False`. It is strongly recommended to install `accelerate` for faster and less memory-intense model loading. You can do so with: 
+```
+pip install accelerate
+```
+.
+19:24:24 extract main/clean/sdxl-vae/cuda: 1020 to do (0 cached)
+19:25:11   main/clean/sdxl-vae/cuda: 64/1020 47s
+19:25:57   main/clean/sdxl-vae/cuda: 128/1020 93s
+19:26:44   main/clean/sdxl-vae/cuda: 192/1020 141s
+19:27:31   main/clean/sdxl-vae/cuda: 256/1020 187s
+19:28:17   main/clean/sdxl-vae/cuda: 320/1020 233s
+19:29:03   main/clean/sdxl-vae/cuda: 384/1020 279s
+19:29:49   main/clean/sdxl-vae/cuda: 448/1020 325s
+19:30:37   main/clean/sdxl-vae/cuda: 512/1020 373s
+19:31:23   main/clean/sdxl-vae/cuda: 576/1020 419s
+19:32:08   main/clean/sdxl-vae/cuda: 640/1020 464s
+19:32:54   main/clean/sdxl-vae/cuda: 704/1020 510s
+19:33:39   main/clean/sdxl-vae/cuda: 768/1020 555s
+19:34:22   main/clean/sdxl-vae/cuda: 832/1020 598s
+19:35:07   main/clean/sdxl-vae/cuda: 896/1020 643s
+19:35:52   main/clean/sdxl-vae/cuda: 960/1020 688s
+19:36:35   main/clean/sdxl-vae/cuda: 1020/1020 731s
+19:36:35 extract main/jpeg75_resize05/sdxl-vae/cuda: 1020 to do (0 cached)
+19:36:48   main/jpeg75_resize05/sdxl-vae/cuda: 64/1020 14s
+19:36:59   main/jpeg75_resize05/sdxl-vae/cuda: 128/1020 24s
+19:37:10   main/jpeg75_resize05/sdxl-vae/cuda: 192/1020 35s
+19:37:23   main/jpeg75_resize05/sdxl-vae/cuda: 256/1020 49s
+19:37:34   main/jpeg75_resize05/sdxl-vae/cuda: 320/1020 59s
+19:37:45   main/jpeg75_resize05/sdxl-vae/cuda: 384/1020 70s
+19:37:59   main/jpeg75_resize05/sdxl-vae/cuda: 448/1020 84s
+19:38:10   main/jpeg75_resize05/sdxl-vae/cuda: 512/1020 95s
+19:38:21   main/jpeg75_resize05/sdxl-vae/cuda: 576/1020 106s
+19:38:35   main/jpeg75_resize05/sdxl-vae/cuda: 640/1020 120s
+19:38:45   main/jpeg75_resize05/sdxl-vae/cuda: 704/1020 131s
+19:38:59   main/jpeg75_resize05/sdxl-vae/cuda: 768/1020 144s
+19:39:10   main/jpeg75_resize05/sdxl-vae/cuda: 832/1020 156s
+19:39:21   main/jpeg75_resize05/sdxl-vae/cuda: 896/1020 166s
+19:39:34   main/jpeg75_resize05/sdxl-vae/cuda: 960/1020 180s
+19:39:45   main/jpeg75_resize05/sdxl-vae/cuda: 1020/1020 190s
+19:39:45 extract main/social_sim/sdxl-vae/cuda: 1020 to do (0 cached)
+19:40:20   main/social_sim/sdxl-vae/cuda: 64/1020 36s
+19:40:54   main/social_sim/sdxl-vae/cuda: 128/1020 69s
+19:41:26   main/social_sim/sdxl-vae/cuda: 192/1020 101s
+19:41:59   main/social_sim/sdxl-vae/cuda: 256/1020 134s
+19:42:31   main/social_sim/sdxl-vae/cuda: 320/1020 167s
+19:43:04   main/social_sim/sdxl-vae/cuda: 384/1020 199s
+19:43:38   main/social_sim/sdxl-vae/cuda: 448/1020 233s
+19:44:10   main/social_sim/sdxl-vae/cuda: 512/1020 266s
+19:44:45   main/social_sim/sdxl-vae/cuda: 576/1020 300s
+19:45:18   main/social_sim/sdxl-vae/cuda: 640/1020 333s
+19:45:50   main/social_sim/sdxl-vae/cuda: 704/1020 365s
+19:46:24   main/social_sim/sdxl-vae/cuda: 768/1020 399s
+19:46:56   main/social_sim/sdxl-vae/cuda: 832/1020 431s
+19:47:31   main/social_sim/sdxl-vae/cuda: 896/1020 466s
+19:48:04   main/social_sim/sdxl-vae/cuda: 960/1020 499s
+19:48:33   main/social_sim/sdxl-vae/cuda: 1020/1020 528s
+19:48:33 extract sec/clean/sdxl-vae/cuda: 600 to do (0 cached)
+19:49:19   sec/clean/sdxl-vae/cuda: 64/600 47s
+19:50:04   sec/clean/sdxl-vae/cuda: 128/600 92s
+19:50:49   sec/clean/sdxl-vae/cuda: 192/600 136s
+19:51:35   sec/clean/sdxl-vae/cuda: 256/600 183s
+19:52:20   sec/clean/sdxl-vae/cuda: 320/600 227s
+19:53:04   sec/clean/sdxl-vae/cuda: 384/600 272s
+19:53:51   sec/clean/sdxl-vae/cuda: 448/600 319s
+19:54:37   sec/clean/sdxl-vae/cuda: 512/600 364s
+19:55:21   sec/clean/sdxl-vae/cuda: 576/600 408s
+19:55:39   sec/clean/sdxl-vae/cuda: 600/600 426s
+19:55:39 extract sec/jpeg75_resize05/sdxl-vae/cuda: 600 to do (0 cached)
+19:55:49   sec/jpeg75_resize05/sdxl-vae/cuda: 64/600 10s
+19:56:02   sec/jpeg75_resize05/sdxl-vae/cuda: 128/600 23s
+19:56:12   sec/jpeg75_resize05/sdxl-vae/cuda: 192/600 33s
+19:56:23   sec/jpeg75_resize05/sdxl-vae/cuda: 256/600 44s
+19:56:35   sec/jpeg75_resize05/sdxl-vae/cuda: 320/600 57s
+19:56:46   sec/jpeg75_resize05/sdxl-vae/cuda: 384/600 67s
+19:56:56   sec/jpeg75_resize05/sdxl-vae/cuda: 448/600 78s
+19:57:09   sec/jpeg75_resize05/sdxl-vae/cuda: 512/600 90s
+19:57:19   sec/jpeg75_resize05/sdxl-vae/cuda: 576/600 100s
+19:57:23   sec/jpeg75_resize05/sdxl-vae/cuda: 600/600 104s
+19:57:23 extract sec/social_sim/sdxl-vae/cuda: 600 to do (0 cached)
+19:57:56   sec/social_sim/sdxl-vae/cuda: 64/600 33s
+19:58:27   sec/social_sim/sdxl-vae/cuda: 128/600 64s
+19:58:59   sec/social_sim/sdxl-vae/cuda: 192/600 96s
+19:59:32   sec/social_sim/sdxl-vae/cuda: 256/600 129s
+20:00:03   sec/social_sim/sdxl-vae/cuda: 320/600 160s
+20:00:36   sec/social_sim/sdxl-vae/cuda: 384/600 193s
+20:01:08   sec/social_sim/sdxl-vae/cuda: 448/600 225s
+20:01:41   sec/social_sim/sdxl-vae/cuda: 512/600 258s
+20:02:11   sec/social_sim/sdxl-vae/cuda: 576/600 288s
+20:02:24   sec/social_sim/sdxl-vae/cuda: 600/600 302s
+20:02:24 extract done sdxl-vae cuda subset=all in 2280s

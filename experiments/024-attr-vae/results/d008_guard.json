@@ -1,0 +1,38 @@
+{
+ "pixel": {
+  "sd-vae-ft-mse": {
+   "n": 32,
+   "max_abs_dpixel_x1": 0.00012305378913879395,
+   "max_abs_dpixel_x2": 5.874037742614746e-05,
+   "tol": 0.001,
+   "ok": true
+  }
+ },
+ "feature_level": {
+  "all_accelerator_vs_cpu": {
+   "clean": {
+    "max_abs_dlogit_both": 0.15963691873158836,
+    "max_abs_dfeature": 0.011520220040788565,
+    "max_abs_dfeature_sdvae_cols": 0.0005483549475466809,
+    "max_abs_dfeature_sdxl_cols": 0.011520220040788565,
+    "max_abs_dlogit_sdvae_gpu_sdxl_cpu_vs_all_cpu": 0.0016382735675595228
+   },
+   "jpeg75_resize05": {
+    "max_abs_dlogit_both": 0.14926516747534735,
+    "max_abs_dfeature": 0.010938823562197442,
+    "max_abs_dfeature_sdvae_cols": 0.00038822718511855037,
+    "max_abs_dfeature_sdxl_cols": 0.010938823562197442,
+    "max_abs_dlogit_sdvae_gpu_sdxl_cpu_vs_all_cpu": 0.004324882852571932
+   },
+   "social_sim": {
+    "max_abs_dlogit_both": 0.2261795445790431,
+    "max_abs_dfeature": 0.01669746037214015,
+    "max_abs_dfeature_sdvae_cols": 0.0002348823339639594,
+    "max_abs_dfeature_sdxl_cols": 0.01669746037214015,
+    "max_abs_dlogit_sdvae_gpu_sdxl_cpu_vs_all_cpu": 0.001459740436121848
+   }
+  },
+  "ok_all_accelerator": false,
+  "ok_sdvae_accelerator_sdxl_cpu": false
+ }
+}

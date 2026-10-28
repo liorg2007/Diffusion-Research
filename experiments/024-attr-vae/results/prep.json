@@ -1,0 +1,25 @@
+{
+ "n_main": 1020,
+ "n_sec": 600,
+ "caption_family_source": "015-midlayer-probe/run.py caption_ids",
+ "n_train": 717,
+ "n_test": 303,
+ "n_fam_train": 379,
+ "n_fam_test": 163,
+ "class_counts_train": {
+  "kl-f8": 77,
+  "XL": 91,
+  "other": 549
+ },
+ "class_counts_test": {
+  "kl-f8": 43,
+  "XL": 29,
+  "other": 231
+ },
+ "gates": {
+  "sha256_unique": true,
+  "crop_hash_unique": true,
+  "split_grouped": true
+ },
+ "sec_families_overlap_main": 157
+}

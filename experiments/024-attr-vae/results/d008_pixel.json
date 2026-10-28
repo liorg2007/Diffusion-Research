@@ -1,0 +1,9 @@
+{
+ "sd-vae-ft-mse": {
+  "n": 32,
+  "max_abs_dpixel_x1": 0.00012305378913879395,
+  "max_abs_dpixel_x2": 5.874037742614746e-05,
+  "tol": 0.001,
+  "ok": true
+ }
+}

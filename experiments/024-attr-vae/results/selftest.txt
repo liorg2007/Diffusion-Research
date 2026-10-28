@@ -1,0 +1,38 @@
+PASS hp8: random error has a small phase CV 0.080
+PASS hp8: a planted 8-px column-phase artefact raises the CV a lot 1.213
+PASS hp8: 16 phase means returned (8 col + 8 row)
+PASS hp8: the strongest column phase is the planted one (7) 7
+PASS features: perfect reconstruction -> log e1 very negative -27.6
+PASS features: e1 ~ 0.02 and e2 ~ 0.005 and AEDR ~ 4 e1 0.0199 e2 0.0049 aedr 4.03
+PASS features: AEDR = e1/e2 exactly in log space
+PASS VAE wrapper: shapes (3,4) and (3,16), finite
+PASS VAE wrapper: batch-size independent to 2e-3 (uint8 rounding flips make ~1e-4 differences expected) 1.93e-04
+PASS VAE wrapper: q8 round trip is uint8
+PASS crop: clean = exact top-left 512 of the native grid, no resize
+PASS crop: jpeg75_resize05 is 256x256
+PASS crop: social_sim is a multiple of 8 and in [352, 512] (368, 368, 3)
+PASS crop: conditions deterministic given the sha256 key
+PASS crop: an image smaller than 512 raises
+PASS argmin A2: lower AEDR picks the decoder (0=kl-f8, 1=XL)
+PASS argmin A3: min AEDR above tau -> other (2)
+PASS label: clean 0.8 and jr 0.55 -> PASS
+PASS label: clean 0.8 but jr 0.4 (both sources) -> KILL
+PASS label: jr 0.4 clean-source but 0.6 matched -> INCONCLUSIVE
+PASS label: clean 0.65 / jr 0.55 -> INCONCLUSIVE
+PASS label: a failed gate -> INVALID
+PASS gate grouped split: no family on both sides
+PASS PLANTED LEAK: a test family leaking into train is caught
+PASS gate dedupe: unique passes
+PASS PLANTED LEAK: duplicate sha256 across classes is caught
+PASS cap_subset: 40 per class, deterministic
+PASS D-008 logit guard: identical features -> 0
+PASS D-008 logit guard: a 1e-2 feature shift exceeds 1e-3 (would abort)
+PASS pipeline: separable synthetic features -> high bacc 0.854
+PASS pipeline: permutation control at chance on that data 0.340
+PASS pipeline: sub-feature sets and keys present
+PASS pipeline: pure noise features -> bacc near chance 0.323
+PASS PLANTED LEAK: test-only label-derived feature gives above-chance bacc that the permutation distribution does not reach real 0.567 vs perm max 0.480
+PASS argmin_eval: returns A2/A3 per condition
+PASS sec_eval: shares sum to 1 per generator
+
+36 of 36 checks passed; failed: none  (10s)

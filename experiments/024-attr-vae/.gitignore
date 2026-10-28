@@ -1,0 +1,3 @@
+cache/
+*.tmp.npz
+__pycache__/

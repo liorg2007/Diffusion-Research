@@ -477,3 +477,8 @@
   - Near-twin: SD1.3 vs SD1.4 not separable (best 0.527 [0.490, 0.562], inside the label-swap null).
   - Family: the 8-way probe spreads SD1.x across classes (SD2 plurality on clean, MJ at jpeg75_resize05). 11-way bacc 0.765 (chance 0.091), with SD1.x a joint cluster split 50/50. GLIDE is confounded by the 2x upscale.
   - RAID n=500: 4-way 0.772 [0.756, 0.789]; fresh 400 ids 0.770; without gen_0, 3-way 0.736. Clean-train transfer 0.497.
+- 2026-10-28 05:06 — H-A6 VAE diagnostic done (024-attr-vae, non-counting): INCONCLUSIVE.
+  - 3-way family bacc clean 0.967 [0.933, 0.993] (M1 +0.214); the training-free argmin rule separates SD2 vs SDXL at 1.000 on clean.
+  - Clean-trained transfer to jpeg75_resize05 and social_sim: 0.333 (chance). Laundering-matched training 0.58–0.59, below M1 (0.70–0.74).
+  - SD1.x does not map to kl-f8 on clean (0%), with a size caveat.
+  - D-008: GPU sdxl-vae and GPU sd-vae features failed the feature guard, so CPU features are used; the GPU analysis is kept as INVALID. Launching critic.

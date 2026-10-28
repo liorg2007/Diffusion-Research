@@ -1,0 +1,54 @@
+{
+ "experiment": "024-attr-vae (H-A6, docs/08 + docs/09 decisions 1 and 5; pre-declared NON-COUNTING diagnostic, D-018 cycle)",
+ "seed": 0,
+ "n_boot": 1000,
+ "n_perm": 200,
+ "generators": ["dalle2", "dalle3", "firefly", "midjourney-v5", "stable-diffusion-2", "stable-diffusion-xl", "sd3_large", "flux"],
+ "family_map": {"stable-diffusion-2": "kl-f8", "stable-diffusion-xl": "XL", "dalle2": "other", "dalle3": "other", "firefly": "other", "midjourney-v5": "other", "sd3_large": "other", "flux": "other"},
+ "family_names": ["kl-f8", "XL", "other"],
+ "vaes": {
+  "sd-vae-ft-mse": {"repo": "stabilityai/sd-vae-ft-mse", "revision": "31f26fdeee1355a5c34592e401dd41e45d25a493", "device": "cuda"},
+  "sdxl-vae": {"repo": "stabilityai/sdxl-vae", "revision": "6f5909a7e596173e25d4e97b07fd19cdf9611c76", "device": "cuda_or_cpu_decided_by_feature_level_D008"}
+ },
+ "crop": {
+  "size": 512,
+  "origin": "top-left (0,0) of the decoded RGB image: native pixel grid, so the 8-px VAE phase is kept; NO resize in clean",
+  "conditions": ["clean", "jpeg75_resize05", "social_sim"],
+  "condition_code": "experiments/lib/perturb.py apply_condition(crop, cond, key=sha256, seed=0), applied to the 512 crop (as the fov512 arms of 009/011), identical for all classes; the conditioned image is then cut top-left to a multiple of 8 (clean 512, jpeg75_resize05 256, social_sim 358..512 -> <=7 px lost) so the VAE (f8) accepts it"
+ },
+ "vae_io": "uint8 -> float32 [-1,1] -> encode -> latent_dist.mode() -> decode -> (y+1)/2 clamp -> quantised to uint8 (np.rint) between passes (009 convention); fp32, TF32 off; batch <= 4 on GPU (OOM -> halve + retry), same-shape groups",
+ "features": {
+  "per_vae": ["log_e1", "log_e2", "log_aedr", "log_hp8"],
+  "e1": "RMS(x - x1), x in [0,1], x1 = quantised VAE(x)",
+  "e2": "RMS(x1 - x2), x2 = quantised VAE(x1) (double round trip)",
+  "aedr": "e1 / e2 (011 ratio)",
+  "hp8": "d = mean over RGB of (x - x1); H = d - uniform3x3(d) (reflect); E = H^2; hp8 = 0.5*(CV of the 8 column-phase means of E + CV of the 8 row-phase means), CV = std/mean, phase = index mod 8 (top-left anchored = native grid)",
+  "n_features": 8,
+  "extra_cached_not_judged": "the 16 raw phase means per VAE (8 col + 8 row)"
+ },
+ "readouts": {
+  "logreg": "StandardScaler + LogisticRegression(C=1.0, class_weight='balanced', max_iter=3000), 3 classes, fixed C (no tuning); fit on train families only",
+  "logreg_sources": ["clean (train images of the clean condition; realistic transfer)", "matched (train images under the test condition; T-mix style)"],
+  "argmin": "no training. A2: SD2 vs SDXL images only, class = argmin over the two VAEs of AEDR (lower = on-manifold, 011); chance 0.5. A3 (3-way): class = argmin_k over {kl-f8: aedr_sd, XL: aedr_xl} if min(aedr) <= tau else 'other', tau = median of min(aedr) over ALL train-family images of that condition (labels never used); descriptive"
+ },
+ "split": {"train_family_frac": 0.7, "primary_split_seed": 0, "sensitivity_split_seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "grouping": "caption family (RID_RE of 015 via 021 load_caption_ids)"},
+ "fallback_cpu_cap": {"n_per_class_main": 120, "n_per_generator_sec": 50, "seed": 0, "note": "Used ONLY if the feature-level D-008 guard fails for sdxl-vae on the GPU, so sdxl must run on CPU. Revised BEFORE any CPU extraction and before any result was read: first draft was 40/class and 20/SD1.x generator from an isolated 26 s/pass timing; the 32-image CPU guard run then measured ~14 s/image (clean), ~27 s/image over 3 conditions, so the coordinator-suggested 120/class (360 images, ~2.7 h) is feasible; SD1.x capped at 50 per generator. Seeded stratified subsample (seed 0). The 8-feature models then run on this subsample and the sd-vae-only models on all 1,020. Preview of the guard (raw feature diffs, 32 images): sdxl log e2/AEDR differ by up to 1.7e-2 CPU vs GPU, so the CPU fallback is expected to be needed."},
+ "secondary": {
+  "sd13_sd14": {"manifest": "experiments/020-attr-foundation/fetch/synthbuster_new_manifest.csv", "generators": ["stable-diffusion-1-3", "stable-diffusion-1-4"], "n_per_generator": 300, "scoring": "main-model (trained on main TRAIN families, clean source and matched source) 3-way prediction; report share predicted kl-f8 / XL / other, vs the main test false-map rate of 'other' images into kl-f8 and the SD2 recall; descriptive"},
+  "raid": "run only if the gen_k -> generator mapping is verifiable from files in the repo (kb/datasets/raid.md: [unverified]); otherwise skipped and stated"
+ },
+ "label_rule": {
+  "primary_stat": "logreg 3-way bacc, main set, caption-family grouped primary split (seed 0)",
+  "PASS": "clean bacc >= 0.70 AND jpeg75_resize05 bacc >= 0.50 (clean-train source for both, i.e. realistic transfer)",
+  "KILL": "jpeg75_resize05 bacc < 0.45 under BOTH sources (clean-train and matched-train)",
+  "INCONCLUSIVE": "otherwise (labels from point estimates, as docs/08; CIs are reported alongside)",
+  "INVALID": "a validity gate fails (permutation control not at chance, duplicate sha256, split not grouped, D-008 > 1e-3)",
+  "non_counting": "docs/09 decision 1: H-A6 does not count toward the D-018 stop rule"
+ },
+ "d008": {
+  "n": 32,
+  "images": "16 SD2/SDXL (8+8) + 16 other, seeded (seed 0) from the main set, clean 512 crops",
+  "pixel": "sd-vae-ft-mse: CUDA vs CPU max |dpixel| of the float outputs x1 and x2 <= 1e-3, else abort. sdxl-vae pixel guard is NOT re-run (009 measured 5.3e-3 on the same kind of crops; failure assumed), only the feature-level guard below decides",
+  "feature_logit": "all 8 features computed on CPU and on the accelerator for the 32 images x 3 conditions; passed through the FINAL clean-trained logreg: max |dlogit| <= 1e-3. sdxl-vae failed the pixel guard in 009 (5e-3): it is run on CPU unless this feature-level guard passes"
+ }
+}

@@ -1,0 +1,36 @@
+Cannot initialize model with low cpu memory usage because `accelerate` was not found in the environment. Defaulting to `low_cpu_mem_usage=False`. It is strongly recommended to install `accelerate` for faster and less memory-intense model loading. You can do so with: 
+```
+pip install accelerate
+```
+.
+01:25:23 extract main/clean/sd-vae-ft-mse/cpu: 360 to do (0 cached)
+01:40:41   main/clean/sd-vae-ft-mse/cpu: 64/360 918s
+01:55:52   main/clean/sd-vae-ft-mse/cpu: 128/360 1829s
+02:11:03   main/clean/sd-vae-ft-mse/cpu: 192/360 2740s
+02:26:18   main/clean/sd-vae-ft-mse/cpu: 256/360 3655s
+02:41:29   main/clean/sd-vae-ft-mse/cpu: 320/360 4566s
+02:50:59   main/clean/sd-vae-ft-mse/cpu: 360/360 5136s
+02:50:59 extract main/jpeg75_resize05/sd-vae-ft-mse/cpu: 360 to do (0 cached)
+02:55:05   main/jpeg75_resize05/sd-vae-ft-mse/cpu: 64/360 246s
+02:59:12   main/jpeg75_resize05/sd-vae-ft-mse/cpu: 128/360 493s
+03:03:17   main/jpeg75_resize05/sd-vae-ft-mse/cpu: 192/360 738s
+03:07:23   main/jpeg75_resize05/sd-vae-ft-mse/cpu: 256/360 985s
+03:11:27   main/jpeg75_resize05/sd-vae-ft-mse/cpu: 320/360 1228s
+03:14:03   main/jpeg75_resize05/sd-vae-ft-mse/cpu: 360/360 1384s
+03:14:03 extract main/social_sim/sd-vae-ft-mse/cpu: 360 to do (0 cached)
+03:25:30   main/social_sim/sd-vae-ft-mse/cpu: 64/360 687s
+03:36:39   main/social_sim/sd-vae-ft-mse/cpu: 128/360 1356s
+03:47:37   main/social_sim/sd-vae-ft-mse/cpu: 192/360 2014s
+03:59:08   main/social_sim/sd-vae-ft-mse/cpu: 256/360 2705s
+04:10:09   main/social_sim/sd-vae-ft-mse/cpu: 320/360 3366s
+04:17:20   main/social_sim/sd-vae-ft-mse/cpu: 360/360 3797s
+04:17:20 extract sec/clean/sd-vae-ft-mse/cpu: 100 to do (0 cached)
+04:32:17   sec/clean/sd-vae-ft-mse/cpu: 64/100 897s
+04:40:44   sec/clean/sd-vae-ft-mse/cpu: 100/100 1404s
+04:40:44 extract sec/jpeg75_resize05/sd-vae-ft-mse/cpu: 100 to do (0 cached)
+04:44:54   sec/jpeg75_resize05/sd-vae-ft-mse/cpu: 64/100 250s
+04:47:14   sec/jpeg75_resize05/sd-vae-ft-mse/cpu: 100/100 390s
+04:47:14 extract sec/social_sim/sd-vae-ft-mse/cpu: 100 to do (0 cached)
+04:58:06   sec/social_sim/sd-vae-ft-mse/cpu: 64/100 652s
+05:04:49   sec/social_sim/sd-vae-ft-mse/cpu: 100/100 1055s
+05:04:49 extract done sd-vae-ft-mse cpu subset=cap in 13166s
