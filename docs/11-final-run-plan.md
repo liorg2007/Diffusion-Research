@@ -44,3 +44,10 @@
 - **Selection:** block choice by inner CV on training folds for any headline number; whole profiles are reported, so nothing is cherry-picked.
 - **Code freeze:** selftest committed before real-data results; afterwards bug fixes only, logged.
 - **Critic and report:** one opus/high critic for the whole run; a fable/high addendum to docs/10 and a "future research" section.
+
+**Addendum (2026-10-29 23:29, before any download or result).** The DINOv2-small/large download was not approved when proposed, so the run uses only backbones already on disk.
+- **R1 backbones:** DINOv2-base (reference) plus four non-reference ViTs:
+  - OpenAI CLIP ViT-L/14 and LAION CLIP ViT-L/14 (both frozen, pretrained);
+  - B-Free's DINOv2-reg4 backbone and Community Forensics' ViT-S/16 (detector-fine-tuned; reported as a separate "fine-tuned" pair).
+- **R1 verdict** is unchanged (≥ 3 of the 4 non-reference backbones for "general"). It is also reported for the 2 frozen CLIP models alone: "general across pretrained backbones" needs both of them.
+- **R4** uses DINOv2-base plus the best non-reference backbone. Everything else is unchanged. No download is needed.
