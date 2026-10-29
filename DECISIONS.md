@@ -162,3 +162,15 @@ Format: **D-NNN — title** (date) · Decision · Rationale · Alternatives cons
 - **Decision.** Under docs/09 decision 4, the A arm is INVALID. With the gate-valid arms (B clean 0.61; A resized to a common size, 0.69 clean, chance laundered), H-A3 stays INCONCLUSIVE, with the point estimate on the KILL side of the 0.50–0.80 band. Under docs/09 decision 1 it counts as a failure. This is the stricter reading, chosen over the run's own rule.
 - **Count:** H-A5 KILL, H-A4 KILL, H-A3 → 3 of 3. The D-018 stop rule is reached. Every counting hypothesis had already run, so nothing is cut short.
 - **Remaining work** (all pre-declared, none counting): H-A6 (VAE diagnostic), the H-A1 secondary arms (near-twin, family mapping, RAID n=500), the final report (fable/high). No new hypotheses without an owner limit raise.
+
+**D-020 — Owner raises the limit for one final run (2026-10-29 20:59)**
+- **Owner's words:** "Ok, for last run lets challenge the best possibly new hypothesis and learn about it. I want meaningful conclusions, with mind that maybe a future research will allow for more compute and resources."
+- **Chosen hypothesis:** the strongest possibly-new finding of the D-018 cycle. Generator identity that survives laundering lives in mid-level transformer layers ("rendering style"), and laundering-aware training transfers to unseen launderings (H-A1, `020-attr-foundation`).
+- **The run is designed to CHALLENGE it, not confirm it**, along five axes:
+  - novelty (literature);
+  - generality across backbones;
+  - mechanism (what image information carries it);
+  - where laundering breaks it;
+  - how it scales with data, for future, larger-resource work.
+- Pre-registered in docs/11-final-run-plan.md before any data or result. This is the last run of the project unless the owner says otherwise.
+- **Download:** DINOv2-small and DINOv2-large from the official facebook HF repos (Apache-2.0, about 1.4 GB in total, within the 20 GB ceiling).
