@@ -1,0 +1,5 @@
+PIL impulse peak/sum 16.0 248.0
+empirical sigma scipy 1.4998377741020512
+edge-profile MAE between kernels (0-255) on a square 0.04514588415622711 max 3.54510498046875
+mean Laplacian variance: raw 1987.4655027389526 PIL 34.19689109325409 scipy 37.48359442949295
+mean |PIL-scipy| on images 0.37568890837585034

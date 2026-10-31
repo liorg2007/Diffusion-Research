@@ -1,0 +1,60 @@
+## A refit noise: 6 new caption-family fold seeds, block 6 and 12, C=.01
+1 0.866 0.546
+2 0.855 0.56
+3 0.858 0.552
+4 0.855 0.566
+5 0.862 0.562
+6 0.862 0.551
+b6 mean/sd/range 0.86 0.0045 0.8547916666666666 0.86625
+b12 0.556 0.0076
+gap per seed [0.32  0.295 0.306 0.288 0.3   0.311]
+
+## B last-block capacity at primary (T-mix)
+b12 LR C 0.001 0.552
+b12 LR C 0.01 0.56
+b12 LR C 0.1 0.562
+b12 LR C 1 0.553
+b12 LR C 10 0.537
+b6 LR C 0.01 0.867
+b6 LR C 0.1 0.86
+b6 LR C 1 0.849
+b6 CLS 0.825
+b12 CLS 0.484
+b6 mean 0.802
+b12 mean 0.56
+b12 post-LN CLS C 0.01 0.485
+b12 post-LN CLS C 0.1 0.491
+b12 post-LN CLS C 1 0.481
+b12 PCA200+rbf 0.477
+b12 PCA200+mlp 0.499
+b6 PCA200+rbf 0.838
+b6 PCA200+mlp 0.828
+
+## C paired backbones (nested over mid blocks, jpeg75_resize05 + held-out)
+dinov2 {'clean': 0.934, 'jpeg75_resize05': 0.856, 'social_sim': 0.883, 'screenshot_sim': 0.885, 'mavali_medium': 0.823} last {'clean': 0.595, 'jpeg75_resize05': 0.562, 'social_sim': 0.575, 'screenshot_sim': 0.581, 'mavali_medium': 0.548}
+clip_openai {'clean': 0.953, 'jpeg75_resize05': 0.896, 'social_sim': 0.909, 'screenshot_sim': 0.888, 'mavali_medium': 0.854} last {'clean': 0.709, 'jpeg75_resize05': 0.647, 'social_sim': 0.646, 'screenshot_sim': 0.643, 'mavali_medium': 0.614}
+clip_laion {'clean': 0.953, 'jpeg75_resize05': 0.886, 'social_sim': 0.904, 'screenshot_sim': 0.869, 'mavali_medium': 0.849} last {'clean': 0.812, 'jpeg75_resize05': 0.689, 'social_sim': 0.639, 'screenshot_sim': 0.601, 'mavali_medium': 0.585}
+bfree {'clean': 0.912, 'jpeg75_resize05': 0.839, 'social_sim': 0.877, 'screenshot_sim': 0.889, 'mavali_medium': 0.824} last {'clean': 0.771, 'jpeg75_resize05': 0.672, 'social_sim': 0.718, 'screenshot_sim': 0.723, 'mavali_medium': 0.678}
+commfor {'clean': 0.945, 'jpeg75_resize05': 0.883, 'social_sim': 0.931, 'screenshot_sim': 0.887, 'mavali_medium': 0.819} last {'clean': 0.869, 'jpeg75_resize05': 0.735, 'social_sim': 0.839, 'screenshot_sim': 0.828, 'mavali_medium': 0.741}
+clip_openai - commfor {'jpeg75_resize05': [0.014, -0.007, 0.034], 'screenshot_sim': [0.001, -0.021, 0.023], 'mavali_medium': [0.035, 0.009, 0.06]}
+clip_laion - commfor {'jpeg75_resize05': [0.003, -0.017, 0.023], 'screenshot_sim': [-0.018, -0.04, 0.006], 'mavali_medium': [0.03, 0.004, 0.055]}
+clip_openai - bfree {'jpeg75_resize05': [0.057, 0.035, 0.078], 'screenshot_sim': [-0.001, -0.024, 0.021], 'mavali_medium': [0.03, 0.007, 0.052]}
+commfor - bfree {'jpeg75_resize05': [0.043, 0.021, 0.064], 'screenshot_sim': [-0.002, -0.025, 0.021], 'mavali_medium': [-0.004, -0.03, 0.02]}
+dinov2 - commfor {'jpeg75_resize05': [-0.026, -0.047, -0.006], 'screenshot_sim': [-0.002, -0.026, 0.02], 'mavali_medium': [0.003, -0.02, 0.028]}
+clip_openai - clip_laion {'jpeg75_resize05': [0.011, -0.009, 0.029], 'screenshot_sim': [0.019, -0.003, 0.039], 'mavali_medium': [0.005, -0.016, 0.025]}
+
+## D R4 alternative curves
+dinov2 dinov2 6 n [ 15.  30.  60.  90. 102.] bacc [0.691 0.778 0.832 0.853 0.861]
+   power+c params [1.403 0.661 0.074] rmse 0.0006 bacc@90 0.854 @1000 0.911 @10000 0.923
+   pure power c=0 params [0.953 0.42 ] rmse 0.0037 bacc@90 0.856 @1000 0.948 @10000 0.98
+   exp+c params [ 0.326 22.551  0.14 ] rmse 0.0036 bacc@90 0.854 @1000 0.86 @10000 0.86
+   fit first 3 pts: b=0.678 c=0.078; predicts bacc@102 0.859 (obs 0.861); @1000 0.908
+   fit first 4 pts: b=0.685 c=0.080; predicts bacc@102 0.859 (obs 0.861); @1000 0.907
+   slope per doubling:  [0.086, 0.054, 0.036, 0.042]
+best_nonref clip_openai 13 n [ 15.  30.  60.  90. 102.] bacc [0.744 0.829 0.872 0.895 0.898]
+   power+c params [1.737 0.808 0.061] rmse 0.0017 bacc@90 0.893 @1000 0.932 @10000 0.938
+   pure power c=0 params [0.96  0.494] rmse 0.0046 bacc@90 0.896 @1000 0.968 @10000 0.99
+   exp+c params [ 0.319 20.104  0.103] rmse 0.0045 bacc@90 0.893 @1000 0.897 @10000 0.897
+   fit first 3 pts: b=0.987 c=0.084; predicts bacc@102 0.890 (obs 0.898); @1000 0.914
+   fit first 4 pts: b=0.818 c=0.062; predicts bacc@102 0.897 (obs 0.898); @1000 0.931
+   slope per doubling:  [0.085, 0.043, 0.038, 0.018]

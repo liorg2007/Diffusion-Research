@@ -1,0 +1,27 @@
+03:26:22 features clean
+03:26:34 features jpeg75_resize05
+03:26:45 features social_sim
+03:26:55 features screenshot_sim
+feature set | dim | LR best C(optimistic) bacc@primary [CI] | HGB bacc@primary | LR@screenshot
+mean RGB + std only | 6 | 0.304 [0.276,0.329] C=1 | 0.318 | 0.294
+luma_hist | 64 | 0.313 [0.287,0.341] C=10 | 0.346 | 0.275
+rgb_hist | 96 | 0.386 [0.357,0.414] C=0.1 | 0.443 | 0.340
+moments | 38 | 0.445 [0.413,0.474] C=1 | 0.461 | 0.396
+rgb3d | 512 | 0.396 [0.369,0.422] C=0.01 | 0.489 | 0.389
+TONE all (rgb,luma,moments,3d) | 710 | 0.466 [0.439,0.493] C=0.01 | 0.516 | 0.428
+  recall per class {'dalle2': 0.158, 'dalle3': 0.717, 'firefly': 0.508, 'midjourney-v5': 0.333, 'stable-diffusion-2': 0.458, 'stable-diffusion-xl': 0.358, 'sd3_large': 0.52, 'flux': 0.673}
+grad+lap | 80 | 0.404 [0.374,0.435] C=1 | 0.429 | 0.289
+lbp | 256 | 0.424 [0.393,0.452] C=0.01 | 0.470 | 0.443
+psd | 32 | 0.353 [0.326,0.380] C=1 | 0.339 | 0.265
+TEXTURE all (grad,lap,lbp,psd) | 368 | 0.521 [0.491,0.550] C=0.1 | 0.512 | 0.511
+TONE+TEXTURE | 1078 | 0.573 [0.541,0.602] C=0.01 | 0.633 | 0.545
+
+per-generator mean[R,G,B], std of luminance-ish (mean per-channel std), mean saturation (primary):
+dalle2 [122.9 120.8 110.2] sd 63.4 between-image sd of mean 31.3 sat 0.348
+dalle3 [122.9 115.1 101.3] sd 57.0 between-image sd of mean 25.6 sat 0.307
+firefly [128.2 126.2 113.2] sd 57.1 between-image sd of mean 23.7 sat 0.311
+midjourney-v5 [125.2 117.3 102.2] sd 58.2 between-image sd of mean 36.4 sat 0.375
+stable-diffusion-2 [124.2 117.6 102.2] sd 42.1 between-image sd of mean 15.4 sat 0.257
+stable-diffusion-xl [126.6 116.  102. ] sd 46.3 between-image sd of mean 20.7 sat 0.27
+sd3_large [127.4 128.6 113.5] sd 70.8 between-image sd of mean 28.8 sat 0.42
+flux [110.4 116.4  92.7] sd 65.4 between-image sd of mean 33.5 sat 0.514

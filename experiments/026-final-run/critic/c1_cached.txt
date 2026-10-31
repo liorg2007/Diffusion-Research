@@ -1,0 +1,58 @@
+03:22:28 mavali loaded (1020, 1536)
+## A. leave-laundering-family-out, block 6, bacc per eval (train cells marked by the training-set name)
+train | jpeg75_resize05 | screenshot_sim | mavali_medium | clean | jr(95,0.5) | jr(75,1.0) | jr(45,1.0) | jr(30,1.0) | jr(30,0.5) | jr(95,0.35) | jr(75,0.25)
+T-mix (reference) | 0.867 | 0.899 | 0.828 | 0.935 | 0.873 | 0.876 | 0.795 | 0.705 | 0.716 | 0.824 | 0.600
+   CI screenshot_sim [0.899, 0.88, 0.917]
+   CI mavali_medium [0.828, 0.804, 0.849]
+   CI jpeg75_resize05 [0.867, 0.847, 0.887]
+clean only | 0.406 | 0.875 | 0.382 | 0.950 | 0.589 | 0.470 | 0.420 | 0.402 | 0.372 | 0.489 | 0.389
+clean+JPEG-only (q75,q45 f=1) | 0.790 | 0.876 | 0.818 | 0.946 | 0.829 | 0.871 | 0.837 | 0.807 | 0.712 | 0.680 | 0.509
+   CI screenshot_sim [0.876, 0.855, 0.897]
+   CI mavali_medium [0.818, 0.793, 0.841]
+   CI jpeg75_resize05 [0.79, 0.766, 0.814]
+clean+resize-mostly (q95; f=0.75,0.5) | 0.819 | 0.895 | 0.760 | 0.939 | 0.906 | 0.854 | 0.744 | 0.647 | 0.616 | 0.816 | 0.630
+   CI screenshot_sim [0.895, 0.876, 0.914]
+   CI mavali_medium [0.76, 0.739, 0.781]
+   CI jpeg75_resize05 [0.819, 0.796, 0.839]
+clean+screenshot_sim (resample, no JPEG) | 0.530 | 0.913 | 0.514 | 0.945 | 0.692 | 0.586 | 0.532 | 0.509 | 0.487 | 0.644 | 0.476
+clean+social_sim (no 0.5x) | 0.787 | 0.891 | 0.807 | 0.946 | 0.843 | 0.865 | 0.809 | 0.734 | 0.666 | 0.769 | 0.571
+clean+j75r05 | 0.874 | 0.894 | 0.799 | 0.929 | 0.871 | 0.858 | 0.761 | 0.638 | 0.693 | 0.790 | 0.653
+j75r05 only | 0.876 | 0.742 | 0.778 | 0.769 | 0.888 | 0.806 | 0.700 | 0.608 | 0.717 | 0.830 | 0.679
+T-mix+ screenshot+mav (all 5) | 0.853 | 0.898 | 0.849 | 0.935 | 0.884 | 0.877 | 0.838 | 0.800 | 0.765 | 0.816 | 0.582
+
+## B. cross-manipulation: T-mix probe on row manipulation -> tested on column manipulation at primary (retrain diag vs frozen off-diag)
+train\test | none | a_shuffle | b_blur | c_highpass | d_gray
+none | 0.867 | 0.499 | 0.819 | 0.242 | 0.636
+a_shuffle | 0.641 | 0.819 | 0.625 | 0.247 | 0.501
+b_blur | 0.843 | 0.516 | 0.839 | 0.227 | 0.657
+c_highpass | 0.335 | 0.339 | 0.302 | 0.752 | 0.356
+d_gray | 0.736 | 0.424 | 0.616 | 0.216 | 0.799
+
+## C. confusion (8-way, block 6, jpeg75_resize05, rows true)
+['dalle2', 'dalle3', 'firefly', 'midjourney-v5', 'stable-diffusion-2', 'stable-diffusion-xl', 'sd3_large', 'flux']
+[[104   0   2   9   1   2   1   1]
+ [  0 117   0   1   1   0   1   0]
+ [  1   1 106   6   1   1   3   1]
+ [  2   4  10  82   2   6   2  12]
+ [  2   2   3   6 101   6   0   0]
+ [  1   1   4   9   6  95   2   2]
+ [  0   3   2   1   1   1 140   2]
+ [  0   0   1   2   0   1   2 144]]
+recall {'dalle2': 0.867, 'dalle3': 0.975, 'firefly': 0.883, 'midjourney-v5': 0.683, 'stable-diffusion-2': 0.842, 'stable-diffusion-xl': 0.792, 'sd3_large': 0.933, 'flux': 0.96}
+Across-batch errors (true SB->pred GRIP or vice versa) share of errors: 0.2824427480916031
+sd3->flux 2 flux->sd3 2 sd3 err 10 flux err 6
+Synthbuster-only 6-way (fresh probe, chance .167): {'jpeg75_resize05': 0.867, 'screenshot_sim': 0.9, 'mavali': 0.824}
+per-class recall 6-way {'dalle2': 0.883, 'dalle3': 0.992, 'firefly': 0.908, 'midjourney-v5': 0.75, 'stable-diffusion-2': 0.85, 'stable-diffusion-xl': 0.817}
+sd3 vs flux 2-way (GRIP batch only, chance .5): {'jpeg75_resize05': 0.96, 'screenshot_sim': 0.983}
+batch detector SB vs GRIP bacc: 0.935
+  batch detector trained w/o dalle2: share of that generator called GRIP = 0.167
+  batch detector trained w/o dalle3: share of that generator called GRIP = 0.475
+  batch detector trained w/o firefly: share of that generator called GRIP = 0.200
+  batch detector trained w/o midjourney-v5: share of that generator called GRIP = 0.167
+  batch detector trained w/o stable-diffusion-2: share of that generator called GRIP = 0.058
+  batch detector trained w/o stable-diffusion-xl: share of that generator called GRIP = 0.017
+  batch detector trained w/o sd3_large: share of that generator called GRIP = 0.153
+  batch detector trained w/o flux: share of that generator called GRIP = 0.193
+
+## D. per-class recall b6 vs b12: {'dalle2': (0.867, 0.5), 'dalle3': (0.975, 0.75), 'firefly': (0.883, 0.508), 'midjourney-v5': (0.683, 0.408), 'stable-diffusion-2': (0.842, 0.633), 'stable-diffusion-xl': (0.792, 0.4), 'sd3_large': (0.933, 0.58), 'flux': (0.96, 0.7)}
+b6 [0.867 0.847 0.887] b12 [0.56  0.53  0.589] gap [0.307 0.273 0.342]

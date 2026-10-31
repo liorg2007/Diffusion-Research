@@ -496,3 +496,11 @@
   - This overturns the H-A5 reading and R5 sub-claim (c): at its mid block CommFor beats DINOv2-base (+0.026 [0.006, 0.047]). H-A5's gap came from probing detectors at the last layer only, as its critic warned. H-A5's pre-registered label stays KILL; its interpretation changes.
   - R4: no plateau flagged; asymptotic error c 0.06-0.07, CI touching 0; extrapolation to n=10,000 DINOv2 0.923, CLIP 0.938 (noise-only CIs; 5 points, 3 parameters).
   - Launching the opus/high critic for the whole final run.
+- 2026-10-31 03:44 — Final-run critic (opus/high): no leak or number-changing bug, but three readings fail.
+  - Unseen-laundering transfer NOT supported as worded: screenshot_sim is near-clean, mavali near T-mix; truly new mild blur (σ=2) and unsharp collapse to about 0.52 (recovered to 0.85-0.86 once added to training).
+  - Tone is not the explanation (histograms 0.466-0.516 vs b6 0.867; equalised input retains 0.904), but at least 2 redundant cues plus a sharpness axis exist.
+  - R2 'retained' means sufficient after retraining, not what a frozen probe uses (frozen probe 0.50 under 32-px shuffle, retrained 0.82).
+  - Batch confound not supported (Synthbuster 6-way 0.867; sd3 vs flux 0.960), but each class is one configuration from one operator: untestable here.
+  - R4 extrapolation not licensed (0.860 / 0.923 / 0.980 by model form). R5(c) retracted.
+  - Deviation: selftests were first committed with results (e9b6933, 04577ed), against docs/11; the freeze rests on timestamps.
+  - Critic numbers are exploratory. Launching the fable/high report.

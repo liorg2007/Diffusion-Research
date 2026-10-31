@@ -1,0 +1,25 @@
+03:39:36 features done
+op | frozen T-mix b6 bacc | top predicted class share
+pre_blur_0.5 | 0.855 | flux 0.15
+pre_blur_1 | 0.789 | dalle2 0.21
+pre_blur_2 | 0.525 | dalle2 0.50
+pre_blur_3 | 0.400 | dalle2 0.65
+unsharp_50 | 0.780 | sd3_large 0.23
+unsharp_100 | 0.632 | sd3_large 0.39
+unsharp_150 | 0.524 | sd3_large 0.52
+mid_blur_0.5(256 scale, before JPEG) | 0.815 | dalle2 0.19
+mid_blur_1(256 scale, before JPEG) | 0.538 | dalle2 0.50
+post_blur_0.5(after JPEG,PIL) | 0.835 | dalle2 0.17
+post_blur_1(after JPEG,PIL) | 0.778 | dalle2 0.22
+post_blur_1.5(after JPEG,PIL) | 0.674 | dalle2 0.32
+post_blur_1.5(scipy) | 0.816 | dalle2 0.15
+jpeg75_resize05 | 0.867 | flux 0.16
+per-class recall under pre_blur_2: {'dalle2': 0.95, 'dalle3': 0.84, 'firefly': 0.17, 'midjourney-v5': 0.6, 'stable-diffusion-2': 0.59, 'stable-diffusion-xl': 0.74, 'sd3_large': 0.05, 'flux': 0.26}
+per-class recall under unsharp_150: {'dalle2': 0.11, 'dalle3': 0.65, 'firefly': 0.44, 'midjourney-v5': 0.24, 'stable-diffusion-2': 0.71, 'stable-diffusion-xl': 0.29, 'sd3_large': 1.0, 'flux': 0.75}
+predicted-share pre_blur_2: {'dalle2': 0.5, 'dalle3': 0.1, 'firefly': 0.02, 'midjourney-v5': 0.15, 'stable-diffusion-2': 0.08, 'stable-diffusion-xl': 0.1, 'sd3_large': 0.01, 'flux': 0.04}
+predicted-share unsharp_150: {'dalle2': 0.01, 'dalle3': 0.08, 'firefly': 0.08, 'midjourney-v5': 0.05, 'stable-diffusion-2': 0.1, 'stable-diffusion-xl': 0.04, 'sd3_large': 0.52, 'flux': 0.13}
+T-mix+pre_blur_2: unsharp_150 0.672, pre_blur_2 0.823, primary 0.863
+T-mix+unsharp_150: pre_blur_2 0.706, unsharp_150 0.850, primary 0.863
+T-mix+pre_blur_1: pre_blur_3 0.681, pre_blur_1 0.857, primary 0.868
+T-mix+unsharp_50: unsharp_150 0.816, unsharp_50 0.859, primary 0.864
+T-mix+blur2+unsharp150: {'pre_blur_1': 0.85, 'unsharp_100': 0.861, 'jpeg75_resize05': 0.865}
