@@ -505,3 +505,4 @@
   - Deviation: selftests were first committed with results (e9b6933, 04577ed), against docs/11; the freeze rests on timestamps.
   - Critic numbers are exploratory. Launching the fable/high report.
 - 2026-10-31 03:46 — Final-run report written (fable/high, docs/12-final-run-report.md, 130 lines). Lead merged the critic's requested corrections: README status, correction sections in docs/10, r5_novelty, r2r3 and r1r4 notes, KB idea, STORAGE rows; Fingerprint Lab wording and findings.json updated for the retracted claims. Project at rest; 8.8 GB of regenerable caches kept pending owner decision.
+- 2026-10-31 12:56 — Owner asked to organise the repo into findings and establishments. New findings/ (F1-F5, retracted.md) and establishments/ (S1-S8), each item pointing to its evidence; experiments/ and docs/ not moved, so existing paths stay valid. README rewritten as the overview; earlier status blocks moved to docs/00-status-history.md.

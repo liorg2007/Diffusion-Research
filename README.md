@@ -1,52 +1,80 @@
-# Diffusion-Generated Image Detection — Research Project
+# Diffusion-Generated Image Detection: Research Project
 
-**Goal.** Find a new method, or a measurable improvement over existing ones, for detecting diffusion-generated images, measured on
-**unseen generators** and **in-the-wild processing** (JPEG, resize, screenshots, phone neural-ISP photos). In-distribution results do not count as progress.
+**Can we tell diffusion-generated images from real photos, and identify where an image came from, when it has been compressed, resized or shared, and when its source is unfamiliar?**
 
-**Acceptance targets for a full-scale validation:** FPR ≤ 1% on fresh phone photos; AUROC ≥ 0.95 after social-media laundering; evaluation against transfer attacks.
+**Short answer.** We found no new detection method, and the acceptance targets were not met. The diffusion signal is real and survives laundering, and known generators can be named at 84–90% accuracy (chance 12.5%). Reliable detection on unfamiliar real photos remains unsolved. The main value is a tested map of where these methods work and fail, a few possibly-new measurements, and specific experiments for future work.
 
-## Current status — 2026-10-31: final run (D-020) reported (`docs/12-final-run-report.md`); no work in progress
-- **Holds:** mid layers beat the last layer on all 5 backbones (+0.148 to +0.295 bacc; already published, Li et al. 2026). Closed-set attribution reaches 0.839-0.896 after jpeg75_resize05. The signal does not need image layout and is not a tone curve (after retraining).
-- **Retracted:** transfer to unseen launderings (new mild blur or unsharp: about 0.52, exploratory); generic features beating detectors; the 0.92-0.94 data extrapolation.
-- **Biggest open hole:** each generator class is one configuration from one operator, so we cannot separate generator from settings. No real photos in this run, so it does not bear on the FPR targets.
-- **Owner open items:** modern-phone photos; D-013; future-research list in docs/12.
-
-## Current status — 2026-10-28: attribution cycle (D-018) reported (`docs/10-attribution-report.md`)
-- **Question:** can we fingerprint the source of an image (which generator; for real photos, which camera or platform)?
-- **H-A1 PASS:** mid-level DINOv2 + linear probe names 1 of 8 known generators at 0.855 bacc after jpeg75_resize05 (chance 0.125). It holds 0.81–0.87 on unseen launderings and only works if trained on laundered images. Near-twins (SD1.3/1.4) are inseparable; open-set rejection fails.
-- **H-A2 PASS** (device arm only; a replication): PRNU identifies 14 same-size 2010s phones at 0.985, and via WhatsApp/Facebook copies at 0.93 / 0.87. The generator residual arm is uninformative.
-- **Fails:** H-A3 (platform history is only readable from file metadata), H-A4 (unseen-source novelty), H-A5 (published detectors' embeddings); counted 3/3, so the stop rule is reached (D-019).
-- **H-A6 diagnostic:** the VAE decoder signature scores 0.97 on clean files and chance after one laundering.
-- **Owner open items:** modern-phone photos (data/raw/owner_phone/, 150–250); limit raise for any next step in docs/10 §9.
-
-## Current status — 2026-10-25: Phase 5 report written (`docs/03-final-report.md`)
-| Phase | State |
+| Where | What |
 |---|---|
-| 0 Setup | ✅ Mac + GPU PC (D-012); Phase 3 reproduced on GPU (max \|ΔAUROC\| 0.0019) |
-| 1 Survey | ✅ 47 papers in `kb/`; headline numbers PDF-checked |
-| 2 Hypotheses | ✅ `docs/02-hypotheses.md`; diffusion-specific set `docs/06-diffusion-hypotheses.md` (D-014) |
-| 3 Data & baselines | ✅ |
-| 4 Hypothesis tests | ✅ Official: H4 REFUTED, H1 FAIL, H2-v2 NOT_SUPPORTED, so the stop rule was hit. Owner override D-016; exploratory E1–E7 |
-| 5 Final report | ✅ `docs/03-final-report.md`: findings and a recommended (not validated) method |
+| [`findings/`](findings/README.md) | Results that may add something new, and claims we retracted |
+| [`establishments/`](establishments/README.md) | Results that are solid but known, or replications |
+| `docs/03`, `docs/10`, `docs/12` | The three full reports |
+| `poc/fingerprint-demo/` | Fingerprint Lab, a local visual demo |
 
-### Bottom line
-- None of the three Phase 5 targets is met.
-- The real-vs-diffusion difference survives laundering (E5). But every detector partly learns what its training real-photo sources look like, so unseen real pipelines (polished photos) get 16–19% FPR (E7). This is the central obstacle.
-- Details, numbers and sources are in `docs/03-final-report.md`.
+## Current status (2026-10-31)
+No work is in progress. **Open owner items:** modern-phone photos (`data/raw/owner_phone/`, 150–250), the D-013 decision, and 8.8 GB of regenerable final-run caches (`env/STORAGE.md`). Earlier status blocks are in `docs/00-status-history.md`.
 
-### Open items for the owner
-1. 150–250 photos from a 2021+ phone, plus WhatsApp copies, in `data/raw/owner_phone/` (git-ignored): the acceptance test for any detector (H3).
-2. D-013: whether fov512 is primary. The report recommends fov512.
+## The research in brief
+All numbers are after JPEG-75 + half-size resize unless stated.
 
-## Hardware (verified 2026-10-21)
-Intel Core i9-9880H (8C), 32 GB RAM, AMD Radeon Pro 5500M 4 GB (Metal 3), macOS 15.6. **Not Apple Silicon.**
-Consequence: last PyTorch x86_64 macOS wheel is 2.2.2 (Python ≤ 3.12); MPS on AMD is available but limited; plan for CPU-feasible experiments (frozen backbones + light heads, ≤5k images).
+**1. Baselines (E1–E4, Phase 3–4).** We reproduced published detectors and built a controlled test set. Clean-image scores were high (Community Forensics AUROC 0.992), but no detector reached 0.95 laundered; our DINOv2 baseline was best at 0.875. The three planned hypotheses (H1, H2, H4) all failed.
+
+**2. The statistical field (E5–E6).** Diffusion images do form a different population, even with content controlled, and a mid-level probe reaches about 0.95 on familiar real sources.
+
+**3. The unfamiliar-source wall (E7–E10).** On real sources the detector never trained on, it fails. Removing source information, adapting with a few real photos, and adding more sources all fell short.
+
+**4. Fingerprinting the source (D-018).** Naming known generators works; flagging new ones does not. Sensor noise identifies 2010s phones. Decoder traces exist only on untouched files.
+
+**5. The final challenge (D-020).** We attacked our best claim. The measurements held, but much of the interpretation did not.
+
+## Interesting points
+**Possibly new** (none confirmed; details in [`findings/`](findings/README.md)):
+- **Two equal penalties.** An unseen real source and an unseen generator each cost about 0.07 AUROC (0.926 with both seen, 0.767 with both unseen). [F1](findings/F1-two-equal-penalties.md)
+- **Variety fixes false alarms, not separation.** Going from 2 to 5 real sources cuts mean FPR from 16.4% to 6.9%, but TPR at matched FPR gains only +0.074. [F2](findings/F2-diversity-recalibrates.md)
+- **Polished and DSLR photos are the hard ones.** Unsplash and RAISE reach 14–17% FPR, older phone photos 0.5–1%. Modern phones are untested. [F3](findings/F3-hard-real-photos.md)
+- **The generator signal needs neither layout nor tone**, once the classifier is retrained: 94% kept after tile shuffling, 90% after equalisation. A normally trained probe does not cope. [F4](findings/F4-signal-without-layout-or-tone.md)
+- **A leak to watch for.** Adapting only to a new source's images scores near-perfect by leaking the label. We made this error and caught it. [F5](findings/F5-one-sided-adaptation-leak.md)
+
+**Solid but known or replicated** (details in [`establishments/`](establishments/README.md)):
+- The signal survives laundering, at 0.927–0.953 with content controlled. [S1](establishments/S1-signal-survives-laundering.md)
+- No method passed on unseen real sources (FPR 0.5–17%). [S2](establishments/S2-unseen-source-limit.md)
+- Naming 1 of 8 known generators reaches 0.839–0.896. [S3](establishments/S3-closed-set-attribution.md)
+- Mid layers beat the last layer on all 5 backbones (+0.148 to +0.295). [S4](establishments/S4-mid-layers-beat-last.md)
+- Limits: SD1.3 vs SD1.4 at chance, new-generator flagging 0.768, a new mild blur drops accuracy to about 0.52. [S5](establishments/S5-attribution-limits.md)
+- Sensor noise names the phone at 0.985 on 2010s phones. [S6](establishments/S6-prnu-phone-fingerprint.md)
+- Decoder traces score 0.967 on pristine files and chance after laundering. [S7](establishments/S7-decoder-trace-pristine-only.md)
+- Metadata and threshold pitfalls can inflate results. [S8](establishments/S8-evaluation-pitfalls.md)
+
+**Retracted along the way:** see [`findings/retracted.md`](findings/retracted.md).
+
+## Acceptance targets
+| Target | Status |
+|---|---|
+| FPR ≤ 1% on fresh phone photos | **Not tested** on fresh phones (owner photos pending); older phones reached 0.5–1% at the 1% threshold |
+| AUROC ≥ 0.95 after laundering | **Not met** on unseen sources; about 0.95 only on familiar ones |
+| Robustness to transfer attacks (RAID) | **Untested** in proper form; the pilot was uninformative |
+
+## Limits of all of this
+Small data (120–150 images per generator, 600 per new real source). No modern phones. Each generator class is one configuration from one operator, so we cannot separate generator from settings. Literature checks were partial. Several datasets and weights are non-commercial.
+
+## What future research should do
+1. **Generator vs settings:** 3–4 models × about 5 configurations, about 500 images each. Fails if holding out a configuration costs more than 20 points.
+2. **At least 30 generators,** with error bars over generators.
+3. **Real laundering chains,** whole families held out. Fails below 60%.
+4. **Measure** 1,000 images per generator instead of extrapolating.
+5. **Modern-phone photos** for the false-alarm target and PRNU.
+
+More backbones or finer JPEG/resize grids on these 8 generators would be a waste. Details: `docs/12-final-run-report.md` §6.
 
 ## Layout
-- `LOG.md` append-only timestamped log · `DECISIONS.md` decisions + rationale
-- `kb/` knowledge base (`kb/SCHEMA.md` defines entry formats, `kb/index.md` lists all entries)
-- `docs/` explainers for the project owner · `experiments/NNN-name/` one folder per experiment
-- `env/` environment + `env/SOURCES.md` provenance · `third_party/` pinned clones (git-ignored) · `data/` datasets (git-ignored)
+- `findings/`, `establishments/`: conclusions, each pointing to its evidence
+- `docs/`: plans and reports · `experiments/NNN-name/`: one folder per experiment (config, code, results, critique)
+- `kb/`: knowledge base (`kb/SCHEMA.md`, `kb/index.md`) · `poc/fingerprint-demo/`: visual demo
+- `LOG.md`: append-only log · `DECISIONS.md`: decisions and rationale
+- `env/`: environment, `SOURCES.md`, `STORAGE.md` · `third_party/`, `data/`: git-ignored, re-created with `env/bootstrap_data.py`
+
+## Hardware
+Experiments ran on a WSL2 PC with an RTX 4060 Ti 8 GB (D-012; see `env/SETUP_WSL.md`). Phase 1–3 work began on an Intel Mac.
 
 ## How to reproduce
 ```
