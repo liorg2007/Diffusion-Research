@@ -491,3 +491,8 @@
 - 2026-10-31 02:55 — R2+R3 done (026-final-run/r2r3/). Gates ok (parity 8.5e-6; D-008 3.0e-5). Baseline nested mid block 0.857; b12 0.561.
   - R2: tile shuffle retains 0.944 (confirmed); blur σ=1.5 retains 0.972 (prediction 'blur kills it' REFUTED); mid>last persists under shuffle +0.241 (confirmed); high-pass 0.854, gray 0.917 retained (descriptive).
   - R3: smooth decay refuted narrowly (max drop 0.204 vs the 0.20 rule, at f 0.35→0.25, confounded by upsampling); extended T-mix shift confirmed on thin evidence (only 1 of 30 cells breaks: q30, f0.25, 0.458). The cliff and shift rules were fixed in config.json before the real run, not in docs/11.
+- 2026-10-31 03:14 — R1+R4 done (026-final-run/r1r4/). Gates ok.
+  - R1 GENERAL 4/4: mid minus last CLIP-OpenAI +0.249, CLIP-LAION +0.196, B-Free +0.167, CommFor +0.148. Best-mid bacc: CLIP-OpenAI 0.896, CLIP-LAION 0.886, CommFor 0.883, DINOv2-base 0.856, B-Free 0.839.
+  - This overturns the H-A5 reading and R5 sub-claim (c): at its mid block CommFor beats DINOv2-base (+0.026 [0.006, 0.047]). H-A5's gap came from probing detectors at the last layer only, as its critic warned. H-A5's pre-registered label stays KILL; its interpretation changes.
+  - R4: no plateau flagged; asymptotic error c 0.06-0.07, CI touching 0; extrapolation to n=10,000 DINOv2 0.923, CLIP 0.938 (noise-only CIs; 5 points, 3 parameters).
+  - Launching the opus/high critic for the whole final run.

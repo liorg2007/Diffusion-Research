@@ -1,0 +1,64 @@
+{
+ "blocks": {
+  "b4": {
+   "mine": {
+    "clean": 0.8927083333333333,
+    "jpeg75_resize05": 0.840625,
+    "social_sim": 0.846875,
+    "screenshot_sim": 0.8166666666666668,
+    "mavali_medium": 0.781875
+   },
+   "r020": {
+    "clean": 0.8927083333333333,
+    "jpeg75_resize05": 0.840625,
+    "social_sim": 0.846875,
+    "screenshot_sim": 0.8166666666666668,
+    "mavali_medium": 0.781875
+   },
+   "max_abs_diff": 0.0
+  },
+  "b8": {
+   "mine": {
+    "clean": 0.92,
+    "jpeg75_resize05": 0.8160416666666667,
+    "social_sim": 0.8743749999999999,
+    "screenshot_sim": 0.8660416666666666,
+    "mavali_medium": 0.8166666666666667
+   },
+   "r020": {
+    "clean": 0.92,
+    "jpeg75_resize05": 0.8160416666666667,
+    "social_sim": 0.8743749999999999,
+    "screenshot_sim": 0.8660416666666666,
+    "mavali_medium": 0.8166666666666667
+   },
+   "max_abs_diff": 0.0
+  },
+  "b12": {
+   "mine": {
+    "clean": 0.594375,
+    "jpeg75_resize05": 0.5616666666666666,
+    "social_sim": 0.576875,
+    "screenshot_sim": 0.58125,
+    "mavali_medium": 0.5477083333333332
+   },
+   "r020": {
+    "clean": 0.594375,
+    "jpeg75_resize05": 0.5616666666666666,
+    "social_sim": 0.576875,
+    "screenshot_sim": 0.58125,
+    "mavali_medium": 0.5477083333333332
+   },
+   "max_abs_diff": 0.0
+  }
+ },
+ "harness_reproduces_020": true,
+ "fresh_vs_cached_scaled_max": {
+  "clean": 6.846687483630376e-06,
+  "jpeg75_resize05": 6.820549970143475e-06,
+  "social_sim": 7.229837592603872e-06,
+  "screenshot_sim": 7.884763363108505e-06,
+  "mavali_medium": 4.219607944833115e-06
+ },
+ "feature_parity_ok": true
+}

@@ -1,0 +1,85 @@
+# r1r4 selftest 2026-10-31 02:20:29
+## Part A (CPU, synthetic and tiny models)
+PASS mid_blocks L=12 -> blocks 3..9  [[3, 4, 5, 6, 7, 8, 9]]
+PASS mid_blocks L=24 -> blocks 6..18  [[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]]
+PASS synthetic grouped folds valid
+02:20:31 E11 syn: 30 tasks in 1s
+PASS planted-signal block 3 (idx 2) has high bacc  [0.992]
+PASS noise blocks and last block at chance (0.25)  [[0.248, 0.235, 0.992, 0.235, 0.237, 0.28]]
+PASS nested mid choice = signal block in every fold  [{'0': 3, '1': 3, '2': 3, '3': 3, '4': 3}]
+PASS gap nested-mid minus last: large, paired CI lo > 0, satisfied  [[0.712, 0.668, 0.748]]
+PASS oracle best mid block = signal block
+PASS nested mid is not above the oracle point (selection can only cost)
+02:20:33 E11 noise: 30 tasks in 1s
+PASS noise-only backbone: nested mid bacc near chance and gap not satisfied  [0.240]
+02:20:34 E11 leak: 30 tasks in 1s
+PASS planted label leak (last block) is detected: bacc > 0.95 and nested-all picks it  [1.000]
+PASS planted leak in the last block makes the mid-minus-last gap NEGATIVE (not satisfied)
+PASS label-permuted pipeline at chance on the signal block  [mean 0.253]
+02:20:35 E11 grpleak: 15 tasks in 1s
+PASS planted group fingerprint + grouped folds: bacc at chance (no leak through the pipeline)  [0.208]
+PASS ungrouped folds trip assert_disjoint_groups in closed_task
+PASS the same planted leak would be exploited without the guard (bacc > 0.8 on ungrouped folds)  [0.988]
+PASS verdict 3/4 incl. both CLIP -> general / general across pretrained  [{'overall': 'general', 'n_satisfied': 3, 'n_nonref': 4, 'frozen_pair': 'general across pretrained backbones', 'frozen_pair_n': 2}]
+PASS verdict 1/4 -> not general; frozen pair 1 of 2  [{'overall': 'not general', 'n_satisfied': 1, 'n_nonref': 4, 'frozen_pair': '1 of 2', 'frozen_pair_n': 1}]
+PASS verdict 2/4 -> partly general; frozen pair general  [{'overall': 'partly general', 'n_satisfied': 2, 'n_nonref': 4, 'frozen_pair': 'general across pretrained backbones', 'frozen_pair_n': 2}]
+PASS verdict: fine-tuned pair alone cannot make the frozen pair general  [{'overall': 'partly general', 'n_satisfied': 2, 'n_nonref': 4, 'frozen_pair': 'no', 'frozen_pair_n': 0}]
+PASS gap rule: point 0.12 / lo 0.01 satisfied; point 0.12 / lo -0.01 not; point 0.09 / lo 0.05 not
+PASS scaled_diff = |d| / max(1, column max)  [3.781e-04 vs 3.781e-04]
+PASS D-008 tolerance = max(1e-3, 2 x spread)
+PASS rows/folds identical to 020 ha1_main (committed folds_ha1_main.json == make_folds)
+PASS subsample: deterministic, differs across seeds
+PASS subsample: training rows only, no test row, no shared caption family with the test fold
+PASS subsample: exactly n per generator
+PASS 'all' = every training row
+PASS n larger than available is clipped (no replacement)
+PASS subsample independent of the model (same draw for every backbone): function of (y, fold, f, n, s) only
+PASS every subsample is a subset of its training fold
+PASS curve_fit recovers (a, b, c) = (0.5, 0.7, 0.1) from noiseless points  [[0.5 0.7 0.1]]
+PASS extrapolation formula
+PASS bootstrap: decaying curve -> b CI excludes 0, not plateau  [[0.7, 0.443, 1.113]]
+PASS bootstrap: extrapolated bacc CI at 1000 and 10000 brackets the truth (low noise)  [{'1000': [0.896028358826389, 0.8852171457992587, 0.909473105579977], '10000': [0.8992075534037838, 0.886080786047547, 0.9186477137184859]}]
+PASS bootstrap: flat curve -> plateau flagged (CI of b includes 0)  [[0.463, 0.001, 5.0]]
+PASS openai-CLIP tiny: hooked last-block CLS -> ln_post/proj equals the model output  [0.0e+00]
+PASS openai-CLIP tiny: blocks differ (hooks fire on distinct blocks, 3 blocks)
+PASS open_clip tiny: hooked last-block CLS -> ln_post/proj equals the model output  [0.0e+00]
+PASS open_clip tiny: blocks differ (hooks fire on distinct blocks, 3 blocks)
+PASS timm-reg4 (B-Free-like) tiny: per-block CLS/mean (registers skipped) equal a manual forward  [0.0e+00]
+PASS timm-reg4 (B-Free-like) tiny: head rebuilt from the hooked last block equals the model output
+PASS timm-cls (CommFor-like) tiny: per-block CLS/mean (registers skipped) equal a manual forward  [0.0e+00]
+PASS timm-cls (CommFor-like) tiny: head rebuilt from the hooked last block equals the model output
+PASS HF DINOv2 tiny: layers=1..L CLS|mean reshape [N,L,2,D] equals hidden_states
+## Part B (GPU, real weights, 8 real images each)
+PASS dinov2: device is CUDA  [cuda]
+PASS dinov2: hook placement (model output == rebuilt from hooked last block)  [{'final': 0.0, 'hs_last_vs_feat': 0.0}]
+PASS dinov2: uniform input tensor under all 5 conditions
+PASS dinov2: batch invariance (bs 8 vs 1) scaled diff <= 1e-4  [6.89e-06]
+PASS dinov2: OOM retry halves the batch (<= 3) and gives the same features  [bs 2, diff 2.4e-05]
+PASS dinov2: GPU memory freed after the model is dropped (< 50 MB)  [8.1 MB]
+PASS dinov2: fresh GPU blocks 4/8/12 equal the cached 004/016/019 features (scaled <= 1e-3)  [6.88e-06]
+PASS clip_openai: device is CUDA  [cuda]
+PASS clip_openai: hook placement (model output == rebuilt from hooked last block)  [{'final': 0.0, 'ref_scale': 12.0120106}]
+PASS clip_openai: uniform input tensor under all 5 conditions
+PASS clip_openai: batch invariance (bs 8 vs 1) scaled diff <= 1e-4  [6.63e-06]
+PASS clip_openai: OOM retry halves the batch (<= 3) and gives the same features  [bs 2, diff 2.2e-05]
+PASS clip_openai: GPU memory freed after the model is dropped (< 50 MB)  [8.1 MB]
+PASS clip_laion: device is CUDA  [cuda]
+PASS clip_laion: hook placement (model output == rebuilt from hooked last block)  [{'final': 0.0, 'ref_scale': 15.6270838}]
+PASS clip_laion: uniform input tensor under all 5 conditions
+PASS clip_laion: batch invariance (bs 8 vs 1) scaled diff <= 1e-4  [3.61e-05]
+PASS clip_laion: OOM retry halves the batch (<= 3) and gives the same features  [bs 2, diff 4.6e-05]
+PASS clip_laion: GPU memory freed after the model is dropped (< 50 MB)  [8.1 MB]
+PASS bfree: device is CUDA  [cuda]
+PASS bfree: hook placement (model output == rebuilt from hooked last block)  [{'final': 0.0, 'ref_scale': 5.8730769}]
+PASS bfree: uniform input tensor under all 5 conditions
+PASS bfree: batch invariance (bs 8 vs 1) scaled diff <= 1e-4  [1.35e-05]
+PASS bfree: OOM retry halves the batch (<= 3) and gives the same features  [bs 2, diff 7.2e-05]
+PASS bfree: GPU memory freed after the model is dropped (< 50 MB)  [8.1 MB]
+PASS commfor: device is CUDA  [cuda]
+PASS commfor: hook placement (model output == rebuilt from hooked last block)  [{'final': 0.0, 'ref_scale': 14.5586987}]
+PASS commfor: uniform input tensor under all 5 conditions
+PASS commfor: batch invariance (bs 8 vs 1) scaled diff <= 1e-4  [1.29e-05]
+PASS commfor: OOM retry halves the batch (<= 3) and gives the same features  [bs 2, diff 2.9e-05]
+PASS commfor: GPU memory freed after the model is dropped (< 50 MB)  [8.1 MB]
+
+76 passed, 0 failed (63s)
