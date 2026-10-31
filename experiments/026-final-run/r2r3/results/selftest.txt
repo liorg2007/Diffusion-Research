@@ -1,0 +1,64 @@
+PASS manip none: 224x224x3 uint8
+PASS manip a_shuffle: 224x224x3 uint8
+PASS manip b_blur: 224x224x3 uint8
+PASS manip c_highpass: 224x224x3 uint8
+PASS manip d_gray: 224x224x3 uint8
+PASS manip none: identity
+PASS shuffle: output is a permutation of the 49 tiles (multiset preserved)
+PASS shuffle: differs from the input
+PASS shuffle: deterministic per key
+PASS shuffle: different keys give different permutations
+PASS shuffle: permutation depends on the key only (not on the image)
+PASS blur: removes high-frequency energy 5.9 vs 28.6
+PASS highpass: re-centred to mid-gray (mean ~128) mean 128.0
+PASS highpass: equals round(img - blur + 128) exactly
+PASS highpass: contains little low-frequency energy (blurred residual std << residual std)
+PASS gray: three equal channels
+PASS gray: matches PIL L luma
+PASS manipulations take no label argument
+PASS crop224: size>=224 is the plain centre crop (no resample)
+PASS crop224: factor 0.35 laundered image (<224) is upsampled to a 224x224 input
+PASS crop224: factor 0.25 laundered image (<224) is upsampled to a 224x224 input
+PASS grid cell (q75,f0.5) == jpeg75_resize05 (same code path)
+PASS all 30 grid cells give a 224x224 model input
+PASS model_input: screenshot_sim / social_sim fit
+PASS IDENTICAL PROCESSING: same pixels + same key through the pipeline -> bit-identical input for any 'class'
+PASS embedder: shape [n, 12, 1536]
+PASS embedder: batch size does not change features
+PASS embedder: OOM -> halves the batch and retries, same features
+PASS embedder: non-OOM errors propagate
+PASS extract_file: writes the cache file
+PASS extract_file: resumable (second call is a no-op)
+PASS getfeat: memmap shape
+PASS surface: smooth decay -> max step drop 0.075 <= 0.20
+PASS surface: planted cliff -> max step drop 0.70 > 0.20
+PASS surface: extended probe breaks later -> median shift > 0 median shift 2.0, cells 10 -> 3
+PASS surface: identical probes -> shift 0, n_break equal
+PASS surface: no cell breaks -> shift undefined (NaN)
+PASS break_index: never breaks -> length
+PASS verdict_threshold: ge/lt with CI-robust flags
+PASS synthetic folds valid
+PASS PLANTED LEAK: held-out laundering in the training set is refused
+PASS PLANTED LEAK: a caption family split across folds is caught by the grouped-split check
+PASS PLANTED LEAK: train/test sharing a group raises inside the probe task
+PASS report: tables.md and results.json written
+PASS synthetic none: nested mid-block bacc well above chance 0.666
+PASS planted: signal lives in mid blocks (mid - last > 0.2 unmanipulated) [0.509375, 0.43125, 0.578203125]
+PASS planted: shuffle keeps the full signal -> retained ~1 and prediction (a) confirmed [0.9710982658959536, 0.8226508828250401, 1.1051629160806382]
+PASS planted: blur destroys the signal -> retained ~0 and prediction (b) confirmed [0.05202312138728325, -0.017663199426111897, 0.12886025017926858]
+PASS planted: mid > last persists under (a)
+PASS planted: gray retains less than shuffle but more than blur [0.7572254335260116, 0.6684329710144928, 0.8766554666263968]
+PASS retained(none) == 1 exactly
+PASS B* is a mid block
+PASS permutation gate passes at chance (all 5 manipulations) {'none': 0.118, 'a_shuffle': 0.127, 'b_blur': 0.129, 'c_highpass': 0.128, 'd_gray': 0.133}
+PASS frozen R3 probe reproduces R2 primary (consistency gate) [0.665625, 0.665625]
+PASS planted decay: frozen surface falls with severity (mild corner > severe corner + 0.2) 0.72 -> 0.22
+PASS r3 verdict keys present
+PASS all gates ok on clean synthetic data {}
+PASS PLANTED LEAK: duplicates across the split memorise (bacc >> chance) 1.00
+PASS grouped folds on the same data stay at chance 0.26
+PASS PLANTED LEAK: assert_disjoint_groups raises on the leaky split
+PASS PLANTED LEAK: a pixel-duplicate in two classes fails the sha256 dedupe gate
+PASS PLANTED LEAK: permutation gate fails when permuted labels still score above chance
+
+62/62 checks passed in 29s
