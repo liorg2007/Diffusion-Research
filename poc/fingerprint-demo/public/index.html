@@ -100,7 +100,7 @@
 <section class="tab" id="p-findings" role="tabpanel" aria-labelledby="tab-findings">
   <div class="card">
     <h2>The short version</h2>
-    <p class="muted">An AI image leaves traces at three depths: file metadata, pixel-level patterns, and mid-level "rendering style". Laundering (JPEG plus resizing) erases them from the bottom up. Only the style survives, if the probe was trained on laundered copies. Every figure below is parsed from a result file and cites it.</p>
+    <p class="muted">An AI image leaves traces at three depths: file metadata, pixel-level patterns, and mid-level "rendering style". Laundering (JPEG plus resizing) erases them from the bottom up. Only mid-level cues survive, for the kinds of laundering the probe was trained on, if the probe was trained on laundered copies. Every figure below is parsed from a result file and cites it.</p>
   </div>
   <div class="card"><h3>Hypothesis scorecard (attribution cycle)</h3><p class="small muted">Pre-registered labels with the independent critic's verdict applied. Three counted failures ended the cycle.</p><div class="hyp" id="scoreAttr" style="margin-top:10px"></div><div class="src" id="scoreSrc"></div>
     <details class="fold"><summary>Earlier detection cycle (docs/03 section 3.3)</summary><div class="scroll" id="scoreDet"></div></details></div>

@@ -23,6 +23,7 @@ Sizes were measured with `du -sh` on 2026-10-24. Cumulative downloads are about 
 | data/raw/openimages | 186 MB | Open Images V7 val, CC BY 2.0 | E7 | keep until E7 critiqued |
 | data/raw/commons | 0.5 GB | Wikimedia Commons QI | E10 | keep (possible owner-photo run re-uses E10 features only; may delete) |
 | data/raw/unsplash | 0.36 GB | Unsplash Lite 1.4.0 | E10 | keep (may delete; features cached) |
+| experiments/026-final-run/{r1r4,r2r3,critic}/cache | 3.0 + 3.6 + 2.2 GB | derived (regenerable by each run.py / critic/c2_extract.py) | final run | may delete; results committed |
 
 Deleted:
 - 2026-10-24: data/processed/du2512 (587 MB) and 004 cache pilot_du2 (81 MB), the confounded E1b arm. Results are committed in experiments/008-scale-sensitivity/pilot_du2/.

@@ -39,3 +39,9 @@ Data, folds, probe, bootstrap are imported from experiments/020-attr-foundation/
 - Selftest 62/62 before the real run (synthetic manipulations, crop rule, embedder batching and OOM retry, caching/resume, surface metrics with planted cliff/shift, end-to-end synthetic R2/R3 with planted signal, planted leaks: group split across folds, duplicates across the split memorise, cross-class duplicate, permutation gate, held-out laundering in training).
 - Selftest iterations before the real run (synthetic design only): planted signal amplitudes, permutation tolerance for the 320-row synthetic set, and dimensionality of the duplicate-memorisation demo were adjusted; no run.py logic changed. run.py: a permutation-gate summary was added to the gates table before the real run.
 - After the real results (cosmetic, no number changed): the tables.md line "fixed-block variant agrees: {...}" was reworded to state what the dict means (prediction confirmed under the fixed-block sensitivity). Before: `fixed-block (B* = block 6) variant agrees: {'a': True, 'b': False}`. After: `sensitivity, fixed block B* = block 6 ... prediction (a) confirmed = True, prediction (b) confirmed = False`. results.json compared before and after the report re-run (config removed): identical.
+
+
+## Corrections after the final-run critic (lead, 2026-10-31)
+- "Retained" means sufficient after RETRAINING on the manipulated images, not what the normal probe uses. The frozen probe gets 0.50 under 32-px shuffle (retrained 0.82), 0.357 under 14-px shuffle, 0.527 under equalisation (exploratory).
+- The R3 grid maps the training family, not general robustness. The 0.204 "cliff" sits on a step confounded by upsampling.
+Full reading: `docs/12-final-run-report.md`, `experiments/026-final-run/critique.md`.

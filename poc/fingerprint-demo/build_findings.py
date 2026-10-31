@@ -32,7 +32,7 @@ PLAIN = {
     "H-A2": "Sensor noise (PRNU) identifies which of 14 same-size 2010s phones took a photo; for AI generators the same trick is no better than simple texture statistics.",
     "H-A3": "Which platform a photo went through (native, WhatsApp, Facebook) lives in file headers, not in laundered pixels.",
     "H-A4": "One shared space can name known sources, but does not notice unknown ones (novelty at chance).",
-    "H-A5": "Detectors trained for real-vs-fake keep less generator identity in their last layer than a generic backbone's middle layers.",
+    "H-A5": "Detectors trained for real-vs-fake keep less generator identity in their last layer than a generic backbone's middle layers. Their own middle layers do as well or better (026 R1).",
     "H-A6": "The VAE-decoder signature is strong on untouched files and gone after one JPEG plus resize.",
 }
 
@@ -68,7 +68,7 @@ def laundering():
         vals = [C.num_ci(c) for c in rm[key][1:6]]
         series[key] = dict(name=name, values=[v[0] for v in vals], lo=[v[1] for v in vals], hi=[v[2] for v in vals])
     return dict(conditions=COND5, series=series, chance=0.125, source=F020 + " ('bacc per condition')",
-                sentence="Trained on laundered copies, the 8-way read-out stays at 0.81-0.91 under every laundering, including two it never saw (screenshot_sim, mavali_medium). Trained on clean images only, it falls to 0.54 after JPEG-75 plus half-size (chance 0.125). File metadata alone already gives 0.69, which is why the probe only sees decoded pixels.")
+                sentence="Trained on laundered copies, the 8-way read-out stays at 0.81-0.91 under the launderings tested, but those are close to its training mix (a clean-only probe already gets 0.875 on screenshot_sim, 026 critique). Genuinely new edits such as mild blur or sharpening drop it to about 0.52 (exploratory). Trained on clean images only, it falls to 0.54 after JPEG-75 plus half-size (chance 0.125). File metadata alone already gives 0.69, which is why the probe only sees decoded pixels.")
 
 
 def layers():
@@ -91,7 +91,7 @@ def detector_emb():
              "rine": "RINE detector", "clipdet": "CLIP-based detector", "b4": "DINOv2 b4", "b8": "DINOv2 b8", "b12": "DINOv2 b12 (last)"}
     return dict(conditions=COND5, rows=[dict(key=k, name=names[k], values=v) for k, v in rows.items()], chance=0.125,
                 source=F023 + " ('Balanced accuracy, 8-way, T-mix training (headline)')",
-                sentence="Detectors trained to say real-vs-fake keep less generator identity in their final embedding: the best one (0.740 at jpeg75_resize05) is 0.118 below DINOv2's own layers; RINE's probe collapsed.")
+                sentence="Detectors trained to say real-vs-fake keep less generator identity in their final embedding: the best one (0.740 at jpeg75_resize05) is 0.118 below DINOv2's own layers; RINE's probe collapsed. This compares detectors at their LAST layer only: at a middle layer Community Forensics reaches 0.883 and beats DINOv2-base (0.856; 026 R1), so it does not show generic features are better.")
 
 
 def learning_curve():

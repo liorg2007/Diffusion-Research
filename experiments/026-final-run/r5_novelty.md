@@ -40,3 +40,9 @@ Implication: R2 can be framed as testing a claim others suggest but nobody measu
 - Safe to claim: quantified, size-controlled, caption-family-fold layer profile for trained probes under laundering; transfer to held-out launderings; detector-vs-generic comparison.
 - Not safe: "mid-layer advantage for attribution is new" (Li 2026 precedes; also RINE for detection).
 - Cite Li 2607.12052 and Cioni 2408.09153 in docs/10 sec. 6 (currently says "not reported in the ~30 attribution papers we read"). Both unread-in-PDF; verify before publication.
+
+
+## Corrections after the final-run critic (lead, 2026-10-31)
+- (b) "Transfer to held-out launderings" is no longer a safe claim: the launderings were close to the training mix, and new mild blur or unsharp drop the probe to about 0.52 (exploratory).
+- (c) Retracted: CommFor at a mid block beats DINOv2-base (+0.026 [0.006, 0.047]); CLIP-OpenAI vs CommFor +0.014 [-0.007, 0.034].
+Full reading: `docs/12-final-run-report.md`, `experiments/026-final-run/critique.md`.

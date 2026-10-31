@@ -504,3 +504,4 @@
   - R4 extrapolation not licensed (0.860 / 0.923 / 0.980 by model form). R5(c) retracted.
   - Deviation: selftests were first committed with results (e9b6933, 04577ed), against docs/11; the freeze rests on timestamps.
   - Critic numbers are exploratory. Launching the fable/high report.
+- 2026-10-31 03:46 — Final-run report written (fable/high, docs/12-final-run-report.md, 130 lines). Lead merged the critic's requested corrections: README status, correction sections in docs/10, r5_novelty, r2r3 and r1r4 notes, KB idea, STORAGE rows; Fingerprint Lab wording and findings.json updated for the retracted claims. Project at rest; 8.8 GB of regenerable caches kept pending owner decision.

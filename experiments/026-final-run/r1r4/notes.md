@@ -39,3 +39,8 @@ None. (No logic change after the real run started; the first and only real run i
 - n = 1,020 images, 542 caption families; the gap CIs are family-bootstrap CIs on a single 8-generator set (Synthbuster + sd3 + flux), a single laundering family for training; R1 shows the mid-over-last pattern is shared by five ViTs on this data, not that it holds on other generators or data.
 - Fine-tuned detectors (B-Free, CommFor) were trained on real/fake detection, possibly on related generators (023 overlap flags); the claim "pretrained backbones" rests on the two frozen CLIPs.
 - R5 (literature) and R2/R3 are not part of this run. The opus critic for the whole run is the caller's step.
+
+
+## Corrections after the final-run critic (lead, 2026-10-31)
+- The 0.92-0.94 extrapolation is withdrawn: equally good fits give 0.860 (exp+c), 0.923 (power+c), 0.980 (pure power) at n=10,000 for DINOv2. Only measured points stand.
+Full reading: `docs/12-final-run-report.md`, `experiments/026-final-run/critique.md`.

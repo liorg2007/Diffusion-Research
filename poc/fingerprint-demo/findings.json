@@ -53,7 +53,7 @@
     "counts": "failure 1",
     "key_number": "best 0.740 vs DINOv2 0.858",
     "critic": "confirmed; RINE deviation logged",
-    "plain": "Detectors trained for real-vs-fake keep less generator identity in their last layer than a generic backbone's middle layers."
+    "plain": "Detectors trained for real-vs-fake keep less generator identity in their last layer than a generic backbone's middle layers. Their own middle layers do as well or better (026 R1)."
    },
    {
     "id": "H-A6",
@@ -261,7 +261,7 @@
   },
   "chance": 0.125,
   "source": "experiments/020-attr-foundation/results/tables.md ('bacc per condition')",
-  "sentence": "Trained on laundered copies, the 8-way read-out stays at 0.81-0.91 under every laundering, including two it never saw (screenshot_sim, mavali_medium). Trained on clean images only, it falls to 0.54 after JPEG-75 plus half-size (chance 0.125). File metadata alone already gives 0.69, which is why the probe only sees decoded pixels."
+  "sentence": "Trained on laundered copies, the 8-way read-out stays at 0.81-0.91 under the launderings tested, but those are close to its training mix (a clean-only probe already gets 0.875 on screenshot_sim, 026 critique). Genuinely new edits such as mild blur or sharpening drop it to about 0.52 (exploratory). Trained on clean images only, it falls to 0.54 after JPEG-75 plus half-size (chance 0.125). File metadata alone already gives 0.69, which is why the probe only sees decoded pixels."
  },
  "layers": {
   "primary": "jpeg75_resize05",
@@ -430,7 +430,7 @@
   ],
   "chance": 0.125,
   "source": "experiments/023-attr-detector-emb/results/tables.md ('Balanced accuracy, 8-way, T-mix training (headline)')",
-  "sentence": "Detectors trained to say real-vs-fake keep less generator identity in their final embedding: the best one (0.740 at jpeg75_resize05) is 0.118 below DINOv2's own layers; RINE's probe collapsed."
+  "sentence": "Detectors trained to say real-vs-fake keep less generator identity in their final embedding: the best one (0.740 at jpeg75_resize05) is 0.118 below DINOv2's own layers; RINE's probe collapsed. This compares detectors at their LAST layer only: at a middle layer Community Forensics reaches 0.883 and beats DINOv2-base (0.856; 026 R1), so it does not show generic features are better."
  },
  "learning_curve": {
   "mean": [

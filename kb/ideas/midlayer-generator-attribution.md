@@ -7,4 +7,5 @@
   - Against: clean-train → laundered 0.542; SD1.3 vs SD1.4 at chance; open-set AUROC 0.768.
   - Sources: experiments/020-attr-foundation/results/{tables.md, critique.md}, secondary/tables.md.
 - **Test plan:** done (H-A1, docs/09).
-- **Status:** supported (closed-set only).
+- **Final run (026-final-run):** mid-layer advantage general across 5 backbones but already published (Li et al. 2026); transfer to genuinely new operations not supported; generator vs configuration untested.
+- **Status:** supported (closed-set, trained launderings only).

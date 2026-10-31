@@ -257,3 +257,11 @@ So a sensible system is tiered:
 5. **A tiered attribution prototype** (file evidence → VAE/PRNU → style probe → "unknown").
    - What: a pre-registered test on a mixed stream of pristine and laundered images, reporting how often each tier answers and how often it is wrong.
    - Cost: CPU hours on existing data.
+
+
+## Corrections after the final-run critic (lead, 2026-10-31)
+The final run (D-020) overturns parts of this report:
+- Mid-layer advantage: already published (Li et al. arXiv 2607.12052; Cioni et al. 2024), so it is not new.
+- H-A5: the KILL label stands, but the reading "generic features beat detectors" is retracted; detectors were probed at the last layer only.
+- Unseen-laundering results (0.81-0.87): those launderings are close to the training mix; do not read them as transfer to new operations.
+Full reading: `docs/12-final-run-report.md`, `experiments/026-final-run/critique.md`.

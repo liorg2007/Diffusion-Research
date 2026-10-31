@@ -5,6 +5,12 @@
 
 **Acceptance targets for a full-scale validation:** FPR ≤ 1% on fresh phone photos; AUROC ≥ 0.95 after social-media laundering; evaluation against transfer attacks.
 
+## Current status — 2026-10-31: final run (D-020) reported (`docs/12-final-run-report.md`); no work in progress
+- **Holds:** mid layers beat the last layer on all 5 backbones (+0.148 to +0.295 bacc; already published, Li et al. 2026). Closed-set attribution reaches 0.839-0.896 after jpeg75_resize05. The signal does not need image layout and is not a tone curve (after retraining).
+- **Retracted:** transfer to unseen launderings (new mild blur or unsharp: about 0.52, exploratory); generic features beating detectors; the 0.92-0.94 data extrapolation.
+- **Biggest open hole:** each generator class is one configuration from one operator, so we cannot separate generator from settings. No real photos in this run, so it does not bear on the FPR targets.
+- **Owner open items:** modern-phone photos; D-013; future-research list in docs/12.
+
 ## Current status — 2026-10-28: attribution cycle (D-018) reported (`docs/10-attribution-report.md`)
 - **Question:** can we fingerprint the source of an image (which generator; for real photos, which camera or platform)?
 - **H-A1 PASS:** mid-level DINOv2 + linear probe names 1 of 8 known generators at 0.855 bacc after jpeg75_resize05 (chance 0.125). It holds 0.81–0.87 on unseen launderings and only works if trained on laundered images. Near-twins (SD1.3/1.4) are inseparable; open-set rejection fails.
